@@ -22,10 +22,10 @@ defineProps<{ title: string; aside?: string }>()
 .panel__title { font: 500 11px/1.2 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
 .panel__aside { font: 500 11px/1.2 var(--font-mono); letter-spacing: .6px; color: var(--amber); text-align: right; overflow-wrap: anywhere; }
 
-.panel { border: 1px solid var(--line); background: rgba(22, 29, 41, .88); }
+.panel { border: 1px solid var(--line); background: var(--panel); }
 .panel::before, .panel::after { display: none; }
 .panel__head { min-height: 44px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
-.panel__title { color: var(--text-soft); font-size: 11px; letter-spacing: 1.15px; }
+.panel__title { color: var(--text); font: 600 17px/1.2 var(--font-display); letter-spacing: 0; text-transform: none; }
 .panel__aside { color: var(--muted); font-size: 11px; }
 
 </style>

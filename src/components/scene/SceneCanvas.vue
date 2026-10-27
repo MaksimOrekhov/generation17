@@ -25,4 +25,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
 <style scoped>
 .scene-canvas { width: 100%; height: auto; aspect-ratio: 16 / 9; image-rendering: pixelated; background: #000; }
+
+/* Keep the complete cabin visible as a quiet atmospheric strip. */
+.scene-canvas { height: clamp(150px, 25vw, 220px); aspect-ratio: auto; object-fit: contain; background: #100e1b; }
+@media (max-width: 560px) { .scene-canvas { height: clamp(150px, 48vw, 200px); } }
 </style>

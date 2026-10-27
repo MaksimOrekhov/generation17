@@ -73,4 +73,7 @@ kbd { font: 500 10px var(--font-mono); border: 1px solid var(--line-2); padding:
   .moment__hint { display: none; }
   .moment__text { font-size: 12.5px; }
 }
+
+/* The moment stays readable without obscuring the compact scene. */
+.moment, .moment--top, .moment--bottom { position: relative; inset: auto; max-width: none; border-width: 2px 0 0; box-shadow: none; animation: slide-up .35s steps(7); }
 </style>

@@ -103,9 +103,9 @@ function repeat() {
 }
 
 /* The scene and chronicle form the reading column; the other columns are supporting context. */
-.game__layout { max-width: 1500px; grid-template-columns: 270px minmax(0, 1fr) 300px; gap: 20px; padding: 24px 20px; }
+.game__layout { max-width: 1400px; grid-template-columns: 300px minmax(0, 1fr) 320px; gap: 20px; padding: 24px 20px; }
 .game__col { gap: 18px; }
-.game__foot { max-width: 1500px; padding-inline: 20px; color: var(--muted); }
+.game__foot { max-width: 1400px; padding-inline: 20px; color: var(--muted); }
 @media (max-width: 1180px) {
   .game__layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; }
 }

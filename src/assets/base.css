@@ -13,7 +13,7 @@ html, body {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(1100px 600px at 50% -10%, #384a5a55, transparent 70%),
+    radial-gradient(1200px 520px at 50% -10%, #2a1d3d55, transparent 70%),
     var(--bg);
 }
 

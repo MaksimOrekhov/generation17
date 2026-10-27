@@ -70,8 +70,8 @@ const status = computed(() => {
   .top__status { padding: 0 12px 4px; font-size: 10px; }
 }
 
-.top { background: rgba(12, 16, 24, .96); border-bottom: 1px solid var(--line); }
-.top__inner, .top__status { max-width: 1500px; }
+.top { background: rgba(14, 12, 23, .96); border-bottom: 1px solid var(--line); }
+.top__inner, .top__status { max-width: 1400px; }
 .top__inner { padding: 14px 20px 10px; gap: 11px; }
 .top__row { gap: 12px 18px; }
 .top__brand { font-size: 21px; }

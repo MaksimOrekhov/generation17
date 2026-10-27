@@ -90,7 +90,7 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
 
 .scene { border: 1px solid var(--line); box-shadow: none; background: var(--panel); }
 .scene__hud { top: 12px; left: 12px; right: 12px; }
-.scene__tag { padding: 6px 9px; background: rgba(14, 12, 23, .88); border-color: var(--line-2); font-size: 11px; }
+.scene__tag { padding: 5px 8px; background: rgba(14, 12, 23, .78); border-color: #665a7d; font-size: 11px; }
 .scene__caption { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); color: var(--text-soft); font: 400 14px/1.5 var(--font-ui); }
 .scene__caption b { color: var(--text); }
 .scene__when { align-self: start; padding-top: 4px; font-size: 12px; color: var(--amber); }

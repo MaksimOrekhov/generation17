@@ -1,0 +1,64 @@
+import { gYearPlaceholder } from '../domain/constants'
+import type { Effects, GameState, MomentDef, Storylet } from '../domain/types'
+import type { ContentBundle, JsonChoice, JsonMoment, JsonStorylet, Requires } from './types'
+
+/** В JSON возраст героя пишется как "@age"; движок знает его как gYearPlaceholder. */
+export const AGE_TOKEN = '@age'
+
+export function compileRequires(r?: Requires): (g: GameState) => boolean {
+  if (!r) return () => true
+  return g => {
+    for (const k of r.flag ?? []) if (!g.flags[k]) return false
+    for (const k of r.flagNot ?? []) if (g.flags[k]) return false
+    for (const [k, v] of Object.entries(r.flagIs ?? {})) {
+      const allowed = (Array.isArray(v) ? v : [v]).map(String)
+      if (!allowed.includes(String(g.flags[k]))) return false
+    }
+    for (const [k, years] of Object.entries(r.since ?? {})) {
+      const at = g.flags[k]
+      if (typeof at !== 'number' || g.age < at + years) return false
+    }
+    if (r.job && !r.job.includes(g.protagonist.job)) return false
+    for (const id of r.alive ?? []) if (!g.people.find(p => p.id === id)?.alive) return false
+    for (const [stat, range] of Object.entries(r.stat ?? {})) {
+      const value = g.stats[stat as keyof GameState['stats']]
+      if (range.min !== undefined && value < range.min) return false
+      if (range.max !== undefined && value > range.max) return false
+    }
+    return true
+  }
+}
+
+function compileEffects(e?: Effects): Effects | undefined {
+  if (!e?.flags) return e
+  const flags = Object.fromEntries(Object.entries(e.flags).map(([k, v]) => [k, v === AGE_TOKEN ? gYearPlaceholder : v]))
+  return { ...e, flags }
+}
+
+function compileChoice(c: JsonChoice): JsonChoice {
+  return {
+    ...c,
+    effects: compileEffects(c.effects)!,
+    ...(c.check ? { check: { ...c.check, success: compileEffects(c.check.success)!, failure: compileEffects(c.check.failure)! } } : {})
+  }
+}
+
+export function compileStorylet(s: JsonStorylet): Storylet {
+  const { requires, choices, ...rest } = s
+  return { ...rest, available: compileRequires(requires), choices: choices.map(compileChoice) }
+}
+
+export function compileMoment(m: JsonMoment): MomentDef {
+  const { requires, cooldown, accept, skip, ...rest } = m
+  return {
+    ...rest,
+    cooldown: cooldown ?? Infinity,
+    ...(requires ? { available: compileRequires(requires) } : {}),
+    accept: { ...accept, effects: compileEffects(accept.effects)! },
+    skip: { ...skip, ...(skip.effects ? { effects: compileEffects(skip.effects) } : {}) }
+  }
+}
+
+export function compileBundle(b: ContentBundle) {
+  return { storylets: b.storylets.map(compileStorylet), moments: b.moments.map(compileMoment) }
+}

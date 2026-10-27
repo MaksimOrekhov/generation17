@@ -9,7 +9,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "vite preview",
-    "sim": "tsx scripts/simulate.ts"
+    "sim": "tsx scripts/simulate.ts",
+    "content": "tsx scripts/content.ts",
+    "content:check": "tsx scripts/content.ts --check"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

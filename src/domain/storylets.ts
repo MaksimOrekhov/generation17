@@ -3,6 +3,9 @@ import { extraStorylets } from './storyletsExtra'
 import { arcStorylets } from './storyletsArcs'
 import { lineStorylets } from './storyletsLines'
 import { mysteryStorylets } from './storyletsMystery'
+import { compileStorylet } from '../content/load'
+import bundle from '../content/bundle.json'
+import type { ContentBundle } from '../content/types'
 
 const any = () => true
 import { gYearPlaceholder } from './constants'
@@ -241,4 +244,10 @@ const baseStorylets: Storylet[] = [
   }
 ]
 
-export const storylets: Storylet[] = [...baseStorylets, ...extraStorylets, ...arcStorylets, ...lineStorylets, ...mysteryStorylets]
+/** Сюжеты, написанные в коде (с функциями-условиями). */
+export const codeStorylets: Storylet[] = [...baseStorylets, ...extraStorylets, ...arcStorylets, ...lineStorylets, ...mysteryStorylets]
+
+/** Сюжеты из `content/storylets/*.json`, собранные в `src/content/bundle.json` командой `npm run content`. */
+export const contentStorylets: Storylet[] = (bundle as ContentBundle).storylets.map(compileStorylet)
+
+export const storylets: Storylet[] = [...codeStorylets, ...contentStorylets]

@@ -1,6 +1,9 @@
 import type { MomentDef } from './types'
 import { extraMoments } from './momentsExtra'
 import { mysteryMoments } from './storyletsMystery'
+import { compileMoment } from '../content/load'
+import bundle from '../content/bundle.json'
+import type { ContentBundle } from '../content/types'
 
 const ONCE = Infinity
 
@@ -163,6 +166,12 @@ const baseMoments: MomentDef[] = [
   }
 ]
 
-export const moments: MomentDef[] = [...baseMoments, ...extraMoments, ...mysteryMoments]
+/** Моменты, написанные в коде. */
+export const codeMoments: MomentDef[] = [...baseMoments, ...extraMoments, ...mysteryMoments]
+
+/** Моменты из `content/moments/*.json` (см. `npm run content`). */
+export const contentMoments: MomentDef[] = (bundle as ContentBundle).moments.map(compileMoment)
+
+export const moments: MomentDef[] = [...codeMoments, ...contentMoments]
 
 export const getMomentDef = (id: string | null) => (id ? moments.find(m => m.id === id) ?? null : null)

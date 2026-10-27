@@ -1,0 +1,204 @@
+[
+  {
+    "id": "m-youth-notes-echo",
+    "spot": "table",
+    "title": "Стрелки на полях",
+    "text": "На столе среди старых бумаг лежит схема с чайником на полях. Цветные стрелки почти выцвели.",
+    "min": 20,
+    "max": 60,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthNotes": [
+          "second"
+        ]
+      },
+      "since": {
+        "youthNotesAge": 4
+      }
+    },
+    "accept": {
+      "label": "Развернуть схему",
+      "result": "Сгиб всё ещё держится. На обороте обнаруживается список тем, записанный неровными буквами.",
+      "effects": {
+        "stats": {
+          "morale": 2,
+          "knowledge": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Убрать в папку"
+    }
+  },
+  {
+    "id": "m-youth-window-echo",
+    "spot": "window",
+    "title": "След на стекле",
+    "text": "У обзорного стекла дежурная протирает нижний край. В свете лампы ненадолго видна влажная полоса.",
+    "min": 20,
+    "max": 65,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthWindow": [
+          "first",
+          "second",
+          "third"
+        ]
+      },
+      "since": {
+        "youthWindowAge": 4
+      }
+    },
+    "accept": {
+      "label": "Остановиться у окна",
+      "result": "За стеклом тянется редкая светлая пыль. Дежурная отходит, освобождая место у окна.",
+      "effects": {
+        "stats": {
+          "morale": 2,
+          "stress": -1
+        }
+      }
+    },
+    "skip": {
+      "label": "Продолжить путь"
+    }
+  },
+  {
+    "id": "m-youth-duty-echo",
+    "spot": "terminal",
+    "title": "Старая ведомость",
+    "text": "На терминале открыта ведомость контейнеров. Один номер по-прежнему написан поверх старой подписи.",
+    "min": 21,
+    "max": 65,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthFirstDuty": [
+          "first",
+          "second"
+        ]
+      },
+      "since": {
+        "youthFirstDutyAge": 4
+      }
+    },
+    "accept": {
+      "label": "Сверить обозначения",
+      "result": "Номер совпадает с записью в графике. У нижнего края экрана мерцает индикатор обновления.",
+      "effects": {
+        "stats": {
+          "knowledge": 2,
+          "reputation": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Закрыть ведомость"
+    }
+  },
+  {
+    "id": "m-youth-table-echo",
+    "spot": "table",
+    "title": "Бумага под ножкой",
+    "text": "При уборке из-под ножки стола выступает сложенная полоска бумаги с разметкой карандашом.",
+    "min": 20,
+    "max": 65,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthTable": [
+          "first"
+        ]
+      },
+      "since": {
+        "youthTableAge": 4
+      }
+    },
+    "accept": {
+      "label": "Разгладить бумагу",
+      "result": "На полоске видны два набора размеров. Один перечёркнут, а рядом осталась крошечная клякса.",
+      "effects": {
+        "stats": {
+          "morale": 2,
+          "stress": -1
+        }
+      }
+    },
+    "skip": {
+      "label": "Положить обратно"
+    }
+  },
+  {
+    "id": "m-youth-plant-echo",
+    "spot": "plant",
+    "title": "Свободный вторник",
+    "text": "В биокуполе на горшке закреплена старая табличка полива. Строка со вторником до сих пор пустует.",
+    "min": 20,
+    "max": 65,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthPlant": [
+          "second"
+        ]
+      },
+      "since": {
+        "youthPlantAge": 4
+      }
+    },
+    "accept": {
+      "label": "Полить росток",
+      "result": "Вода медленно уходит в тёмный грунт. На табличке появляется маленькое влажное пятно.",
+      "effects": {
+        "stats": {
+          "morale": 2,
+          "stress": -1
+        }
+      }
+    },
+    "skip": {
+      "label": "Оставить лейку"
+    }
+  },
+  {
+    "id": "m-youth-voice-echo",
+    "spot": "terminal",
+    "title": "Запись с концерта",
+    "text": "Терминал предлагает старую запись школьного концерта. Перед музыкой слышны смех и гул вентиляции.",
+    "min": 21,
+    "max": 65,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "youthVoice": [
+          "first",
+          "second"
+        ]
+      },
+      "since": {
+        "youthVoiceAge": 4
+      }
+    },
+    "accept": {
+      "label": "Прослушать начало",
+      "result": "Смех обрывается, потом звучит короткое объявление. Ты убавляешь звук перед первой нотой.",
+      "effects": {
+        "stats": {
+          "morale": 2,
+          "bonds": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Закрыть запись"
+    }
+  }
+]

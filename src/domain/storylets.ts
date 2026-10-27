@@ -248,6 +248,6 @@ const baseStorylets: Storylet[] = [
 export const codeStorylets: Storylet[] = [...baseStorylets, ...extraStorylets, ...arcStorylets, ...lineStorylets, ...mysteryStorylets]
 
 /** Сюжеты из `content/storylets/*.json`, собранные в `src/content/bundle.json` командой `npm run content`. */
-export const contentStorylets: Storylet[] = (bundle as ContentBundle).storylets.map(compileStorylet)
+export const contentStorylets: Storylet[] = (bundle as unknown as ContentBundle).storylets.map(compileStorylet)
 
 export const storylets: Storylet[] = [...codeStorylets, ...contentStorylets]

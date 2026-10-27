@@ -170,7 +170,7 @@ const baseMoments: MomentDef[] = [
 export const codeMoments: MomentDef[] = [...baseMoments, ...extraMoments, ...mysteryMoments]
 
 /** Моменты из `content/moments/*.json` (см. `npm run content`). */
-export const contentMoments: MomentDef[] = (bundle as ContentBundle).moments.map(compileMoment)
+export const contentMoments: MomentDef[] = (bundle as unknown as ContentBundle).moments.map(compileMoment)
 
 export const moments: MomentDef[] = [...codeMoments, ...contentMoments]
 

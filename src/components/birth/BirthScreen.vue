@@ -63,33 +63,24 @@ const atmospheres: { id: Atmosphere; name: string; text: string }[] = [
 </template>
 
 <style scoped>
-.birth { max-width: 880px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 16px; }
-.birth__head { display: grid; justify-items: center; gap: 8px; padding-bottom: 6px; }
-.birth__brand { font: 600 22px/1 var(--font-display); }
+.birth { max-width: 920px; margin: 0 auto; padding: 36px 16px 64px; display: grid; gap: 20px; }
+.birth__head { display: grid; justify-items: center; gap: 10px; padding-bottom: 12px; }
+.birth__brand { font: 600 28px/1 var(--font-display); }
 .birth__brand b { color: var(--amber); font-weight: 600; }
 .birth__head h1 { color: var(--amber); letter-spacing: 3px; font-size: 12px; text-align: center; }
-.birth__reveal { display: grid; gap: 16px; min-width: 0; }
+.birth__reveal { display: grid; gap: 20px; min-width: 0; }
 .birth__item { animation: show .5s ease-out var(--d, 0s) backwards; }
-.birth__note { padding: 8px 12px 10px; font-size: 12px; color: var(--faint); }
+.birth__note { padding: 8px 12px 10px; font-size: 13px; color: var(--faint); }
 .birth__start { display: grid; gap: 12px; }
 .birth__presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.birth__preset { display: grid; gap: 2px; text-align: left; padding: 10px 12px; background: var(--panel); border: 2px solid var(--line); box-shadow: var(--shadow-key); }
+.birth__preset { display: grid; gap: 2px; text-align: left; padding: 14px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-key); }
 .birth__preset b { font: 600 20px/1.1 var(--font-display); }
-.birth__preset span { font-size: 12px; color: var(--muted); }
+.birth__preset span { font-size: 13px; color: var(--muted); }
 .birth__preset:hover { border-color: var(--line-2); }
 .birth__preset[aria-pressed='true'] { border-color: var(--amber); background: var(--amber-dim); }
 .birth__atmo { display: grid; gap: 8px; }
-.birth__go { font: 600 18px/1 var(--font-display); padding: 14px; }
+.birth__go { font: 600 18px/1 var(--font-display); padding: 17px; }
 .birth__seed { text-align: center; font: 400 11px var(--font-mono); color: var(--faint); letter-spacing: 1px; }
 @keyframes show { from { opacity: 0; transform: translateY(14px); } }
 @media (max-width: 560px) { .birth__presets { grid-template-columns: minmax(0, 1fr); } }
-
-.birth { max-width: 920px; gap: 20px; padding-top: 36px; }
-.birth__head { gap: 10px; padding-bottom: 12px; }
-.birth__brand { font-size: 28px; }
-.birth__reveal { gap: 20px; }
-.birth__preset { padding: 14px; border-width: 1px; }
-.birth__preset span, .birth__note { font-size: 13px; }
-.birth__go { padding: 17px; }
-
 </style>

@@ -24,9 +24,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </template>
 
 <style scoped>
-.scene-canvas { width: 100%; height: auto; aspect-ratio: 16 / 9; image-rendering: pixelated; background: #000; }
-
-/* A panoramic window onto the cabin: preserve the people and floor in the crop. */
-.scene-canvas { height: auto; aspect-ratio: 2.05 / 1; object-fit: cover; object-position: center 55%; }
+/* Панорама каюты: при обрезке сохраняем людей и пол */
+.scene-canvas { width: 100%; height: auto; aspect-ratio: 2.05 / 1; object-fit: cover; object-position: center 55%; image-rendering: pixelated; background: #000; }
 @media (max-width: 560px) { .scene-canvas { aspect-ratio: 1.85 / 1; object-position: center 72%; } }
 </style>

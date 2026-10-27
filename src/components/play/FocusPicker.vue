@@ -39,17 +39,12 @@ const options: { id: Focus; name: string; kid: string; effect: string }[] = [
 <style scoped>
 .focus__note { padding: 14px 12px; font-size: 13.5px; line-height: 1.55; color: var(--muted); }
 .focus { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding: 12px; }
-.focus__item { display: grid; gap: 2px; padding: 8px 4px; text-align: center; background: var(--bg-2); border: 2px solid var(--line); box-shadow: var(--shadow-key); min-width: 0; }
-.focus__item strong { font-weight: 600; font-size: 13px; overflow: hidden; text-overflow: ellipsis; }
+.focus__item { display: grid; gap: 2px; align-content: center; min-height: 58px; padding: 8px 4px; text-align: center; background: var(--bg-2); border: 2px solid var(--line); box-shadow: var(--shadow-key); min-width: 0; }
+.focus__item strong { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; }
 .focus__item span { font: 500 10px var(--font-mono); color: var(--faint); }
 .focus__item:hover:not(:disabled) { border-color: var(--line-2); }
 .focus__item[aria-pressed='true'] { border-color: var(--amber); background: var(--amber-dim); }
 .focus__item[aria-pressed='true'] span { color: #e8b66d; }
 .focus__item:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 @media (max-width: 560px) { .focus { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-.focus__item { min-height: 58px; }
-.focus__item strong { font-size: 14px; }
-.focus__item[aria-pressed='true'] { border-color: var(--amber); background: var(--amber-dim); }
-
 </style>

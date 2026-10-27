@@ -85,32 +85,21 @@ function repeat() {
 
 <style scoped>
 .game { min-height: 100vh; }
-.game__layout { max-width: 1400px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 300px minmax(0, 1fr) 320px; gap: var(--gap); align-items: start; }
-.game__col { display: grid; gap: var(--gap); min-width: 0; }
-.game__foot { max-width: 1400px; margin: 0 auto; padding: 8px 16px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font: 400 11px var(--font-mono); color: var(--faint); letter-spacing: .6px; }
+/* Сцена и летопись образуют колонку для чтения, боковые колонки — контекст */
+.game__layout { max-width: 1400px; margin: 0 auto; padding: 24px 20px; display: grid; grid-template-columns: 300px minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+.game__col { display: grid; gap: 18px; min-width: 0; }
+.game__foot { max-width: 1400px; margin: 0 auto; padding: 8px 20px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font: 400 11px var(--font-mono); color: var(--muted); letter-spacing: .6px; }
 .game__again { position: fixed; right: 16px; bottom: 16px; z-index: 40; }
 
 @media (max-width: 1180px) {
-  .game__layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  .game__layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; }
   .game__col--center { grid-column: 1; grid-row: 1 / span 2; }
   .game__col--left { grid-column: 2; grid-row: 1; }
   .game__col--right { grid-column: 2; grid-row: 2; }
 }
 @media (max-width: 820px) {
-  .game__layout { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  .game__layout { grid-template-columns: minmax(0, 1fr); padding: 16px 12px; }
   .game__col--center, .game__col--left, .game__col--right { grid-column: 1; grid-row: auto; }
   .game__col--center { order: -1; }
 }
-
-/* The scene and chronicle form the reading column; the other columns are supporting context. */
-.game__layout { max-width: 1400px; grid-template-columns: 300px minmax(0, 1fr) 320px; gap: 20px; padding: 24px 20px; }
-.game__col { gap: 18px; }
-.game__foot { max-width: 1400px; padding-inline: 20px; color: var(--muted); }
-@media (max-width: 1180px) {
-  .game__layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; }
-}
-@media (max-width: 820px) {
-  .game__layout { grid-template-columns: minmax(0, 1fr); padding: 16px 12px; }
-}
-
 </style>

@@ -64,6 +64,22 @@ ul { margin: 0; padding: 0; list-style: none; }
   color: var(--muted);
 }
 
+/* пиксельные уголки: акцент для главных блоков (сцена, карточка момента) */
+.pixel-corners { position: relative; }
+.pixel-corners::after {
+  content: ''; position: absolute; inset: -1px; z-index: 3; pointer-events: none;
+  --c: var(--amber-2); --l: 14px; --t: 2px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--t) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--t) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) var(--l) no-repeat;
+}
+
 /* текстовые блоки не должны выталкивать колонки */
 .wrap { overflow-wrap: anywhere; min-width: 0; }
 

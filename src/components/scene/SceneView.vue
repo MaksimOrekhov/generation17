@@ -33,13 +33,11 @@ const model = computed<SceneModel>(() => {
 
 const moment = computed(() => store.currentMoment)
 const latest = computed(() => g.value.history[0])
-// Карточка не должна закрывать подсвеченный предмет: низкие объекты — карточка сверху, верхние — снизу.
-const momentPlacement = computed(() => (moment.value && ['window', 'terminal'].includes(moment.value.spot) ? 'bottom' : 'top'))
 const place = computed(() => `Каюта ${g.value.birth.deck}`)
 </script>
 
 <template>
-  <section class="scene" :class="{ 'scene--stopped': g.stopped }" aria-label="Сцена">
+  <section class="scene pixel-corners" :class="{ 'scene--stopped': g.stopped }" aria-label="Сцена">
     <div class="scene__stage">
     <SceneCanvas :model="model" />
     <div class="scene__hud">
@@ -60,7 +58,6 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
         :skip-label="moment.skip.label"
         :attention="g.attention"
         :left="store.momentLeft"
-        :placement="momentPlacement"
         @accept="store.acceptMoment()"
         @skip="store.dismissMoment()"
       />
@@ -74,26 +71,17 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
 </template>
 
 <style scoped>
-.scene { position: relative; border: 2px solid var(--line-2); background: var(--panel); box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--line); }
+.scene { position: relative; border: 1px solid var(--line-2); background: var(--panel); }
 .scene__stage { position: relative; }
-.scene__hud { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
-.scene__tag { background: rgba(14, 12, 23, .85); border: 1px solid var(--line-2); padding: 3px 8px; font: 500 11px var(--font-mono); letter-spacing: .4px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.scene__hud { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
+.scene__tag { background: rgba(14, 12, 23, .78); border: 1px solid #665a7d; padding: 5px 8px; font: 500 11px var(--font-mono); letter-spacing: .4px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
 .scene__tag b { color: var(--amber); font-weight: 500; }
 .scene__attn i { width: 11px; height: 11px; background: var(--amber); border: 2px solid #ffd08a; transition: background .2s, border-color .2s; }
 .scene__attn i.used { background: transparent; border-color: var(--line-2); }
-.scene__caption { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; padding: 10px 12px; border-top: 2px solid var(--line); background: var(--panel); font-size: 13.5px; color: var(--muted); align-items: baseline; }
+.scene__caption { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); font: 400 14px/1.5 var(--font-ui); color: var(--text-soft); align-items: baseline; }
 .scene__caption b { color: var(--text); font-weight: 500; }
-.scene__when { font: 600 12px var(--font-mono); color: var(--amber); }
+.scene__when { align-self: start; padding-top: 4px; font: 600 12px var(--font-mono); color: var(--amber); }
 .scene--stopped :deep(canvas) { filter: grayscale(.8) brightness(.7); }
 .moment-enter-active, .moment-leave-active { transition: opacity .2s, transform .2s; }
 .moment-leave-to { opacity: 0; transform: translateY(12px); }
-
-.scene { border: 1px solid var(--line); box-shadow: none; background: var(--panel); }
-.scene__hud { top: 12px; left: 12px; right: 12px; }
-.scene__tag { padding: 5px 8px; background: rgba(14, 12, 23, .78); border-color: #665a7d; font-size: 11px; }
-.scene__caption { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); color: var(--text-soft); font: 400 14px/1.5 var(--font-ui); }
-.scene__caption b { color: var(--text); }
-.scene__when { align-self: start; padding-top: 4px; font-size: 12px; color: var(--amber); }
-@media (max-width: 560px) { .scene__caption { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px; font-size: 14px; } }
-
 </style>

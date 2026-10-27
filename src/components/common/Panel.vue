@@ -14,18 +14,10 @@ defineProps<{ title: string; aside?: string }>()
 </template>
 
 <style scoped>
-.panel { position: relative; min-width: 0; background: var(--panel); border: 2px solid var(--line); }
-.panel::before, .panel::after { content: ''; position: absolute; width: 6px; height: 6px; background: var(--amber-dim); pointer-events: none; }
-.panel::before { left: -2px; top: -2px; }
-.panel::after { right: -2px; bottom: -2px; }
-.panel__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border-bottom: 2px solid var(--line); min-height: 34px; }
-.panel__title { font: 500 11px/1.2 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
-.panel__aside { font: 500 11px/1.2 var(--font-mono); letter-spacing: .6px; color: var(--amber); text-align: right; overflow-wrap: anywhere; }
-
-.panel { border: 1px solid var(--line); background: var(--panel); }
-.panel::before, .panel::after { display: none; }
-.panel__head { min-height: 44px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
-.panel__title { color: var(--text); font: 600 17px/1.2 var(--font-display); letter-spacing: 0; text-transform: none; }
-.panel__aside { color: var(--muted); font-size: 11px; }
-
+.panel { position: relative; min-width: 0; background: var(--panel); border: 1px solid var(--line); }
+.panel__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--line); min-height: 44px; }
+.panel__title { display: flex; align-items: center; gap: 9px; color: var(--text); font: 600 17px/1.2 var(--font-display); }
+/* пиксельный маркер у названия: единственный «корабельный» акцент панели */
+.panel__title::before { content: ''; flex: none; width: 7px; height: 7px; background: var(--amber); box-shadow: 3px 3px 0 var(--amber-dim); }
+.panel__aside { font: 500 11px/1.2 var(--font-mono); letter-spacing: .6px; color: var(--muted); text-align: right; overflow-wrap: anywhere; }
 </style>

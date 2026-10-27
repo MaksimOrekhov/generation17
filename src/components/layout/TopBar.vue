@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useGameStore } from '../../stores/game'
 import { lifeStage, years } from '../../ui/format'
 import ReportButton from '../common/ReportButton.vue'
-import SeasonBar from './SeasonBar.vue'
+import YearBar from './YearBar.vue'
 import TransportControls from './TransportControls.vue'
 
 defineEmits<{ help: []; newLife: [] }>()
@@ -37,7 +37,7 @@ const status = computed(() => {
           <button class="btn btn--sm" @click="$emit('newLife')">Новая жизнь</button>
         </div>
       </div>
-      <SeasonBar :progress="store.progress" />
+      <YearBar :progress="store.progress" />
     </div>
     <div class="top__status" :class="{ 'top__status--stop': store.hasDecision || g.stopped }" aria-live="polite">{{ status }}</div>
   </header>

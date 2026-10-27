@@ -1,4 +1,4 @@
-import type { Focus, GameState, SectorId, Season } from './types'
+import type { Focus, GameState, Phase, SectorId } from './types'
 import { hash32, seeded } from './random'
 import { ATMOSPHERE_LEVEL } from './constants'
 
@@ -6,7 +6,6 @@ interface AmbientLine {
   title: string
   text: string
   age?: [number, number]
-  season?: Season
   focus?: Focus
   sector?: SectorId
   /** Достаток семьи, включительно. */
@@ -27,15 +26,15 @@ const lines: AmbientLine[] = [
   { weird: 2, age: [16, 100], title: 'Ночь', text: 'Ночью свет в коридоре гаснет на мгновение. Все лампы разом. И так же разом загораются снова.' },
   { weird: 2, age: [16, 100], title: 'Ночь', text: 'Ты находишь в кармане сложенный листок без почерка. На нём одна цифра: 8421.' },
   { weird: 2, age: [16, 100], title: 'Сон', text: 'Тебе снится, что корабль считает людей, и на тебе он сбивается и начинает заново.' },
-  // — любой возраст, по сезонам корабельного календаря —
-  { season: 0, title: 'Зима', text: 'В биокуполах «зима»: свет приглушён, стекло запотевает, а в коридорах пахнет влажной землёй.' },
-  { season: 0, title: 'Зима', text: 'Календарь корабля объявляет начало зимы. Праздничные гирлянды достают из кладовых раньше срока.' },
-  { season: 1, title: 'Весна', text: 'В садах включают весеннее освещение. Дети толпятся у теплиц и ждут первых цветов.' },
-  { season: 1, title: 'Весна', text: 'На общественной доске появляется список желающих посадить что-нибудь своё. Очередь уже на два месяца вперёд.' },
-  { season: 2, title: 'Лето', text: 'Лето на корабле — это просто яркий свет и длинные вечера в атриуме. Но все делают вид, что жарко.' },
-  { season: 2, title: 'Лето', text: 'В атриуме ставят скамьи под искусственное «солнце». Взрослые спорят, чья очередь на лучшие места.' },
-  { season: 3, title: 'Осень', text: 'Урожай с верхних грядок собран. В столовых несколько дней подряд подают что-то свежее.' },
-  { season: 3, title: 'Осень', text: 'Свет в куполах медленно меняет цвет. Старожилы говорят, что так выглядело «время года» на Земле.' },
+  // — любой возраст —
+  { title: 'Биокупол', text: 'В биокуполах приглушают свет: идёт плановый цикл освещения. Стекло запотевает, а в коридорах пахнет влажной землёй.' },
+  { title: 'Атриум', text: 'Совет корабля переносит праздничные гирлянды из кладовых в атриум: скоро очередной праздник.' },
+  { title: 'Сад', text: 'В садах включают усиленное освещение. Дети толпятся у теплиц и ждут первых цветов.' },
+  { title: 'Сад', text: 'На общественной доске появляется список желающих посадить что-нибудь своё. Очередь уже на два месяца вперёд.' },
+  { title: 'Атриум', text: 'В атриуме ставят скамьи под ровный тёплый свет. Взрослые спорят, чья очередь на лучшие места.' },
+  { title: 'Сектор', text: 'Вечерний цикл в этом секторе короче обычного. В коридорах оживлённо, как в долгий выходной.' },
+  { title: 'Столовая', text: 'Урожай с верхних грядок собран. В столовых несколько дней подряд подают что-то свежее.' },
+  { title: 'Биокупол', text: 'Свет в куполах медленно меняет цвет. Старожилы говорят, что так выглядело небо на Земле.' },
   { title: 'Объявление', text: 'По громкой связи напоминают: вечерний цикл начнётся на двадцать минут раньше обычного.' },
   { title: 'Объявление', text: 'Из динамиков коридора звучит гимн отправления. Дети подпевают невпопад.' },
   { title: 'Корабль', text: 'Где-то за стеной гулко щёлкнули клапаны. На секунду все в коридоре замирают, а потом продолжают разговор.' },
@@ -88,10 +87,9 @@ const lines: AmbientLine[] = [
   { age: [60, 99], title: 'Коридоры', text: 'Молодёжь здоровается с тобой вежливее, чем раньше. Это одновременно приятно и странно.' }
 ]
 
-function matches(g: GameState, line: AmbientLine, season: Season) {
+function matches(g: GameState, line: AmbientLine) {
   if (line.weird && ATMOSPHERE_LEVEL[g.atmosphere] < line.weird) return false
   if (line.age && (g.age < line.age[0] || g.age > line.age[1])) return false
-  if (line.season !== undefined && line.season !== season) return false
   if (line.focus && line.focus !== g.focus) return false
   if (line.sector && line.sector !== g.birth.sectorId) return false
   if (line.wealth && (g.birth.wealth < line.wealth[0] || g.birth.wealth > line.wealth[1])) return false
@@ -101,15 +99,15 @@ function matches(g: GameState, line: AmbientLine, season: Season) {
 }
 
 /**
- * Фоновая строка для сезона. Выбирается чистым хэшем (seed + возраст + сезон), чтобы не расходовать
+ * Фоновая строка для отметки года. Выбирается чистым хэшем (seed + возраст + фаза), чтобы не расходовать
  * RNG симуляции и не менять её ход. Тематические строки (по возрасту, работе, сектору) имеют приоритет.
  */
-export function ambientLine(g: GameState, season: Season): { title: string; text: string } {
-  const eligible = lines.filter(l => matches(g, l, season))
+export function ambientLine(g: GameState, phase: Phase): { title: string; text: string } {
+  const eligible = lines.filter(l => matches(g, l))
   const specific = eligible.filter(l => l.age || l.focus || l.sector || l.wealth || l.job)
   const generic = eligible.filter(l => !specific.includes(l))
-  const rand = seeded(hash32(g.seed, g.age, season))
-  const pool = season % 2 === 1 && generic.length ? generic : (specific.length ? specific : generic)
+  const rand = seeded(hash32(g.seed, g.age, phase))
+  const pool = phase % 2 === 1 && generic.length ? generic : (specific.length ? specific : generic)
   const line = pool[Math.floor(rand() * pool.length)] ?? lines[0]!
   return { title: line.title, text: line.text }
 }

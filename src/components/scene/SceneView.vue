@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { resolveText } from '../../domain/engine'
-import { SEASON_NAMES } from '../../domain/clock'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
 import { spotLabels } from '../../ui/format'
@@ -24,7 +23,6 @@ const model = computed<SceneModel>(() => {
     age: g.value.age,
     wealth: g.value.birth.wealth,
     sectorId: g.value.birth.sectorId,
-    season: g.value.season,
     progress: store.progress,
     companion,
     spot: store.currentMoment?.spot ?? null
@@ -41,7 +39,7 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
     <div class="scene__stage">
     <SceneCanvas :model="model" />
     <div class="scene__hud">
-      <span class="scene__tag">{{ place }} · <b>{{ SEASON_NAMES[g.season].toLowerCase() }}</b></span>
+      <span class="scene__tag">{{ place }}</span>
       <span class="scene__tag scene__attn" title="Внимание: сколько моментов можно принять в этом году">
         внимание
         <i v-for="n in 3" :key="n" :class="{ used: n > g.attention }" />
@@ -50,7 +48,7 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
     <Transition name="moment">
       <MomentPopup
         v-if="moment && !store.blocked"
-        :key="moment.id + g.age + g.season"
+        :key="moment.id + g.age + g.phase"
         :title="moment.title"
         :text="resolveText(g, moment.text)"
         :where="spotLabels[moment.spot]"

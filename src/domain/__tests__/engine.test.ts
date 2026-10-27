@@ -22,7 +22,7 @@ function simulate(seed: number, choices: number[] = [], max = 115) {
 function untilMoment(seed: number): GameState {
   let g = createGame(seed)
   for (let i = 0; i < 600 && !g.moment && !g.stopped; i++) {
-    g = g.pending ? decide(g, 0) : g.season < 3 ? beat(g) : tick(g)
+    g = g.pending ? decide(g, 0) : g.phase < 3 ? beat(g) : tick(g)
   }
   return g
 }
@@ -117,13 +117,13 @@ describe('рождение', () => {
   })
 })
 
-describe('сезоны и моменты', () => {
-  it('год состоит из четырёх отметок и не выходит за сезон 3', () => {
+describe('отметки года и моменты', () => {
+  it('год состоит из четырёх отметок и не выходит за отметку 3', () => {
     let g = createGame(5)
-    expect(g.season).toBe(0)
+    expect(g.phase).toBe(0)
     for (let i = 0; i < 5; i++) g = beat(g)
-    expect(g.season).toBe(3)
-    expect(tick(g).season).toBe(0)
+    expect(g.phase).toBe(3)
+    expect(tick(g).phase).toBe(0)
   })
   it('внимание ограничено, момент можно принять один раз', () => {
     const g = untilMoment(3)
@@ -149,7 +149,7 @@ describe('сезоны и моменты', () => {
     for (let seed = 1; seed <= 40; seed++) {
       let g = createGame(seed)
       for (let i = 0; i < 400 && !g.stopped; i++) {
-        g = g.pending ? decide(g, 0) : g.season < 3 ? beat(g) : tick(g)
+        g = g.pending ? decide(g, 0) : g.phase < 3 ? beat(g) : tick(g)
         const def = getMomentDef(g.moment)
         if (def) {
           expect(g.age).toBeGreaterThanOrEqual(def.min)
@@ -182,7 +182,7 @@ describe('возраст героя', () => {
     for (let seed = 1; seed <= 80; seed++) {
       let g = createGame(seed)
       for (let i = 0; i < 40 && !g.stopped && g.age < 6; i++) {
-        g = g.pending ? decide(g, 0) : g.season < 3 ? beat(g) : tick(g)
+        g = g.pending ? decide(g, 0) : g.phase < 3 ? beat(g) : tick(g)
         const def = getMomentDef(g.moment)
         for (const id of def?.needs ?? []) expect(isKnown(g, id)).toBe(true)
         expect(g.pending === 'curfew-night' || g.pending === 'school-play').toBe(false)
@@ -205,7 +205,7 @@ describe('возраст героя', () => {
       let g = createGame(seed)
       while (!g.stopped && g.age < 45) {
         if (g.pending) { g = decide(g, 0); continue }
-        while (g.season < 3 && !g.pending) {
+        while (g.phase < 3 && !g.pending) {
           g = beat(g)
           if (g.moment) g = takeMoment(g)
         }

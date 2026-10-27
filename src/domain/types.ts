@@ -6,7 +6,7 @@ export type ShipStat = 'air' | 'food' | 'cohesion' | 'hull'
 export type Skill = 'engineering' | 'medicine' | 'ecology' | 'social'
 export type LogKind = 'life' | 'ship' | 'choice' | 'moment' | 'memory' | 'notice' | 'ambient'
 export type Job = 'Ученик' | 'Техник' | 'Медик' | 'Агроном' | 'Координатор' | 'Без специальности'
-export type Season = 0 | 1 | 2 | 3
+export type Phase = 0 | 1 | 2 | 3
 /** Атмосфера жизни: спокойная НФ, НФ с тайнами или тревожная НФ с жутковатыми сценами (без насилия). */
 export type Atmosphere = 'calm' | 'mystery' | 'uncanny'
 export type Wealth = 1 | 2 | 3 | 4 | 5
@@ -142,8 +142,8 @@ export interface GameState {
   rng: number
   age: number
   shipYear: number
-  /** Сколько «сезонных» отметок года уже прошло (0–3). */
-  season: Season
+  /** Сколько отметок года уже прошло (0–3): год делится на четыре равные части. */
+  phase: Phase
   /** Свободное внимание на текущий год. */
   attention: number
   /** id активного момента или null. */

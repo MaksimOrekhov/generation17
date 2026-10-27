@@ -34,6 +34,10 @@ function loadSaved(): Saved | null {
     const g = saved?.game
     if (g?.schemaVersion !== 2 || !Array.isArray(g.history) || typeof g.rng !== 'number' || !g.stats || !g.ship || !g.birth) return null
     if (!Array.isArray(g.forks)) g.forks = []
+    // раньше отметка года называлась season
+    const legacy = g as unknown as { season?: number }
+    if (typeof g.phase !== 'number') g.phase = (legacy.season ?? 0) as GameState['phase']
+    delete legacy.season
     if (!g.atmosphere) g.atmosphere = 'mystery'
     if (!g.director) g.director = { lastAge: g.age, tension: 0, lastCategory: null, lastTone: 'calm' }
     if (!LIFE_PRESETS.some(p => p.minutes === saved.preset)) saved.preset = DEFAULT_PRESET
@@ -55,8 +59,8 @@ export const useGameStore = defineStore('game', () => {
   const preset = ref<LifePreset>(saved?.preset ?? DEFAULT_PRESET)
   const speed = ref(1)
   const playing = ref(false)
-  /** Доля текущего года (0…1). После перезагрузки восстанавливается до последней отметки сезона. */
-  const progress = ref(beatAt(game.value.season))
+  /** Доля текущего года (0…1). После перезагрузки восстанавливается до последней отметки года. */
+  const progress = ref(beatAt(game.value.phase))
   const filter = ref<LogFilter>('all')
   /** Записи хроники, появившиеся от последнего решения: показываются перед продолжением. */
   const result = ref<LogEntry[] | null>(null)
@@ -69,8 +73,8 @@ export const useGameStore = defineStore('game', () => {
   const hasDecision = computed(() => !!game.value.pending)
   const currentEvent = computed(() => getStorylet(game.value))
   const currentMoment = computed(() => getMoment(game.value))
-  /** Сколько осталось у момента, 1 → 0. Момент живёт до следующей отметки сезона. */
-  const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.season / 4) * 4)))
+  /** Сколько осталось у момента, 1 → 0. Момент живёт до следующей отметки года. */
+  const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.phase / 4) * 4)))
   const remaining = computed(() => Math.max(0, 340 - game.value.shipYear))
   const finalText = computed(() => epitaph(game.value))
   const blocked = computed(() => hasDecision.value || game.value.stopped || !!result.value)

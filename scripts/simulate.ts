@@ -19,7 +19,7 @@ function quantile(values: number[], p: number) {
 
 /** Один год по сезонам. Стратегия «moments» принимает каждый момент, пока хватает внимания. */
 function playYear(g: GameState, acceptMoments: boolean) {
-  while (!g.stopped && !g.pending && g.season < 3) {
+  while (!g.stopped && !g.pending && g.phase < 3) {
     g = beat(g)
     if (acceptMoments && g.moment) g = takeMoment(g)
   }

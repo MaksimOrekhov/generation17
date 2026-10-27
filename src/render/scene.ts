@@ -1,4 +1,4 @@
-import type { Season, SectorId, SpotId } from '../domain/types'
+import type { SectorId, SpotId } from '../domain/types'
 import type { Ctx } from './draw'
 import { cabinScene } from './cabin'
 
@@ -11,8 +11,7 @@ export interface SceneModel {
   age: number
   wealth: number
   sectorId: SectorId
-  season: Season
-  /** Доля текущего года, 0…1 — для плавной смены света. */
+  /** Доля текущего года, 0…1. */
   progress: number
   companion: { name: string; age: number; kind: 'parent' | 'partner' } | null
   /** Объект, который сейчас подсвечивается (активный момент). */

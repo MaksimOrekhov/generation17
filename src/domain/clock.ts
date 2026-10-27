@@ -10,7 +10,6 @@ export const LIFE_PRESETS = [
 export type LifePreset = typeof LIFE_PRESETS[number]['minutes']
 export const DEFAULT_PRESET: LifePreset = 60
 export const SPEEDS = [.5, 1, 2, 4, 8, 16] as const
-export const SEASON_NAMES = ['Зима', 'Весна', 'Лето', 'Осень'] as const
 
 export const secondsPerYearFor = (preset: LifePreset) => LIFE_PRESETS.find(p => p.minutes === preset)!.secondsPerYear
 
@@ -20,12 +19,12 @@ export interface ClockResult {
   progress: number
 }
 
-/** Когда в году срабатывает отметка сезона `season` (1…3). */
-export const beatAt = (season: number) => season / 4
+/** Когда в году срабатывает отметка фазы `phase` (1…3): год делится на четыре равные части. */
+export const beatAt = (phase: number) => phase / 4
 
 /**
- * Чистая логика хода времени. Переводит секунды в долю года и вызывает отметки сезонов и смену года
- * строго по очереди, поэтому ни один сезон и ни одно решение не пропускаются на любой скорости.
+ * Чистая логика хода времени. Переводит секунды в долю года и вызывает отметки года и его смену
+ * строго по очереди, поэтому ни одна отметка и ни одно решение не пропускаются на любой скорости.
  * Пока ждёт решение или жизнь окончена, время не идёт.
  * Пока открыт момент, скорость не превышает 1×, чтобы его можно было заметить и прочитать.
  */
@@ -36,7 +35,7 @@ export function runClock(game: GameState, progress: number, dtSeconds: number, s
   let g = game
   for (let guard = 0; guard < 16; guard++) {
     if (g.stopped || g.pending) return { game: g, progress: Math.min(p, 1) }
-    if (g.season < 3 && p >= beatAt(g.season + 1)) {
+    if (g.phase < 3 && p >= beatAt(g.phase + 1)) {
       g = beat(g)
       continue
     }

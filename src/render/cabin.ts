@@ -15,9 +15,6 @@ const LAMP = { x: 378, y: 160 }
 const WALLS: Record<SectorId, string> = {
   atrium: '#201d36', bio: '#1a2824', engineering: '#262029', clinic: '#1b2832', lower: '#221b28'
 }
-const TINTS = [
-  { c: '#4a6ab0', a: .1 }, { c: '#5fb070', a: .06 }, { c: '#ffb347', a: .09 }, { c: '#c4602a', a: .1 }
-]
 
 /** Подсвечиваемые области для моментов. Для окна — круг, для остальных — прямоугольник. */
 const SPOTS: Record<SpotId, { x: number; y: number; w: number; h: number } | { cx: number; cy: number; r: number }> = {
@@ -295,23 +292,21 @@ function drawTerminal(ctx: Ctx, t: number) {
   rect(ctx, 350, 128, 3 + (f % 3) * 3, 3, '#ffb347')
 }
 
-function drawPlant(ctx: Ctx, t: number, season: number) {
+function drawPlant(ctx: Ctx, t: number) {
   rect(ctx, 454, 186, 22, 28, '#3a2a20')
   rect(ctx, 454, 186, 22, 3, '#5a4630')
   rect(ctx, 456, 211, 18, 3, '#000000', .3)
   const sway = Math.sin(t * 1.2) > .3 ? 1 : 0
-  const leaf = season === 3 ? '#b8903a' : season === 0 ? '#3d6a4a' : '#4f9a5a'
-  const bright = season === 3 ? '#d6a94a' : '#6fbf7a'
+  const leaf = '#4f9a5a'
+  const bright = '#6fbf7a'
   rect(ctx, 463 + sway, 140, 4, 46, '#3d7a4a')
   rect(ctx, 452 + sway, 150, 12, 5, leaf)
   rect(ctx, 467 + sway, 144, 12, 5, leaf)
   rect(ctx, 456 + sway, 134, 9, 5, bright)
   rect(ctx, 468 + sway, 160, 10, 5, leaf)
   rect(ctx, 450 + sway, 168, 10, 5, leaf)
-  if (season === 1 || season === 2) {
-    disc(ctx, 458 + sway, 132, 3, season === 1 ? '#f2a0c0' : '#ffd24a')
-    disc(ctx, 474 + sway, 142, 3, season === 1 ? '#ffffff' : '#ff9a4a')
-  }
+  disc(ctx, 458 + sway, 132, 3, '#f2a0c0')
+  disc(ctx, 474 + sway, 142, 3, '#ffffff')
 }
 
 function drawHighlight(ctx: Ctx, spot: SpotId, t: number) {
@@ -417,7 +412,7 @@ export const cabinScene: SceneRenderer = {
     ctx.drawImage(getStatic(m.sectorId, m.wealth), 0, 0)
     drawStars(ctx, t)
     drawTerminal(ctx, t)
-    drawPlant(ctx, t, m.season)
+    drawPlant(ctx, t)
     drawPeople(ctx, t, m)
 
     const flick = .9 + Math.sin(t * 8) * .03 + Math.sin(t * 21) * .015
@@ -432,8 +427,6 @@ export const cabinScene: SceneRenderer = {
     }
     if (m.spot) drawHighlight(ctx, m.spot, t)
 
-    const tint = TINTS[m.season]!
-    rect(ctx, 0, 0, W, H, tint.c, tint.a)
     // виньетка
     rect(ctx, 0, 0, W, 6, '#000000', .35)
     rect(ctx, 0, H - 8, W, 8, '#000000', .35)

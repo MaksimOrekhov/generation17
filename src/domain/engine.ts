@@ -1,4 +1,4 @@
-import type { Atmosphere, Effects, Focus, GameState, Job, LogKind, MomentDef, Season, ShipStat, Skill, Stat, Storylet } from './types'
+import type { Atmosphere, Effects, Focus, GameState, Job, LogKind, MomentDef, Phase, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
@@ -34,7 +34,7 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
     rng: seed >>> 0,
     age: 0,
     shipYear: 190,
-    season: 0,
+    phase: 0,
     attention: ATTENTION_PER_YEAR,
     moment: null,
     momentLog: {},
@@ -239,15 +239,15 @@ export function skipMoment(state: GameState): GameState {
 // ───────────────────────── ход года ─────────────────────────
 
 /**
- * Отметка сезона (после неё осталось на 1/4 года меньше). Выдаёт фоновую строку и, возможно, момент.
+ * Отметка года (после неё осталось на четверть года меньше). Выдаёт фоновую строку и, возможно, момент.
  * Прошлый неиспользованный момент считается пропущенным.
  */
 export function beat(state: GameState): GameState {
-  if (state.stopped || state.pending || state.season >= 3) return state
+  if (state.stopped || state.pending || state.phase >= 3) return state
   const g = structuredClone(state)
   closeMoment(g, getMoment(g))
-  g.season = (g.season + 1) as Season
-  const line = ambientLine(g, g.season)
+  g.phase = (g.phase + 1) as Phase
+  const line = ambientLine(g, g.phase)
   addLog(g, 'ambient', line.title, line.text)
   // после тяжёлого события тихие моменты приходят чаще
   if (g.attention > 0 && chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0))) {
@@ -264,7 +264,7 @@ export function beat(state: GameState): GameState {
 /** Проживает остаток текущего года (моменты пропускаются) и начинает следующий. */
 export function advanceYear(state: GameState): GameState {
   let g = state
-  while (!g.stopped && !g.pending && g.season < 3) g = beat(g)
+  while (!g.stopped && !g.pending && g.phase < 3) g = beat(g)
   return tick(g)
 }
 
@@ -384,7 +384,7 @@ export function tick(state: GameState): GameState {
   g.moodByAge[g.age] = Math.round(g.stats.morale)
   g.age += 1
   g.shipYear += 1
-  g.season = 0
+  g.phase = 0
   g.attention = ATTENTION_PER_YEAR
   g.moment = null
   g.director = cool(g.director)

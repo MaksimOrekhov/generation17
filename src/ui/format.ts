@@ -49,5 +49,3 @@ export const logKindLabels: Record<LogKind, string> = {
 export const spotLabels: Record<SpotId, string> = {
   window: 'У обзорного стекла', door: 'У двери', terminal: 'У терминала', parent: 'Рядом с близким', table: 'За столом', plant: 'У растения'
 }
-
-export const sceneSeasonNames = ['зима', 'весна', 'лето', 'осень'] as const

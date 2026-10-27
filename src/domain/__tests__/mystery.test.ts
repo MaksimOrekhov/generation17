@@ -28,7 +28,7 @@ function lifeLog(seed: number, atmosphere: Atmosphere) {
     if (g.pending) {
       seen.push(g.pending)
       g = decide(g, 0)
-    } else if (g.season < 3) {
+    } else if (g.phase < 3) {
       g = beat(g)
       if (g.moment) momentsSeen.add(g.moment)
     } else g = tick(g)

@@ -16,7 +16,7 @@ describe('ход времени', () => {
   it('49 секунд на год при 1×', () => {
     expect(SPY).toBe(49)
     const { game, progress } = runClock(createGame(8), 0, 24.5, 1, SPY)
-    expect(game.season).toBeGreaterThanOrEqual(1)
+    expect(game.phase).toBeGreaterThanOrEqual(1)
     expect(progress).toBeCloseTo(.5, 5)
   })
   it('на паузе (ожидание решения) возраст, год и RNG не меняются', () => {

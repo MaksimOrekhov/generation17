@@ -21,4 +21,11 @@ defineProps<{ title: string; aside?: string }>()
 .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border-bottom: 2px solid var(--line); min-height: 34px; }
 .panel__title { font: 500 11px/1.2 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
 .panel__aside { font: 500 11px/1.2 var(--font-mono); letter-spacing: .6px; color: var(--amber); text-align: right; overflow-wrap: anywhere; }
+
+.panel { border: 1px solid var(--line); background: rgba(22, 29, 41, .88); }
+.panel::before, .panel::after { display: none; }
+.panel__head { min-height: 44px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.panel__title { color: var(--text-soft); font-size: 11px; letter-spacing: 1.15px; }
+.panel__aside { color: var(--muted); font-size: 11px; }
+
 </style>

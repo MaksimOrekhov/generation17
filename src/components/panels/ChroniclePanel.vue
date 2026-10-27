@@ -63,4 +63,16 @@ watch(() => store.game.seed, () => { limit.value = PAGE })
 .entry--ambient .entry__age { color: var(--faint); font-size: 13px; }
 .chron__empty { padding: 16px 12px; color: var(--muted); }
 .chron__more { margin: 10px 12px 12px; }
+
+.chron__filters { gap: 5px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.chron__list { max-height: 560px; }
+.entry { grid-template-columns: 42px minmax(0, 1fr); gap: 14px; padding: 15px 16px; border-bottom-color: #293443; }
+.entry__title { font-size: 14px; }
+.entry__text { margin-top: 5px; font-size: 14px; line-height: 1.55; }
+.entry--ambient { padding-block: 12px; }
+.entry--ambient .entry__title { font-size: 13px; }
+.entry--ambient .entry__text { color: var(--text-soft); font-size: 14px; font-style: normal; }
+.entry--ambient .entry__age { color: var(--muted); }
+.entry--memory { background: #222a35; }
+
 </style>

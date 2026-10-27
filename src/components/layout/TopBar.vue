@@ -69,4 +69,19 @@ const status = computed(() => {
   .top__meta span:last-child { display: none; }
   .top__status { padding: 0 12px 4px; font-size: 10px; }
 }
+
+.top { background: rgba(12, 16, 24, .96); border-bottom: 1px solid var(--line); }
+.top__inner, .top__status { max-width: 1500px; }
+.top__inner { padding: 14px 20px 10px; gap: 11px; }
+.top__row { gap: 12px 18px; }
+.top__brand { font-size: 21px; }
+.top__age { color: var(--text); }
+.top__meta { color: var(--muted); }
+.top__status { padding: 0 20px 8px; color: var(--muted); }
+@media (max-width: 720px) {
+  .top { position: relative; }
+  .top__inner { padding: 12px; }
+  .top__status { padding: 0 12px 8px; }
+}
+
 </style>

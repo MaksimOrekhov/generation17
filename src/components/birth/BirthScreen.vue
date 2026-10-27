@@ -83,4 +83,13 @@ const atmospheres: { id: Atmosphere; name: string; text: string }[] = [
 .birth__seed { text-align: center; font: 400 11px var(--font-mono); color: var(--faint); letter-spacing: 1px; }
 @keyframes show { from { opacity: 0; transform: translateY(14px); } }
 @media (max-width: 560px) { .birth__presets { grid-template-columns: minmax(0, 1fr); } }
+
+.birth { max-width: 920px; gap: 20px; padding-top: 36px; }
+.birth__head { gap: 10px; padding-bottom: 12px; }
+.birth__brand { font-size: 28px; }
+.birth__reveal { gap: 20px; }
+.birth__preset { padding: 14px; border-width: 1px; }
+.birth__preset span, .birth__note { font-size: 13px; }
+.birth__go { padding: 17px; }
+
 </style>

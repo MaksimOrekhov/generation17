@@ -47,4 +47,9 @@ const options: { id: Focus; name: string; kid: string; effect: string }[] = [
 .focus__item[aria-pressed='true'] span { color: #e8b66d; }
 .focus__item:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 @media (max-width: 560px) { .focus { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.focus__item { min-height: 58px; }
+.focus__item strong { font-size: 14px; }
+.focus__item[aria-pressed='true'] { border-color: var(--amber); background: var(--amber-dim); }
+
 </style>

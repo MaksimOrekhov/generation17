@@ -29,4 +29,14 @@ const label = (s: number) => `${s === .5 ? '0.5' : s}×`
   .transport__speeds { flex-wrap: nowrap; }
   .transport__play { min-width: 92px; }
 }
+
+.transport { gap: 6px; }
+.transport__speeds { padding: 3px; gap: 2px; background: var(--bg-2); border: 1px solid var(--line); }
+.transport__speeds .btn { min-width: 38px; box-shadow: none; border-color: transparent; background: transparent; }
+.transport__speeds .btn[aria-pressed='true'] { background: var(--amber); border-color: var(--amber); }
+@media (max-width: 720px) {
+  .transport { flex-wrap: wrap; overflow: visible; }
+  .transport__speeds { flex-wrap: wrap; }
+}
+
 </style>

@@ -5,7 +5,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -13,7 +13,7 @@ html, body {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(1200px 520px at 50% -10%, #2a1d3d55, transparent 70%),
+    radial-gradient(1100px 600px at 50% -10%, #384a5a55, transparent 70%),
     var(--bg);
 }
 
@@ -41,7 +41,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn:hover:not(:disabled) { border-color: var(--line-2); background: var(--panel-2); }
 .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #0a0812; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
-.btn--sm { padding: 4px 9px; font-size: 12px; }
+.btn--sm { padding: 4px 9px; font-size: 13px; }
 .btn--on, .btn[aria-pressed='true'] { background: var(--amber); color: var(--amber-ink); border-color: #ffd08a; font-weight: 600; }
 .btn--accent { background: var(--amber-dim); border-color: var(--amber-2); color: #ffd9a0; }
 .btn--accent:hover:not(:disabled) { background: #6e4716; border-color: var(--amber); }

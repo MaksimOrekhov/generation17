@@ -1,22 +1,22 @@
 :root {
   /* поверхности */
-  --bg: #0e0c17;
-  --bg-2: #13111f;
-  --panel: #181527;
-  --panel-2: #211d33;
-  --line: #322c4d;
-  --line-2: #463e6b;
+  --bg: #0c1018;
+  --bg-2: #111722;
+  --panel: #161d29;
+  --panel-2: #202938;
+  --line: #303b4b;
+  --line-2: #536174;
 
   /* текст */
-  --text: #efe6d2;
-  --text-soft: #cfc3ab;
-  --muted: #a39ab8;
-  --faint: #7a7194;
+  --text: #f4ecdc;
+  --text-soft: #ded6c8;
+  --muted: #b5b9c1;
+  --faint: #959eaa;
 
   /* акцент и состояния */
-  --amber: #ffb347;
-  --amber-2: #d98a1f;
-  --amber-dim: #5a3a12;
+  --amber: #edb56c;
+  --amber-2: #a87539;
+  --amber-dim: #533e29;
   --amber-ink: #20140a;
   --good: #8bc58a;
   --bad: #e2705f;

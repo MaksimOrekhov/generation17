@@ -101,4 +101,16 @@ function repeat() {
   .game__col--center, .game__col--left, .game__col--right { grid-column: 1; grid-row: auto; }
   .game__col--center { order: -1; }
 }
+
+/* The scene and chronicle form the reading column; the other columns are supporting context. */
+.game__layout { max-width: 1500px; grid-template-columns: 270px minmax(0, 1fr) 300px; gap: 20px; padding: 24px 20px; }
+.game__col { gap: 18px; }
+.game__foot { max-width: 1500px; padding-inline: 20px; color: var(--muted); }
+@media (max-width: 1180px) {
+  .game__layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; }
+}
+@media (max-width: 820px) {
+  .game__layout { grid-template-columns: minmax(0, 1fr); padding: 16px 12px; }
+}
+
 </style>

@@ -1,0 +1,72 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 520px at 50% -10%, #2a1d3d55, transparent 70%),
+    var(--bg);
+}
+
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+canvas { display: block; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--line-2); border: 2px solid var(--bg-2); }
+
+/* ───── кнопки ───── */
+.btn {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  padding: 6px 12px;
+  font-size: 13px;
+  line-height: 1.2;
+  box-shadow: var(--shadow-key);
+  transition: background .12s, border-color .12s, transform .06s;
+}
+.btn:hover:not(:disabled) { border-color: var(--line-2); background: var(--panel-2); }
+.btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #0a0812; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn--sm { padding: 4px 9px; font-size: 12px; }
+.btn--on, .btn[aria-pressed='true'] { background: var(--amber); color: var(--amber-ink); border-color: #ffd08a; font-weight: 600; }
+.btn--accent { background: var(--amber-dim); border-color: var(--amber-2); color: #ffd9a0; }
+.btn--accent:hover:not(:disabled) { background: #6e4716; border-color: var(--amber); }
+.btn--primary {
+  background: var(--amber);
+  color: var(--amber-ink);
+  border-color: #ffd08a;
+  font-weight: 600;
+  box-shadow: 0 3px 0 var(--amber-2);
+}
+.btn--primary:hover:not(:disabled) { background: #ffc468; border-color: #ffe3b3; }
+.btn--primary:active:not(:disabled) { box-shadow: 0 1px 0 var(--amber-2); }
+.btn--ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--muted); }
+.btn--ghost:hover:not(:disabled) { color: var(--text); background: var(--panel); border-color: var(--line); }
+
+.label-caps {
+  font: 500 11px/1.2 var(--font-mono);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* текстовые блоки не должны выталкивать колонки */
+.wrap { overflow-wrap: anywhere; min-width: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

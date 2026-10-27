@@ -1,0 +1,207 @@
+import { defineStore } from 'pinia'
+import { computed, ref, shallowRef, watch } from 'vue'
+import { advanceYear, createGame, decide, epitaph, getMoment, getStorylet, setFocus, skipMoment, takeMoment } from '../domain/engine'
+import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
+import type { LifePreset } from '../domain/clock'
+import { randomSeed } from '../domain/random'
+import type { Atmosphere, Focus, GameState, LogEntry, LogKind } from '../domain/types'
+
+const STORAGE_KEY = 'generation17-v2'
+const MAX_JUMP_YEARS = 120
+
+interface Saved {
+  game: GameState
+  started: boolean
+  preset: LifePreset
+  playedSeconds?: number
+}
+
+const HINTS_KEY = 'generation17-hints'
+
+function loadHints(): Record<string, boolean> {
+  try {
+    return JSON.parse(localStorage.getItem(HINTS_KEY) ?? '{}') as Record<string, boolean>
+  } catch {
+    return {}
+  }
+}
+
+function loadSaved(): Saved | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const saved = JSON.parse(raw) as Saved
+    const g = saved?.game
+    if (g?.schemaVersion !== 2 || !Array.isArray(g.history) || typeof g.rng !== 'number' || !g.stats || !g.ship || !g.birth) return null
+    if (!Array.isArray(g.forks)) g.forks = []
+    if (!g.atmosphere) g.atmosphere = 'mystery'
+    if (!g.director) g.director = { lastAge: g.age, tension: 0, lastCategory: null, lastTone: 'calm' }
+    if (!LIFE_PRESETS.some(p => p.minutes === saved.preset)) saved.preset = DEFAULT_PRESET
+    return saved
+  } catch {
+    return null
+  }
+}
+
+export type LogFilter = 'all' | LogKind
+
+export const useGameStore = defineStore('game', () => {
+  const saved = loadSaved()
+  // Состояние иммутабельно: движок возвращает новый объект на каждый шаг. Поэтому shallowRef —
+  // реактивный прокси ломает structuredClone внутри движка.
+  const game = shallowRef<GameState>(saved?.game ?? createGame(randomSeed()))
+  /** false — показан экран рождения, жизнь ещё не началась. */
+  const started = ref(saved?.started ?? false)
+  const preset = ref<LifePreset>(saved?.preset ?? DEFAULT_PRESET)
+  const speed = ref(1)
+  const playing = ref(false)
+  /** Доля текущего года (0…1). После перезагрузки восстанавливается до последней отметки сезона. */
+  const progress = ref(beatAt(game.value.season))
+  const filter = ref<LogFilter>('all')
+  /** Записи хроники, появившиеся от последнего решения: показываются перед продолжением. */
+  const result = ref<LogEntry[] | null>(null)
+  const resumeAfter = ref(false)
+  /** Сколько реального времени игрок провёл в живой игре (для отчёта тестера). */
+  const playedSeconds = ref(saved?.playedSeconds ?? 0)
+  const hintsSeen = ref<Record<string, boolean>>(loadHints())
+
+  const secondsPerYear = computed(() => secondsPerYearFor(preset.value))
+  const hasDecision = computed(() => !!game.value.pending)
+  const currentEvent = computed(() => getStorylet(game.value))
+  const currentMoment = computed(() => getMoment(game.value))
+  /** Сколько осталось у момента, 1 → 0. Момент живёт до следующей отметки сезона. */
+  const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.season / 4) * 4)))
+  const remaining = computed(() => Math.max(0, 340 - game.value.shipYear))
+  const finalText = computed(() => epitaph(game.value))
+  const blocked = computed(() => hasDecision.value || game.value.stopped || !!result.value)
+  const latest = computed(() => filter.value === 'all'
+    ? game.value.history
+    : game.value.history.filter(h => h.kind === filter.value))
+
+  watch(game, () => persist())
+  watch([started, preset], () => persist())
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ game: game.value, started: started.value, preset: preset.value, playedSeconds: Math.round(playedSeconds.value) } satisfies Saved))
+    } catch {
+      // Хранилище может быть недоступно: игра продолжит работу в текущей вкладке
+    }
+  }
+
+  function settle() {
+    if (game.value.pending || game.value.stopped) {
+      resumeAfter.value = playing.value && !!game.value.pending
+      playing.value = false
+    }
+  }
+
+  /** Вызывается каждый кадр. `dt` — секунды реального времени. */
+  function frame(dt: number) {
+    if (!started.value || !playing.value || blocked.value) return
+    playedSeconds.value += Math.min(dt, .1)
+    const r = runClock(game.value, progress.value, Math.min(dt, .1), speed.value, secondsPerYear.value)
+    progress.value = r.progress
+    if (r.game !== game.value) game.value = r.game
+    settle()
+  }
+
+  function step() {
+    if (blocked.value) return
+    game.value = advanceYear(game.value)
+    progress.value = 0
+    resumeAfter.value = false
+    settle()
+  }
+
+  function runToDecision() {
+    if (blocked.value) return
+    playing.value = false
+    for (let i = 0; i < MAX_JUMP_YEARS && !game.value.pending && !game.value.stopped; i++) {
+      game.value = advanceYear(game.value)
+    }
+    progress.value = 0
+    resumeAfter.value = false
+  }
+
+  function choose(index: number) {
+    if (!game.value.pending) return
+    seeHint('decision')
+    const before = game.value.nextLogId
+    game.value = decide(game.value, index)
+    result.value = game.value.history.filter(h => h.id >= before).reverse()
+  }
+
+  function continueAfterResult() {
+    result.value = null
+    if (resumeAfter.value && !game.value.stopped) playing.value = true
+    resumeAfter.value = false
+  }
+
+  function acceptMoment() {
+    game.value = takeMoment(game.value)
+  }
+
+  function dismissMoment() {
+    game.value = skipMoment(game.value)
+  }
+
+  function changeFocus(focus: Focus) {
+    game.value = setFocus(game.value, focus)
+  }
+
+  function changeSpeed(next: number) {
+    speed.value = next
+  }
+
+  function togglePlay() {
+    if (blocked.value) {
+      playing.value = false
+      return
+    }
+    playing.value = !playing.value
+  }
+
+  function begin() {
+    started.value = true
+    playing.value = true
+  }
+
+  function newLife(seed?: number) {
+    playing.value = false
+    resumeAfter.value = false
+    result.value = null
+    progress.value = 0
+    filter.value = 'all'
+    playedSeconds.value = 0
+    game.value = createGame(seed ?? randomSeed(), game.value.atmosphere)
+    started.value = false
+  }
+
+  /** Атмосферу выбирают на экране рождения, до начала жизни. */
+  function setAtmosphere(next: Atmosphere) {
+    if (started.value) return
+    game.value = { ...game.value, atmosphere: next }
+  }
+
+  function seeHint(id: string) {
+    if (hintsSeen.value[id]) return
+    hintsSeen.value = { ...hintsSeen.value, [id]: true }
+    try {
+      localStorage.setItem(HINTS_KEY, JSON.stringify(hintsSeen.value))
+    } catch {
+      // подсказки просто покажутся ещё раз
+    }
+  }
+
+  function setPreset(next: LifePreset) {
+    preset.value = next
+  }
+
+  return {
+    game, started, preset, playedSeconds, hintsSeen, speed, playing, progress, filter, result,
+    secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
+    frame, step, runToDecision, choose, continueAfterResult, acceptMoment, dismissMoment,
+    changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
+  }
+})

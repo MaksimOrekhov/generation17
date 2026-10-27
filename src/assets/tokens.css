@@ -1,0 +1,42 @@
+:root {
+  /* поверхности */
+  --bg: #0e0c17;
+  --bg-2: #13111f;
+  --panel: #181527;
+  --panel-2: #211d33;
+  --line: #322c4d;
+  --line-2: #463e6b;
+
+  /* текст */
+  --text: #efe6d2;
+  --text-soft: #cfc3ab;
+  --muted: #a39ab8;
+  --faint: #7a7194;
+
+  /* акцент и состояния */
+  --amber: #ffb347;
+  --amber-2: #d98a1f;
+  --amber-dim: #5a3a12;
+  --amber-ink: #20140a;
+  --good: #8bc58a;
+  --bad: #e2705f;
+  --cool: #7fb6d6;
+  --rose: #d68ab8;
+
+  /* бумажные документы */
+  --paper: #eadcc0;
+  --paper-2: #d9c8a4;
+  --paper-line: #b9a679;
+  --ink: #2a2236;
+  --ink-soft: #5a4d3a;
+
+  /* шрифты */
+  --font-ui: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Spectral', Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* ритм */
+  --gap: 16px;
+  --radius: 0;
+  --shadow-key: 0 3px 0 #0a0812;
+}

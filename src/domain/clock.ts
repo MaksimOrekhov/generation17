@@ -1,0 +1,51 @@
+import type { GameState } from './types'
+import { beat, tick } from './engine'
+
+/** Секунд на игровой год при скорости 1× для выбранной длины жизни (≈ 82 года). */
+export const LIFE_PRESETS = [
+  { minutes: 30, secondsPerYear: 22, label: 'Быстро' },
+  { minutes: 60, secondsPerYear: 49, label: 'Рекомендуем' },
+  { minutes: 90, secondsPerYear: 73, label: 'Неспешно' }
+] as const
+export type LifePreset = typeof LIFE_PRESETS[number]['minutes']
+export const DEFAULT_PRESET: LifePreset = 60
+export const SPEEDS = [.5, 1, 2, 4, 8, 16] as const
+export const SEASON_NAMES = ['Зима', 'Весна', 'Лето', 'Осень'] as const
+
+export const secondsPerYearFor = (preset: LifePreset) => LIFE_PRESETS.find(p => p.minutes === preset)!.secondsPerYear
+
+export interface ClockResult {
+  game: GameState
+  /** Доля текущего года, 0…1. */
+  progress: number
+}
+
+/** Когда в году срабатывает отметка сезона `season` (1…3). */
+export const beatAt = (season: number) => season / 4
+
+/**
+ * Чистая логика хода времени. Переводит секунды в долю года и вызывает отметки сезонов и смену года
+ * строго по очереди, поэтому ни один сезон и ни одно решение не пропускаются на любой скорости.
+ * Пока ждёт решение или жизнь окончена, время не идёт.
+ * Пока открыт момент, скорость не превышает 1×, чтобы его можно было заметить и прочитать.
+ */
+export function runClock(game: GameState, progress: number, dtSeconds: number, speed: number, secondsPerYear: number): ClockResult {
+  if (game.stopped || game.pending) return { game, progress }
+  const effective = game.moment ? Math.min(speed, 1) : speed
+  let p = progress + dtSeconds * effective / secondsPerYear
+  let g = game
+  for (let guard = 0; guard < 16; guard++) {
+    if (g.stopped || g.pending) return { game: g, progress: Math.min(p, 1) }
+    if (g.season < 3 && p >= beatAt(g.season + 1)) {
+      g = beat(g)
+      continue
+    }
+    if (p >= 1) {
+      p -= 1
+      g = tick(g)
+      continue
+    }
+    break
+  }
+  return { game: g, progress: p }
+}

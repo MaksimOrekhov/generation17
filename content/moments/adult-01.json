@@ -1,0 +1,286 @@
+[
+  {
+    "id": "m-adult-shift-reported",
+    "spot": "terminal",
+    "title": "Подпись в журнале",
+    "text": "В терминале открыта старая запись: рядом с исправленным номером стоит подпись старшей смены.",
+    "min": 25,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultShiftRecord": "reported"
+      },
+      "since": {
+        "adultShiftRecordAge": 3
+      }
+    },
+    "accept": {
+      "label": "Открыть запись",
+      "result": "Внизу приписка следующей бригады: «Проверка помогла найти два похожих номера в ведомости».",
+      "effects": {
+        "stats": {
+          "knowledge": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Закрыть журнал"
+    }
+  },
+  {
+    "id": "m-adult-parent-shared",
+    "spot": "parent",
+    "title": "Новый график",
+    "text": "{{parent}} раскладывает у стола расписание ухода и просит вернуть одну утреннюю прогулку.",
+    "min": 28,
+    "max": 80,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultParentCare": "sharedCare"
+      },
+      "since": {
+        "adultParentCareAge": 3
+      }
+    },
+    "accept": {
+      "label": "Передвинуть визит",
+      "result": "{{parent}} вписывает прогулку в пустую клетку. Врачебный визит теперь стоит после общей кухни.",
+      "effects": {
+        "stats": {
+          "bonds": 2,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Оставить лист на столе"
+    },
+    "needs": [
+      "parent"
+    ]
+  },
+  {
+    "id": "m-adult-parent-neighbor",
+    "spot": "parent",
+    "title": "Ключ у соседки",
+    "text": "{{parent}} у двери показывает запасной ключ: соседка возвращает его после дневного визита.",
+    "min": 28,
+    "max": 80,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultParentCare": "neighborCare"
+      },
+      "since": {
+        "adultParentCareAge": 3
+      }
+    },
+    "accept": {
+      "label": "Спросить о визите",
+      "result": "{{parent}} рассказывает, что соседка больше не приходит без звонка. Следующая встреча уже записана.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Повесить ключ на место"
+    },
+    "needs": [
+      "parent"
+    ]
+  },
+  {
+    "id": "m-adult-parent-clinic",
+    "spot": "parent",
+    "title": "Свободный день",
+    "text": "{{parent}} кладёт на стол график клиники. День общей кухни по-прежнему оставлен пустым.",
+    "min": 28,
+    "max": 80,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultParentCare": "clinicCare"
+      },
+      "since": {
+        "adultParentCareAge": 3
+      }
+    },
+    "accept": {
+      "label": "Сесть рядом",
+      "result": "{{parent}} просит прочитать мелкую строчку: сотрудник клиники теперь приходит в другое время.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Оставить график на столе"
+    },
+    "needs": [
+      "parent"
+    ]
+  },
+  {
+    "id": "m-adult-repair-lift",
+    "spot": "door",
+    "title": "Двери подъёмника",
+    "text": "У двери подъёмника висит записка ночной смены: кухня всё ещё ждёт своей очереди на ремонт.",
+    "min": 27,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultRepairVote": "liftFirst"
+      },
+      "since": {
+        "adultRepairVoteAge": 3
+      }
+    },
+    "accept": {
+      "label": "Прочитать записку",
+      "result": "Внизу добавлен новый срок работ. До него ужины будут раздавать в соседнем блоке.",
+      "effects": {
+        "stats": {
+          "knowledge": 1,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Идти на смену"
+    }
+  },
+  {
+    "id": "m-adult-family-applied",
+    "spot": "terminal",
+    "title": "Дата консультации",
+    "text": "На терминале письмо клиники: после консультации о родительстве предлагают повторную встречу.",
+    "min": 27,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultFamilyPlan": "applied"
+      },
+      "since": {
+        "adultFamilyPlanAge": 3
+      }
+    },
+    "accept": {
+      "label": "Ответить клинике",
+      "result": "Ты подтверждаешь дату. В ответ присылают памятку о свободных местах в детской комнате.",
+      "effects": {
+        "stats": {
+          "knowledge": 2,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Оставить письмо"
+    }
+  },
+  {
+    "id": "m-adult-family-declined",
+    "spot": "table",
+    "title": "За общим столом",
+    "text": "За столом соседка показывает рисунок из детской комнаты и спрашивает, можно ли повесить его у вас на кухне.",
+    "min": 27,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultFamilyPlan": "declined"
+      },
+      "since": {
+        "adultFamilyPlanAge": 3
+      }
+    },
+    "accept": {
+      "label": "Помочь найти место",
+      "result": "Вы закрепляете рисунок над столом. Соседка обещает принести новый, когда этот снимут.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Передать ленту соседке"
+    }
+  },
+  {
+    "id": "m-adult-family-deferred",
+    "spot": "terminal",
+    "title": "Черновик заявления",
+    "text": "На терминале остаётся черновик заявления о родительстве. Клиника сообщает: запись на разговор открыта снова.",
+    "min": 27,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultFamilyPlan": "deferred"
+      },
+      "since": {
+        "adultFamilyPlanAge": 3
+      }
+    },
+    "accept": {
+      "label": "Открыть черновик",
+      "result": "Старые вопросы остались без ответов. Ты сохраняешь заявление с новой датой, не отправляя его.",
+      "effects": {
+        "stats": {
+          "knowledge": 1,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Закрыть уведомление"
+    }
+  },
+  {
+    "id": "m-adult-move-applied",
+    "spot": "terminal",
+    "title": "Ответ по каюте",
+    "text": "На терминале приходит ответ на заявку о каюте у биокупола: место обещают предложить, когда оно освободится.",
+    "min": 26,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "adultMovePlan": "applied"
+      },
+      "since": {
+        "adultMovePlanAge": 3
+      }
+    },
+    "accept": {
+      "label": "Прочитать условия",
+      "result": "Дата переезда пока не назначена. Внизу письма — просьба заранее найти замену на кухонное дежурство.",
+      "effects": {
+        "stats": {
+          "knowledge": 2,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Отложить письмо"
+    }
+  }
+]

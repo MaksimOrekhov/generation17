@@ -18,7 +18,7 @@ function load(kind: 'storylets' | 'moments') {
     .map(([path, data]): ContentFile => ({ path, kind, data }))
 }
 
-const sample = (): JsonStorylet => structuredClone(bundle.storylets[0]) as JsonStorylet
+const sample = (): JsonStorylet => structuredClone(bundle.storylets.find(s => s.id === 'tin-whistle')!) as JsonStorylet
 const validate = (items: unknown[]) => validateContent([{ path: 't.json', kind: 'storylets', data: items }], known)
 const errors = (items: unknown[]) => validate(items).filter(i => i.level === 'error').map(i => i.where + ' ' + i.message).join('\n')
 

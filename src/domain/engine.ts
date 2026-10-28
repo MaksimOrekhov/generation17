@@ -1,4 +1,4 @@
-import { initEconomy, settleYear, closeEstate } from './economy'
+import { initEconomy, recordEconomicTransaction, settleYear, closeEstate } from './economy'
 import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
@@ -9,6 +9,7 @@ import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
 import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality'
+import { applyOfferChanges, canBuy, getOffer } from './offers'
 
 export const ATTENTION_PER_YEAR = 3
 const HISTORY_LIMIT = 1500
@@ -277,6 +278,47 @@ export function takeMoment(state: GameState): GameState {
   g.moment = null
   applyEffects(g, def.accept.effects)
   addLog(g, 'moment', def.title, resolveText(g, def.accept.result))
+  return g
+}
+
+/** Applies an available catalog purchase without mutating state or consuming RNG. */
+export function purchase(state: GameState, offerId: string): GameState {
+  const availability = canBuy(state, offerId)
+  if (!availability.available) return state
+  const offer = getOffer(offerId)
+  if (!offer) return state
+
+  const g = structuredClone(state)
+  const e = g.economy
+  if (availability.action === 'restore') {
+    applyOfferChanges(g, offer)
+    e.housingRight = null
+    addLog(g, 'life', 'Возврат жилья', 'Восстановлена прежняя ступень H1 по праву возврата без вступительного взноса.')
+    return g
+  }
+
+  const previouslyOwned = offer.effects.recordOwnership && e.owned[offer.id] !== undefined
+  e.balance -= availability.oneTimeCost
+  e.totals.spent += availability.oneTimeCost
+  recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, offer.title)
+  applyOfferChanges(g, offer)
+  if (offer.effects.stats && !previouslyOwned) applyEffects(g, { stats: offer.effects.stats })
+  if (offer.attention > 0) g.attention -= offer.attention
+  e.lastBought[offer.id] = g.age
+  // An expired H1 right no longer applies after paying the ordinary entry fee.
+  if (e.housingRight?.tier === 1 && e.housingRight.until < g.age) e.housingRight = null
+  addLog(g, 'life', 'Личные средства', `Приобретено: ${offer.title}. ${offer.description}`)
+  return g
+}
+
+/** Cancels a recurring service; previously paid years and their effects are not refunded. */
+export function cancelService(state: GameState, serviceId: string): GameState {
+  const offer = getOffer(serviceId)
+  if (state.stopped || state.economy.estate !== null || state.pending || !offer?.effects.service || state.economy.services[serviceId] === undefined) return state
+
+  const g = structuredClone(state)
+  delete g.economy.services[serviceId]
+  addLog(g, 'life', 'Личные средства', `Отменён абонемент «${offer.title}». Оплата за прошедший год не возвращается.`)
   return g
 }
 

@@ -12,6 +12,10 @@ export interface Requires {
   owns?: string[]
   ownsNot?: string[]
   reserveYears?: { min?: number; max?: number }
+  /** Сколько лет назад зарегистрирована позиция из `owns` (покупка, посещённый сектор или подключение услуги); позиция должна быть зарегистрирована. */
+  ownedYears?: Record<string, { min?: number; max?: number }>
+  /** true — услуги корабля этого года открыты (нет аварии, воздух ≥ 55, еда ≥ 45); false — закрыты. */
+  servicesOpen?: boolean
   /** Флаги, которые должны быть заданы (не пустое значение). */
   flag?: string[]
   /** Флаги, которых быть не должно. */

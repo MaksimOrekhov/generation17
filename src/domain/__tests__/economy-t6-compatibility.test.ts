@@ -1,10 +1,28 @@
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import baseline from './economy-t6-baseline.json'
 import { beat, createGame, decide, takeMoment, tick } from '../engine'
+import { moments } from '../moments'
 import { hash32 } from '../random'
 import { storylets } from '../storylets'
+import { T7_MOMENT_IDS, T7_STORYLET_IDS } from './t7-fixtures'
+
+// T7 adds real stories, so whole lives legitimately diverge. The pre-T7 catalogue is replayed without them:
+// this proves the engine changes of T7 did not alter decisions, RNG or finances of the old content.
+const savedStorylets = [...storylets], savedMoments = [...moments]
+beforeAll(() => {
+  storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)))
+  moments.splice(0, moments.length, ...savedMoments.filter(m => !T7_MOMENT_IDS.has(m.id)))
+})
+afterAll(() => {
+  storylets.splice(0, storylets.length, ...savedStorylets)
+  moments.splice(0, moments.length, ...savedMoments)
+})
 
 describe(`T6 unchanged existing lives, captured at ${baseline.base}`, () => {
+  it('excludes exactly the T7 content and nothing else', () => {
+    expect(savedStorylets.length - storylets.length).toBe(T7_STORYLET_IDS.size)
+    expect(savedMoments.length - moments.length).toBe(T7_MOMENT_IDS.size)
+  })
   it.each(baseline.runs)('seed=$seed, acceptMoments=$acceptMoments matches decisions, RNG and finances', expected => {
     const { seed, acceptMoments } = expected
     let g = createGame(seed)

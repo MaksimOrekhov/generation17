@@ -1,4 +1,4 @@
-import { beat, createGame, decide, setFocus, takeMoment, tick } from '../src/domain/engine'
+import { beat, canChoose, createGame, decide, setFocus, takeMoment, tick } from '../src/domain/engine'
 import { storylets } from '../src/domain/storylets'
 import { moments } from '../src/domain/moments'
 import { toneOf } from '../src/domain/director'
@@ -68,7 +68,9 @@ for (const strategy of strategies) {
         lastDecision = { age: g.age, tone: toneOf(event) }
         decisionsTotal++
         frequencies[event.id] = (frequencies[event.id] ?? 0) + 1
-        const index = strategy === 'last' ? event.choices.length - 1 : strategy === 'cycling' ? choices % event.choices.length : 0
+        const preferred = strategy === 'last' ? event.choices.length - 1 : strategy === 'cycling' ? choices % event.choices.length : 0
+        // Платный вариант может быть недоступен (деньги, участники поездки): тогда берётся первый доступный, как сделал бы игрок.
+        const index = canChoose(g, preferred).available ? preferred : event.choices.findIndex((_, i) => canChoose(g, i).available)
         g = decide(g, index)
         choices += 1
       } else {

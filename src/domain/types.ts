@@ -87,11 +87,24 @@ export interface Effects {
   moveTo?: SectorId | 'partner'
 }
 
+/** Каталожные позиции, которые сюжетный выбор может купить по-настоящему (T7). */
+export type StoryPurchaseOffer = 'course-pro' | 'family-trip'
+
+/**
+ * Сюжетный выбор совершает настоящую покупку каталога: те же проверки и последствия, что в `purchase()`.
+ * `price` — сюжетная цена (скидка): применяется, только если она ниже обычной цены для героя; каталог не меняется.
+ */
+export interface StoryPurchase {
+  offer: StoryPurchaseOffer
+  price?: number
+}
+
 export interface ChoiceDef {
   text: string
   hint: string
   result: string
   effects: Effects
+  purchase?: StoryPurchase
   check?: {
     skill: Skill
     difficulty: number

@@ -78,6 +78,8 @@ export const useGameStore = defineStore('game', () => {
   /** Сколько реального времени игрок провёл в живой игре (для отчёта тестера). */
   const playedSeconds = ref(saved?.playedSeconds ?? 0)
   const hintsSeen = ref<Record<string, boolean>>(loadHints())
+  /** Участники семейной поездки, выбранные в сюжетном решении (T7); привязаны к решению и не переходят в следующее. */
+  const storyPick = ref<{ decision: string; ids: string[] }>({ decision: '', ids: [] })
 
   const secondsPerYear = computed(() => secondsPerYearFor(preset.value))
   const hasDecision = computed(() => !!game.value.pending)
@@ -90,6 +92,8 @@ export const useGameStore = defineStore('game', () => {
   const blocked = computed(() => hasDecision.value || game.value.stopped || !!result.value || shopOpen.value)
   /** Магазин открывается с 16 лет в живой игре без ожидающего решения и результата. */
   const canOpenShop = computed(() => started.value && !game.value.stopped && !game.value.pending && !result.value && game.value.age >= 16)
+  const decisionKey = computed(() => game.value.pending ? `${game.value.seed}:${game.value.age}:${game.value.pending}` : '')
+  const storyParticipants = computed(() => storyPick.value.decision === decisionKey.value ? storyPick.value.ids : [])
   const latest = computed(() => filter.value === 'all'
     ? game.value.history
     : game.value.history.filter(h => h.kind === filter.value))
@@ -140,10 +144,24 @@ export const useGameStore = defineStore('game', () => {
     resumeAfter.value = false
   }
 
+  /** Цель сюжетной покупки для варианта: только выбранные игроком участники, никаких подстановок. */
+  function storyTarget(index: number): PurchaseTarget | undefined {
+    return currentEvent.value?.choices[index]?.purchase?.offer === 'family-trip'
+      ? { participantIds: [...storyParticipants.value] }
+      : undefined
+  }
+
+  function toggleStoryParticipant(id: string) {
+    if (!decisionKey.value) return
+    const selected = storyParticipants.value
+    storyPick.value = { decision: decisionKey.value, ids: selected.includes(id) ? selected.filter(x => x !== id) : selected.length >= 3 ? selected : [...selected, id] }
+  }
+
   function choose(index: number) {
-    if (!canChoose(game.value, index).available) return
+    const target = storyTarget(index)
+    if (!canChoose(game.value, index, target).available) return
     const before = game.value.nextLogId
-    const next = decide(game.value, index)
+    const next = decide(game.value, index, target)
     if (next === game.value) return
     seeHint('decision')
     game.value = next
@@ -262,7 +280,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    game, started, preset, playedSeconds, hintsSeen, speed, playing, progress, filter, result, shopOpen, canOpenShop,
+    game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop,
     secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
     frame, step, runToDecision, openShop, closeShop, buy, changeLoad, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint

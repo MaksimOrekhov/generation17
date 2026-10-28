@@ -70,6 +70,10 @@ export function findInconsistencies(g: GameState): string[] {
         if (offer) {
           const allowedAmounts = [offer.oneTimeCost]
           if (offer.discount) allowedAmounts.push(Math.round(offer.oneTimeCost * (100 - offer.discount.percent) / 100))
+          // Сюжетная цена (T7) объявлена в самом каталоге решений и действует только как скидка.
+          for (const s of storylets) for (const c of s.choices) {
+            if (c.purchase?.offer === offer.id && c.purchase.price !== undefined) allowedAmounts.push(...allowedAmounts.map(cost => Math.min(cost, c.purchase!.price!)))
+          }
           if (!allowedAmounts.includes(txn.amount)) bad('сумма покупки не совпадает с каталогом предложений')
         }
       }

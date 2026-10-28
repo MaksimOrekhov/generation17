@@ -1,5 +1,5 @@
 /** T8a diagnostic runner. Never writes to the engine state except through domain actions. */
-import { beat, canSetLoad, createGame, decide, purchase, setFocus, setLoad, takeMoment, tick } from '../src/domain/engine'
+import { beat, canChoose, canSetLoad, createGame, decide, purchase, setFocus, setLoad, takeMoment, tick } from '../src/domain/engine'
 import { ECONOMY_TUNING, obligationsOf, projectYear, wageOf } from '../src/domain/economy'
 import { availableSectorOptions, canBuy, familyTripParticipants, isClosedByShipState, OFFERS } from '../src/domain/offers'
 import type { OfferId, PurchaseAvailability, PurchaseTarget } from '../src/domain/offers'
@@ -54,6 +54,8 @@ export interface Life {
   attempts: { age: number; id: OfferId; result: string }[]; moments: number; memories: number
   followups: number; grade3: number | null; grade4: number | null; wage: number; pension: number
   finalService: number; totalSpent: number; annualSpent: number; purchaseSpent: number
+  /** T7: story expenses and catalogue purchases made inside story decisions. */
+  storySpent: number
   invariantChecks: number; violations: { action: string; messages: string[]; trace: string[] }[]
   trace: string[]; accountingErrors: string[]; decisions: Record<string, number>
 }
@@ -238,7 +240,7 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
   const life: Life = { seed, strategy, deathAge: 0, completed: false, checkpoints: [], years: [], purchases: [],
     quality: [], loadChanges: [], loadChecks: [], attempts: [], moments: 0, memories: 0, followups: 0,
     grade3: null, grade4: null, wage: 0, pension: 0, finalService: 0, totalSpent: 0, annualSpent: 0,
-    purchaseSpent: 0, invariantChecks: 0, violations: [], trace: [], accountingErrors: [], decisions: {} }
+    purchaseSpent: 0, storySpent: 0, invariantChecks: 0, violations: [], trace: [], accountingErrors: [], decisions: {} }
   function check(action: string, state: GameState) {
     life.trace.push(`${state.age}:${action}`)
     life.invariantChecks++
@@ -251,9 +253,13 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
     while (g.pending && !g.stopped) {
       const event = storylets.find(s => s.id === g.pending)
       if (!event) throw Error(`Unknown pending ${g.pending}`)
-      const index = storyChoice(seed, event.id, g.age, event.choices.length)
+      const hashed = storyChoice(seed, event.id, g.age, event.choices.length)
+      // T7: a story purchase can be unavailable (money, attention, cooldown, trip participants); fall back to the first available answer.
+      const index = canChoose(g, hashed).available ? hashed : event.choices.findIndex((_, i) => canChoose(g, i).available)
       life.decisions[`${g.age}:${event.id}`] = index
+      const nextTxn = g.economy.nextTxn
       g = decide(g, index); check(`decide:${event.id}:${index}`, g)
+      life.storySpent += sum(g.economy.ledger.filter(t => t.n >= nextTxn && (t.kind === 'purchase' || t.kind === 'story-expense')).map(t => t.amount))
     }
     const nextFocus = setFocus(g, focusFor(strategy))
     if (nextFocus !== g) { g = nextFocus; check(`focus:${g.focus}`, g) }
@@ -294,7 +300,7 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
   life.finalService = g.economy.work.service; life.totalSpent = g.economy.totals.spent
   life.annualSpent = sum(life.years.map(y => y.bills - y.aid))
   life.purchaseSpent = sum(life.purchases.map(p => p.cost))
-  if (life.totalSpent !== life.annualSpent + life.purchaseSpent) life.accountingErrors.push('Lifetime spending does not reconcile')
+  if (life.totalSpent !== life.annualSpent + life.purchaseSpent + life.storySpent) life.accountingErrors.push('Lifetime spending does not reconcile')
   return life
 }
 

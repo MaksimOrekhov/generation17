@@ -73,6 +73,14 @@ const jobs: readonly Job[] = ['Техник', 'Медик', 'Агроном', '�
 /** Ожидаемая продолжительность жизни: условная модель, зависящая от достатка. */
 export const lifeExpectancyFor = (wealth: Wealth) => Math.round(83 + (wealth - 3) * 1.5)
 
+/** Сектор, где герой живёт сейчас: после переезда он отличается от сектора рождения. */
+export const residenceOf = (g: { residence?: SectorId; birth: Birth }) => g.residence ?? g.birth.sectorId
+
+/** Имя ребёнка героя: из общего списка, без совпадений с уже известными людьми. */
+export function pickChildName(g: Rng, surname: string, taken: readonly string[]) {
+  return `${pickUnique(g, givenNames, new Set(taken))} ${surname}`
+}
+
 function pickUnique(g: Rng, pool: readonly string[], used: Set<string>) {
   const free = pool.filter(n => !used.has(n))
   const name = pick(g, free.length ? free : pool)

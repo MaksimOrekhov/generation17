@@ -1,6 +1,7 @@
 import type { Focus, GameState, Phase, SectorId } from './types'
 import { hash32, seeded } from './random'
 import { ATMOSPHERE_LEVEL } from './constants'
+import { residenceOf } from './birth'
 
 interface AmbientLine {
   title: string
@@ -91,7 +92,7 @@ function matches(g: GameState, line: AmbientLine) {
   if (line.weird && ATMOSPHERE_LEVEL[g.atmosphere] < line.weird) return false
   if (line.age && (g.age < line.age[0] || g.age > line.age[1])) return false
   if (line.focus && line.focus !== g.focus) return false
-  if (line.sector && line.sector !== g.birth.sectorId) return false
+  if (line.sector && line.sector !== residenceOf(g)) return false
   if (line.wealth && (g.birth.wealth < line.wealth[0] || g.birth.wealth > line.wealth[1])) return false
   if (line.job && line.job !== g.protagonist.job) return false
   if (line.parent && !g.people.find(p => p.id === 'parent')?.alive) return false

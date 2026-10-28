@@ -7,11 +7,14 @@ export const SHIP_STATS = ['air', 'food', 'cohesion', 'hull']
 export const SKILLS = ['engineering', 'medicine', 'ecology', 'social']
 export const JOBS = ['Ученик', 'Техник', 'Медик', 'Агроном', 'Координатор', 'Без специальности']
 export const SPOTS = ['window', 'door', 'terminal', 'parent', 'table', 'plant']
-export const PEOPLE = ['parent', 'parent2', 'sibling', 'friend', 'neighbor', 'mentor']
+export const PEOPLE = ['parent', 'parent2', 'sibling', 'friend', 'neighbor', 'mentor', 'child']
+export const SECTORS = ['atrium', 'bio', 'engineering', 'clinic', 'lower']
+/** Люди, которых эффект `addPerson` может добавить в жизнь героя. */
+export const NEW_PEOPLE = ['child']
 /** Подстановки {{...}}, которые понимает resolveText. */
-export const PLACEHOLDERS = ['name', 'job', 'parent', 'friend', 'neighbor', 'mentor', 'sibling']
+export const PLACEHOLDERS = ['name', 'job', 'parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
 /** Подстановки-люди: должны быть гарантированы заголовком (body у сюжета, needs у момента). */
-const PERSON_PLACEHOLDERS = ['parent', 'friend', 'neighbor', 'mentor', 'sibling']
+const PERSON_PLACEHOLDERS = ['parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
 /** Флаги, которые ставит сам движок, а не эффекты сюжетов. */
 const ENGINE_FLAGS = ['familyHealthRisk']
 
@@ -85,7 +88,7 @@ class Ctx {
 
   effects(e: unknown, where: string) {
     if (!isObj(e)) { this.err(where, 'effects должен быть объектом (может быть пустым {})'); return }
-    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory'], where)
+    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory', 'addPerson', 'moveTo'], where)
     const nums = (key: string, names: string[], limit: number, warnAt?: number) => {
       const o = e[key]
       if (o === undefined) return
@@ -112,23 +115,26 @@ class Ctx {
       }
     }
     if (e.job !== undefined && !(e.job === 'Переобучение' || JOBS.includes(e.job as string))) this.err(`${where}.job`, 'неизвестная профессия')
+    if (e.addPerson !== undefined && !NEW_PEOPLE.includes(e.addPerson as string)) this.err(`${where}.addPerson`, `можно добавить только: ${NEW_PEOPLE.join(', ')}`)
+    if (e.moveTo !== undefined && !SECTORS.includes(e.moveTo as string)) this.err(`${where}.moveTo`, `сектор из: ${SECTORS.join(', ')}`)
     if (e.memory !== undefined) this.text(e.memory, `${where}.memory`, LIMITS.memory)
   }
 
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'job', 'alive', 'stat'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'job', 'alive', 'stat', 'sector', 'sectorNot'], where)
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
-    const lists: Array<'flag' | 'flagNot' | 'alive' | 'job'> = ['flag', 'flagNot', 'alive', 'job']
+    const lists: Array<'flag' | 'flagNot' | 'alive' | 'job' | 'sector' | 'sectorNot'> = ['flag', 'flagNot', 'alive', 'job', 'sector', 'sectorNot']
     for (const key of lists) {
       const v = r[key]
       if (v === undefined) continue
       if (!Array.isArray(v) || !v.every(isStr)) { this.err(`${where}.${key}`, 'должен быть массивом строк'); continue }
       if (key === 'flag' || key === 'flagNot') v.forEach(k => knownFlag(k, `${where}.${key}`))
       if (key === 'alive') v.filter(id => !PEOPLE.includes(id)).forEach(id => this.err(`${where}.alive`, `неизвестный человек «${id}»`))
+      if (key === 'sector' || key === 'sectorNot') v.filter(s => !SECTORS.includes(s)).forEach(s => this.err(`${where}.${key}`, `неизвестный сектор «${s}» (есть: ${SECTORS.join(', ')})`))
       if (key === 'job') v.filter(j => !JOBS.includes(j)).forEach(j => this.err(`${where}.job`, `неизвестная профессия «${j}»`))
     }
     const maps: Array<'flagIs' | 'since'> = ['flagIs', 'since']

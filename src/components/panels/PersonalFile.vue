@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { residenceOf, sectorById } from '../../domain/birth'
 import { useGameStore } from '../../stores/game'
 import { lifeStage, occupation, years } from '../../ui/format'
 import PaperCard from '../common/PaperCard.vue'
@@ -12,7 +13,8 @@ const mrz = computed(() => {
   const [first = '', last = ''] = g.value.protagonist.name.toUpperCase().split(' ')
   return `PLG<${g.value.shipYear - g.value.age}<${last}<<${first}<<<<<<<<<<<<<<<<<<<<<<<<`
 })
-const lives = computed(() => (g.value.age < 16 ? 'с семьёй' : g.value.flags.movedOut ? 'отдельно' : g.value.flags.livingTogether ? 'вдвоём' : 'в родном секторе'))
+const home = computed(() => sectorById(residenceOf(g.value)))
+const lives = computed(() => (g.value.age < 16 ? 'с семьёй' : g.value.flags.movedOut ? 'отдельно' : g.value.flags.livingTogether ? 'вдвоём' : g.value.residence && g.value.residence !== g.value.birth.sectorId ? 'в новом секторе' : 'в родном секторе'))
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const lives = computed(() => (g.value.age < 16 ? 'с семьёй' : g.value.fla
       </div>
     </div>
     <dl class="file__grid">
-      <div><dt>Сектор</dt><dd>{{ g.birth.sectorName }} {{ g.birth.deck }}</dd></div>
+      <div><dt>Сектор</dt><dd>{{ home.name }} {{ home.deck }}</dd></div>
       <div><dt>Достаток семьи</dt><dd class="file__dots"><WealthPips :wealth="g.birth.wealth" /></dd></div>
       <div><dt>Живёт</dt><dd>{{ lives }}</dd></div>
       <div><dt>Статус</dt><dd>{{ g.stopped ? 'архив закрыт' : 'на борту' }}</dd></div>

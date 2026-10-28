@@ -1,3 +1,4 @@
+import { residenceOf } from '../domain/birth'
 import { gYearPlaceholder } from '../domain/constants'
 import type { Effects, GameState, MomentDef, Storylet } from '../domain/types'
 import type { ContentBundle, JsonChoice, JsonMoment, JsonStorylet, Requires } from './types'
@@ -19,6 +20,9 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
       if (typeof at !== 'number' || g.age < at + years) return false
     }
     if (r.job && !r.job.includes(g.protagonist.job)) return false
+    const home = residenceOf(g)
+    if (r.sector && !r.sector.includes(home)) return false
+    if (r.sectorNot?.includes(home)) return false
     for (const id of r.alive ?? []) if (!g.people.find(p => p.id === id)?.alive) return false
     for (const [stat, range] of Object.entries(r.stat ?? {})) {
       const value = g.stats[stat as keyof GameState['stats']]

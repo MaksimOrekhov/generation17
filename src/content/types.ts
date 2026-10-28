@@ -1,4 +1,4 @@
-import type { ChoiceDef, Effects, Job, SpotId, Stat } from '../domain/types'
+import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat } from '../domain/types'
 
 type FlagValue = string | number | boolean
 
@@ -16,6 +16,10 @@ export interface Requires {
   job?: Job[]
   /** Эти люди должны быть живы (id: parent, friend, neighbor, mentor, sibling). */
   alive?: string[]
+  /** Герой сейчас живёт в одном из этих секторов. */
+  sector?: SectorId[]
+  /** Герой сейчас живёт не в этих секторах. */
+  sectorNot?: SectorId[]
   /** Границы показателей героя. */
   stat?: Partial<Record<Stat, { min?: number; max?: number }>>
 }

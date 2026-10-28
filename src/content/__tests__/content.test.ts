@@ -115,3 +115,36 @@ describe('requires', () => {
     expect(compiled.choices[0].effects.flags?.tinWhistleAge).toBe(gYearPlaceholder)
   })
 })
+
+describe('новые эффекты и условия', () => {
+  const withEffects = (effects: object): JsonStorylet => {
+    const s = sample()
+    s.choices[0].effects = effects as never
+    return s
+  }
+
+  it('addPerson и moveTo проходят валидатор, лишнее отклоняется', () => {
+    expect(errors([withEffects({ addPerson: 'child', moveTo: 'bio' })])).toBe('')
+    expect(errors([withEffects({ addPerson: 'partner' })])).toContain('addPerson')
+    expect(errors([withEffects({ moveTo: 'mars' })])).toContain('moveTo')
+  })
+
+  it('метка {{child}} требует упоминания в body', () => {
+    const s = sample()
+    s.choices[0].result = '{{child}} смеётся и бежит по коридору, не оглядываясь.'
+    expect(errors([s])).toContain('не гарантирован')
+    s.body += ' {{child}}'
+    expect(errors([s])).toBe('')
+  })
+
+  it('requires.sector и sectorNot смотрят на текущий сектор', () => {
+    const state = createGame(1)
+    const home = state.birth.sectorId
+    expect(compileRequires({ sector: [home] })(state)).toBe(true)
+    expect(compileRequires({ sectorNot: [home] })(state)).toBe(false)
+    state.residence = home === 'bio' ? 'lower' : 'bio'
+    expect(compileRequires({ sector: [home] })(state)).toBe(false)
+    expect(compileRequires({ sectorNot: [home] })(state)).toBe(true)
+    expect(errors([{ ...sample(), requires: { sector: ['mars'] } }])).toContain('неизвестный сектор')
+  })
+})

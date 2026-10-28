@@ -1,4 +1,5 @@
 import { LIFE_PRESETS } from '../domain/clock'
+import { residenceOf, sectorById } from '../domain/birth'
 import type { GameState } from '../domain/types'
 import type { LifePreset } from '../domain/clock'
 
@@ -32,6 +33,7 @@ export function buildReport(g: GameState, playedSeconds: number, preset: LifePre
   push(`Реальное время в игре: ${minutes(playedSeconds)}`)
   push('')
   push(`Герой: ${g.protagonist.name}, ${g.birth.sectorName} ${g.birth.deck}, достаток ${g.birth.wealth}/5`)
+  if (residenceOf(g) !== g.birth.sectorId) push(`Живёт в секторе: ${sectorById(residenceOf(g)).name} ${sectorById(residenceOf(g)).deck}`)
   push(g.stopped ? `Жизнь завершена в ${g.age} лет (${g.causeOfDeath ?? 'причина не указана'}).` : `Жизнь продолжается, возраст ${g.age}.`)
   push(`Решений: ${choices.length} · моментов принято: ${moments} · воспоминаний: ${g.memories.length} · развилок: ${g.forks.length}`)
   push('')

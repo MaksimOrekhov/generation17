@@ -13,6 +13,8 @@ export type Wealth = 1 | 2 | 3 | 4 | 5
 /** Объект в каюте, на который указывает момент (подсвечивается в сцене). */
 export type SpotId = 'window' | 'door' | 'terminal' | 'parent' | 'table' | 'plant'
 export type SectorId = 'atrium' | 'bio' | 'engineering' | 'clinic' | 'lower'
+/** Люди, которых сюжеты могут добавить в жизнь героя. */
+export type NewPersonId = 'child'
 
 export interface Person {
   id: string
@@ -71,6 +73,10 @@ export interface Effects {
   flags?: Record<string, string | number | boolean>
   job?: Job | 'Переобучение'
   memory?: string
+  /** В жизни героя появляется человек: сейчас только ребёнок (`child`). Повторный эффект ничего не меняет. */
+  addPerson?: NewPersonId
+  /** Герой переезжает в другой сектор. */
+  moveTo?: SectorId
 }
 
 export interface ChoiceDef {
@@ -156,6 +162,8 @@ export interface GameState {
   causeOfDeath: string | null
   protagonist: { name: string; origin: string; trait: string; job: Job }
   birth: Birth
+  /** Сектор, где герой живёт сейчас. Нет поля — всё ещё сектор рождения. */
+  residence?: SectorId
   stats: Record<Stat, number>
   skills: Record<Skill, number>
   ship: Record<ShipStat, number>

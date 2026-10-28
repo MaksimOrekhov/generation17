@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
@@ -22,7 +23,7 @@ const model = computed<SceneModel>(() => {
     name: g.value.protagonist.name,
     age: g.value.age,
     wealth: g.value.birth.wealth,
-    sectorId: g.value.birth.sectorId,
+    sectorId: residenceOf(g.value),
     progress: store.progress,
     companion,
     spot: store.currentMoment?.spot ?? null

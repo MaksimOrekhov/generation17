@@ -1,9 +1,9 @@
-import type { Atmosphere, Effects, Focus, GameState, Job, LogKind, MomentDef, Phase, ShipStat, Skill, Stat, Storylet } from './types'
+import type { Atmosphere, Effects, Focus, GameState, Job, LogKind, MomentDef, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
 import { ambientLine } from './ambient'
-import { peerJob, rollBirth } from './birth'
+import { peerJob, pickChildName, residenceOf, rollBirth, sectorById } from './birth'
 import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
@@ -92,6 +92,7 @@ export function resolveText(g: GameState, value: string) {
     .replaceAll('{{neighbor}}', who('neighbor', 'сосед'))
     .replaceAll('{{mentor}}', who('mentor', 'наставник'))
     .replaceAll('{{sibling}}', who('sibling', 'брат или сестра'))
+    .replaceAll('{{child}}', who('child', 'ребёнок'))
     .replaceAll('{{job}}', g.protagonist.job.toLowerCase())
 }
 
@@ -119,6 +120,7 @@ function applyEffects(g: GameState, effects: Effects) {
     const k = key as Skill
     g.skills[k] = clamp(g.skills[k] + value)
   }
+  if (effects.addPerson) addPerson(g, effects.addPerson)
   for (const [key, value] of Object.entries(effects.bonds ?? {})) {
     const person = g.people.find(p => p.id === key)
     if (person?.alive) person.bond = clamp(person.bond + value)
@@ -137,6 +139,22 @@ function applyEffects(g: GameState, effects: Effects) {
     if (skill) g.skills[skill] = clamp(g.skills[skill] + 9)
   } else if (effects.job) g.protagonist.job = effects.job
   if (effects.memory && !g.memories.includes(effects.memory)) g.memories.push(effects.memory)
+  if (effects.moveTo) moveTo(g, effects.moveTo)
+}
+
+function addPerson(g: GameState, id: NewPersonId) {
+  if (g.people.some(p => p.id === id)) return
+  const surname = g.protagonist.name.split(' ').slice(1).join(' ')
+  const name = pickChildName(g, surname, g.people.map(p => p.name.split(' ')[0]!))
+  g.people.push({ id, name, role: 'Ребёнок', bond: 70, age: 0, alive: true, since: g.age })
+  addLog(g, 'life', 'В семье пополнение', `В твоей жизни появляется ${name}.`)
+}
+
+function moveTo(g: GameState, sector: SectorId) {
+  if (residenceOf(g) === sector) return
+  g.residence = sector
+  const s = sectorById(sector)
+  addLog(g, 'life', 'Переезд', `Теперь твой дом — ${s.name}, ${s.deck}.`)
 }
 
 /** Шанс успеха проверки: +1,5% за каждый пункт навыка выше сложности, от 10 до 90%. */
@@ -412,6 +430,7 @@ export function tick(state: GameState): GameState {
     && (!s.body.includes('{{parent}}') || isKnown(g, 'parent'))
     && (!s.body.includes('{{neighbor}}') || isKnown(g, 'neighbor'))
     && (!s.body.includes('{{mentor}}') || isKnown(g, 'mentor'))
+    && (!s.body.includes('{{child}}') || isKnown(g, 'child'))
   )
   const selected = pickStorylet(g, options)
   if (selected) {

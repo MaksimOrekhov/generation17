@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, cancelService, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import type { PurchaseTarget } from '../domain/offers'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
 import { randomSeed } from '../domain/random'
@@ -195,9 +196,18 @@ export const useGameStore = defineStore('game', () => {
   }
 
   /** Покупка целиком на доменном слое: он повторно проверяет доступность. `false` — ничего не изменилось. */
-  function buy(offerId: string): boolean {
+  function buy(offerId: string, target?: PurchaseTarget): boolean {
     if (!started.value) return false
-    const next = purchase(game.value, offerId)
+    const next = purchase(game.value, offerId, target)
+    if (next === game.value) return false
+    game.value = next
+    return true
+  }
+
+  /** Смена нагрузки целиком на доменном слое: без списаний, внимания и RNG. `false` — ничего не изменилось. */
+  function changeLoad(nextLoad: number): boolean {
+    if (!started.value) return false
+    const next = setLoad(game.value, nextLoad)
     if (next === game.value) return false
     game.value = next
     return true
@@ -252,7 +262,7 @@ export const useGameStore = defineStore('game', () => {
   return {
     game, started, preset, playedSeconds, hintsSeen, speed, playing, progress, filter, result, shopOpen, canOpenShop,
     secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
-    frame, step, runToDecision, openShop, closeShop, buy, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
+    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }
 })

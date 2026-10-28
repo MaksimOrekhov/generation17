@@ -179,8 +179,8 @@ describe('магазин и игровое время', () => {
 describe('покупки через хранилище', () => {
   beforeEach(() => setActivePinia(createPinia()))
 
-  it('показывает три реальных предложения', () => {
-    expect(spendView(workerAt(30)).offers.map(o => o.id)).toEqual(['course-pro', 'own-cabin', 'dome-pass'])
+  it('показывает пять реальных предложений', () => {
+    expect(spendView(workerAt(30)).offers.map(o => o.id)).toEqual(['course-pro', 'own-cabin', 'dome-pass', 'sector-trip', 'family-trip'])
   })
 
   it('причины недоступности приходят из canBuy: возраст и деньги', () => {

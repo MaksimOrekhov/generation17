@@ -113,7 +113,7 @@ export const OFFERS = {
       const previous = g.economy.lastBought['family-trip']
       if (previous !== undefined && g.age - previous < 5) {
         const remaining = 5 - (g.age - previous)
-        return `Следующая совместная поездка доступна через ${remaining} ${remaining === 1 ? 'год' : 'года'}.`
+        return `Следующая совместная поездка доступна через ${remaining} ${remaining === 1 ? 'год' : remaining < 5 ? 'года' : 'лет'}.`
       }
       return null
     }

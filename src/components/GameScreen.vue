@@ -21,6 +21,7 @@ import PersonalFile from './panels/PersonalFile.vue'
 import ShipPanel from './panels/ShipPanel.vue'
 import SkillsPanel from './panels/SkillsPanel.vue'
 import StatsPanel from './panels/StatsPanel.vue'
+import WorkFinancePanel from './panels/WorkFinancePanel.vue'
 
 const store = useGameStore()
 const showHelp = ref(false)
@@ -53,6 +54,7 @@ function repeat() {
         <PersonalFile />
         <StatsPanel />
         <SkillsPanel />
+        <WorkFinancePanel />
       </div>
       <div class="game__col game__col--center">
         <SceneView />

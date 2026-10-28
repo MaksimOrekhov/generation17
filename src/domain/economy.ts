@@ -40,8 +40,15 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  if(g.flags.promotion==='accepted' && w.post==='none')w.post='held'
  const path=g.flags.retirementPath
  if(path==='left'||path==='mentor'||path==='continue')w.path=path
- // Старый флаг не различает уход и продолжение: до T5 по умолчанию работа до 77.
- if(w.path==='left'||w.path==='mentor'||g.age>=77){if(g.age>=77 && !w.path){w.path='left';g.flags.retirement=true}w.kind='retired';w.mentor=w.path==='mentor'}
+ // Старые сохранения отмечали все варианты retirement одним флагом; неизвестный исход = обычная пенсия.
+ if(g.flags.retirement===true && path===undefined && w.path===null && g.age>=60)w.path='left'
+ if(g.age>=77 && w.path===null)w.path='left'
+ if(w.path==='left'||w.path==='mentor'||g.age>=77){
+   if(w.post==='held')w.post='ended'
+   w.kind='retired'
+   w.mentor=w.path==='mentor' && g.age<=80
+   if(g.age>=77)g.flags.retirement=true
+ }
  let wage=0,pension=0; const tariff=wageOf(g)
  if(w.kind==='working'){w.lastWage=tariff; wage=Math.round(tariff*w.load*(1+(w.post==='held'?.1:0)+(g.focus==='work'?.08:0))*(1+(g.protagonist.job==='Техник'&&g.flags.shipIncidentAge===g.age?.12:0)))}
  if(w.kind==='trainee')wage=g.age<18?360:Math.round(tariff*.6)
@@ -54,7 +61,7 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  const closed=g.flags.shipIncidentAge===g.age || g.ship.air<55 || g.ship.food<45
  if(!closed) for(const id of Object.keys(e.services).sort()){const cost=id==='dome-pass'?(g.protagonist.job==='Агроном'?0:90):0;if(cost>money){delete e.services[id];tight=true;logs.push(`Услуга ${id} отменена.`)}else{money-=cost;bills+=cost}}
  e.balance=money;e.tightStreak=tight?e.tightStreak+1:0;if(tight){stats.morale=-2;stats.stress=2}
- if(w.kind==='working'){w.service+=w.load;if(g.age>=62)w.deferYears++;if(g.age>=65){stats.health=-1;stats.stress=(stats.stress??0)+2}if(w.load<1){stats.stress=(stats.stress??0)-2;stats.bonds=1}const grade=earnedGrade(g);if(grade>w.grade){w.grade=grade;w.gradeSince=g.age;logs.push(`Новый тарифный разряд: ${grade}.`)}}
+ if(w.kind==='working'){w.service+=w.load;if(g.age>=62)w.deferYears++;if(g.age>=65 && w.load>=1){stats.health=-1;stats.stress=(stats.stress??0)+2}if(w.load<1){stats.stress=(stats.stress??0)-2;stats.bonds=1}const grade=earnedGrade(g);if(grade>w.grade){w.grade=grade;w.gradeSince=g.age;logs.push(`Новый тарифный разряд: ${grade}.`)}}
  e.totals.earned+=wage+pension;e.totals.spent+=bills-aid;e.totals.aid+=aid;e.years.push({age:g.age,wage,pension,bills,aid,balance:e.balance});e.years=e.years.slice(-80)
  return {stats,logs}
 }
@@ -130,6 +137,10 @@ export function repairEconomy(g: GameState): Economy {
   w.lastWage = Number.isSafeInteger(srcWork.lastWage) && (srcWork.lastWage as number) >= 360 && (srcWork.lastWage as number) <= 3000 ? srcWork.lastWage as number : ECONOMY_TUNING.wages[w.job][w.grade - 1]!
   w.until = srcWork.until === undefined ? w.until : srcWork.until === null ? null : integer(srcWork.until, age, 120)
   w.path = srcWork.path === undefined ? w.path : srcWork.path === null ? null : choice(srcWork.path, ['left','mentor','continue'] as const, w.path ?? (w.kind === 'retired' ? 'left' : 'continue'))
+  const hasRetirementPath = g.flags.retirementPath === 'left' || g.flags.retirementPath === 'mentor' || g.flags.retirementPath === 'continue'
+  // Economy v1 saves made before retirementPath existed only recorded retirement=true.
+  if (age >= 60 && age < 77 && g.flags.retirement === true && !hasRetirementPath && w.path === null) w.path = 'left'
+  if (age >= 77 && w.path === null) w.path = 'left'
   if (w.path === 'left' || w.path === 'mentor') w.kind = age >= 60 ? 'retired' : 'working'
   if (w.path === 'continue' && age < 77) w.kind = 'working'
   if (age >= 77) w.kind = 'retired'

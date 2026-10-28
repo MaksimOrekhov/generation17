@@ -57,10 +57,11 @@ describe('переходы профессии и тарифные разряды
     g.skills.engineering=skill-1
     expect(earnedGrade(g)).toBe(grade)
   })
-  it('переход IV→III требует именно восьмилетний стаж в разряде III',()=>{
+  it('переход III→IV закрыт после 7 лет и доступен после 8 лет в третьем разряде',()=>{
     const g=specialistAt(45);g.economy.work.grade=3;g.economy.work.courses=2;g.economy.work.jobSince=35;g.economy.work.gradeSince=37;g.skills.engineering=60
-    expect(earnedGrade(g)).toBe(4)
-    g.economy.work.gradeSince=37
+    g.age=44
+    expect(earnedGrade(g)).toBe(3)
+    g.age=45
     expect(earnedGrade(g)).toBe(4)
   })
   it('повышает только на одну ступень за год, не повторяет журнал, назначение разряд не меняет',()=>{
@@ -78,7 +79,7 @@ describe('переходы профессии и тарифные разряды
   })
   it('сохранение во время переобучения загружается без повторного начисления',()=>{
     const g=specialistAt(34);const changed=switchProfession(g);changed.age=35;settleYear(changed)
-    const restored=repairSave(JSON.parse(JSON.stringify(g)) as GameState).game
+    const restored=repairSave(JSON.parse(JSON.stringify(changed)) as GameState).game
     const before=structuredClone(restored.economy);const rng=restored.rng
     settleYear(restored);expect(restored.economy).toEqual(before);expect(restored.rng).toBe(rng)
     restored.age=36;settleYear(restored);expect(restored.economy.work.kind).toBe('working')

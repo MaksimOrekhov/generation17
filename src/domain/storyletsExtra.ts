@@ -9,7 +9,7 @@ export const extraStorylets: Storylet[] = [
     available: g => !g.flags.nursery,
     choices: [
       { text: 'Держаться за {{parent}}', hint: 'Спокойствие ↑ · Близость', result: 'Ты не отпускаешь руку, пока не привыкаешь к шуму. Игра начинается позже, зато тебя никто не торопит.', effects: { stats: { stress: -2, bonds: 1 }, bonds: { parent: 5 }, flags: { nursery: 'cling' } } },
-      { text: 'Сразу пойти к корзине со зверями', hint: 'Смелость · Новые знакомые', result: 'Ты берёшь деревянного кота и показываешь его первому, кого встретил. Через час вы строите вместе загон.', effects: { stats: { morale: 3, bonds: 2 }, skills: { social: 1 }, flags: { nursery: 'brave' } } },
+      { text: 'Сразу пойти к корзине со зверями', hint: 'Смелость · Новые знакомые', result: 'Ты берёшь деревянного кота и показываешь его первому, кого встретил{{hero:|а}}. Через час вы строите вместе загон.', effects: { stats: { morale: 3, bonds: 2 }, skills: { social: 1 }, flags: { nursery: 'brave' } } },
       { text: 'Смотреть со стороны', hint: 'Наблюдательность ↑', result: 'Ты долго следишь за тем, как играют другие. К вечеру ты знаешь, кто кого любит, а кто боится.', effects: { stats: { knowledge: 3 }, flags: { nursery: 'watcher' } } }
     ]
   },
@@ -30,7 +30,7 @@ export const extraStorylets: Storylet[] = [
     body: 'Возвращаясь из школьной комнаты, ты сворачиваешь не туда и оказываешься в коридоре с одинаковыми дверями. Номеров на них нет, а в одном конце слышно знакомое радио.',
     available: g => !g.flags.lostCorridor,
     choices: [
-      { text: 'Идти на звук радио', hint: 'Находчивость', result: 'Радио приводит к двери, за которой {{neighbor}} чинит очередную деталь. Он молча провожает тебя до дома.', effects: { stats: { morale: 2, knowledge: 2 }, bonds: { neighbor: 6 }, flags: { lostCorridor: true } } },
+      { text: 'Идти на звук радио', hint: 'Находчивость', result: 'Радио приводит к двери, за которой {{neighbor}} чинит очередную деталь. {{neighbor:Он|Она}} молча провожает тебя до дома.', effects: { stats: { morale: 2, knowledge: 2 }, bonds: { neighbor: 6 }, flags: { lostCorridor: true } } },
       { text: 'Сесть и ждать взрослых', hint: 'Осторожность', result: 'Тебя находят быстро, но ты успеваешь надумать столько, что запоминаешь это на всю жизнь.', effects: { stats: { stress: 3 }, flags: { lostCorridor: true } } },
       { text: 'Исследовать коридор', hint: 'Любопытство · Риск', result: 'За третьей дверью оказывается пустая каюта с окном. Ты возвращаешься поздно, но знаешь теперь о корабле чуть больше.', effects: { stats: { knowledge: 4, stress: 2 }, flags: { lostCorridor: true, destinationCurious: true } } }
     ]
@@ -41,7 +41,7 @@ export const extraStorylets: Storylet[] = [
     body: 'К Дню первой звезды класс готовит представление о начале полёта. Учитель предлагает тебе одну из ролей: главную, на сцене, или помощь за кулисами.',
     available: g => !g.flags.schoolPlay,
     choices: [
-      { text: 'Взять главную роль', hint: 'Репутация ↑ · Стресс ↑', result: 'Ты путаешь половину слов, но зал аплодирует так, что слышно в соседнем секторе.', effects: { stats: { reputation: 4, stress: 4, morale: 3 }, skills: { social: 2 }, flags: { schoolPlay: 'lead' }, memory: 'Сыграл главную роль в школьном представлении о начале полёта.' } },
+      { text: 'Взять главную роль', hint: 'Репутация ↑ · Стресс ↑', result: 'Ты путаешь половину слов, но зал аплодирует так, что слышно в соседнем секторе.', effects: { stats: { reputation: 4, stress: 4, morale: 3 }, skills: { social: 2 }, flags: { schoolPlay: 'lead' }, memory: 'Сыграл{{hero:|а}} главную роль в школьном представлении о начале полёта.' } },
       { text: 'Работать за кулисами', hint: 'Инженерия ↑', result: 'Ты придумываешь, как заставить бумажные звёзды «мерцать». Зрители ахают, не зная, чья это заслуга.', effects: { skills: { engineering: 2 }, stats: { knowledge: 2, morale: 2 }, flags: { schoolPlay: 'backstage' } } },
       { text: 'Отказаться', hint: 'Покой', result: 'Ты смотришь представление из зала. Оно получается неплохим, но ты ловишь себя на мысли, что смог бы лучше.', effects: { stats: { stress: -2, morale: -1 }, flags: { schoolPlay: 'refused' } } }
     ]
@@ -52,7 +52,7 @@ export const extraStorylets: Storylet[] = [
     body: 'Вечером {{friend}} шепчет, что на верхнем ярусе сегодня ночью можно будет увидеть, как корабль переключает режим освещения. Нужно уйти из дома и вернуться до утренней проверки.',
     available: g => !g.flags.curfewNight,
     choices: [
-      { text: 'Пойти вместе', hint: 'Дружба ↑ · Риск', result: 'Вы стоите на узкой площадке и видите, как свет в куполах гаснет целым этажом и загорается снова. Домой возвращаетесь на рассвете.', effects: { stats: { morale: 5, stress: 2 }, bonds: { friend: 9 }, flags: { curfewNight: 'went' }, memory: 'Ночью с другом смотрел, как корабль переключает освещение.' } },
+      { text: 'Пойти вместе', hint: 'Дружба ↑ · Риск', result: 'Вы стоите на узкой площадке и видите, как свет в куполах гаснет целым этажом и загорается снова. Домой возвращаетесь на рассвете.', effects: { stats: { morale: 5, stress: 2 }, bonds: { friend: 9 }, flags: { curfewNight: 'went' }, memory: 'Ночью с другом смотрел{{hero:|а}}, как корабль переключает освещение.' } },
       { text: 'Остаться и прикрыть друга', hint: 'Доверие ↑', result: 'Ты изображаешь крепкий сон за двоих. Утром {{friend}} благодарит, а родителям ничего не говорит.', effects: { stats: { bonds: 2 }, bonds: { friend: 6 }, flags: { curfewNight: 'covered' } } },
       { text: 'Отказаться и отговорить друга', hint: 'Осторожность', result: '{{friend}} дуется, но остаётся. Рассвет вы встречаете дома — как обычно.', effects: { stats: { reputation: 2, stress: -1 }, bonds: { friend: -4 }, flags: { curfewNight: 'refused' } } }
     ]
@@ -65,7 +65,7 @@ export const extraStorylets: Storylet[] = [
     choices: [
       { text: 'Зубрить всю ночь', hint: 'Знания ↑ · Стресс ↑', result: 'Утром голова гудит, но на экзамене ты помнишь почти всё.', effects: { stats: { knowledge: 6, stress: 6, health: -1 }, flags: { annualExam: true } } },
       { text: 'Повторять вместе с {{friend}}', hint: 'Дружба ↑ · Знания ↑', result: 'Вы спорите, проверяете друг друга и смеётесь над собственными ошибками. Знаний прибавляется меньше, чем могло бы, но экзамен проходит спокойнее.', effects: { stats: { knowledge: 3, morale: 3, bonds: 2 }, bonds: { friend: 6 }, flags: { annualExam: true } } },
-      { text: 'Положиться на удачу', hint: 'Риск', result: 'Экзамен идёт как попало. Кое-что ты помнишь удивительно хорошо, кое-что не помнишь совсем.', effects: { stats: { stress: -2, knowledge: 1 }, flags: { annualExam: true } }, check: { skill: 'social', difficulty: 6, successText: 'Темы совпали с теми, что ты знал. Результат лучше ожиданий.', failureText: 'Несколько вопросов оказались совсем незнакомыми. Результат ниже ожиданий.', success: { stats: { reputation: 3, morale: 3 } }, failure: { stats: { reputation: -2, stress: 3 } } } }
+      { text: 'Положиться на удачу', hint: 'Риск', result: 'Экзамен идёт как попало. Кое-что ты помнишь удивительно хорошо, кое-что не помнишь совсем.', effects: { stats: { stress: -2, knowledge: 1 }, flags: { annualExam: true } }, check: { skill: 'social', difficulty: 6, successText: 'Темы совпали с теми, что ты знал{{hero:|а}}. Результат лучше ожиданий.', failureText: 'Несколько вопросов оказались совсем незнакомыми. Результат ниже ожиданий.', success: { stats: { reputation: 3, morale: 3 } }, failure: { stats: { reputation: -2, stress: 3 } } } }
     ]
   },
   {
@@ -74,7 +74,7 @@ export const extraStorylets: Storylet[] = [
     body: 'Старший по смене уходит на покой. Руководство предлагает его место тебе: больше ответственности, больше людей в подчинении и совсем другой график.',
     available: g => g.flags.trackChosen === true && !g.flags.promotion,
     choices: [
-      { text: 'Принять должность', hint: 'Репутация ↑ · Стресс ↑', result: 'Первые недели тяжёлые: люди, которые раньше были коллегами, теперь смотрят иначе. Но постепенно ты привыкаешь.', effects: { stats: { reputation: 8, stress: 6, morale: -1 }, skills: { social: 3 }, flags: { promotion: 'accepted' }, memory: 'Принял должность старшего смены.' } },
+      { text: 'Принять должность', hint: 'Репутация ↑ · Стресс ↑', result: 'Первые недели тяжёлые: люди, которые раньше были коллегами, теперь смотрят иначе. Но постепенно ты привыкаешь.', effects: { stats: { reputation: 8, stress: 6, morale: -1 }, skills: { social: 3 }, flags: { promotion: 'accepted' }, memory: 'Принял{{hero:|а}} должность старшего смены.' } },
       { text: 'Предложить вместо себя коллегу', hint: 'Отношения ↑', result: 'Коллега сначала не верит, потом благодарит. Руководство слегка удивлено, но не возражает.', effects: { stats: { bonds: 4, reputation: 3 }, flags: { promotion: 'recommended' } } },
       { text: 'Отказаться', hint: 'Покой · Карьера ↓', result: 'Ты остаёшься на прежнем месте. Иногда жалеешь, но чаще радуешься вечерам, свободным от чужих проблем.', effects: { stats: { stress: -4, morale: 3, reputation: -2 }, flags: { promotion: 'declined' } } }
     ]
@@ -85,7 +85,7 @@ export const extraStorylets: Storylet[] = [
     body: 'Совет раз в несколько лет проводит жеребьёвку: небольшое число семей получает каюты на верхних палубах. Твой номер в списке, а условия подачи просты, но обязывающие.',
     available: g => g.birth.wealth <= 2 && !g.flags.deckLottery,
     choices: [
-      { text: 'Подать заявку', hint: 'Шанс · Придётся рискнуть', result: 'Ты заполняешь бумаги, собираешь подписи и ждёшь. Решение приходит через месяц.', effects: { stats: { stress: 3 }, flags: { deckLottery: 'applied' } }, check: { skill: 'social', difficulty: 12, successText: 'Тебя вносят в список. Новые стены и новый вид из окна — а вот старые соседи скучают.', failureText: 'Номер не выпал. Но ты познакомился с людьми, которые тоже ждут.', success: { stats: { morale: 8, reputation: 3, bonds: -3 }, flags: { movedUp: true }, memory: 'Выиграл место на верхних палубах.' }, failure: { stats: { morale: -2, bonds: 2 } } } },
+      { text: 'Подать заявку', hint: 'Шанс · Придётся рискнуть', result: 'Ты заполняешь бумаги, собираешь подписи и ждёшь. Решение приходит через месяц.', effects: { stats: { stress: 3 }, flags: { deckLottery: 'applied' } }, check: { skill: 'social', difficulty: 12, successText: 'Тебя вносят в список. Новые стены и новый вид из окна — а вот старые соседи скучают.', failureText: 'Номер не выпал. Но ты познакомил{{hero:ся|ась}} с людьми, которые тоже ждут.', success: { stats: { morale: 8, reputation: 3, bonds: -3 }, flags: { movedUp: true }, memory: 'Выиграл{{hero:|а}} место на верхних палубах.' }, failure: { stats: { morale: -2, bonds: 2 } } } },
       { text: 'Отдать место семье соседей', hint: 'Репутация ↑ · Отношения ↑', result: 'Ты тихо передаёшь номер семье с маленькими детьми. Они плачут от радости, а ты неожиданно чувствуешь облегчение.', effects: { stats: { reputation: 6, morale: 3 }, bonds: { neighbor: 8 }, flags: { deckLottery: 'gave' } } },
       { text: 'Не участвовать', hint: 'Привычное место', result: 'Тебе хорошо там, где всё знакомо. Жребий достаётся другим.', effects: { stats: { stress: -2 }, flags: { deckLottery: 'skipped' } } }
     ]
@@ -107,7 +107,7 @@ export const extraStorylets: Storylet[] = [
     body: 'Садовая комиссия предлагает пожилым жителям небольшие участки в общественном биокуполе. Работа лёгкая, а вот ответственность — настоящая: растения не прощают забывчивости.',
     available: g => !g.flags.gardenPlot,
     choices: [
-      { text: 'Взять участок', hint: 'Покой ↑ · Здоровье ↑', result: 'Первый месяц земля не слушается, потом начинает давать всходы. По вечерам ты приходишь просто посидеть среди зелени.', effects: { stats: { morale: 6, stress: -6, health: 2 }, skills: { ecology: 3 }, flags: { gardenPlot: 'own' }, memory: 'Завёл маленький огород в общественном биокуполе.' } },
+      { text: 'Взять участок', hint: 'Покой ↑ · Здоровье ↑', result: 'Первый месяц земля не слушается, потом начинает давать всходы. По вечерам ты приходишь просто посидеть среди зелени.', effects: { stats: { morale: 6, stress: -6, health: 2 }, skills: { ecology: 3 }, flags: { gardenPlot: 'own' }, memory: 'Зав{{hero:ёл|ела}} маленький огород в общественном биокуполе.' } },
       { text: 'Взять вместе с соседом', hint: 'Дружба ↑', result: 'Вдвоём вы спорите об удобрениях и сортах, но участок получается лучше, чем у многих.', effects: { stats: { bonds: 5, morale: 4 }, bonds: { neighbor: 6 }, flags: { gardenPlot: 'shared' } } },
       { text: 'Отказаться', hint: 'Без обязательств', result: 'Ты любишь зелень, но не хочешь привязываться к грядкам. Участок достаётся другому.', effects: { stats: { stress: -1 }, flags: { gardenPlot: 'refused' } } }
     ]
@@ -115,11 +115,11 @@ export const extraStorylets: Storylet[] = [
   {
     id: 'last-window', category: 'Поздняя жизнь', min: 70, max: 95, weight: 3,
     title: 'Вечер на обзорной палубе',
-    body: 'Ты давно не выходил к обзорному стеклу. Сегодня решаешь дойти туда. Ноги не слушаются так, как раньше, но дорога знакомая, а вдали светится та же точка, что и в детстве.',
+    body: 'Ты давно не выходил{{hero:|а}} к обзорному стеклу. Сегодня решаешь дойти туда. Ноги не слушаются так, как раньше, но дорога знакомая, а вдали светится та же точка, что и в детстве.',
     available: g => !g.flags.lastWindow,
     choices: [
-      { text: 'Взять с собой близкого человека', hint: 'Отношения ↑', result: 'Вы идёте медленно, и по дороге ты рассказываешь то, о чём раньше не решался. У стекла вы стоите молча.', effects: { stats: { bonds: 5, morale: 6 }, flags: { lastWindow: 'together' }, memory: 'Под конец жизни снова вышел к обзорному стеклу вместе с близким человеком.' } },
-      { text: 'Пойти одному', hint: 'Тишина', result: 'Ты стоишь до тех пор, пока ноги не затекают. Звезда та же. Теперь ты знаешь, что она никогда не станет ближе — и принимаешь это.', effects: { stats: { morale: 4, stress: -6 }, flags: { lastWindow: 'alone' }, memory: 'Простоял вечер у окна один и примирился с тем, что цель останется далёкой.' } },
+      { text: 'Взять с собой близкого человека', hint: 'Отношения ↑', result: 'Вы идёте медленно, и по дороге ты рассказываешь то, о чём раньше не решал{{hero:ся|ась}}. У стекла вы стоите молча.', effects: { stats: { bonds: 5, morale: 6 }, flags: { lastWindow: 'together' }, memory: 'Под конец жизни снова выш{{hero:ел|ла}} к обзорному стеклу вместе с близким человеком.' } },
+      { text: 'Пойти одному', hint: 'Тишина', result: 'Ты стоишь до тех пор, пока ноги не затекают. Звезда та же. Теперь ты знаешь, что она никогда не станет ближе — и принимаешь это.', effects: { stats: { morale: 4, stress: -6 }, flags: { lastWindow: 'alone' }, memory: 'Простоял вечер у окна одн{{hero:ин|а}} и примирил{{hero:ся|ась}} с тем, что цель останется далёкой.' } },
       { text: 'Остаться дома', hint: 'Покой', result: 'Ты смотришь на ту же звезду через маленькое окно каюты. Выходит не хуже.', effects: { stats: { stress: -2 }, flags: { lastWindow: 'home' } } }
     ]
   }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { wealthNames } from '../../domain/birth'
+import { genderOf } from '../../domain/engine'
 import type { GameState } from '../../domain/types'
 import PaperCard from '../common/PaperCard.vue'
 import PixelPortrait from '../common/PixelPortrait.vue'
@@ -8,6 +9,7 @@ import WealthPips from '../common/WealthPips.vue'
 
 const props = defineProps<{ game: GameState }>()
 const b = computed(() => props.game.birth)
+const sex = computed(() => (genderOf(props.game, 'hero') === 'f' ? 'Женский' : 'Мужской'))
 const sibling = computed(() => props.game.people.find(p => p.id === 'sibling'))
 const mrz = computed(() => {
   const [first = '', last = ''] = props.game.protagonist.name.toUpperCase().split(' ')
@@ -31,6 +33,7 @@ const lead = computed(() => {
       </div>
     </div>
     <dl class="cert__grid">
+      <div><dt>Пол</dt><dd>{{ sex }}</dd></div>
       <div><dt>Сектор рождения</dt><dd>{{ b.sectorName }}, {{ b.deck }}</dd></div>
       <div><dt>Год полёта</dt><dd>190 · до цели 150 лет</dd></div>
       <div><dt>Достаток семьи</dt><dd class="cert__dots"><WealthPips :wealth="b.wealth" :size="11" /></dd></div>

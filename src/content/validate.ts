@@ -15,6 +15,8 @@ export const NEW_PEOPLE = ['child']
 export const PLACEHOLDERS = ['name', 'job', 'parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
 /** Подстановки-люди: должны быть гарантированы заголовком (body у сюжета, needs у момента). */
 const PERSON_PLACEHOLDERS = ['parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
+/** Кого можно указывать в формах по роду: `{{hero:ся|ась}}`. */
+export const GENDER_SUBJECTS = ['hero', ...PERSON_PLACEHOLDERS]
 /** Флаги, которые ставит сам движок, а не эффекты сюжетов. */
 const ENGINE_FLAGS = ['familyHealthRisk']
 
@@ -73,7 +75,15 @@ class Ctx {
     if (v !== v.trim()) this.err(where, 'пробелы в начале или конце')
     if (/\s{2,}/.test(v)) this.err(where, 'двойные пробелы или переносы строк внутри текста')
     if (/[a-zA-Z]{3,}/.test(v.replace(/\{\{\w+\}\}/g, ''))) this.warn(where, 'латиница в тексте — точно нужна?')
-    if (/\bты\s+(?:\S+\s+)?[а-яё]+(?:л|лся|ла|лась)\b/i.test(v)) this.warn(where, 'возможно, форма рода в прошедшем времени у героя (герой унисекс): перепишите в настоящем или нейтрально')
+    const forms = [...v.matchAll(/\{\{(\w+):([^|{}]*)\|([^|{}]*)\}\}/g)]
+    for (const f of forms) {
+      if (!GENDER_SUBJECTS.includes(f[1])) this.err(where, `форма рода {{${f[1]}:…}}: кто — один из ${GENDER_SUBJECTS.join(', ')}`)
+      if (!f[2] && !f[3]) this.err(where, `форма рода {{${f[1]}:|}} пуста`)
+    }
+    if ((v.match(/\{\{\w+:/g) ?? []).length !== forms.length) this.err(where, 'форма рода записывается так: {{кто:мужская|женская}}, например Заступил{{hero:ся|ась}}')
+    // формы по роду собирают слово, поэтому для эвристики считаем их буквой
+    // \b в JS не видит кириллицу, поэтому границы слов заданы через lookaround
+    if (/(?<![а-яё])ты\s+(?:\S+\s+)?[а-яё]+(?:лся|лась|ла|л)(?![а-яё])/i.test(v.replace(/\{\{\w+:[^}]*\}\}/g, 'я'))) this.warn(where, 'возможно, форма рода у героя без разметки: напишите Заступил{{hero:ся|ась}} (первая форма мужская, вторая женская) или перепишите в настоящем времени')
     if ((v.match(/\{\{/g) ?? []).length !== (v.match(/\}\}/g) ?? []).length) this.err(where, 'незакрытая подстановка {{…}}')
     for (const m of v.matchAll(/\{\{(\w*)\}\}/g)) {
       if (!PLACEHOLDERS.includes(m[1])) this.err(where, `неизвестная подстановка {{${m[1]}}} (есть: ${PLACEHOLDERS.join(', ')})`)
@@ -169,7 +179,7 @@ class Ctx {
 
   /** Подстановки-люди допустимы, только если человек гарантирован заголовком. */
   personGuard(text: string, guaranteed: string[], where: string) {
-    for (const m of text.matchAll(/\{\{(\w+)\}\}/g)) {
+    for (const m of text.matchAll(/\{\{(\w+)(?::[^{}]*)?\}\}/g)) {
       if (PERSON_PLACEHOLDERS.includes(m[1]) && !guaranteed.includes(m[1])) {
         this.err(where, `{{${m[1]}}} используется, но человек не гарантирован: упомяните {{${m[1]}}} в body (сюжет) или добавьте "${m[1]}" в needs (момент)`)
       }
@@ -208,7 +218,7 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
     return
   }
   const body = isStr(s.body) ? s.body : ''
-  const guaranteed = PERSON_PLACEHOLDERS.filter(p => body.includes(`{{${p}}}`))
+  const guaranteed = PERSON_PLACEHOLDERS.filter(p => body.includes(`{{${p}}}`) || body.includes(`{{${p}:`))
   s.choices.forEach((ch: unknown, i: number) => {
     const w = `${where}.choices[${i}]`
     if (!isObj(ch)) { c.err(w, 'выбор должен быть объектом'); return }

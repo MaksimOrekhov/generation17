@@ -27,14 +27,14 @@ const baseMoments: MomentDef[] = [
   },
   {
     id: 'm-neighbor-radio', spot: 'door', title: 'Стук в дверь', min: 4, max: 14, weight: 2, cooldown: 4, needs: ['neighbor'],
-    text: 'За дверью топчется {{neighbor}} с коробкой деталей от старого радио. Кажется, ему нужен кто-то для затеи.',
+    text: 'За дверью топчется {{neighbor}} с коробкой деталей от старого радио. Кажется, {{neighbor:ему|ей}} нужен кто-то для затеи.',
     accept: { label: 'Открыть и помочь', result: 'К вечеру радио хрипит, как простуженное, но что-то в нём играет. {{neighbor}} сияет.', effects: { skills: { engineering: 1 }, stats: { knowledge: 1, bonds: 2 }, bonds: { neighbor: 5 } } },
-    skip: { label: 'Сказать, что занят' }
+    skip: { label: 'Сказать, что занят{{hero:|а}}' }
   },
   {
     id: 'm-terminal-copy', spot: 'terminal', title: 'Терминал без подписи', min: 7, max: 15, weight: 2, cooldown: ONCE,
     text: 'Школьный терминал остался включённым. В списке файлов — папка без названия, с записями, которые обычно закрывают.',
-    accept: { label: 'Скопировать на память', result: 'Ты прячешь копию среди домашних заданий. Сердце стучит громче вентиляции.', effects: { stats: { knowledge: 3, stress: 2 }, flags: { archiveCopy: true }, memory: 'Тайком скопировал закрытую папку со школьного терминала.' } },
+    accept: { label: 'Скопировать на память', result: 'Ты прячешь копию среди домашних заданий. Сердце стучит громче вентиляции.', effects: { stats: { knowledge: 3, stress: 2 }, flags: { archiveCopy: true }, memory: 'Тайком скопировал{{hero:|а}} закрытую папку со школьного терминала.' } },
     skip: { label: 'Выключить и уйти' }
   },
   {
@@ -103,7 +103,7 @@ const baseMoments: MomentDef[] = [
     id: 'm-sibling', spot: 'table', title: 'Старший заходит на чай', min: 4, max: 65, weight: 2, cooldown: 4, needs: ['sibling'],
     text: '{{sibling}} заглядывает «на минутку» и застревает на два часа.',
     accept: { label: 'Поболтать', result: 'Вы вспоминаете детство, и половина историй у вас рассказана по-разному.', effects: { stats: { morale: 2, bonds: 1 }, bonds: { sibling: 4 } } },
-    skip: { label: 'Сказать, что занят' }
+    skip: { label: 'Сказать, что занят{{hero:|а}}' }
   },
   {
     id: 'm-new-neighbors', spot: 'door', title: 'Новые соседи', min: 20, max: 60, weight: 1, cooldown: 8,
@@ -140,7 +140,7 @@ const baseMoments: MomentDef[] = [
     id: 'm-friend-grudge', spot: 'door', title: 'Знакомая спина', min: 12, max: 60, weight: 4, cooldown: ONCE, needs: ['friend'],
     available: g => g.flags.abandonedFriend === true && !g.flags.friendReturn,
     text: '{{friend}} проходит мимо и делает вид, что не замечает. Вы оба помните тот день у школьного очистителя воды.',
-    accept: { label: 'Окликнуть и извиниться', result: '{{friend}} останавливается не сразу. «Ты мог сказать это раньше», — отвечает {{friend}}, но не уходит.', effects: { stats: { stress: 2, morale: 1 }, bonds: { friend: 9 }, memory: 'Нашёл слова, чтобы извиниться перед другом спустя годы.' } },
+    accept: { label: 'Окликнуть и извиниться', result: '{{friend}} останавливается не сразу. «Ты мог сказать это раньше», — отвечает {{friend}}, но не уходит.', effects: { stats: { stress: 2, morale: 1 }, bonds: { friend: 9 }, memory: 'Наш{{hero:ёл|ла}} слова, чтобы извиниться перед другом спустя годы.' } },
     skip: { label: 'Промолчать снова', effects: { bonds: { friend: -2 } } }
   },
   {
@@ -154,7 +154,7 @@ const baseMoments: MomentDef[] = [
     id: 'm-neighbor-jam', spot: 'door', title: 'Банка у двери', min: 20, max: 80, weight: 4, cooldown: ONCE, needs: ['neighbor'],
     available: g => g.flags.neighborHelped === true,
     text: 'У двери стоит банка густого биокупольного варенья. Записка: «За тот вечер. {{neighbor}}».',
-    accept: { label: 'Зайти поблагодарить', result: 'За чаем {{neighbor}} вспоминает тот вечер так, будто сделал ты что-то великое.', effects: { stats: { morale: 3, bonds: 2 }, bonds: { neighbor: 5 } } },
+    accept: { label: 'Зайти поблагодарить', result: 'За чаем {{neighbor}} вспоминает тот вечер так, будто сделал{{hero:|а}} ты что-то великое.', effects: { stats: { morale: 3, bonds: 2 }, bonds: { neighbor: 5 } } },
     skip: { label: 'Оставить как есть' }
   },
   {

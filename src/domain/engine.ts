@@ -1,9 +1,9 @@
-import type { Atmosphere, Effects, Focus, GameState, Job, LogKind, MomentDef, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
+import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, MomentDef, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
 import { ambientLine } from './ambient'
-import { peerJob, pickChildName, residenceOf, rollBirth, sectorById } from './birth'
+import { childGender, genderOfName, heroGender, peerJob, pickChildName, residenceOf, rollBirth, sectorById } from './birth'
 import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
@@ -64,6 +64,7 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
   g.protagonist.name = roll.name
   g.protagonist.origin = roll.origin
   g.protagonist.trait = roll.trait
+  g.protagonist.gender = heroGender(seed)
   g.people = roll.people
   g.peers = roll.peers
   g.flags.familyHealthRisk = random(g) < .67
@@ -83,9 +84,22 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
   return g
 }
 
+/** Род героя или человека. Для старых сохранений без `gender` выводится из seed или имени. */
+export function genderOf(g: GameState, who: string): Gender {
+  if (who === 'hero') return g.protagonist.gender ?? heroGender(g.seed)
+  const person = g.people.find(p => p.id === who)
+  if (person?.gender) return person.gender
+  if (who === 'parent') return 'f'
+  return person ? genderOfName(person.name) : 'm'
+}
+
+/** Формы по роду: `{{hero:ся|ась}}` — первая форма мужская, вторая женская (любая может быть пустой). */
+const GENDER_FORM = /\{\{(\w+):([^|{}]*)\|([^|{}]*)\}\}/g
+
 export function resolveText(g: GameState, value: string) {
   const who = (id: string, fallback: string) => g.people.find(p => p.id === id)?.name.split(' ')[0] ?? fallback
   return value
+    .replace(GENDER_FORM, (_, subject: string, masculine: string, feminine: string) => (genderOf(g, subject) === 'f' ? feminine : masculine))
     .replaceAll('{{name}}', g.protagonist.name)
     .replaceAll('{{friend}}', who('friend', 'друг'))
     .replaceAll('{{parent}}', who('parent', 'родитель'))
@@ -138,7 +152,10 @@ function applyEffects(g: GameState, effects: Effects) {
     const skill = skills[g.protagonist.job]
     if (skill) g.skills[skill] = clamp(g.skills[skill] + 9)
   } else if (effects.job) g.protagonist.job = effects.job
-  if (effects.memory && !g.memories.includes(effects.memory)) g.memories.push(effects.memory)
+  if (effects.memory) {
+    const memory = resolveText(g, effects.memory)
+    if (!g.memories.includes(memory)) g.memories.push(memory)
+  }
   if (effects.moveTo) moveTo(g, effects.moveTo)
 }
 
@@ -146,7 +163,8 @@ function addPerson(g: GameState, id: NewPersonId) {
   if (g.people.some(p => p.id === id)) return
   const surname = g.protagonist.name.split(' ').slice(1).join(' ')
   const name = pickChildName(g, surname, g.people.map(p => p.name.split(' ')[0]!))
-  g.people.push({ id, name, role: 'Ребёнок', bond: 70, age: 0, alive: true, since: g.age })
+  const gender = childGender(g.seed, g.age)
+  g.people.push({ id, name, gender, role: gender === 'f' ? 'Дочь' : 'Сын', bond: 70, age: 0, alive: true, since: g.age })
   addLog(g, 'life', 'В семье пополнение', `В твоей жизни появляется ${name}.`)
 }
 
@@ -211,6 +229,9 @@ export function decide(state: GameState, choiceIndex: number): GameState {
 export const getMoment = (g: GameState) => getMomentDef(g.moment)
 
 /** Человек жив и уже появился в жизни героя (друг — с детского сада, наставник — с 16 лет). */
+/** Упоминает ли текст человека меткой {{id}} или формой {{id:м|ж}}. */
+const mentions = (text: string, id: string) => text.includes(`{{${id}}}`) || text.includes(`{{${id}:`)
+
 export function isKnown(g: GameState, id: string) {
   const p = g.people.find(x => x.id === id)
   return !!p && p.alive && g.age >= p.since
@@ -266,7 +287,7 @@ export function beat(state: GameState): GameState {
   closeMoment(g, getMoment(g))
   g.phase = (g.phase + 1) as Phase
   const line = ambientLine(g, g.phase)
-  addLog(g, 'ambient', line.title, line.text)
+  addLog(g, 'ambient', line.title, resolveText(g, line.text))
   // после тяжёлого события тихие моменты приходят чаще
   if (g.attention > 0 && chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0))) {
     const pool = eligibleMoments(g)
@@ -352,7 +373,7 @@ function peopleTick(g: GameState) {
     if (random(g) < probability || person.age > 103) {
       person.alive = false
       addLog(g, 'memory', `Уход: ${person.name}`, `В возрасте ${person.age} лет ${person.name} уходит из жизни. На корабле продолжают работать двигатели, но привычный мир становится немного другим.`)
-      g.memories.push(`Пережил уход человека, с которым была связана значительная часть жизни: ${person.name}.`)
+      g.memories.push(resolveText(g, `Пережил{{hero:|а}} уход человека, с которым была связана значительная часть жизни: ${person.name}.`))
       g.stats.morale = clamp(g.stats.morale - Math.min(13, Math.round(person.bond / 8)))
       g.stats.stress = clamp(g.stats.stress + 6)
     }
@@ -418,7 +439,7 @@ export function tick(state: GameState): GameState {
     return g
   }
   const line = ambientLine(g, 0)
-  addLog(g, 'ambient', line.title, line.text)
+  addLog(g, 'ambient', line.title, resolveText(g, line.text))
 
   const options = storylets.filter(s =>
     !g.seen.includes(s.id)
@@ -426,11 +447,11 @@ export function tick(state: GameState): GameState {
     && g.age <= s.max
     && s.available(g)
     && allowedHere(g, s.weird)
-    && (!s.body.includes('{{friend}}') || isKnown(g, 'friend'))
-    && (!s.body.includes('{{parent}}') || isKnown(g, 'parent'))
-    && (!s.body.includes('{{neighbor}}') || isKnown(g, 'neighbor'))
-    && (!s.body.includes('{{mentor}}') || isKnown(g, 'mentor'))
-    && (!s.body.includes('{{child}}') || isKnown(g, 'child'))
+    && (!mentions(s.body, 'friend') || isKnown(g, 'friend'))
+    && (!mentions(s.body, 'parent') || isKnown(g, 'parent'))
+    && (!mentions(s.body, 'neighbor') || isKnown(g, 'neighbor'))
+    && (!mentions(s.body, 'mentor') || isKnown(g, 'mentor'))
+    && (!mentions(s.body, 'child') || isKnown(g, 'child'))
   )
   const selected = pickStorylet(g, options)
   if (selected) {

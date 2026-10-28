@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { genderOf } from '../../domain/engine'
 import { useGameStore } from '../../stores/game'
 import Panel from '../common/Panel.vue'
 import PixelPortrait from '../common/PixelPortrait.vue'
@@ -7,6 +8,7 @@ import PixelPortrait from '../common/PixelPortrait.vue'
 const store = useGameStore()
 // Люди появляются в жизни героя постепенно: друг — в детском саду, наставник — к 16 годам.
 const people = computed(() => store.game.people.filter(p => store.game.age >= p.since))
+const gone = (id: string) => (genderOf(store.game, id) === 'f' ? 'ушла' : 'ушёл')
 const hearts = (bond: number) => Math.max(0, Math.min(5, Math.ceil(bond / 20)))
 </script>
 
@@ -17,7 +19,7 @@ const hearts = (bond: number) => Math.max(0, Math.min(5, Math.ceil(bond / 20)))
         <PixelPortrait :name="p.name" :age="p.age" :width="32" />
         <div class="person__info">
           <b class="wrap">{{ p.name }}</b>
-          <small>{{ p.role }} · {{ p.alive ? `${p.age}` : 'ушёл(ла)' }}</small>
+          <small>{{ p.role }} · {{ p.alive ? `${p.age}` : gone(p.id) }}</small>
         </div>
         <span v-if="p.alive" class="person__bond" :class="{ 'person__bond--low': p.bond < 30 }" :title="`Доверие: ${Math.round(p.bond)}%`">
           {{ '♥'.repeat(hearts(p.bond)) }}<i>{{ '♥'.repeat(5 - hearts(p.bond)) }}</i>

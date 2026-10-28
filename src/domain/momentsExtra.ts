@@ -141,7 +141,7 @@ export const extraMoments: MomentDef[] = [
   {
     id: 'm-old-storyteller', spot: 'door', title: 'Рассказ старика', min: 25, max: 70, weight: 2, cooldown: 6,
     text: 'В атриуме на скамье сидит старик и рассказывает кому угодно, как строили второй жилой блок. Слушателей мало.',
-    accept: { label: 'Присесть рядом', result: 'История оказывается длиннее, чем ждал, и местами неправдоподобной. Но детали о первых годах полёта ты нигде не читал.', effects: { stats: { knowledge: 2, morale: 1 } } },
+    accept: { label: 'Присесть рядом', result: 'История оказывается длиннее, чем ждал{{hero:|а}}, и местами неправдоподобной. Но детали о первых годах полёта ты нигде не читал{{hero:|а}}.', effects: { stats: { knowledge: 2, morale: 1 } } },
     skip: { label: 'Пройти мимо' }
   },
   {
@@ -154,13 +154,13 @@ export const extraMoments: MomentDef[] = [
   {
     id: 'm-kids-stories', spot: 'door', title: 'Дети из соседнего блока', min: 55, max: 95, weight: 3, cooldown: 4,
     text: 'Двое детей заглядывают в твою каюту: «Говорят, вы помните, как было раньше. Расскажете?»',
-    accept: { label: 'Пригласить и рассказать', result: 'Ты рассказываешь о вещах, которые давно считал ерундой. Дети слушают так, будто это тайна.', effects: { stats: { morale: 3, reputation: 1, bonds: 2 } } },
-    skip: { label: 'Сказать, что устал' }
+    accept: { label: 'Пригласить и рассказать', result: 'Ты рассказываешь о вещах, которые давно считал{{hero:|а}} ерундой. Дети слушают так, будто это тайна.', effects: { stats: { morale: 3, reputation: 1, bonds: 2 } } },
+    skip: { label: 'Сказать, что устал{{hero:|а}}' }
   },
   {
     id: 'm-old-photo', spot: 'table', title: 'Старый снимок', min: 55, max: 95, weight: 3, cooldown: ONCE,
-    text: 'В ящике стола находится снимок, о существовании которого ты забыл. Люди на нём почти все ушли.',
-    accept: { label: 'Разглядеть как следует', result: 'Ты узнаёшь по именам почти всех, и на секунду все они снова здесь.', effects: { stats: { morale: 2, stress: -2, bonds: 1 }, memory: 'Нашёл в столе старый снимок и вспомнил всех, кто на нём.' } },
+    text: 'В ящике стола находится снимок, о существовании которого ты забыл{{hero:|а}}. Люди на нём почти все ушли.',
+    accept: { label: 'Разглядеть как следует', result: 'Ты узнаёшь по именам почти всех, и на секунду все они снова здесь.', effects: { stats: { morale: 2, stress: -2, bonds: 1 }, memory: 'Наш{{hero:ёл|ла}} в столе старый снимок и вспомнил{{hero:|а}} всех, кто на нём.' } },
     skip: { label: 'Убрать обратно' }
   },
   {
@@ -173,7 +173,7 @@ export const extraMoments: MomentDef[] = [
     id: 'm-student-call', spot: 'terminal', title: 'Звонок ученика', min: 50, max: 90, weight: 4, cooldown: 4,
     available: g => g.flags.mentored === true,
     text: 'На терминале появляется сообщение от бывшего ученика: «Хотел просто сказать, что вы были правы».',
-    accept: { label: 'Ответить', result: 'Ответ получается длинным и тёплым. Ты давно не писал так много.', effects: { stats: { morale: 4, reputation: 1 } } },
+    accept: { label: 'Ответить', result: 'Ответ получается длинным и тёплым. Ты давно не писал{{hero:|а}} так много.', effects: { stats: { morale: 4, reputation: 1 } } },
     skip: { label: 'Ответить позже' }
   },
   // — реакции на прошлые решения —
@@ -194,7 +194,7 @@ export const extraMoments: MomentDef[] = [
   {
     id: 'm-dome-free', spot: 'window', title: 'Очередь в купол', min: 25, max: 75, weight: 3, cooldown: ONCE,
     available: g => g.flags.freeDome === true,
-    text: 'У входа в обзорный купол толпа молодёжи. Кто-то показывает на тебя: «Это тот, кто выступал против ограничений».',
+    text: 'У входа в обзорный купол толпа молодёжи. Кто-то показывает на тебя: «Это {{hero:тот|та}}, кто выступал{{hero:|а}} против ограничений».',
     accept: { label: 'Подойти', result: 'Тебя засыпают вопросами, а потом приглашают постоять на лучших местах.', effects: { stats: { reputation: 3, morale: 2 } } },
     skip: { label: 'Пройти мимо' }
   },
@@ -215,7 +215,7 @@ export const extraMoments: MomentDef[] = [
   {
     id: 'm-first-supper', spot: 'table', title: 'Ужин в своей каюте', min: 18, max: 40, weight: 4, cooldown: ONCE,
     available: g => g.flags.movedOut === true,
-    text: 'В своей каюте непривычно тихо. На столе — первый ужин, который ты приготовил сам.',
+    text: 'В своей каюте непривычно тихо. На столе — первый ужин, который ты приготовил{{hero:|а}} сам{{hero:|а}}.',
     accept: { label: 'Сесть и поесть', result: 'Ужин получился пересоленным. Но он твой, и за этим столом тебе никто не мешает.', effects: { stats: { morale: 3, stress: -2 } } },
     skip: { label: 'Пойти к семье', effects: { stats: { bonds: 1 } } }
   },
@@ -223,7 +223,7 @@ export const extraMoments: MomentDef[] = [
     id: 'm-old-seeds', spot: 'plant', title: 'Росток из старых семян', min: 22, max: 80, weight: 4, cooldown: ONCE,
     available: g => g.flags.oldSeeds === true,
     text: 'На экспериментальной грядке пробился росток, которого не было в списках. Таких растений на корабле не видели десятилетия.',
-    accept: { label: 'Присмотреть за ростком', result: 'Через месяц это уже заметный кустик. Название никто не знает, а запах напоминает чужую кухню.', effects: { skills: { ecology: 2 }, stats: { morale: 3, knowledge: 1 }, memory: 'Вырастил кустик, которого не было на корабле десятилетиями.' } },
+    accept: { label: 'Присмотреть за ростком', result: 'Через месяц это уже заметный кустик. Название никто не знает, а запах напоминает чужую кухню.', effects: { skills: { ecology: 2 }, stats: { morale: 3, knowledge: 1 }, memory: 'Вырастил{{hero:|а}} кустик, которого не было на корабле десятилетиями.' } },
     skip: { label: 'Передать другим' }
   }
 ]

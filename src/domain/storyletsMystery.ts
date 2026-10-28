@@ -20,7 +20,7 @@ export const mysteryStorylets: Storylet[] = [
     choices: [
       { text: 'Проверить блок самому', hint: 'Любопытство · Риск', result: 'Ты берёшь ключ-пропуск и выходишь в ночную смену. В коридоре C-9 тише, чем должно быть.', effects: { stats: { knowledge: 3, stress: 3 }, flags: { census: 'dig', censusAge: NOW } } },
       { text: 'Сообщить в реестр', hint: 'Осторожность', result: 'Дежурный принимает обращение, не поднимая глаз. «Разберёмся», — говорит он слишком быстро.', effects: { stats: { reputation: 2 }, flags: { census: 'report', censusAge: NOW } } },
-      { text: 'Сделать вид, что не заметил', hint: 'Покой', result: 'Ты закрываешь таблицу. Строка остаётся в памяти, как заноза.', effects: { stats: { stress: -1 }, flags: { census: 'ignore', censusAge: NOW } } }
+      { text: 'Сделать вид, что не заметил{{hero:|а}}', hint: 'Покой', result: 'Ты закрываешь таблицу. Строка остаётся в памяти, как заноза.', effects: { stats: { stress: -1 }, flags: { census: 'ignore', censusAge: NOW } } }
     ]
   },
 
@@ -66,7 +66,7 @@ export const mysteryStorylets: Storylet[] = [
     choices: [
       { text: 'Привести врача и рискнуть', hint: 'Доверие · Риск', result: 'Врач, стоя у порога, долго смотрит на детей и на тебя. «Я ничего не видел», — говорит он тихо. На следующий день за дверью другая тишина: не страха, а облегчения.', effects: { stats: { bonds: 4, stress: 4, reputation: 1 }, flags: { censusNight: 'doctor' }, memory: 'Ночь, когда в блок C-9 пришёл врач, который ничего не видел.' } },
       { text: 'Лечить самому', hint: 'Риск · Медицина', result: 'Ты ставишь холодный компресс, считаешь пульс и всю ночь сидишь на полу.', effects: { stats: { stress: 5 }, flags: { censusNight: 'self' } }, check: { skill: 'medicine', difficulty: 14, successText: 'К утру жар спадает. Ребёнок спит, а женщина беззвучно кладёт руку тебе на плечо.', failureText: 'Жар не спадает до утра, потом уходит сам. Ты остаёшься с чувством, что тебе просто повезло.', success: { stats: { bonds: 8, morale: 5 }, skills: { medicine: 3 } }, failure: { stats: { stress: 4, morale: -2 }, bonds: {} } } },
-      { text: 'Сказать, что поможешь утром', hint: 'Страх', result: 'Утром жар проходит сам. Но дверь больше не открывается на твой стук, и свёртки у порога возвращаются нетронутыми.', effects: { stats: { stress: 6, bonds: -4, morale: -4 }, flags: { censusNight: 'refused' }, memory: 'Ночь, когда не открыл дверь тем, кто просил помощи.' } }
+      { text: 'Сказать, что поможешь утром', hint: 'Страх', result: 'Утром жар проходит сам. Но дверь больше не открывается на твой стук, и свёртки у порога возвращаются нетронутыми.', effects: { stats: { stress: 6, bonds: -4, morale: -4 }, flags: { censusNight: 'refused' }, memory: 'Ночь, когда не открыл{{hero:|а}} дверь тем, кто просил помощи.' } }
     ]
   },
   {
@@ -100,7 +100,7 @@ export const mysteryStorylets: Storylet[] = [
     available: g => stage(g, 'petition') && since(g, 'censusStageAge', 2),
     choices: [
       { text: 'Опубликовать ответ в общей сети', hint: 'Общество · Конфликт', result: 'Через сутки корабль гудит как улей. Одни требуют отставки совета, другие требуют проверки каждого пайка. Тебя пока не трогают.', effects: { stats: { reputation: 5, stress: 8, knowledge: 3 }, ship: { cohesion: -6 }, memory: 'Публикация ответа совета о границе населения.' } },
-      { text: 'Предложить совету открытый план расширения', hint: 'Решение · Влияние', result: 'Ты пишешь записку на три страницы: новые биокупола, пересмотр цикла, переселение. Совет изучает её дольше, чем ты рассчитывал. Через год в секторе появляется строительная бригада.', effects: { stats: { reputation: 4, knowledge: 3, stress: 4 }, skills: { social: 3 }, ship: { cohesion: 2, food: 3 } } },
+      { text: 'Предложить совету открытый план расширения', hint: 'Решение · Влияние', result: 'Ты пишешь записку на три страницы: новые биокупола, пересмотр цикла, переселение. Совет изучает её дольше, чем ты рассчитывал{{hero:|а}}. Через год в секторе появляется строительная бригада.', effects: { stats: { reputation: 4, knowledge: 3, stress: 4 }, skills: { social: 3 }, ship: { cohesion: 2, food: 3 } } },
       { text: 'Сохранить ответ и никому не показывать', hint: 'Осторожность', result: 'Ты кладёшь бумагу в ящик рядом с остальным, что не следует знать. Дверь без номера по-прежнему молчит.', effects: { stats: { stress: 4, morale: -2 } } }
     ]
   },
@@ -136,7 +136,7 @@ export const mysteryStorylets: Storylet[] = [
     body: 'Реестр отвечает вежливо: «Расхождение устранено». На следующей неделе лишний паёк действительно исчезает. А через три дня в твою дверь стучит человек в сером. «Вам показалось, — говорит он мягко. — Такое случается при усталости».',
     available: g => path(g, 'report') && since(g, 'censusAge', 1) && !g.flags.censusStage,
     choices: [
-      { text: 'Согласиться: показалось', hint: 'Покой', result: 'Он улыбается так, будто ты только что сдал экзамен, и уходит. На лестнице его шагов не слышно.', effects: { stats: { stress: 3, morale: -2 }, flags: { censusStage: 'quiet', censusStageAge: NOW } } },
+      { text: 'Согласиться: показалось', hint: 'Покой', result: 'Он улыбается так, будто ты только что сдал{{hero:|а}} экзамен, и уходит. На лестнице его шагов не слышно.', effects: { stats: { stress: 3, morale: -2 }, flags: { censusStage: 'quiet', censusStageAge: NOW } } },
       { text: 'Потребовать письменный ответ', hint: 'Принципиальность', result: 'Он отвечает: «Разумеется». Ответ приходит через десять дней, без подписи, на плотной бумаге.', effects: { stats: { reputation: -2, stress: 4 }, flags: { censusStage: 'pressed', censusStageAge: NOW } } },
       { text: 'Записать разговор', hint: 'Осторожность · Знания', result: 'Записывающее устройство в кармане ты включаешь заранее. Человек в сером ничего не замечает.', effects: { stats: { knowledge: 3, stress: 3 }, flags: { censusStage: 'recorded', censusStageAge: NOW } } }
     ]

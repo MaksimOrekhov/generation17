@@ -5,6 +5,8 @@ export type Stat = 'health' | 'morale' | 'stress' | 'knowledge' | 'bonds' | 'rep
 export type ShipStat = 'air' | 'food' | 'cohesion' | 'hull'
 export type Skill = 'engineering' | 'medicine' | 'ecology' | 'social'
 export type LogKind = 'life' | 'ship' | 'choice' | 'moment' | 'memory' | 'notice' | 'ambient'
+/** Грамматический род: по нему подбираются формы слов в текстах. */
+export type Gender = 'm' | 'f'
 export type Job = 'Ученик' | 'Техник' | 'Медик' | 'Агроном' | 'Координатор' | 'Без специальности'
 export type Phase = 0 | 1 | 2 | 3
 /** Атмосфера жизни: спокойная НФ, НФ с тайнами или тревожная НФ с жутковатыми сценами (без насилия). */
@@ -20,6 +22,8 @@ export interface Person {
   id: string
   name: string
   role: string
+  /** Нет поля (старое сохранение) — определяется по имени. */
+  gender?: Gender
   bond: number
   age: number
   alive: boolean
@@ -160,7 +164,8 @@ export interface GameState {
   moodByAge: number[]
   stopped: boolean
   causeOfDeath: string | null
-  protagonist: { name: string; origin: string; trait: string; job: Job }
+  /** `gender` может отсутствовать в старых сохранениях: тогда он выводится из seed. */
+  protagonist: { name: string; origin: string; trait: string; job: Job; gender?: Gender }
   birth: Birth
   /** Сектор, где герой живёт сейчас. Нет поля — всё ещё сектор рождения. */
   residence?: SectorId

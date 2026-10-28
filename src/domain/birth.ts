@@ -1,5 +1,5 @@
-import type { Birth, Job, Peer, Person, SectorId, Wealth } from './types'
-import { pick, random, weighted } from './random'
+import type { Birth, Gender, Job, Peer, Person, SectorId, Wealth } from './types'
+import { hash32, pick, random, weighted } from './random'
 import type { Rng } from './random'
 import { infantRiskFor } from './mortality'
 
@@ -73,6 +73,16 @@ const jobs: readonly Job[] = ['Техник', 'Медик', 'Агроном', '�
 /** Ожидаемая продолжительность жизни: условная модель, зависящая от достатка. */
 export const lifeExpectancyFor = (wealth: Wealth) => Math.round(83 + (wealth - 3) * 1.5)
 
+/** Пол героя выпадает от seed и не расходует RNG симуляции. */
+export const heroGender = (seed: number): Gender => ((hash32('hero-gender', seed) >>> 7) & 1 ? 'f' : 'm')
+
+/** Пол ребёнка: от seed и возраста героя в год рождения. */
+export const childGender = (seed: number, age: number): Gender => ((hash32('child-gender', seed, age) >>> 7) & 1 ? 'f' : 'm')
+
+const femaleNames = new Set(['Ника', 'Лея', 'Эйла', 'Соль', 'Эмма', 'Клара', 'Оли', 'Элиана', 'Май', 'Риа'])
+/** Пол человека по имени: запасной вариант для людей без явного `gender`. */
+export const genderOfName = (name: string): Gender => (femaleNames.has(name.split(' ')[0]!) ? 'f' : 'm')
+
 /** Сектор, где герой живёт сейчас: после переезда он отличается от сектора рождения. */
 export const residenceOf = (g: { residence?: SectorId; birth: Birth }) => g.residence ?? g.birth.sectorId
 
@@ -123,20 +133,26 @@ export function rollBirth(g: Rng): BirthRoll {
   const motherAge = 24 + Math.floor(random(g) * 14)
   const fatherAge = motherAge + Math.floor(random(g) * 9) - 2
   const people: Person[] = [
-    { id: 'parent', name: `${pickUnique(g, mothers, used)} ${surname}`, role: 'Мать', bond: 71, age: motherAge, alive: true, since: 0 },
-    { id: 'parent2', name: `${pickUnique(g, fathers, used)} ${surname}`, role: 'Отец', bond: 66, age: fatherAge, alive: true, since: 0 }
+    { id: 'parent', name: `${pickUnique(g, mothers, used)} ${surname}`, gender: 'f', role: 'Мать', bond: 71, age: motherAge, alive: true, since: 0 },
+    { id: 'parent2', name: `${pickUnique(g, fathers, used)} ${surname}`, gender: 'm', role: 'Отец', bond: 66, age: fatherAge, alive: true, since: 0 }
   ]
   if (random(g) < .72) {
     const brother = random(g) < .5
     people.push({
       id: 'sibling', name: `${pickUnique(g, brother ? brothers : sisters, used)} ${surname}`,
-      role: brother ? 'Старший брат' : 'Старшая сестра', bond: 58, age: 2 + Math.floor(random(g) * 8), alive: true, since: 0
+      gender: brother ? 'm' : 'f', role: brother ? 'Старший брат' : 'Старшая сестра', bond: 58, age: 2 + Math.floor(random(g) * 8), alive: true, since: 0
     })
   }
+  const friend = pickUnique(g, friends, used)
+  const neighbor = pickUnique(g, neighbors, used)
+  const neighborAge = 4 + Math.floor(random(g) * 5)
+  const mentor = pickUnique(g, mentors, used)
+  const mentorAge = 25 + Math.floor(random(g) * 8)
+  const woman = (name: string) => genderOfName(name) === 'f'
   people.push(
-    { id: 'friend', name: pickUnique(g, friends, used), role: 'Друг детства', bond: 43, age: 0, alive: true, since: 4 },
-    { id: 'neighbor', name: pickUnique(g, neighbors, used), role: 'Сосед по сектору', bond: 34, age: 4 + Math.floor(random(g) * 5), alive: true, since: 0 },
-    { id: 'mentor', name: pickUnique(g, mentors, used), role: 'Старший наставник', bond: 25, age: 25 + Math.floor(random(g) * 8), alive: true, since: 16 }
+    { id: 'friend', name: friend, gender: genderOfName(friend), role: woman(friend) ? 'Подруга детства' : 'Друг детства', bond: 43, age: 0, alive: true, since: 4 },
+    { id: 'neighbor', name: neighbor, gender: genderOfName(neighbor), role: woman(neighbor) ? 'Соседка по сектору' : 'Сосед по сектору', bond: 34, age: neighborAge, alive: true, since: 0 },
+    { id: 'mentor', name: mentor, gender: genderOfName(mentor), role: woman(mentor) ? 'Старшая наставница' : 'Старший наставник', bond: 25, age: mentorAge, alive: true, since: 16 }
   )
 
   const peers: Peer[] = Array.from({ length: 5 }, (_, i) => {

@@ -186,3 +186,29 @@ describe('until и personAge', () => {
     expect(errors([s])).toBe('')
   })
 })
+
+describe('формы по роду', () => {
+  const withBody = (extra: string) => {
+    const s = sample()
+    s.choices[0].result = extra
+    return s
+  }
+
+  it('принимает форму для героя и для человека, названного в body', () => {
+    expect(errors([withBody('Ты заступил{{hero:ся|ась}}, а {{neighbor:он|она}} молчит.')])).toBe('')
+  })
+
+  it('отклоняет форму без второго варианта, чужого субъекта и человека вне body', () => {
+    expect(errors([withBody('Заступил{{hero:ся}}.')])).toContain('форма рода записывается так')
+    expect(errors([withBody('Заступил{{boss:ся|ась}}.')])).toContain('кто — один из')
+    expect(errors([withBody('{{mentor:Он|Она}} кивает.')])).toContain('не гарантирован')
+  })
+
+  it('не принимает пустую форму и предупреждает о голом роде', () => {
+    expect(errors([withBody('Заступил{{hero:|}}.')])).toContain('пуста')
+    const warn = validate([withBody('Ты заступился за друга.')]).filter(i => i.level === 'warn')
+    expect(warn.some(i => i.message.includes('без разметки'))).toBe(true)
+    const markedWarn = validate([withBody('Ты заступил{{hero:ся|ась}} за друга.')]).filter(i => i.level === 'warn')
+    expect(markedWarn.some(i => i.message.includes('без разметки'))).toBe(false)
+  })
+})

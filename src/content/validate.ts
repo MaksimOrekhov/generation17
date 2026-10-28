@@ -133,7 +133,7 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot'], where)
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
@@ -147,7 +147,7 @@ class Ctx {
       if (key === 'sector' || key === 'sectorNot') v.filter(s => !SECTORS.includes(s)).forEach(s => this.err(`${where}.${key}`, `неизвестный сектор «${s}» (есть: ${SECTORS.join(', ')})`))
       if (key === 'job') v.filter(j => !JOBS.includes(j)).forEach(j => this.err(`${where}.job`, `неизвестная профессия «${j}»`))
     }
-    const maps: Array<'flagIs' | 'since' | 'until'> = ['flagIs', 'since', 'until']
+    const maps: Array<'flagIs' | 'flagNotIs' | 'since' | 'until'> = ['flagIs', 'flagNotIs', 'since', 'until']
     for (const key of maps) {
       const v = r[key]
       if (v === undefined) continue

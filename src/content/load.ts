@@ -15,6 +15,10 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
       const allowed = (Array.isArray(v) ? v : [v]).map(String)
       if (!allowed.includes(String(g.flags[k]))) return false
     }
+    for (const [k, v] of Object.entries(r.flagNotIs ?? {})) {
+      const banned = (Array.isArray(v) ? v : [v]).map(String)
+      if (g.flags[k] !== undefined && banned.includes(String(g.flags[k]))) return false
+    }
     for (const [k, years] of Object.entries(r.since ?? {})) {
       const at = g.flags[k]
       if (typeof at !== 'number' || g.age < at + years) return false

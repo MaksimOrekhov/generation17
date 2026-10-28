@@ -10,6 +10,8 @@ export interface Requires {
   flagNot?: string[]
   /** Флаг равен значению (или одному из списка). Сравнение по строке, как в `is()` у кода. */
   flagIs?: Record<string, FlagValue | FlagValue[]>
+  /** Флаг не равен значению (ни одному из списка); незаданный флаг подходит. Нужно, когда состояние не только «да/нет» (например, `friendState: estranged`). */
+  flagNotIs?: Record<string, FlagValue | FlagValue[]>
   /** Числовой флаг (возраст, записанный через "@age") и прошло не меньше N лет. */
   since?: Record<string, number>
   /** Числовой флаг-возраст и прошло не более N лет (вместе с `since` задаёт окно «от и до»). */

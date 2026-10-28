@@ -105,7 +105,7 @@ export interface SpendView {
 }
 
 const HOUSING_NAMES = ['H0 · общий отсек', 'H1 · собственная каюта', 'H2 · расширенная каюта']
-const KIND_NAMES: Record<string, string> = { start: 'Стартовый капитал', purchase: 'Покупка', aid: 'Помощь фонда', estate: 'Наследство', gift: 'Передача', help: 'Помощь близким', windfall: 'Поступление', shock: 'Непредвиденный расход' }
+const KIND_NAMES: Record<string, string> = { start: 'Стартовый капитал', purchase: 'Покупка', 'story-expense': 'Оплата по решению', aid: 'Помощь фонда', estate: 'Наследство', gift: 'Передача', help: 'Помощь близким', windfall: 'Поступление', shock: 'Непредвиденный расход' }
 const INCOME_KINDS = new Set(['start', 'aid', 'windfall'])
 const STATUS_LABEL: Record<string, string> = { working: 'работает', trainee: 'стажировка', between: 'между назначениями', sick: 'больничный', retired: 'на пенсии', child: 'учится' }
 const MAIN_SKILL: Partial<Record<Job, Skill>> = { Техник: 'engineering', Медик: 'medicine', Агроном: 'ecology', Координатор: 'social' }

@@ -1,4 +1,6 @@
 import type { Effects, MomentDef, Storylet } from '../domain/types'
+import { getOffer } from '../domain/offers'
+import { STORY_MONEY_LIMIT, validStoryMoney } from '../domain/storyMoney'
 
 export interface Issue { level: 'error' | 'warn'; where: string; message: string }
 
@@ -24,7 +26,8 @@ export const LIMITS = {
   age: [0, 95], weight: [1, 8], choices: [2, 4],
   title: [3, 40], body: [60, 420], bodyWarn: 320, result: [20, 260], resultWarn: 200,
   momentText: [30, 260], momentTextWarn: 200, label: [3, 40], hint: [3, 50], memory: [10, 140],
-  stat: 10, statWarn: 8, ship: 6, skill: 4, bond: 18, cooldown: [1, 12]
+  stat: 10, statWarn: 8, ship: 6, skill: 4, bond: 18, cooldown: [1, 12],
+  money: STORY_MONEY_LIMIT, reserveYears: [0, 1000]
 } as const
 
 export interface Known {
@@ -96,9 +99,13 @@ class Ctx {
     else if (v < range[0] || v > range[1]) this.err(where, `${v} вне диапазона ${range[0]}–${range[1]}`)
   }
 
-  effects(e: unknown, where: string) {
+  effects(e: unknown, where: string, allowExpense = true) {
     if (!isObj(e)) { this.err(where, 'effects должен быть объектом (может быть пустым {})'); return }
-    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory', 'addPerson', 'moveTo'], where)
+    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory', 'addPerson', 'moveTo', 'money'], where)
+    if (e.money !== undefined) {
+      if (!validStoryMoney(e.money)) this.err(`${where}.money`, `нужно безопасное целое число в пределах ±${LIMITS.money}`)
+      else if (!allowExpense && e.money < 0) this.err(`${where}.money`, 'отрицательные деньги здесь запрещены')
+    }
     const nums = (key: string, names: string[], limit: number, warnAt?: number) => {
       const o = e[key]
       if (o === undefined) return
@@ -133,7 +140,37 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears'], where)
+    const range = (key: string, min: number, max: number, step = 1) => {
+      const value = r[key], w = `${where}.${key}`
+      if (value === undefined) return
+      if (!isObj(value)) { this.err(w, 'нужен объект {min?, max?}'); return }
+      this.keys(value, ['min', 'max'], w)
+      if (value.min === undefined && value.max === undefined) this.err(w, 'нужна хотя бы одна граница min или max')
+      for (const bound of ['min', 'max']) {
+        const n = value[bound]
+        if (n === undefined) continue
+        const aligned = isNum(n) && (step === 1 ? Number.isSafeInteger(n) : Math.round(n * 10) / 10 === n)
+        if (!aligned || (n as number) < min || (n as number) > max) this.err(`${w}.${bound}`, `число от ${min} до ${max} с шагом ${step}`)
+      }
+      if (isNum(value.min) && isNum(value.max) && value.min > value.max) this.err(w, 'min больше max')
+    }
+    range('money', 0, Number.MAX_SAFE_INTEGER)
+    range('grade', 1, 4)
+    range('housing', 0, 2)
+    range('reserveYears', ...LIMITS.reserveYears, .1)
+    for (const key of ['work', 'owns', 'ownsNot']) {
+      const value = r[key], w = `${where}.${key}`
+      if (value === undefined) continue
+      if (!Array.isArray(value) || !value.every(isStr)) { this.err(w, 'должен быть массивом строк'); continue }
+      for (const id of value) {
+        if (key === 'work') {
+          if (!['child', 'trainee', 'working', 'between', 'sick', 'retired'].includes(id)) this.err(w, `неизвестный рабочий статус «${id}»`)
+        } else if (!getOffer(id) && !(id.startsWith('visit-sector-') && SECTORS.includes(id.slice('visit-sector-'.length)))) {
+          this.err(w, `неизвестная позиция или посещённый сектор «${id}»`)
+        }
+      }
+    }
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
@@ -242,9 +279,18 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
     for (const f of ['successText', 'failureText']) {
       if (c.text(k[f], `${w}.check.${f}`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(k[f] as string, guaranteed, `${w}.check.${f}`)
     }
-    c.effects(k.success, `${w}.check.success`)
-    c.effects(k.failure, `${w}.check.failure`)
+    c.effects(k.success, `${w}.check.success`, false)
+    c.effects(k.failure, `${w}.check.failure`, false)
   })
+  if (s.choices.some(ch => isObj(ch) && isObj(ch.effects) && isNum(ch.effects.money) && ch.effects.money < 0)) {
+    const free = s.choices.some(ch => isObj(ch) && isObj(ch.effects)
+      && (ch.effects.money === undefined || validStoryMoney(ch.effects.money) && ch.effects.money >= 0)
+      && (ch.check === undefined || isObj(ch.check) && ['success', 'failure'].every(key => {
+        const effect = (ch.check as Obj)[key]
+        return isObj(effect) && (effect.money === undefined || validStoryMoney(effect.money) && effect.money >= 0)
+      })))
+    if (!free) c.err(`${where}.choices`, 'денежному сюжету нужен минимум один вариант без обязательного денежного расхода')
+  }
 }
 
 function checkMoment(c: Ctx, m: unknown, where: string) {
@@ -276,13 +322,13 @@ function checkMoment(c: Ctx, m: unknown, where: string) {
     c.keys(accept, ['label', 'result', 'effects'], `${where}.accept`)
     c.text(accept.label, `${where}.accept.label`, LIMITS.label)
     if (c.text(accept.result, `${where}.accept.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(accept.result, needs, `${where}.accept.result`)
-    c.effects(accept.effects, `${where}.accept.effects`)
+    c.effects(accept.effects, `${where}.accept.effects`, false)
   }
   if (!isObj(skip)) c.err(`${where}.skip`, 'нужен объект')
   else {
     c.keys(skip, ['label', 'effects'], `${where}.skip`)
     c.text(skip.label, `${where}.skip.label`, LIMITS.label)
-    if (skip.effects !== undefined) c.effects(skip.effects, `${where}.skip.effects`)
+    if (skip.effects !== undefined) c.effects(skip.effects, `${where}.skip.effects`, false)
   }
 }
 

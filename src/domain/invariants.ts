@@ -53,15 +53,17 @@ export function findInconsistencies(g: GameState): string[] {
       observedSpent += row.bills - row.aid
       observedAid += row.aid
     }
-    if (economy.totals.earned < observedEarned) bad('итог доходов меньше сохранённой годовой истории')
-    const recordedPurchases = economy.ledger.filter(txn => txn.kind === 'purchase').reduce((sum, txn) => sum + txn.amount, 0)
-    if (economy.totals.spent < observedSpent + recordedPurchases) bad('итог расходов меньше годовой истории и записанных покупок')
+    const recordedWindfalls = economy.ledger.filter(txn => txn.kind === 'windfall').reduce((sum, txn) => sum + txn.amount, 0)
+    if (economy.totals.earned < observedEarned + recordedWindfalls) bad('итог доходов меньше сохранённой годовой истории и поступлений')
+    const recordedExpenses = economy.ledger.filter(txn => txn.kind === 'purchase' || txn.kind === 'story-expense').reduce((sum, txn) => sum + txn.amount, 0)
+    if (economy.totals.spent < observedSpent + recordedExpenses) bad('итог расходов меньше годовой истории и записанных операций расходов')
     if (economy.totals.aid < observedAid) bad('итог фонда меньше сохранённой годовой истории')
     const txnIds = new Set<number>()
     const aidTxnAges = new Set<number>()
     for (const txn of economy.ledger) {
       if (!Number.isSafeInteger(txn.n) || txn.n < 1 || txnIds.has(txn.n) || !Number.isInteger(txn.age) || txn.age < 0 || txn.age > g.age || !Number.isSafeInteger(txn.amount) || txn.amount < 0) bad('повреждённая запись финансового журнала')
       txnIds.add(txn.n)
+      if (txn.kind === 'story-expense' && (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(txn.ref) || !txn.label || txn.amount < 1 || txn.amount > 1500)) bad('некорректная оплата сюжетного решения')
       if (txn.kind === 'purchase') {
         const offer = getOffer(txn.ref)
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(txn.ref) || !txn.label) bad('покупка не связана с корректным предложением')

@@ -71,6 +71,8 @@ export interface LogEntry {
 }
 
 export interface Effects {
+  /** Signed story money effect, integer credits in [-1500, 1500]. */
+  money?: number
   stats?: Partial<Record<Stat, number>>
   ship?: Partial<Record<ShipStat, number>>
   skills?: Partial<Record<Skill, number>>

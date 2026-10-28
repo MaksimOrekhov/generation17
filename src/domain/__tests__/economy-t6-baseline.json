@@ -1,0 +1,6999 @@
+{
+  "base": "3935611896b7830708342d86f849f51326963f03",
+  "runs": [
+    {
+      "seed": 102,
+      "acceptMoments": false,
+      "trace": [
+        [
+          "year",
+          1,
+          3151602152,
+          0,
+          null
+        ],
+        [
+          "year",
+          2,
+          3023719758,
+          0,
+          null
+        ],
+        [
+          "year",
+          3,
+          432435881,
+          0,
+          null
+        ],
+        [
+          "year",
+          4,
+          3967685113,
+          0,
+          "night-fear"
+        ],
+        [
+          "choice",
+          4,
+          "night-fear",
+          2,
+          3967685113
+        ],
+        [
+          "year",
+          5,
+          3839802719,
+          0,
+          null
+        ],
+        [
+          "year",
+          6,
+          3080084655,
+          0,
+          "lost-corridor"
+        ],
+        [
+          "choice",
+          6,
+          "lost-corridor",
+          0,
+          3080084655
+        ],
+        [
+          "year",
+          7,
+          2320366591,
+          0,
+          null
+        ],
+        [
+          "year",
+          8,
+          2192484197,
+          0,
+          null
+        ],
+        [
+          "year",
+          9,
+          1432766133,
+          0,
+          null
+        ],
+        [
+          "year",
+          10,
+          3136449552,
+          0,
+          null
+        ],
+        [
+          "year",
+          11,
+          545165675,
+          0,
+          "friend-accusation"
+        ],
+        [
+          "choice",
+          11,
+          "friend-accusation",
+          2,
+          545165675
+        ],
+        [
+          "year",
+          12,
+          2248849094,
+          0,
+          null
+        ],
+        [
+          "year",
+          13,
+          1489131030,
+          0,
+          null
+        ],
+        [
+          "year",
+          14,
+          729412966,
+          0,
+          "youth-map-corner"
+        ],
+        [
+          "choice",
+          14,
+          "youth-map-corner",
+          2,
+          729412966
+        ],
+        [
+          "year",
+          15,
+          601530572,
+          0,
+          null
+        ],
+        [
+          "year",
+          16,
+          1041542651,
+          1060,
+          "school-track"
+        ],
+        [
+          "choice",
+          16,
+          "school-track",
+          1,
+          1041542651
+        ],
+        [
+          "year",
+          17,
+          913660257,
+          1420,
+          null
+        ],
+        [
+          "year",
+          18,
+          785777863,
+          2120,
+          null
+        ],
+        [
+          "year",
+          19,
+          657895469,
+          2820,
+          null
+        ],
+        [
+          "year",
+          20,
+          1729743218,
+          3520,
+          null
+        ],
+        [
+          "year",
+          21,
+          2801590967,
+          4220,
+          "festival"
+        ],
+        [
+          "choice",
+          21,
+          "festival",
+          0,
+          2801590967
+        ],
+        [
+          "year",
+          22,
+          2673708573,
+          4920,
+          null
+        ],
+        [
+          "year",
+          23,
+          82424696,
+          5870,
+          null
+        ],
+        [
+          "year",
+          24,
+          3617673928,
+          6820,
+          "clinic"
+        ],
+        [
+          "choice",
+          24,
+          "clinic",
+          2,
+          3617673928
+        ],
+        [
+          "year",
+          25,
+          1026390051,
+          7770,
+          null
+        ],
+        [
+          "year",
+          26,
+          898507657,
+          8720,
+          null
+        ],
+        [
+          "year",
+          27,
+          1970355406,
+          9670,
+          null
+        ],
+        [
+          "year",
+          28,
+          3042203155,
+          10620,
+          "friend-return-abandoned"
+        ],
+        [
+          "choice",
+          28,
+          "friend-return-abandoned",
+          2,
+          3042203155
+        ],
+        [
+          "year",
+          29,
+          450919278,
+          11570,
+          null
+        ],
+        [
+          "year",
+          30,
+          2154602697,
+          12520,
+          null
+        ],
+        [
+          "year",
+          31,
+          1394884633,
+          13470,
+          "promotion"
+        ],
+        [
+          "choice",
+          31,
+          "promotion",
+          1,
+          1394884633
+        ],
+        [
+          "year",
+          32,
+          635166569,
+          14420,
+          null
+        ],
+        [
+          "year",
+          33,
+          1707014318,
+          15370,
+          null
+        ],
+        [
+          "year",
+          34,
+          2147026397,
+          16320,
+          "adult-parent-care"
+        ],
+        [
+          "choice",
+          34,
+          "adult-parent-care",
+          0,
+          2147026397
+        ],
+        [
+          "year",
+          35,
+          1387308333,
+          17270,
+          null
+        ],
+        [
+          "year",
+          36,
+          2459156082,
+          18220,
+          "strike"
+        ],
+        [
+          "choice",
+          36,
+          "strike",
+          2,
+          2459156082
+        ],
+        [
+          "year",
+          37,
+          4162839501,
+          19170,
+          null
+        ],
+        [
+          "year",
+          38,
+          2771285767,
+          20120,
+          null
+        ],
+        [
+          "year",
+          39,
+          3843133516,
+          21070,
+          "adult-family-choice"
+        ],
+        [
+          "choice",
+          39,
+          "adult-family-choice",
+          0,
+          3843133516
+        ],
+        [
+          "year",
+          40,
+          2451579782,
+          22020,
+          null
+        ],
+        [
+          "year",
+          41,
+          1691861718,
+          22970,
+          "family-a-life-ahead"
+        ],
+        [
+          "choice",
+          41,
+          "family-a-life-ahead",
+          1,
+          1691861718
+        ],
+        [
+          "year",
+          42,
+          300307984,
+          23920,
+          null
+        ],
+        [
+          "year",
+          43,
+          740320063,
+          24870,
+          "political-crisis"
+        ],
+        [
+          "choice",
+          43,
+          "political-crisis",
+          1,
+          740320063
+        ],
+        [
+          "year",
+          44,
+          1812167812,
+          25820,
+          null
+        ],
+        [
+          "year",
+          45,
+          1052449748,
+          26770,
+          "family-life-ahead-again"
+        ],
+        [
+          "choice",
+          45,
+          "family-life-ahead-again",
+          1,
+          1052449748
+        ],
+        [
+          "year",
+          46,
+          2756133167,
+          27720,
+          null
+        ],
+        [
+          "year",
+          47,
+          1996415103,
+          28670,
+          "census-extra"
+        ],
+        [
+          "choice",
+          47,
+          "census-extra",
+          1,
+          1996415103
+        ],
+        [
+          "year",
+          48,
+          1868532709,
+          29620,
+          null
+        ],
+        [
+          "year",
+          49,
+          1108814645,
+          30570,
+          "census-registry-answer"
+        ],
+        [
+          "choice",
+          49,
+          "census-registry-answer",
+          2,
+          1108814645
+        ],
+        [
+          "year",
+          50,
+          2812498064,
+          31520,
+          null
+        ],
+        [
+          "year",
+          51,
+          2052780000,
+          32470,
+          null
+        ],
+        [
+          "year",
+          52,
+          661226266,
+          33420,
+          "health-scare"
+        ],
+        [
+          "choice",
+          52,
+          "health-scare",
+          2,
+          661226266
+        ],
+        [
+          "year",
+          53,
+          4196475498,
+          34370,
+          null
+        ],
+        [
+          "year",
+          54,
+          1605191621,
+          35320,
+          "census-recording"
+        ],
+        [
+          "choice",
+          54,
+          "census-recording",
+          2,
+          1605191621
+        ],
+        [
+          "year",
+          55,
+          3308875040,
+          36270,
+          null
+        ],
+        [
+          "year",
+          56,
+          1917321306,
+          37220,
+          null
+        ],
+        [
+          "year",
+          57,
+          2989169055,
+          38170,
+          "water-shortage"
+        ],
+        [
+          "choice",
+          57,
+          "water-shortage",
+          1,
+          2989169055
+        ],
+        [
+          "year",
+          58,
+          2229450991,
+          39120,
+          null
+        ],
+        [
+          "year",
+          59,
+          2669463070,
+          40070,
+          "garden-plot"
+        ],
+        [
+          "choice",
+          59,
+          "garden-plot",
+          0,
+          2669463070
+        ],
+        [
+          "year",
+          60,
+          1909745006,
+          41020,
+          null
+        ],
+        [
+          "year",
+          61,
+          1150026942,
+          41970,
+          null
+        ],
+        [
+          "year",
+          62,
+          2221874691,
+          42920,
+          "retirement"
+        ],
+        [
+          "choice",
+          62,
+          "retirement",
+          1,
+          2221874691
+        ],
+        [
+          "year",
+          63,
+          1462156627,
+          43571,
+          null
+        ],
+        [
+          "year",
+          64,
+          702438563,
+          44222,
+          null
+        ],
+        [
+          "year",
+          65,
+          510614972,
+          44873,
+          "legacy"
+        ],
+        [
+          "choice",
+          65,
+          "legacy",
+          0,
+          510614972
+        ],
+        [
+          "year",
+          66,
+          1582462721,
+          45524,
+          null
+        ],
+        [
+          "year",
+          67,
+          2022474800,
+          46175,
+          null
+        ],
+        [
+          "year",
+          68,
+          3094322549,
+          46826,
+          null
+        ],
+        [
+          "year",
+          69,
+          4166170298,
+          47477,
+          null
+        ],
+        [
+          "year",
+          70,
+          311215081,
+          48128,
+          "late-common-room"
+        ],
+        [
+          "choice",
+          70,
+          "late-common-room",
+          2,
+          311215081
+        ],
+        [
+          "year",
+          71,
+          3846464313,
+          48779,
+          null
+        ],
+        [
+          "year",
+          72,
+          3086746249,
+          49430,
+          null
+        ],
+        [
+          "year",
+          73,
+          2327028185,
+          50081,
+          null
+        ],
+        [
+          "year",
+          74,
+          1567310121,
+          50732,
+          "late-medic-routine"
+        ],
+        [
+          "choice",
+          74,
+          "late-medic-routine",
+          2,
+          1567310121
+        ],
+        [
+          "year",
+          75,
+          1439427727,
+          51383,
+          null
+        ],
+        [
+          "year",
+          76,
+          679709663,
+          52034,
+          null
+        ],
+        [
+          "year",
+          77,
+          1119721742,
+          52685,
+          "last-window"
+        ],
+        [
+          "choice",
+          77,
+          "last-window",
+          2,
+          1119721742
+        ],
+        [
+          "year",
+          78,
+          3455240831,
+          53336,
+          null
+        ],
+        [
+          "year",
+          79,
+          1495792624,
+          53987,
+          null
+        ],
+        [
+          "year",
+          80,
+          1999745900,
+          54638,
+          null
+        ],
+        [
+          "year",
+          81,
+          40297693,
+          54964,
+          null
+        ],
+        [
+          "year",
+          82,
+          544250969,
+          55290,
+          null
+        ],
+        [
+          "year",
+          83,
+          2879770058,
+          55616,
+          null
+        ],
+        [
+          "year",
+          84,
+          3383723334,
+          55942,
+          null
+        ],
+        [
+          "year",
+          85,
+          2056110797,
+          56268,
+          null
+        ],
+        [
+          "year",
+          86,
+          3191899743,
+          56594,
+          null
+        ],
+        [
+          "year",
+          87,
+          32721393,
+          56920,
+          null
+        ],
+        [
+          "year",
+          88,
+          3000076152,
+          57246,
+          null
+        ],
+        [
+          "year",
+          89,
+          1040627945,
+          57572,
+          null
+        ],
+        [
+          "year",
+          90,
+          2176416891,
+          57898,
+          null
+        ],
+        [
+          "year",
+          91,
+          3312205837,
+          58224,
+          null
+        ],
+        [
+          "year",
+          92,
+          153027487,
+          58550,
+          null
+        ],
+        [
+          "year",
+          93,
+          1920652103,
+          58876,
+          null
+        ],
+        [
+          "year",
+          94,
+          1224875236,
+          59202,
+          null
+        ],
+        [
+          "year",
+          95,
+          2992499852,
+          59528,
+          null
+        ],
+        [
+          "year",
+          96,
+          2296722985,
+          59854,
+          null
+        ],
+        [
+          "year",
+          97,
+          4064347601,
+          60180,
+          null
+        ],
+        [
+          "year",
+          98,
+          3368570734,
+          60506,
+          null
+        ],
+        [
+          "year",
+          99,
+          841228054,
+          60832,
+          null
+        ],
+        [
+          "year",
+          100,
+          145451187,
+          61158,
+          null
+        ]
+      ],
+      "final": {
+        "age": 100,
+        "rng": 145451187,
+        "economy": {
+          "v": 1,
+          "balance": 61158,
+          "work": {
+            "kind": "retired",
+            "load": 1,
+            "grade": 2,
+            "jobSince": 16,
+            "gradeSince": 22,
+            "courses": 0,
+            "service": 45,
+            "lastWage": 1300,
+            "until": null,
+            "path": "mentor",
+            "deferYears": 0,
+            "mentor": false,
+            "post": "none",
+            "job": "Медик"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 100,
+          "years": [
+            {
+              "age": 21,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4220
+            },
+            {
+              "age": 22,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4920
+            },
+            {
+              "age": 23,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 5870
+            },
+            {
+              "age": 24,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 6820
+            },
+            {
+              "age": 25,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 7770
+            },
+            {
+              "age": 26,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 8720
+            },
+            {
+              "age": 27,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 9670
+            },
+            {
+              "age": 28,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 10620
+            },
+            {
+              "age": 29,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 11570
+            },
+            {
+              "age": 30,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 12520
+            },
+            {
+              "age": 31,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 13470
+            },
+            {
+              "age": 32,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 14420
+            },
+            {
+              "age": 33,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 15370
+            },
+            {
+              "age": 34,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 16320
+            },
+            {
+              "age": 35,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 17270
+            },
+            {
+              "age": 36,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 18220
+            },
+            {
+              "age": 37,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 19170
+            },
+            {
+              "age": 38,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 20120
+            },
+            {
+              "age": 39,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 21070
+            },
+            {
+              "age": 40,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22020
+            },
+            {
+              "age": 41,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22970
+            },
+            {
+              "age": 42,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 23920
+            },
+            {
+              "age": 43,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 24870
+            },
+            {
+              "age": 44,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 25820
+            },
+            {
+              "age": 45,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 26770
+            },
+            {
+              "age": 46,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 27720
+            },
+            {
+              "age": 47,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 28670
+            },
+            {
+              "age": 48,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 29620
+            },
+            {
+              "age": 49,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 30570
+            },
+            {
+              "age": 50,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 31520
+            },
+            {
+              "age": 51,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 32470
+            },
+            {
+              "age": 52,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 33420
+            },
+            {
+              "age": 53,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 34370
+            },
+            {
+              "age": 54,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 35320
+            },
+            {
+              "age": 55,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 36270
+            },
+            {
+              "age": 56,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 37220
+            },
+            {
+              "age": 57,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 38170
+            },
+            {
+              "age": 58,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 39120
+            },
+            {
+              "age": 59,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 40070
+            },
+            {
+              "age": 60,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41020
+            },
+            {
+              "age": 61,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41970
+            },
+            {
+              "age": 62,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 42920
+            },
+            {
+              "age": 63,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 43571
+            },
+            {
+              "age": 64,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 44222
+            },
+            {
+              "age": 65,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 44873
+            },
+            {
+              "age": 66,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 45524
+            },
+            {
+              "age": 67,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 46175
+            },
+            {
+              "age": 68,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 46826
+            },
+            {
+              "age": 69,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 47477
+            },
+            {
+              "age": 70,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48128
+            },
+            {
+              "age": 71,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48779
+            },
+            {
+              "age": 72,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 49430
+            },
+            {
+              "age": 73,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 50081
+            },
+            {
+              "age": 74,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 50732
+            },
+            {
+              "age": 75,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 51383
+            },
+            {
+              "age": 76,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 52034
+            },
+            {
+              "age": 77,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 52685
+            },
+            {
+              "age": 78,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 53336
+            },
+            {
+              "age": 79,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 53987
+            },
+            {
+              "age": 80,
+              "wage": 325,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 54638
+            },
+            {
+              "age": 81,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 54964
+            },
+            {
+              "age": 82,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 55290
+            },
+            {
+              "age": 83,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 55616
+            },
+            {
+              "age": 84,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 55942
+            },
+            {
+              "age": 85,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 56268
+            },
+            {
+              "age": 86,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 56594
+            },
+            {
+              "age": 87,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 56920
+            },
+            {
+              "age": 88,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 57246
+            },
+            {
+              "age": 89,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 57572
+            },
+            {
+              "age": 90,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 57898
+            },
+            {
+              "age": 91,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 58224
+            },
+            {
+              "age": 92,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 58550
+            },
+            {
+              "age": 93,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 58876
+            },
+            {
+              "age": 94,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59202
+            },
+            {
+              "age": 95,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59528
+            },
+            {
+              "age": 96,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59854
+            },
+            {
+              "age": 97,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60180
+            },
+            {
+              "age": 98,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60506
+            },
+            {
+              "age": 99,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60832
+            },
+            {
+              "age": 100,
+              "wage": 0,
+              "pension": 676,
+              "bills": 350,
+              "aid": 0,
+              "balance": 61158
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 16,
+              "kind": "start",
+              "ref": "",
+              "label": "start",
+              "amount": 700
+            },
+            {
+              "n": 2,
+              "age": 100,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 61158
+            }
+          ],
+          "nextTxn": 3,
+          "totals": {
+            "earned": 89508,
+            "spent": 29050,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 61158
+        },
+        "stats": {
+          "health": 24.805000000000014,
+          "morale": 49.939847219680296,
+          "stress": 47.281786600844434,
+          "knowledge": 100,
+          "bonds": 0,
+          "reputation": 39.800000000000125
+        },
+        "flags": {
+          "familyHealthRisk": false,
+          "nightFear": true,
+          "lostCorridor": true,
+          "abandonedFriend": true,
+          "trackChosen": true,
+          "festivalVisited": true,
+          "friendReturn": true,
+          "friendState": "estranged",
+          "promotion": "recommended",
+          "adultParentCare": "sharedCare",
+          "adultParentCareAge": 34,
+          "strike": true,
+          "adultFamilyPlan": "applied",
+          "adultFamilyPlanAge": 39,
+          "familyChild": "declined",
+          "familyChildAge": 45,
+          "shipIncidentAge": 91,
+          "courseVote": true,
+          "census": "report",
+          "censusAge": 47,
+          "censusStage": "recorded",
+          "censusStageAge": 49,
+          "healthScare": "ignored",
+          "waterChoice": true,
+          "gardenPlot": "own",
+          "retirement": true,
+          "retirementPath": "mentor",
+          "mentored": true,
+          "legacyRecorded": "people",
+          "lastWindow": "home",
+          "livingTogether": false
+        }
+      }
+    },
+    {
+      "seed": 102,
+      "acceptMoments": true,
+      "trace": [
+        [
+          "moment",
+          0,
+          "m-lullaby"
+        ],
+        [
+          "year",
+          1,
+          3151602152,
+          0,
+          null
+        ],
+        [
+          "moment",
+          1,
+          "m-first-word"
+        ],
+        [
+          "year",
+          2,
+          3023719758,
+          0,
+          null
+        ],
+        [
+          "moment",
+          2,
+          "m-first-steps"
+        ],
+        [
+          "year",
+          3,
+          432435881,
+          0,
+          null
+        ],
+        [
+          "moment",
+          3,
+          "m-window-child"
+        ],
+        [
+          "year",
+          4,
+          3967685113,
+          0,
+          "night-fear"
+        ],
+        [
+          "choice",
+          4,
+          "night-fear",
+          2,
+          3967685113
+        ],
+        [
+          "moment",
+          4,
+          "m-story"
+        ],
+        [
+          "year",
+          5,
+          3839802719,
+          0,
+          null
+        ],
+        [
+          "moment",
+          5,
+          "m-laundry"
+        ],
+        [
+          "year",
+          6,
+          3080084655,
+          0,
+          "lost-corridor"
+        ],
+        [
+          "choice",
+          6,
+          "lost-corridor",
+          0,
+          3080084655
+        ],
+        [
+          "moment",
+          6,
+          "m-sibling"
+        ],
+        [
+          "moment",
+          6,
+          "m-friend-run"
+        ],
+        [
+          "year",
+          7,
+          2320366591,
+          0,
+          null
+        ],
+        [
+          "year",
+          8,
+          2192484197,
+          0,
+          null
+        ],
+        [
+          "moment",
+          8,
+          "m-neighbor-radio"
+        ],
+        [
+          "moment",
+          8,
+          "m-terminal-copy"
+        ],
+        [
+          "year",
+          9,
+          1432766133,
+          0,
+          null
+        ],
+        [
+          "moment",
+          9,
+          "m-snack"
+        ],
+        [
+          "year",
+          10,
+          3136449552,
+          0,
+          null
+        ],
+        [
+          "year",
+          11,
+          545165675,
+          0,
+          "friend-accusation"
+        ],
+        [
+          "choice",
+          11,
+          "friend-accusation",
+          2,
+          545165675
+        ],
+        [
+          "moment",
+          11,
+          "m-laundry"
+        ],
+        [
+          "moment",
+          11,
+          "m-fogged-glass"
+        ],
+        [
+          "year",
+          12,
+          2248849094,
+          0,
+          null
+        ],
+        [
+          "moment",
+          12,
+          "m-friend-grudge"
+        ],
+        [
+          "moment",
+          12,
+          "m-neighbor-radio"
+        ],
+        [
+          "year",
+          13,
+          1489131030,
+          0,
+          null
+        ],
+        [
+          "year",
+          14,
+          729412966,
+          0,
+          "youth-map-corner"
+        ],
+        [
+          "choice",
+          14,
+          "youth-map-corner",
+          2,
+          729412966
+        ],
+        [
+          "moment",
+          14,
+          "m-night-archive"
+        ],
+        [
+          "year",
+          15,
+          601530572,
+          0,
+          null
+        ],
+        [
+          "moment",
+          15,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          16,
+          1041542651,
+          1060,
+          "school-track"
+        ],
+        [
+          "choice",
+          16,
+          "school-track",
+          1,
+          1041542651
+        ],
+        [
+          "moment",
+          16,
+          "m-sprout"
+        ],
+        [
+          "year",
+          17,
+          913660257,
+          1420,
+          null
+        ],
+        [
+          "year",
+          18,
+          785777863,
+          2120,
+          null
+        ],
+        [
+          "year",
+          19,
+          657895469,
+          2820,
+          null
+        ],
+        [
+          "moment",
+          19,
+          "m-call-parent"
+        ],
+        [
+          "moment",
+          19,
+          "m-curfew"
+        ],
+        [
+          "moment",
+          19,
+          "m-chalk-marks"
+        ],
+        [
+          "year",
+          20,
+          1729743218,
+          3520,
+          null
+        ],
+        [
+          "moment",
+          20,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          21,
+          2801590967,
+          4220,
+          "water-shortage"
+        ],
+        [
+          "choice",
+          21,
+          "water-shortage",
+          2,
+          2801590967
+        ],
+        [
+          "moment",
+          21,
+          "m-lamp"
+        ],
+        [
+          "year",
+          22,
+          2673708573,
+          4920,
+          null
+        ],
+        [
+          "moment",
+          22,
+          "m-friend-call"
+        ],
+        [
+          "year",
+          23,
+          82424696,
+          5870,
+          null
+        ],
+        [
+          "moment",
+          23,
+          "m-mentor-schema"
+        ],
+        [
+          "year",
+          24,
+          3617673928,
+          6820,
+          "clinic"
+        ],
+        [
+          "choice",
+          24,
+          "clinic",
+          2,
+          3617673928
+        ],
+        [
+          "moment",
+          24,
+          "m-window-evening"
+        ],
+        [
+          "moment",
+          24,
+          "m-lamp"
+        ],
+        [
+          "year",
+          25,
+          1026390051,
+          7770,
+          null
+        ],
+        [
+          "year",
+          26,
+          898507657,
+          8720,
+          null
+        ],
+        [
+          "moment",
+          26,
+          "m-radio-wall"
+        ],
+        [
+          "moment",
+          26,
+          "m-night-footsteps"
+        ],
+        [
+          "year",
+          27,
+          1970355406,
+          9670,
+          null
+        ],
+        [
+          "moment",
+          27,
+          "m-ship-notice"
+        ],
+        [
+          "moment",
+          27,
+          "m-call-parent"
+        ],
+        [
+          "year",
+          28,
+          3042203155,
+          10620,
+          "friend-return-abandoned"
+        ],
+        [
+          "choice",
+          28,
+          "friend-return-abandoned",
+          2,
+          3042203155
+        ],
+        [
+          "moment",
+          28,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          29,
+          450919278,
+          11570,
+          null
+        ],
+        [
+          "year",
+          30,
+          2154602697,
+          12520,
+          null
+        ],
+        [
+          "year",
+          31,
+          1394884633,
+          13470,
+          "mentor"
+        ],
+        [
+          "choice",
+          31,
+          "mentor",
+          1,
+          1394884633
+        ],
+        [
+          "moment",
+          31,
+          "m-lamp"
+        ],
+        [
+          "year",
+          32,
+          635166569,
+          14420,
+          null
+        ],
+        [
+          "moment",
+          32,
+          "m-job-medic"
+        ],
+        [
+          "year",
+          33,
+          1707014318,
+          15370,
+          null
+        ],
+        [
+          "moment",
+          33,
+          "m-spare-ration"
+        ],
+        [
+          "moment",
+          33,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          34,
+          2147026397,
+          16320,
+          "adult-shift-error"
+        ],
+        [
+          "choice",
+          34,
+          "adult-shift-error",
+          0,
+          2147026397
+        ],
+        [
+          "year",
+          35,
+          1387308333,
+          17270,
+          null
+        ],
+        [
+          "year",
+          36,
+          2459156082,
+          18220,
+          "signal"
+        ],
+        [
+          "choice",
+          36,
+          "signal",
+          1,
+          2459156082
+        ],
+        [
+          "year",
+          37,
+          4162839501,
+          19170,
+          null
+        ],
+        [
+          "moment",
+          37,
+          "m-adult-shift-reported"
+        ],
+        [
+          "moment",
+          37,
+          "m-job-medic"
+        ],
+        [
+          "year",
+          38,
+          2771285767,
+          20120,
+          null
+        ],
+        [
+          "year",
+          39,
+          3843133516,
+          21070,
+          "adult-sector-repair"
+        ],
+        [
+          "choice",
+          39,
+          "adult-sector-repair",
+          2,
+          3843133516
+        ],
+        [
+          "moment",
+          39,
+          "m-tiredness"
+        ],
+        [
+          "moment",
+          39,
+          "m-lights-sync"
+        ],
+        [
+          "year",
+          40,
+          2451579782,
+          22020,
+          null
+        ],
+        [
+          "year",
+          41,
+          1691861718,
+          22970,
+          "signal-rumor-circle"
+        ],
+        [
+          "choice",
+          41,
+          "signal-rumor-circle",
+          1,
+          1691861718
+        ],
+        [
+          "moment",
+          41,
+          "m-sibling"
+        ],
+        [
+          "year",
+          42,
+          300307984,
+          23920,
+          null
+        ],
+        [
+          "moment",
+          42,
+          "m-mentor-schema"
+        ],
+        [
+          "year",
+          43,
+          740320063,
+          24870,
+          "midlife"
+        ],
+        [
+          "choice",
+          43,
+          "midlife",
+          2,
+          740320063
+        ],
+        [
+          "moment",
+          43,
+          "m-signal-rumor"
+        ],
+        [
+          "year",
+          44,
+          1812167812,
+          25820,
+          null
+        ],
+        [
+          "moment",
+          44,
+          "m-new-neighbors"
+        ],
+        [
+          "year",
+          45,
+          420614078,
+          26770,
+          "political-crisis"
+        ],
+        [
+          "choice",
+          45,
+          "political-crisis",
+          0,
+          420614078
+        ],
+        [
+          "year",
+          46,
+          292731684,
+          27720,
+          null
+        ],
+        [
+          "moment",
+          46,
+          "m-neighbor-tool"
+        ],
+        [
+          "year",
+          47,
+          1996415103,
+          28670,
+          "signal-circle-warned"
+        ],
+        [
+          "choice",
+          47,
+          "signal-circle-warned",
+          1,
+          1996415103
+        ],
+        [
+          "year",
+          48,
+          1868532709,
+          29620,
+          null
+        ],
+        [
+          "moment",
+          48,
+          "m-spare-ration"
+        ],
+        [
+          "year",
+          49,
+          2940380458,
+          30570,
+          null
+        ],
+        [
+          "moment",
+          49,
+          "m-registry-blank"
+        ],
+        [
+          "year",
+          50,
+          4012228207,
+          31520,
+          "apprentice"
+        ],
+        [
+          "choice",
+          50,
+          "apprentice",
+          2,
+          4012228207
+        ],
+        [
+          "moment",
+          50,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          51,
+          1420944330,
+          32470,
+          null
+        ],
+        [
+          "moment",
+          51,
+          "m-job-medic"
+        ],
+        [
+          "moment",
+          51,
+          "m-ship-notice"
+        ],
+        [
+          "year",
+          52,
+          2492792079,
+          33420,
+          null
+        ],
+        [
+          "moment",
+          52,
+          "m-sibling"
+        ],
+        [
+          "year",
+          53,
+          1733074015,
+          34370,
+          null
+        ],
+        [
+          "moment",
+          53,
+          "m-lights-sync"
+        ],
+        [
+          "year",
+          54,
+          2804921764,
+          35320,
+          "health-scare"
+        ],
+        [
+          "choice",
+          54,
+          "health-scare",
+          2,
+          2804921764
+        ],
+        [
+          "moment",
+          54,
+          "m-work-queue"
+        ],
+        [
+          "moment",
+          54,
+          "m-tiredness"
+        ],
+        [
+          "year",
+          55,
+          2045203700,
+          36270,
+          null
+        ],
+        [
+          "moment",
+          55,
+          "m-old-photo"
+        ],
+        [
+          "year",
+          56,
+          3117051449,
+          37220,
+          null
+        ],
+        [
+          "moment",
+          56,
+          "m-night-deck"
+        ],
+        [
+          "moment",
+          56,
+          "m-coworker"
+        ],
+        [
+          "year",
+          57,
+          3557063528,
+          38170,
+          "garden-plot"
+        ],
+        [
+          "choice",
+          57,
+          "garden-plot",
+          1,
+          3557063528
+        ],
+        [
+          "moment",
+          57,
+          "m-garden-plot"
+        ],
+        [
+          "moment",
+          57,
+          "m-sibling"
+        ],
+        [
+          "year",
+          58,
+          333943981,
+          39120,
+          null
+        ],
+        [
+          "moment",
+          58,
+          "m-old-storyteller"
+        ],
+        [
+          "year",
+          59,
+          1405791730,
+          40070,
+          "festival"
+        ],
+        [
+          "choice",
+          59,
+          "festival",
+          2,
+          1405791730
+        ],
+        [
+          "moment",
+          59,
+          "m-spare-ration"
+        ],
+        [
+          "year",
+          60,
+          646073666,
+          41020,
+          null
+        ],
+        [
+          "moment",
+          60,
+          "m-work-queue"
+        ],
+        [
+          "year",
+          61,
+          1717921415,
+          41970,
+          null
+        ],
+        [
+          "year",
+          62,
+          958203351,
+          42920,
+          null
+        ],
+        [
+          "moment",
+          62,
+          "m-job-medic"
+        ],
+        [
+          "moment",
+          62,
+          "m-slow-walk"
+        ],
+        [
+          "year",
+          63,
+          3229781243,
+          43870,
+          "strike"
+        ],
+        [
+          "choice",
+          63,
+          "strike",
+          2,
+          3229781243
+        ],
+        [
+          "year",
+          64,
+          638497366,
+          44820,
+          null
+        ],
+        [
+          "moment",
+          64,
+          "m-window-evening"
+        ],
+        [
+          "moment",
+          64,
+          "m-lamp"
+        ],
+        [
+          "moment",
+          64,
+          "m-memory"
+        ],
+        [
+          "year",
+          65,
+          2910075258,
+          45770,
+          null
+        ],
+        [
+          "year",
+          66,
+          1518521524,
+          46720,
+          "retirement"
+        ],
+        [
+          "choice",
+          66,
+          "retirement",
+          0,
+          1518521524
+        ],
+        [
+          "moment",
+          66,
+          "m-late-light"
+        ],
+        [
+          "moment",
+          66,
+          "m-ship-notice"
+        ],
+        [
+          "year",
+          67,
+          126967790,
+          47154,
+          null
+        ],
+        [
+          "moment",
+          67,
+          "m-registry-blank"
+        ],
+        [
+          "year",
+          68,
+          3030381352,
+          47588,
+          null
+        ],
+        [
+          "year",
+          69,
+          1638827618,
+          48022,
+          "late-medic-routine"
+        ],
+        [
+          "choice",
+          69,
+          "late-medic-routine",
+          1,
+          1638827618
+        ],
+        [
+          "moment",
+          69,
+          "m-kids-stories"
+        ],
+        [
+          "moment",
+          69,
+          "m-late-quiet"
+        ],
+        [
+          "moment",
+          69,
+          "m-late-recipe"
+        ],
+        [
+          "year",
+          70,
+          3910405510,
+          48456,
+          null
+        ],
+        [
+          "year",
+          71,
+          687285963,
+          48890,
+          null
+        ],
+        [
+          "moment",
+          71,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          72,
+          1759133712,
+          49324,
+          null
+        ]
+      ],
+      "final": {
+        "age": 72,
+        "rng": 1759133712,
+        "economy": {
+          "v": 1,
+          "balance": 49324,
+          "work": {
+            "kind": "retired",
+            "load": 1,
+            "grade": 2,
+            "jobSince": 16,
+            "gradeSince": 22,
+            "courses": 0,
+            "service": 49,
+            "lastWage": 1300,
+            "until": null,
+            "path": "left",
+            "deferYears": 4,
+            "mentor": false,
+            "post": "none",
+            "job": "Медик"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 72,
+          "years": [
+            {
+              "age": 1,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 2,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 3,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 4,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 5,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 6,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 7,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 8,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 9,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 10,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 11,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 12,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 13,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 14,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 15,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 16,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 1060
+            },
+            {
+              "age": 17,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 1420
+            },
+            {
+              "age": 18,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 2120
+            },
+            {
+              "age": 19,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 2820
+            },
+            {
+              "age": 20,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 3520
+            },
+            {
+              "age": 21,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4220
+            },
+            {
+              "age": 22,
+              "wage": 1050,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4920
+            },
+            {
+              "age": 23,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 5870
+            },
+            {
+              "age": 24,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 6820
+            },
+            {
+              "age": 25,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 7770
+            },
+            {
+              "age": 26,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 8720
+            },
+            {
+              "age": 27,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 9670
+            },
+            {
+              "age": 28,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 10620
+            },
+            {
+              "age": 29,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 11570
+            },
+            {
+              "age": 30,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 12520
+            },
+            {
+              "age": 31,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 13470
+            },
+            {
+              "age": 32,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 14420
+            },
+            {
+              "age": 33,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 15370
+            },
+            {
+              "age": 34,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 16320
+            },
+            {
+              "age": 35,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 17270
+            },
+            {
+              "age": 36,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 18220
+            },
+            {
+              "age": 37,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 19170
+            },
+            {
+              "age": 38,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 20120
+            },
+            {
+              "age": 39,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 21070
+            },
+            {
+              "age": 40,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22020
+            },
+            {
+              "age": 41,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22970
+            },
+            {
+              "age": 42,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 23920
+            },
+            {
+              "age": 43,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 24870
+            },
+            {
+              "age": 44,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 25820
+            },
+            {
+              "age": 45,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 26770
+            },
+            {
+              "age": 46,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 27720
+            },
+            {
+              "age": 47,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 28670
+            },
+            {
+              "age": 48,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 29620
+            },
+            {
+              "age": 49,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 30570
+            },
+            {
+              "age": 50,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 31520
+            },
+            {
+              "age": 51,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 32470
+            },
+            {
+              "age": 52,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 33420
+            },
+            {
+              "age": 53,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 34370
+            },
+            {
+              "age": 54,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 35320
+            },
+            {
+              "age": 55,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 36270
+            },
+            {
+              "age": 56,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 37220
+            },
+            {
+              "age": 57,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 38170
+            },
+            {
+              "age": 58,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 39120
+            },
+            {
+              "age": 59,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 40070
+            },
+            {
+              "age": 60,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41020
+            },
+            {
+              "age": 61,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41970
+            },
+            {
+              "age": 62,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 42920
+            },
+            {
+              "age": 63,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 43870
+            },
+            {
+              "age": 64,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 44820
+            },
+            {
+              "age": 65,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 45770
+            },
+            {
+              "age": 66,
+              "wage": 1300,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 46720
+            },
+            {
+              "age": 67,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 47154
+            },
+            {
+              "age": 68,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 47588
+            },
+            {
+              "age": 69,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48022
+            },
+            {
+              "age": 70,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48456
+            },
+            {
+              "age": 71,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48890
+            },
+            {
+              "age": 72,
+              "wage": 0,
+              "pension": 784,
+              "bills": 350,
+              "aid": 0,
+              "balance": 49324
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 16,
+              "kind": "start",
+              "ref": "",
+              "label": "start",
+              "amount": 700
+            },
+            {
+              "n": 2,
+              "age": 72,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 49324
+            }
+          ],
+          "nextTxn": 3,
+          "totals": {
+            "earned": 67874,
+            "spent": 19250,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 49324
+        },
+        "stats": {
+          "health": 61.55037673713431,
+          "morale": 65.02980052717189,
+          "stress": 22.62477739288575,
+          "knowledge": 100,
+          "bonds": 17.526230096718614,
+          "reputation": 54.45762500000014
+        },
+        "flags": {
+          "familyHealthRisk": false,
+          "destinationCurious": true,
+          "nightFear": true,
+          "lostCorridor": true,
+          "archiveCopy": true,
+          "abandonedFriend": true,
+          "trackChosen": true,
+          "waterChoice": true,
+          "friendReturn": true,
+          "friendState": "estranged",
+          "mentorTalk": true,
+          "adultShiftRecord": "reported",
+          "adultShiftRecordAge": 34,
+          "heardSignal": true,
+          "signalAge": 36,
+          "adultRepairVote": "splitWork",
+          "adultRepairVoteAge": 39,
+          "signalCircle": "warned",
+          "signalStageAge": 41,
+          "shipIncidentAge": 70,
+          "midlife": true,
+          "courseVote": true,
+          "mentored": false,
+          "healthScare": "ignored",
+          "gardenPlot": "shared",
+          "festivalVisited": true,
+          "strike": true,
+          "retirement": true,
+          "retirementPath": "left"
+        }
+      }
+    },
+    {
+      "seed": 17303,
+      "acceptMoments": false,
+      "trace": [
+        [
+          "year",
+          1,
+          1320053540,
+          0,
+          null
+        ],
+        [
+          "year",
+          2,
+          3023736959,
+          0,
+          null
+        ],
+        [
+          "year",
+          3,
+          2264018895,
+          0,
+          null
+        ],
+        [
+          "year",
+          4,
+          2136136501,
+          0,
+          "night-fear"
+        ],
+        [
+          "choice",
+          4,
+          "night-fear",
+          1,
+          2136136501
+        ],
+        [
+          "year",
+          5,
+          2008254107,
+          0,
+          null
+        ],
+        [
+          "year",
+          6,
+          48805900,
+          0,
+          null
+        ],
+        [
+          "year",
+          7,
+          3584055132,
+          0,
+          "child-library"
+        ],
+        [
+          "choice",
+          7,
+          "child-library",
+          1,
+          3584055132
+        ],
+        [
+          "year",
+          8,
+          1624606925,
+          0,
+          null
+        ],
+        [
+          "year",
+          9,
+          1496724531,
+          0,
+          "friend-accusation"
+        ],
+        [
+          "choice",
+          9,
+          "friend-accusation",
+          1,
+          1496724531
+        ],
+        [
+          "year",
+          10,
+          3832243620,
+          0,
+          null
+        ],
+        [
+          "year",
+          11,
+          3704361226,
+          0,
+          null
+        ],
+        [
+          "year",
+          12,
+          1744913019,
+          0,
+          null
+        ],
+        [
+          "year",
+          13,
+          4080432108,
+          0,
+          null
+        ],
+        [
+          "year",
+          14,
+          3320714044,
+          0,
+          "youth-shared-notes"
+        ],
+        [
+          "choice",
+          14,
+          "youth-shared-notes",
+          1,
+          3320714044
+        ],
+        [
+          "year",
+          15,
+          1361265837,
+          0,
+          null
+        ],
+        [
+          "year",
+          16,
+          4264679399,
+          560,
+          "school-track"
+        ],
+        [
+          "choice",
+          16,
+          "school-track",
+          0,
+          4264679399
+        ],
+        [
+          "year",
+          17,
+          2305231192,
+          920,
+          null
+        ],
+        [
+          "year",
+          18,
+          2177348798,
+          1670,
+          null
+        ],
+        [
+          "year",
+          19,
+          2049466404,
+          2420,
+          null
+        ],
+        [
+          "year",
+          20,
+          1921584010,
+          3170,
+          "youth-first-duty"
+        ],
+        [
+          "choice",
+          20,
+          "youth-first-duty",
+          1,
+          1921584010
+        ],
+        [
+          "year",
+          21,
+          4257103099,
+          3920,
+          null
+        ],
+        [
+          "year",
+          22,
+          4129220705,
+          4920,
+          null
+        ],
+        [
+          "year",
+          23,
+          3369502641,
+          5920,
+          "microcrack"
+        ],
+        [
+          "choice",
+          23,
+          "microcrack",
+          0,
+          3369502641
+        ],
+        [
+          "year",
+          24,
+          1410054434,
+          6920,
+          null
+        ],
+        [
+          "year",
+          25,
+          1282172040,
+          7920,
+          null
+        ],
+        [
+          "year",
+          26,
+          522453976,
+          8920,
+          "festival"
+        ],
+        [
+          "choice",
+          26,
+          "festival",
+          2,
+          522453976
+        ],
+        [
+          "year",
+          27,
+          1026407252,
+          9920,
+          null
+        ],
+        [
+          "year",
+          28,
+          2730090671,
+          10920,
+          "friend-return-quiet"
+        ],
+        [
+          "choice",
+          28,
+          "friend-return-quiet",
+          2,
+          2730090671
+        ],
+        [
+          "year",
+          29,
+          770642464,
+          11920,
+          null
+        ],
+        [
+          "year",
+          30,
+          3106161553,
+          12920,
+          "crack-report-hearing"
+        ],
+        [
+          "choice",
+          30,
+          "crack-report-hearing",
+          2,
+          3106161553
+        ],
+        [
+          "year",
+          31,
+          1146713346,
+          13920,
+          null
+        ],
+        [
+          "year",
+          32,
+          3482232435,
+          14920,
+          "crack-recurrence"
+        ],
+        [
+          "choice",
+          32,
+          "crack-recurrence",
+          1,
+          3482232435
+        ],
+        [
+          "year",
+          33,
+          3354350041,
+          15920,
+          null
+        ],
+        [
+          "year",
+          34,
+          2594631977,
+          16920,
+          "adult-sector-repair"
+        ],
+        [
+          "choice",
+          34,
+          "adult-sector-repair",
+          2,
+          2594631977
+        ],
+        [
+          "year",
+          35,
+          3348100,
+          18082,
+          null
+        ],
+        [
+          "year",
+          36,
+          1707031519,
+          19082,
+          "friend-crisis-close"
+        ],
+        [
+          "choice",
+          36,
+          "friend-crisis-close",
+          2,
+          1707031519
+        ],
+        [
+          "year",
+          37,
+          1579149125,
+          20082,
+          null
+        ],
+        [
+          "year",
+          38,
+          3282832544,
+          21082,
+          null
+        ],
+        [
+          "year",
+          39,
+          1891278810,
+          22082,
+          "adult-family-choice"
+        ],
+        [
+          "choice",
+          39,
+          "adult-family-choice",
+          1,
+          1891278810
+        ],
+        [
+          "year",
+          40,
+          1131560746,
+          23082,
+          null
+        ],
+        [
+          "year",
+          41,
+          371842682,
+          24082,
+          null
+        ],
+        [
+          "year",
+          42,
+          2643420574,
+          25082,
+          "relationship"
+        ],
+        [
+          "choice",
+          42,
+          "relationship",
+          1,
+          2643420574
+        ],
+        [
+          "year",
+          43,
+          3715268323,
+          26082,
+          null
+        ],
+        [
+          "year",
+          44,
+          2955550259,
+          27082,
+          null
+        ],
+        [
+          "year",
+          45,
+          1563996525,
+          28082,
+          null
+        ],
+        [
+          "year",
+          46,
+          2635844274,
+          29082,
+          "census-extra"
+        ],
+        [
+          "choice",
+          46,
+          "census-extra",
+          0,
+          2635844274
+        ],
+        [
+          "year",
+          47,
+          1876126210,
+          30082,
+          null
+        ],
+        [
+          "year",
+          48,
+          2947973959,
+          31082,
+          "census-sealed-cabin"
+        ],
+        [
+          "choice",
+          48,
+          "census-sealed-cabin",
+          1,
+          2947973959
+        ],
+        [
+          "year",
+          49,
+          4019821708,
+          32082,
+          null
+        ],
+        [
+          "year",
+          50,
+          796702161,
+          33082,
+          "census-correspondence"
+        ],
+        [
+          "choice",
+          50,
+          "census-correspondence",
+          1,
+          796702161
+        ],
+        [
+          "year",
+          51,
+          2500385580,
+          34082,
+          null
+        ],
+        [
+          "year",
+          52,
+          3572233329,
+          35082,
+          "census-petition-answer"
+        ],
+        [
+          "choice",
+          52,
+          "census-petition-answer",
+          1,
+          3572233329
+        ],
+        [
+          "year",
+          53,
+          2812515265,
+          36082,
+          null
+        ],
+        [
+          "year",
+          54,
+          221231388,
+          37082,
+          "love-friends-union"
+        ],
+        [
+          "choice",
+          54,
+          "love-friends-union",
+          0,
+          221231388
+        ],
+        [
+          "year",
+          55,
+          1924914807,
+          38082,
+          null
+        ],
+        [
+          "year",
+          56,
+          533361073,
+          39082,
+          null
+        ],
+        [
+          "year",
+          57,
+          3436774635,
+          40082,
+          null
+        ],
+        [
+          "year",
+          58,
+          2045220901,
+          41082,
+          null
+        ],
+        [
+          "year",
+          59,
+          2485232980,
+          42082,
+          "political-crisis"
+        ],
+        [
+          "choice",
+          59,
+          "political-crisis",
+          2,
+          2485232980
+        ],
+        [
+          "year",
+          60,
+          3557080729,
+          43082,
+          null
+        ],
+        [
+          "year",
+          61,
+          2165526995,
+          44082,
+          null
+        ],
+        [
+          "year",
+          62,
+          3237374744,
+          45082,
+          "garden-plot"
+        ],
+        [
+          "choice",
+          62,
+          "garden-plot",
+          0,
+          3237374744
+        ],
+        [
+          "year",
+          63,
+          14255197,
+          46082,
+          null
+        ],
+        [
+          "year",
+          64,
+          1086102946,
+          47082,
+          null
+        ],
+        [
+          "year",
+          65,
+          3989516508,
+          48082,
+          "old-friend"
+        ],
+        [
+          "choice",
+          65,
+          "old-friend",
+          2,
+          3989516508
+        ],
+        [
+          "year",
+          66,
+          3229798444,
+          49082,
+          null
+        ],
+        [
+          "year",
+          67,
+          1838244710,
+          50082,
+          "legacy"
+        ],
+        [
+          "choice",
+          67,
+          "legacy",
+          1,
+          1838244710
+        ],
+        [
+          "year",
+          68,
+          1078526646,
+          51082,
+          null
+        ],
+        [
+          "year",
+          69,
+          1518538725,
+          52082,
+          "late-tech-handbook"
+        ],
+        [
+          "choice",
+          69,
+          "late-tech-handbook",
+          0,
+          1518538725
+        ],
+        [
+          "year",
+          70,
+          2590386474,
+          53082,
+          null
+        ],
+        [
+          "year",
+          71,
+          1830668410,
+          54082,
+          null
+        ],
+        [
+          "year",
+          72,
+          2902516159,
+          55082,
+          null
+        ],
+        [
+          "year",
+          73,
+          1510962425,
+          56082,
+          null
+        ],
+        [
+          "year",
+          74,
+          1950974504,
+          57082,
+          "late-crack-record"
+        ],
+        [
+          "choice",
+          74,
+          "late-crack-record",
+          1,
+          1950974504
+        ],
+        [
+          "year",
+          75,
+          3654657923,
+          58082,
+          null
+        ],
+        [
+          "year",
+          76,
+          2894939859,
+          59082,
+          null
+        ],
+        [
+          "year",
+          77,
+          3966787608,
+          59610,
+          null
+        ],
+        [
+          "year",
+          78,
+          743668061,
+          60138,
+          "late-friend-bench"
+        ],
+        [
+          "choice",
+          78,
+          "late-friend-bench",
+          0,
+          743668061
+        ],
+        [
+          "year",
+          79,
+          4278917293,
+          60666,
+          null
+        ],
+        [
+          "year",
+          80,
+          2319469086,
+          61194,
+          null
+        ],
+        [
+          "year",
+          81,
+          2191586692,
+          61722,
+          null
+        ],
+        [
+          "year",
+          82,
+          232138485,
+          62250,
+          null
+        ]
+      ],
+      "final": {
+        "age": 82,
+        "rng": 232138485,
+        "economy": {
+          "v": 1,
+          "balance": 62250,
+          "work": {
+            "kind": "retired",
+            "load": 1,
+            "grade": 2,
+            "jobSince": 16,
+            "gradeSince": 21,
+            "courses": 0,
+            "service": 59,
+            "lastWage": 1350,
+            "until": null,
+            "path": "left",
+            "deferYears": 14,
+            "mentor": false,
+            "post": "none",
+            "job": "Техник"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 82,
+          "years": [
+            {
+              "age": 3,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 4,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 5,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 6,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 7,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 8,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 9,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 10,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 11,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 12,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 13,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 14,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 15,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 16,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 560
+            },
+            {
+              "age": 17,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 920
+            },
+            {
+              "age": 18,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 1670
+            },
+            {
+              "age": 19,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 2420
+            },
+            {
+              "age": 20,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 3170
+            },
+            {
+              "age": 21,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 3920
+            },
+            {
+              "age": 22,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4920
+            },
+            {
+              "age": 23,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 5920
+            },
+            {
+              "age": 24,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 6920
+            },
+            {
+              "age": 25,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 7920
+            },
+            {
+              "age": 26,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 8920
+            },
+            {
+              "age": 27,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 9920
+            },
+            {
+              "age": 28,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 10920
+            },
+            {
+              "age": 29,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 11920
+            },
+            {
+              "age": 30,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 12920
+            },
+            {
+              "age": 31,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 13920
+            },
+            {
+              "age": 32,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 14920
+            },
+            {
+              "age": 33,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 15920
+            },
+            {
+              "age": 34,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 16920
+            },
+            {
+              "age": 35,
+              "wage": 1512,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 18082
+            },
+            {
+              "age": 36,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 19082
+            },
+            {
+              "age": 37,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 20082
+            },
+            {
+              "age": 38,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 21082
+            },
+            {
+              "age": 39,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22082
+            },
+            {
+              "age": 40,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 23082
+            },
+            {
+              "age": 41,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 24082
+            },
+            {
+              "age": 42,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 25082
+            },
+            {
+              "age": 43,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 26082
+            },
+            {
+              "age": 44,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 27082
+            },
+            {
+              "age": 45,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 28082
+            },
+            {
+              "age": 46,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 29082
+            },
+            {
+              "age": 47,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 30082
+            },
+            {
+              "age": 48,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 31082
+            },
+            {
+              "age": 49,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 32082
+            },
+            {
+              "age": 50,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 33082
+            },
+            {
+              "age": 51,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 34082
+            },
+            {
+              "age": 52,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 35082
+            },
+            {
+              "age": 53,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 36082
+            },
+            {
+              "age": 54,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 37082
+            },
+            {
+              "age": 55,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 38082
+            },
+            {
+              "age": 56,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 39082
+            },
+            {
+              "age": 57,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 40082
+            },
+            {
+              "age": 58,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41082
+            },
+            {
+              "age": 59,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 42082
+            },
+            {
+              "age": 60,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 43082
+            },
+            {
+              "age": 61,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 44082
+            },
+            {
+              "age": 62,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 45082
+            },
+            {
+              "age": 63,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 46082
+            },
+            {
+              "age": 64,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 47082
+            },
+            {
+              "age": 65,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48082
+            },
+            {
+              "age": 66,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 49082
+            },
+            {
+              "age": 67,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 50082
+            },
+            {
+              "age": 68,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 51082
+            },
+            {
+              "age": 69,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 52082
+            },
+            {
+              "age": 70,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 53082
+            },
+            {
+              "age": 71,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 54082
+            },
+            {
+              "age": 72,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 55082
+            },
+            {
+              "age": 73,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 56082
+            },
+            {
+              "age": 74,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 57082
+            },
+            {
+              "age": 75,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 58082
+            },
+            {
+              "age": 76,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59082
+            },
+            {
+              "age": 77,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59610
+            },
+            {
+              "age": 78,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60138
+            },
+            {
+              "age": 79,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60666
+            },
+            {
+              "age": 80,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 61194
+            },
+            {
+              "age": 81,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 61722
+            },
+            {
+              "age": 82,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 62250
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 16,
+              "kind": "start",
+              "ref": "",
+              "label": "start",
+              "amount": 200
+            },
+            {
+              "n": 2,
+              "age": 82,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 62250
+            }
+          ],
+          "nextTxn": 3,
+          "totals": {
+            "earned": 84800,
+            "spent": 22750,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 62250
+        },
+        "stats": {
+          "health": 33.61643679458013,
+          "morale": 53.62701852707834,
+          "stress": 71.18090669677734,
+          "knowledge": 100,
+          "bonds": 0,
+          "reputation": 38
+        },
+        "flags": {
+          "familyHealthRisk": false,
+          "nightFear": true,
+          "quietWitness": true,
+          "youthNotes": "second",
+          "youthNotesAge": 14,
+          "trackChosen": true,
+          "youthFirstDuty": "second",
+          "youthFirstDutyAge": 20,
+          "leakChoice": "report",
+          "leakAge": 23,
+          "festivalVisited": true,
+          "friendReturn": true,
+          "friendState": "close",
+          "crackStage": "resolved",
+          "adultRepairVote": "splitWork",
+          "adultRepairVoteAge": 34,
+          "shipIncidentAge": 77,
+          "friendCrisis": "networked",
+          "adultFamilyPlan": "declined",
+          "adultFamilyPlanAge": 39,
+          "relationshipTalk": true,
+          "lovePath": "friends",
+          "loveAge": 42,
+          "census": "dig",
+          "censusAge": 46,
+          "censusStage": "petition",
+          "censusStageAge": 50,
+          "loveStage": "attended",
+          "loveStageAge": 54,
+          "courseVote": true,
+          "gardenPlot": "own",
+          "oldFriend": true,
+          "legacyRecorded": "work",
+          "retirement": true
+        }
+      }
+    },
+    {
+      "seed": 17303,
+      "acceptMoments": true,
+      "trace": [
+        [
+          "year",
+          1,
+          1320053540,
+          0,
+          null
+        ],
+        [
+          "moment",
+          1,
+          "m-dot-in-window"
+        ],
+        [
+          "moment",
+          1,
+          "m-lullaby"
+        ],
+        [
+          "year",
+          2,
+          3023736959,
+          0,
+          null
+        ],
+        [
+          "moment",
+          2,
+          "m-lullaby"
+        ],
+        [
+          "moment",
+          2,
+          "m-first-steps"
+        ],
+        [
+          "year",
+          3,
+          2264018895,
+          0,
+          null
+        ],
+        [
+          "year",
+          4,
+          2136136501,
+          0,
+          "night-fear"
+        ],
+        [
+          "choice",
+          4,
+          "night-fear",
+          1,
+          2136136501
+        ],
+        [
+          "moment",
+          4,
+          "m-sibling"
+        ],
+        [
+          "moment",
+          4,
+          "m-drawing"
+        ],
+        [
+          "year",
+          5,
+          2008254107,
+          0,
+          null
+        ],
+        [
+          "year",
+          6,
+          48805900,
+          0,
+          null
+        ],
+        [
+          "moment",
+          6,
+          "m-fogged-glass"
+        ],
+        [
+          "year",
+          7,
+          3584055132,
+          0,
+          "child-library"
+        ],
+        [
+          "choice",
+          7,
+          "child-library",
+          1,
+          3584055132
+        ],
+        [
+          "moment",
+          7,
+          "m-story"
+        ],
+        [
+          "year",
+          8,
+          1624606925,
+          0,
+          null
+        ],
+        [
+          "year",
+          9,
+          1496724531,
+          0,
+          "friend-accusation"
+        ],
+        [
+          "choice",
+          9,
+          "friend-accusation",
+          1,
+          1496724531
+        ],
+        [
+          "moment",
+          9,
+          "m-sibling"
+        ],
+        [
+          "year",
+          10,
+          3832243620,
+          0,
+          null
+        ],
+        [
+          "moment",
+          10,
+          "m-laundry"
+        ],
+        [
+          "year",
+          11,
+          3704361226,
+          0,
+          null
+        ],
+        [
+          "year",
+          12,
+          1744913019,
+          0,
+          null
+        ],
+        [
+          "year",
+          13,
+          4080432108,
+          0,
+          null
+        ],
+        [
+          "moment",
+          13,
+          "m-vent-echo"
+        ],
+        [
+          "year",
+          14,
+          3320714044,
+          0,
+          "youth-shared-notes"
+        ],
+        [
+          "choice",
+          14,
+          "youth-shared-notes",
+          1,
+          3320714044
+        ],
+        [
+          "moment",
+          14,
+          "m-night-archive"
+        ],
+        [
+          "year",
+          15,
+          1361265837,
+          0,
+          null
+        ],
+        [
+          "moment",
+          15,
+          "m-curfew"
+        ],
+        [
+          "moment",
+          15,
+          "m-friend-run"
+        ],
+        [
+          "year",
+          16,
+          4264679399,
+          560,
+          "school-track"
+        ],
+        [
+          "choice",
+          16,
+          "school-track",
+          0,
+          4264679399
+        ],
+        [
+          "moment",
+          16,
+          "m-quiz"
+        ],
+        [
+          "year",
+          17,
+          2305231192,
+          920,
+          null
+        ],
+        [
+          "moment",
+          17,
+          "m-radio-wall"
+        ],
+        [
+          "year",
+          18,
+          2177348798,
+          1670,
+          null
+        ],
+        [
+          "moment",
+          18,
+          "m-job-tech"
+        ],
+        [
+          "year",
+          19,
+          2049466404,
+          2420,
+          null
+        ],
+        [
+          "year",
+          20,
+          1921584010,
+          3420,
+          "youth-first-duty"
+        ],
+        [
+          "choice",
+          20,
+          "youth-first-duty",
+          1,
+          1921584010
+        ],
+        [
+          "year",
+          21,
+          4257103099,
+          4420,
+          null
+        ],
+        [
+          "moment",
+          21,
+          "m-registry-blank"
+        ],
+        [
+          "year",
+          22,
+          4129220705,
+          5420,
+          null
+        ],
+        [
+          "moment",
+          22,
+          "m-night-footsteps"
+        ],
+        [
+          "moment",
+          22,
+          "m-lights-sync"
+        ],
+        [
+          "year",
+          23,
+          3369502641,
+          6420,
+          "microcrack"
+        ],
+        [
+          "choice",
+          23,
+          "microcrack",
+          0,
+          3369502641
+        ],
+        [
+          "moment",
+          23,
+          "m-youth-notes-echo"
+        ],
+        [
+          "year",
+          24,
+          1410054434,
+          7420,
+          null
+        ],
+        [
+          "moment",
+          24,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          25,
+          1282172040,
+          8420,
+          null
+        ],
+        [
+          "moment",
+          25,
+          "m-tiredness"
+        ],
+        [
+          "moment",
+          25,
+          "m-friend-call"
+        ],
+        [
+          "year",
+          26,
+          522453976,
+          9420,
+          "festival"
+        ],
+        [
+          "choice",
+          26,
+          "festival",
+          2,
+          522453976
+        ],
+        [
+          "year",
+          27,
+          1026407252,
+          10420,
+          null
+        ],
+        [
+          "moment",
+          27,
+          "m-lamp"
+        ],
+        [
+          "year",
+          28,
+          2730090671,
+          11420,
+          "friend-return-quiet"
+        ],
+        [
+          "choice",
+          28,
+          "friend-return-quiet",
+          2,
+          2730090671
+        ],
+        [
+          "moment",
+          28,
+          "m-night-archive"
+        ],
+        [
+          "year",
+          29,
+          770642464,
+          12420,
+          null
+        ],
+        [
+          "moment",
+          29,
+          "m-call-parent"
+        ],
+        [
+          "year",
+          30,
+          3106161553,
+          13420,
+          "crack-report-hearing"
+        ],
+        [
+          "choice",
+          30,
+          "crack-report-hearing",
+          2,
+          3106161553
+        ],
+        [
+          "moment",
+          30,
+          "m-friend-call"
+        ],
+        [
+          "year",
+          31,
+          1146713346,
+          14420,
+          null
+        ],
+        [
+          "moment",
+          31,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          32,
+          3482232435,
+          15420,
+          "crack-recurrence"
+        ],
+        [
+          "choice",
+          32,
+          "crack-recurrence",
+          1,
+          3482232435
+        ],
+        [
+          "moment",
+          32,
+          "m-ration-queue"
+        ],
+        [
+          "year",
+          33,
+          3354350041,
+          16420,
+          null
+        ],
+        [
+          "moment",
+          33,
+          "m-work-queue"
+        ],
+        [
+          "year",
+          34,
+          2594631977,
+          17420,
+          "adult-sector-repair"
+        ],
+        [
+          "choice",
+          34,
+          "adult-sector-repair",
+          2,
+          2594631977
+        ],
+        [
+          "moment",
+          34,
+          "m-new-neighbors"
+        ],
+        [
+          "year",
+          35,
+          3348100,
+          18582,
+          null
+        ],
+        [
+          "moment",
+          35,
+          "m-neighbor-tool"
+        ],
+        [
+          "moment",
+          35,
+          "m-tiredness"
+        ],
+        [
+          "year",
+          36,
+          1707031519,
+          19582,
+          "friend-crisis-close"
+        ],
+        [
+          "choice",
+          36,
+          "friend-crisis-close",
+          2,
+          1707031519
+        ],
+        [
+          "moment",
+          36,
+          "m-night-footsteps"
+        ],
+        [
+          "year",
+          37,
+          1579149125,
+          20582,
+          null
+        ],
+        [
+          "year",
+          38,
+          3282832544,
+          21582,
+          null
+        ],
+        [
+          "moment",
+          38,
+          "m-lights-sync"
+        ],
+        [
+          "moment",
+          38,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          39,
+          1891278810,
+          22582,
+          "adult-family-choice"
+        ],
+        [
+          "choice",
+          39,
+          "adult-family-choice",
+          1,
+          1891278810
+        ],
+        [
+          "moment",
+          39,
+          "m-youth-duty-echo"
+        ],
+        [
+          "year",
+          40,
+          1131560746,
+          23582,
+          null
+        ],
+        [
+          "year",
+          41,
+          371842682,
+          24582,
+          null
+        ],
+        [
+          "moment",
+          41,
+          "m-lamp"
+        ],
+        [
+          "moment",
+          41,
+          "m-ration-queue"
+        ],
+        [
+          "year",
+          42,
+          2643420574,
+          25582,
+          "relationship"
+        ],
+        [
+          "choice",
+          42,
+          "relationship",
+          1,
+          2643420574
+        ],
+        [
+          "moment",
+          42,
+          "m-adult-family-declined"
+        ],
+        [
+          "moment",
+          42,
+          "m-radio-wall"
+        ],
+        [
+          "year",
+          43,
+          3715268323,
+          26582,
+          null
+        ],
+        [
+          "year",
+          44,
+          2955550259,
+          27582,
+          null
+        ],
+        [
+          "moment",
+          44,
+          "m-sprout"
+        ],
+        [
+          "moment",
+          44,
+          "m-friend-call"
+        ],
+        [
+          "year",
+          45,
+          1563996525,
+          28582,
+          null
+        ],
+        [
+          "year",
+          46,
+          2635844274,
+          29582,
+          "census-extra"
+        ],
+        [
+          "choice",
+          46,
+          "census-extra",
+          0,
+          2635844274
+        ],
+        [
+          "moment",
+          46,
+          "m-call-parent"
+        ],
+        [
+          "year",
+          47,
+          1876126210,
+          30582,
+          null
+        ],
+        [
+          "moment",
+          47,
+          "m-job-tech"
+        ],
+        [
+          "year",
+          48,
+          2947973959,
+          31582,
+          "census-sealed-cabin"
+        ],
+        [
+          "choice",
+          48,
+          "census-sealed-cabin",
+          1,
+          2947973959
+        ],
+        [
+          "moment",
+          48,
+          "m-sibling"
+        ],
+        [
+          "year",
+          49,
+          4019821708,
+          32582,
+          null
+        ],
+        [
+          "moment",
+          49,
+          "m-neighbor-tool"
+        ],
+        [
+          "year",
+          50,
+          796702161,
+          33582,
+          "census-correspondence"
+        ],
+        [
+          "choice",
+          50,
+          "census-correspondence",
+          1,
+          796702161
+        ],
+        [
+          "year",
+          51,
+          2500385580,
+          34582,
+          null
+        ],
+        [
+          "moment",
+          51,
+          "m-call-parent"
+        ],
+        [
+          "year",
+          52,
+          3572233329,
+          35582,
+          "census-petition-answer"
+        ],
+        [
+          "choice",
+          52,
+          "census-petition-answer",
+          1,
+          3572233329
+        ],
+        [
+          "moment",
+          52,
+          "m-friend-call"
+        ],
+        [
+          "moment",
+          52,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          53,
+          2812515265,
+          36582,
+          null
+        ],
+        [
+          "moment",
+          53,
+          "m-ration-queue"
+        ],
+        [
+          "year",
+          54,
+          221231388,
+          37582,
+          "love-friends-union"
+        ],
+        [
+          "choice",
+          54,
+          "love-friends-union",
+          0,
+          221231388
+        ],
+        [
+          "moment",
+          54,
+          "m-call-parent"
+        ],
+        [
+          "year",
+          55,
+          1924914807,
+          38582,
+          null
+        ],
+        [
+          "moment",
+          55,
+          "m-kids-stories"
+        ],
+        [
+          "year",
+          56,
+          533361073,
+          39582,
+          null
+        ],
+        [
+          "moment",
+          56,
+          "m-night-archive"
+        ],
+        [
+          "moment",
+          56,
+          "m-lights-sync"
+        ],
+        [
+          "year",
+          57,
+          3436774635,
+          40582,
+          null
+        ],
+        [
+          "moment",
+          57,
+          "m-lamp"
+        ],
+        [
+          "moment",
+          57,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          58,
+          2045220901,
+          41582,
+          null
+        ],
+        [
+          "moment",
+          58,
+          "m-chalk-marks"
+        ],
+        [
+          "moment",
+          58,
+          "m-sibling"
+        ],
+        [
+          "year",
+          59,
+          2485232980,
+          42582,
+          "apprentice"
+        ],
+        [
+          "choice",
+          59,
+          "apprentice",
+          2,
+          2485232980
+        ],
+        [
+          "moment",
+          59,
+          "m-tiredness"
+        ],
+        [
+          "moment",
+          59,
+          "m-job-tech"
+        ],
+        [
+          "moment",
+          59,
+          "m-registry-blank"
+        ],
+        [
+          "year",
+          60,
+          3557080729,
+          43582,
+          null
+        ],
+        [
+          "moment",
+          60,
+          "m-window-evening"
+        ],
+        [
+          "moment",
+          60,
+          "m-ration-queue"
+        ],
+        [
+          "year",
+          61,
+          2165526995,
+          44582,
+          null
+        ],
+        [
+          "year",
+          62,
+          3237374744,
+          45582,
+          "garden-plot"
+        ],
+        [
+          "choice",
+          62,
+          "garden-plot",
+          0,
+          3237374744
+        ],
+        [
+          "moment",
+          62,
+          "m-sibling"
+        ],
+        [
+          "year",
+          63,
+          14255197,
+          46582,
+          null
+        ],
+        [
+          "moment",
+          63,
+          "m-old-storyteller"
+        ],
+        [
+          "year",
+          64,
+          1086102946,
+          47582,
+          null
+        ],
+        [
+          "year",
+          65,
+          3989516508,
+          48582,
+          "political-crisis"
+        ],
+        [
+          "choice",
+          65,
+          "political-crisis",
+          1,
+          3989516508
+        ],
+        [
+          "year",
+          66,
+          3229798444,
+          49582,
+          null
+        ],
+        [
+          "year",
+          67,
+          1838244710,
+          50582,
+          "legacy"
+        ],
+        [
+          "choice",
+          67,
+          "legacy",
+          1,
+          1838244710
+        ],
+        [
+          "year",
+          68,
+          1078526646,
+          51582,
+          null
+        ],
+        [
+          "moment",
+          68,
+          "m-registry-blank"
+        ],
+        [
+          "year",
+          69,
+          1518538725,
+          52582,
+          "late-tech-handbook"
+        ],
+        [
+          "choice",
+          69,
+          "late-tech-handbook",
+          0,
+          1518538725
+        ],
+        [
+          "moment",
+          69,
+          "m-kids-stories"
+        ],
+        [
+          "year",
+          70,
+          2590386474,
+          53582,
+          null
+        ],
+        [
+          "year",
+          71,
+          1830668410,
+          54582,
+          null
+        ],
+        [
+          "moment",
+          71,
+          "m-lights-sync"
+        ],
+        [
+          "year",
+          72,
+          2902516159,
+          55582,
+          null
+        ],
+        [
+          "moment",
+          72,
+          "m-memory"
+        ],
+        [
+          "moment",
+          72,
+          "m-late-plant"
+        ],
+        [
+          "year",
+          73,
+          1510962425,
+          56582,
+          null
+        ],
+        [
+          "moment",
+          73,
+          "m-kids-stories"
+        ],
+        [
+          "moment",
+          73,
+          "m-window-evening"
+        ],
+        [
+          "year",
+          74,
+          1950974504,
+          57582,
+          "late-friend-bench"
+        ],
+        [
+          "choice",
+          74,
+          "late-friend-bench",
+          1,
+          1950974504
+        ],
+        [
+          "moment",
+          74,
+          "m-old-photo"
+        ],
+        [
+          "year",
+          75,
+          3654657923,
+          58582,
+          null
+        ],
+        [
+          "moment",
+          75,
+          "m-lamp"
+        ],
+        [
+          "year",
+          76,
+          2894939859,
+          59582,
+          null
+        ],
+        [
+          "moment",
+          76,
+          "m-garden-plot"
+        ],
+        [
+          "year",
+          77,
+          3966787608,
+          60110,
+          null
+        ],
+        [
+          "moment",
+          77,
+          "m-late-music"
+        ],
+        [
+          "year",
+          78,
+          743668061,
+          60638,
+          "late-crack-record"
+        ],
+        [
+          "choice",
+          78,
+          "late-crack-record",
+          1,
+          743668061
+        ],
+        [
+          "moment",
+          78,
+          "m-lamp"
+        ],
+        [
+          "moment",
+          78,
+          "m-kids-stories"
+        ],
+        [
+          "year",
+          79,
+          4278917293,
+          61166,
+          null
+        ],
+        [
+          "year",
+          80,
+          2319469086,
+          61694,
+          null
+        ],
+        [
+          "moment",
+          80,
+          "m-late-quiet"
+        ],
+        [
+          "year",
+          81,
+          2191586692,
+          62222,
+          null
+        ],
+        [
+          "moment",
+          81,
+          "m-late-light"
+        ],
+        [
+          "year",
+          82,
+          232138485,
+          62750,
+          null
+        ]
+      ],
+      "final": {
+        "age": 82,
+        "rng": 232138485,
+        "economy": {
+          "v": 1,
+          "balance": 62750,
+          "work": {
+            "kind": "retired",
+            "load": 1,
+            "grade": 2,
+            "jobSince": 16,
+            "gradeSince": 19,
+            "courses": 0,
+            "service": 59,
+            "lastWage": 1350,
+            "until": null,
+            "path": "left",
+            "deferYears": 14,
+            "mentor": false,
+            "post": "none",
+            "job": "Техник"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 82,
+          "years": [
+            {
+              "age": 3,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 4,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 5,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 6,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 7,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 8,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 9,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 10,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 11,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 12,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 13,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 14,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 15,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 16,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 560
+            },
+            {
+              "age": 17,
+              "wage": 360,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 920
+            },
+            {
+              "age": 18,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 1670
+            },
+            {
+              "age": 19,
+              "wage": 1100,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 2420
+            },
+            {
+              "age": 20,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 3420
+            },
+            {
+              "age": 21,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 4420
+            },
+            {
+              "age": 22,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 5420
+            },
+            {
+              "age": 23,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 6420
+            },
+            {
+              "age": 24,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 7420
+            },
+            {
+              "age": 25,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 8420
+            },
+            {
+              "age": 26,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 9420
+            },
+            {
+              "age": 27,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 10420
+            },
+            {
+              "age": 28,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 11420
+            },
+            {
+              "age": 29,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 12420
+            },
+            {
+              "age": 30,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 13420
+            },
+            {
+              "age": 31,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 14420
+            },
+            {
+              "age": 32,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 15420
+            },
+            {
+              "age": 33,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 16420
+            },
+            {
+              "age": 34,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 17420
+            },
+            {
+              "age": 35,
+              "wage": 1512,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 18582
+            },
+            {
+              "age": 36,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 19582
+            },
+            {
+              "age": 37,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 20582
+            },
+            {
+              "age": 38,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 21582
+            },
+            {
+              "age": 39,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 22582
+            },
+            {
+              "age": 40,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 23582
+            },
+            {
+              "age": 41,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 24582
+            },
+            {
+              "age": 42,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 25582
+            },
+            {
+              "age": 43,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 26582
+            },
+            {
+              "age": 44,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 27582
+            },
+            {
+              "age": 45,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 28582
+            },
+            {
+              "age": 46,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 29582
+            },
+            {
+              "age": 47,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 30582
+            },
+            {
+              "age": 48,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 31582
+            },
+            {
+              "age": 49,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 32582
+            },
+            {
+              "age": 50,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 33582
+            },
+            {
+              "age": 51,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 34582
+            },
+            {
+              "age": 52,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 35582
+            },
+            {
+              "age": 53,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 36582
+            },
+            {
+              "age": 54,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 37582
+            },
+            {
+              "age": 55,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 38582
+            },
+            {
+              "age": 56,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 39582
+            },
+            {
+              "age": 57,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 40582
+            },
+            {
+              "age": 58,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 41582
+            },
+            {
+              "age": 59,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 42582
+            },
+            {
+              "age": 60,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 43582
+            },
+            {
+              "age": 61,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 44582
+            },
+            {
+              "age": 62,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 45582
+            },
+            {
+              "age": 63,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 46582
+            },
+            {
+              "age": 64,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 47582
+            },
+            {
+              "age": 65,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 48582
+            },
+            {
+              "age": 66,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 49582
+            },
+            {
+              "age": 67,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 50582
+            },
+            {
+              "age": 68,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 51582
+            },
+            {
+              "age": 69,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 52582
+            },
+            {
+              "age": 70,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 53582
+            },
+            {
+              "age": 71,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 54582
+            },
+            {
+              "age": 72,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 55582
+            },
+            {
+              "age": 73,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 56582
+            },
+            {
+              "age": 74,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 57582
+            },
+            {
+              "age": 75,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 58582
+            },
+            {
+              "age": 76,
+              "wage": 1350,
+              "pension": 0,
+              "bills": 350,
+              "aid": 0,
+              "balance": 59582
+            },
+            {
+              "age": 77,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60110
+            },
+            {
+              "age": 78,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 60638
+            },
+            {
+              "age": 79,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 61166
+            },
+            {
+              "age": 80,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 61694
+            },
+            {
+              "age": 81,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 62222
+            },
+            {
+              "age": 82,
+              "wage": 0,
+              "pension": 878,
+              "bills": 350,
+              "aid": 0,
+              "balance": 62750
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 16,
+              "kind": "start",
+              "ref": "",
+              "label": "start",
+              "amount": 200
+            },
+            {
+              "n": 2,
+              "age": 82,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 62750
+            }
+          ],
+          "nextTxn": 3,
+          "totals": {
+            "earned": 85300,
+            "spent": 22750,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 62750
+        },
+        "stats": {
+          "health": 43.29269336597498,
+          "morale": 62.209493555563505,
+          "stress": 41.757683228892304,
+          "knowledge": 100,
+          "bonds": 28.0349210815549,
+          "reputation": 49.10000000000012
+        },
+        "flags": {
+          "familyHealthRisk": false,
+          "nightFear": true,
+          "quietWitness": true,
+          "youthNotes": "second",
+          "youthNotesAge": 14,
+          "trackChosen": true,
+          "youthFirstDuty": "second",
+          "youthFirstDutyAge": 20,
+          "leakChoice": "report",
+          "leakAge": 23,
+          "festivalVisited": true,
+          "friendReturn": true,
+          "friendState": "close",
+          "crackStage": "resolved",
+          "adultRepairVote": "splitWork",
+          "adultRepairVoteAge": 34,
+          "shipIncidentAge": 77,
+          "friendCrisis": "networked",
+          "adultFamilyPlan": "declined",
+          "adultFamilyPlanAge": 39,
+          "relationshipTalk": true,
+          "lovePath": "friends",
+          "loveAge": 42,
+          "census": "dig",
+          "censusAge": 46,
+          "censusStage": "petition",
+          "censusStageAge": 50,
+          "loveStage": "attended",
+          "loveStageAge": 54,
+          "mentored": false,
+          "gardenPlot": "own",
+          "courseVote": true,
+          "legacyRecorded": "work",
+          "retirement": true
+        }
+      }
+    },
+    {
+      "seed": 999,
+      "acceptMoments": false,
+      "trace": [
+        [
+          "year",
+          1,
+          688201566,
+          0,
+          null
+        ],
+        [
+          "year",
+          2,
+          560319172,
+          0,
+          null
+        ]
+      ],
+      "final": {
+        "age": 2,
+        "rng": 560319172,
+        "economy": {
+          "v": 1,
+          "balance": 0,
+          "work": {
+            "kind": "child",
+            "load": 1,
+            "grade": 1,
+            "jobSince": 18,
+            "gradeSince": 18,
+            "courses": 0,
+            "service": 0,
+            "lastWage": 650,
+            "until": null,
+            "path": null,
+            "deferYears": 0,
+            "mentor": false,
+            "post": "none",
+            "job": "Ученик"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 2,
+          "years": [
+            {
+              "age": 1,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 2,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 2,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 0
+            }
+          ],
+          "nextTxn": 2,
+          "totals": {
+            "earned": 0,
+            "spent": 0,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 0
+        },
+        "stats": {
+          "health": 85,
+          "morale": 73.135625,
+          "stress": 9.753125,
+          "knowledge": 18,
+          "bonds": 69.333125,
+          "reputation": 31
+        },
+        "flags": {
+          "familyHealthRisk": false
+        }
+      }
+    },
+    {
+      "seed": 999,
+      "acceptMoments": true,
+      "trace": [
+        [
+          "moment",
+          0,
+          "m-lullaby"
+        ],
+        [
+          "moment",
+          0,
+          "m-dot-in-window"
+        ],
+        [
+          "year",
+          1,
+          688201566,
+          0,
+          null
+        ],
+        [
+          "moment",
+          1,
+          "m-first-steps"
+        ],
+        [
+          "year",
+          2,
+          560319172,
+          0,
+          null
+        ]
+      ],
+      "final": {
+        "age": 2,
+        "rng": 560319172,
+        "economy": {
+          "v": 1,
+          "balance": 0,
+          "work": {
+            "kind": "child",
+            "load": 1,
+            "grade": 1,
+            "jobSince": 18,
+            "gradeSince": 18,
+            "courses": 0,
+            "service": 0,
+            "lastWage": 650,
+            "until": null,
+            "path": null,
+            "deferYears": 0,
+            "mentor": false,
+            "post": "none",
+            "job": "Ученик"
+          },
+          "housing": 0,
+          "housingRight": null,
+          "services": {},
+          "owned": {},
+          "lastBought": {},
+          "goal": null,
+          "tightStreak": 0,
+          "settledAge": 2,
+          "years": [
+            {
+              "age": 1,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            },
+            {
+              "age": 2,
+              "wage": 0,
+              "pension": 0,
+              "bills": 0,
+              "aid": 0,
+              "balance": 0
+            }
+          ],
+          "ledger": [
+            {
+              "n": 1,
+              "age": 2,
+              "kind": "estate",
+              "ref": "",
+              "label": "estate",
+              "amount": 0
+            }
+          ],
+          "nextTxn": 2,
+          "totals": {
+            "earned": 0,
+            "spent": 0,
+            "given": 0,
+            "aid": 0
+          },
+          "estate": 0
+        },
+        "stats": {
+          "health": 85,
+          "morale": 76.7473464453125,
+          "stress": 9.51546875,
+          "knowledge": 20,
+          "bonds": 69.333125,
+          "reputation": 31
+        },
+        "flags": {
+          "familyHealthRisk": false
+        }
+      }
+    }
+  ]
+}

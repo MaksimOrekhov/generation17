@@ -10,6 +10,7 @@ import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
 import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality'
 import { applyOfferChanges, canBuy, getOffer, type PurchaseTarget } from './offers'
+import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
 
 export const ATTENTION_PER_YEAR = 3
 const HISTORY_LIMIT = 1500
@@ -204,15 +205,40 @@ export function dropMissingPending(state: GameState): GameState {
   return g
 }
 
+export interface ChoiceAvailability { available: boolean; reason: string | null; cost: number }
+
+/** One current-state affordability contract for UI, store, hotkeys and decide(). */
+export function canChoose(state: GameState, choiceIndex: number): ChoiceAvailability {
+  const event = storylets.find(e => e.id === state.pending)
+  const choice = event?.choices[choiceIndex]
+  const cost = Math.max(0, -(choice?.effects.money ?? 0))
+  let reason: string | null = null
+  if (state.stopped || state.economy.estate !== null) reason = 'Персонаж умер.'
+  else if (!event || !choice) reason = 'Нет доступного сюжетного варианта.'
+  else {
+    reason = storyMoneyReason(state, [choice.effects.money])
+    if (!reason && choice.check) {
+      for (const effect of [choice.check.success, choice.check.failure]) {
+        reason = effect.money !== undefined && (!validStoryMoney(effect.money) || effect.money < 0)
+          ? 'Некорректный денежный эффект проверки навыка.'
+          : storyMoneyReason(state, [choice.effects.money, effect.money])
+        if (reason) break
+      }
+    }
+  }
+  return { available: reason === null, reason, cost: Number.isFinite(cost) ? cost : 0 }
+}
+
 export function decide(state: GameState, choiceIndex: number): GameState {
   if (state.stopped || !state.pending) return state
   const event = storylets.find(e => e.id === state.pending)
   // Сюжет из сохранения мог исчезнуть из каталога: снимаем ожидание, чтобы жизнь не застряла.
   if (!event) return dropMissingPending(state)
   const choice = event.choices[choiceIndex]
-  if (!choice) return state
+  if (!choice || !canChoose(state, choiceIndex).available) return state
 
   const g = structuredClone(state)
+  applyStoryMoney(g, choice.effects.money, event)
   applyEffects(g, choice.effects)
   addLog(g, 'choice', `Решение: ${resolveText(g, choice.text)}`, resolveText(g, choice.result))
   if (event.arc) {
@@ -227,9 +253,11 @@ export function decide(state: GameState, choiceIndex: number): GameState {
   if (choice.check) {
     const { check } = choice
     if (random(g) < checkChance(g, check)) {
+      applyStoryMoney(g, check.success.money, event)
       applyEffects(g, check.success)
       addLog(g, 'life', 'Получилось', resolveText(g, check.successText))
     } else {
+      applyStoryMoney(g, check.failure.money, event)
       applyEffects(g, check.failure)
       addLog(g, 'life', 'Неудача', resolveText(g, check.failureText))
     }
@@ -273,7 +301,9 @@ function expireMoment(g: GameState) {
 export function takeMoment(state: GameState): GameState {
   const def = getMoment(state)
   if (!def || state.stopped || state.pending || state.attention < 1) return state
+  if (storyMoneyReason(state, [def.accept.effects.money], false)) return state
   const g = structuredClone(state)
+  applyStoryMoney(g, def.accept.effects.money, def)
   g.attention -= 1
   g.moment = null
   applyEffects(g, def.accept.effects)
@@ -426,7 +456,9 @@ export function cancelService(state: GameState, serviceId: string): GameState {
 export function skipMoment(state: GameState): GameState {
   const def = getMoment(state)
   if (!def || state.stopped) return state
+  if (storyMoneyReason(state, [def.skip.effects?.money], false)) return state
   const g = structuredClone(state)
+  applyStoryMoney(g, def.skip.effects?.money, def)
   if (def.skip.effects) applyEffects(g, def.skip.effects)
   g.moment = null
   return g

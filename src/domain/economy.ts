@@ -8,6 +8,7 @@ export interface YearRow { age:number; wage:number; pension:number; bills:number
 export interface Economy { v:1; balance:number; work:Work; housing:Housing; housingRight:{tier:1|2;until:number}|null; services:Record<string,number>; owned:Record<string,number>; lastBought:Record<string,number>; goal:string|null; tightStreak:number; settledAge:number; years:YearRow[]; ledger:Txn[]; nextTxn:number; totals:{earned:number;spent:number;given:number;aid:number}; estate:number|null }
 export const ECONOMY_TUNING = { wages: { 'Техник':[1100,1350,1600,1850], 'Медик':[1050,1300,1600,1900], 'Агроном':[950,1200,1450,1700], 'Координатор':[1150,1400,1700,2050], 'Ученик':[650,650,650,650], 'Без специальности':[650,650,650,650] } satisfies Record<Job,number[]>, start:[0,0,200,400,700,1100], rent:[0,280,640], personal:350, child:150, trainee:360, limit:77 } as const
 const skill:Partial<Record<Job,Skill>> = { 'Техник':'engineering','Медик':'medicine','Агроном':'ecology','Координатор':'social' }
+const isProfession = (job: Job) => job === 'Техник' || job === 'Медик' || job === 'Агроном' || job === 'Координатор'
 export function initEconomy():Economy { return {v:1,balance:0,work:{kind:'child',load:1,grade:1,jobSince:18,gradeSince:18,courses:0,service:0,lastWage:650,until:null,path:null,deferYears:0,mentor:false,post:'none',job:'Ученик'},housing:0,housingRight:null,services:{},owned:{},lastBought:{},goal:null,tightStreak:0,settledAge:0,years:[],ledger:[],nextTxn:1,totals:{earned:0,spent:0,given:0,aid:0},estate:null} }
 export function wageOf(g:GameState):number { const w=g.economy.work; return ECONOMY_TUNING.wages[g.protagonist.job][w.grade-1]! }
 export function earnedGrade(g:GameState):Grade { const w=g.economy.work; const key=skill[g.protagonist.job]; if(!key)return w.grade; const n=g.skills[key]; if(w.grade===1 && n>=18 && g.age-w.jobSince>=3)return 2; if(w.grade===2 && n>=45 && w.courses>=1 && g.age-w.jobSince>=10)return 3; if(w.grade===3 && n>=60 && w.courses>=2 && g.age-w.gradeSince>=8)return 4; return w.grade }
@@ -20,9 +21,22 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  if(g.stopped || e.estate!==null || g.age<=e.settledAge)return {stats,logs}
  e.settledAge=g.age
  if(g.age===16 && w.kind==='child'){ w.kind='trainee';w.until=18; const n=ECONOMY_TUNING.start[g.birth.wealth]??0;e.balance+=n;txn(e,g.age,'start',n) }
- if(g.age>=18 && (w.kind==='child'||(w.kind==='trainee' && w.until!==null && g.age>=w.until))){w.kind='working';w.until=null;w.jobSince=g.age;w.gradeSince=g.age}
+ if(g.age>=18 && (w.kind==='child'||(w.kind==='trainee' && w.until!==null && g.age>=w.until))){w.kind='working';w.until=null;if(!isProfession(w.job)){w.jobSince=g.age;w.gradeSince=g.age}}
  if((w.kind==='between'||w.kind==='sick') && w.until!==null && g.age>w.until){w.kind='working';w.until=null}
- if(w.job!==g.protagonist.job){ if(w.post==='held')w.post='ended';w.job=g.protagonist.job;w.jobSince=g.age;w.gradeSince=g.age;w.courses=0 }
+ if(w.job!==g.protagonist.job){
+   const retraining = isProfession(w.job)
+   if(retraining){
+     w.grade=Math.max(1,w.grade-1) as Grade
+     w.courses=0
+     if(w.post==='held')w.post='ended'
+     w.kind='trainee'
+     w.until=g.age+1
+   }
+   w.job=g.protagonist.job
+   // Сюжет смены профессии уже изменил навык; экономика отвечает только за карьерное состояние.
+   w.jobSince=retraining?g.age:Math.max(16,g.age-1)
+   w.gradeSince=g.age
+ }
  if(g.flags.promotion==='accepted' && w.post==='none')w.post='held'
  const path=g.flags.retirementPath
  if(path==='left'||path==='mentor'||path==='continue')w.path=path

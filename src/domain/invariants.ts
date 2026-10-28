@@ -1,4 +1,4 @@
-import { isKnown } from './birth'
+import { isKnown, sectors } from './birth'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
 import { storylets } from './storylets'
@@ -25,6 +25,7 @@ export function findInconsistencies(g: GameState): string[] {
     const work = economy.work
     if (!Number.isInteger(economy.settledAge) || economy.settledAge < 0 || economy.settledAge > g.age) bad('недопустимый годовой маркер экономики')
     if (![0, 1, 2].includes(economy.housing) || !Number.isInteger(economy.housing)) bad('недопустимая ступень жилья')
+    if (work.load !== 1 && work.load !== 0.6) bad('недопустимая рабочая нагрузка')
     if (![1, 2, 3, 4].includes(work.grade) || !Number.isInteger(work.grade)) bad('недопустимый тарифный разряд')
     if (!Number.isInteger(work.jobSince) || !Number.isInteger(work.gradeSince) || work.jobSince < 0 || work.gradeSince < work.jobSince || work.gradeSince > g.age && g.age >= 18) bad('несогласованы даты специальности и разряда')
     if (!Number.isFinite(work.service) || work.service < 0 || work.service > g.age) bad('недопустимый стаж экономики')
@@ -64,7 +65,11 @@ export function findInconsistencies(g: GameState): string[] {
       if (txn.kind === 'purchase') {
         const offer = getOffer(txn.ref)
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(txn.ref) || !txn.label) bad('покупка не связана с корректным предложением')
-        if (offer && txn.amount !== offer.oneTimeCost) bad('сумма покупки не совпадает с каталогом предложений')
+        if (offer) {
+          const allowedAmounts = [offer.oneTimeCost]
+          if (offer.discount) allowedAmounts.push(Math.round(offer.oneTimeCost * (100 - offer.discount.percent) / 100))
+          if (!allowedAmounts.includes(txn.amount)) bad('сумма покупки не совпадает с каталогом предложений')
+        }
       }
       if (txn.kind === 'aid') {
         if (aidTxnAges.has(txn.age)) bad('фонд записан в журнале больше одного раза за год')
@@ -78,11 +83,18 @@ export function findInconsistencies(g: GameState): string[] {
     for (const [collectionName, collection] of [['services', economy.services], ['owned', economy.owned], ['lastBought', economy.lastBought]] as const) {
       for (const [id, age] of Object.entries(collection)) {
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || !Number.isInteger(age) || age < 0 || age > g.age) bad(`некорректная запись ${collectionName}: ${id}`)
+        const visitPrefix = 'visit-sector-'
+        if (collectionName === 'owned' && id.startsWith(visitPrefix)) {
+          const sectorId = id.slice(visitPrefix.length)
+          if (!sectors.some(sector => sector.id === sectorId) || age < 18) bad(`некорректная запись посещения сектора: ${id}`)
+        }
       }
     }
     if (economy.services['dome-pass'] !== undefined && g.age < 16) bad('абонемент подключён до допустимого возраста')
     const lastCourse = economy.lastBought['course-pro']
     if (lastCourse !== undefined && (lastCourse < 18 || lastCourse > 58 || lastCourse > g.age)) bad('недопустимый возраст последнего профессионального курса')
+    const lastFamilyTrip = economy.lastBought['family-trip']
+    if (lastFamilyTrip !== undefined && (lastFamilyTrip < 20 || lastFamilyTrip > g.age)) bad('недопустимый возраст последней семейной поездки')
     if (g.stopped && economy.estate !== economy.balance) bad('остаток наследства не совпадает с балансом после смерти')
     if (!g.stopped && economy.estate !== null) bad('наследство закрыто при жизни')
   }

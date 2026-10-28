@@ -46,5 +46,90 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
 }
 export function projectYear(g:GameState){const copy=structuredClone(g);return { effects:settleYear(copy), economy:copy.economy }}
 export function closeEstate(g:GameState){if(g.economy.estate===null){g.economy.estate=g.economy.balance;txn(g.economy,g.age,'estate',g.economy.balance)}}
-export function migrateEconomy(g:GameState):Economy {const e=initEconomy();e.settledAge=g.age;e.work.kind=g.age<16?'child':g.age<18?'trainee':g.flags.retirement||g.age>=77?'retired':'working';e.work.until=e.work.kind==='trainee'?18:null;e.work.job=g.protagonist.job;e.work.jobSince=18;e.work.gradeSince=18;e.work.service=Math.max(0,Math.min(g.age,77)-18);e.work.path=e.work.kind==='retired'?'left':null;e.work.lastWage=ECONOMY_TUNING.wages[g.protagonist.job][0]!;e.balance=g.age<16?0:Math.round(((ECONOMY_TUNING.start[g.birth.wealth]??0)+Math.min(2,Math.max(0,g.age-15))*360+Math.max(0,Math.min(g.age,77)-17)*(e.work.lastWage-350))*.25);if(g.stopped)e.estate=e.balance;return e}
-export function repairEconomy(g:GameState):Economy { if(!g.economy || g.economy.v!==1 || !g.economy.work)return migrateEconomy(g); const e=structuredClone(g.economy); const num=(n:number,f=0)=>Number.isFinite(n)?Math.max(0,n):f;e.balance=Math.round(num(e.balance));e.work.service=num(e.work.service);e.work.lastWage=Math.round(num(e.work.lastWage,650));e.work.deferYears=Math.floor(num(e.work.deferYears));e.settledAge=Math.min(g.age,Math.floor(num(e.settledAge,g.age)));return e }
+// Старые сохранения не содержат годовых данных о зарплате или курсах.
+// Восстанавливаем только доступные факты: нынешнюю профессию и навык,
+// стаж без покупок и расхода RNG. Старый retirement не различает исходы.
+export function migrateEconomy(g: GameState): Economy {
+  const e = initEconomy()
+  const age = Math.max(0, Math.floor(g.age))
+  const w = e.work
+  w.job = g.protagonist.job
+  w.jobSince = 18
+  w.gradeSince = 18
+  w.kind = age < 16 ? 'child' : age < 18 ? 'trainee' : g.flags.retirement || age >= 77 ? 'retired' : 'working'
+  w.until = w.kind === 'trainee' ? 18 : null
+  w.path = w.kind === 'retired' ? 'left' : null
+  w.service = Math.max(0, Math.min(age, 77) - 17)
+  const key = skill[w.job]
+  if (key && g.skills[key] >= 18 && w.service >= 3) w.grade = 2
+  // Курсы в старом формате неизвестны и принимаются равными нулю.
+  w.lastWage = ECONOMY_TUNING.wages[w.job][w.grade - 1]!
+  w.deferYears = w.kind === 'retired' && g.flags.retirement ? 0 : Math.max(0, Math.min(age, 76) - 61)
+  w.post = g.flags.promotion === 'accepted' ? 'held' : 'none'
+  let net = age >= 16 ? (ECONOMY_TUNING.start[g.birth.wealth] ?? 0) : 0
+  for (let year = 16; year <= age; year++) {
+    if (year < 18) net += ECONOMY_TUNING.trainee
+    else {
+      const income = year >= 77 ? pensionOf(w) : w.lastWage
+      const needs = ECONOMY_TUNING.personal - (w.job === 'Агроном' ? 60 : 0)
+      net += Math.max(0, income - needs)
+    }
+  }
+  e.balance = Math.round(net * .25)
+  e.settledAge = age
+  if (g.stopped) e.estate = e.balance
+  return e
+}
+
+/** Исправляет только экономику; неизвестные или испорченные поля не влияют на остальную жизнь. */
+export function repairEconomy(g: GameState): Economy {
+  const raw: unknown = g.economy
+  const object = (v: unknown): Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v) ? v as Record<string, unknown> : {}
+  const source = object(raw)
+  if (source.v !== 1) return migrateEconomy(g)
+  const base = migrateEconomy(g)
+  const age = Math.max(0, Math.floor(g.age))
+  const number = (v: unknown, fallback: number, max = Number.MAX_SAFE_INTEGER) => typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(max, v) : fallback
+  const integer = (v: unknown, fallback: number, max = Number.MAX_SAFE_INTEGER) => Math.floor(number(v, fallback, max))
+  const choice = <T extends string>(v: unknown, valid: readonly T[], fallback: T): T => valid.includes(v as T) ? v as T : fallback
+  const dates = (v: unknown) => Object.fromEntries(Object.entries(object(v)).filter(([key, value]) => /^[a-z0-9-]+$/.test(key) && typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= age)) as Record<string, number>
+  const srcWork = object(source.work), w = base.work
+  w.kind = choice(srcWork.kind, ['child','trainee','working','between','sick','retired'] as const, w.kind)
+  if (age < 16) w.kind = 'child'
+  else if (age < 18) w.kind = 'trainee'
+  else if (w.kind === 'child' && typeof source.settledAge === 'number' && source.settledAge >= 18) w.kind = 'working'
+  if (age >= 77) w.kind = 'retired'
+  w.load = srcWork.load === .6 ? .6 : 1
+  w.grade = Math.max(1, integer(srcWork.grade, w.grade, 4)) as Grade
+  w.jobSince = integer(srcWork.jobSince, w.jobSince, Math.max(18, age))
+  w.gradeSince = integer(srcWork.gradeSince, w.gradeSince, Math.max(18, age))
+  w.courses = integer(srcWork.courses, 0, 100)
+  w.service = number(srcWork.service, w.service, age)
+  w.lastWage = integer(srcWork.lastWage, w.lastWage)
+  w.until = srcWork.until === undefined ? w.until : srcWork.until === null ? null : integer(srcWork.until, age, 120)
+  w.path = srcWork.path === undefined ? w.path : srcWork.path === null ? null : choice(srcWork.path, ['left','mentor','continue'] as const, w.path ?? 'left')
+  w.deferYears = integer(srcWork.deferYears, w.deferYears, age)
+  w.mentor = srcWork.mentor === true && w.kind === 'retired'
+  w.post = choice(srcWork.post, ['none','held','ended'] as const, w.post)
+  w.job = choice(srcWork.job, Object.keys(ECONOMY_TUNING.wages) as Job[], g.protagonist.job)
+  base.balance = integer(source.balance, base.balance)
+  base.housing = integer(source.housing, 0, 2) as Housing
+  const right = object(source.housingRight)
+  base.housingRight = (right.tier === 1 || right.tier === 2) && typeof right.until === 'number' && Number.isInteger(right.until) && right.until >= age && right.until <= 120 ? {tier:right.tier, until:right.until} : null
+  base.services = dates(source.services)
+  base.owned = dates(source.owned)
+  base.lastBought = dates(source.lastBought)
+  base.goal = typeof source.goal === 'string' && /^[a-z0-9-]+$/.test(source.goal) ? source.goal : null
+  base.tightStreak = integer(source.tightStreak, 0, age)
+  // При повреждённом маркере считаем текущий год закрытым: повторная выплата хуже пропуска.
+  base.settledAge = integer(source.settledAge, age, age)
+  const row = (v: unknown): YearRow | null => { const r=object(v); if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age) return null; return { age:r.age as number, wage:integer(r.wage,0), pension:integer(r.pension,0), bills:integer(r.bills,0), aid:integer(r.aid,0), balance:integer(r.balance,0) } }
+  base.years = Array.isArray(source.years) ? source.years.map(row).filter((r): r is YearRow => r !== null).slice(-80) : []
+  const validKinds = ['start','purchase','gift','help','windfall','shock','aid','estate']
+  base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || typeof t.age !== 'number' || !Number.isInteger(t.age) || t.age<0 || t.age>age || typeof t.amount !== 'number' || !Number.isFinite(t.amount)) return []; return [{ n:integer(t.n,0), age:t.age, kind:String(t.kind), ref:typeof t.ref==='string'?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:Math.trunc(t.amount) }] }).slice(-40) : []
+  base.nextTxn = Math.max(1, integer(source.nextTxn,1), ...base.ledger.map(t=>t.n+1))
+  const totals=object(source.totals)
+  base.totals={earned:integer(totals.earned,0),spent:integer(totals.spent,0),given:integer(totals.given,0),aid:integer(totals.aid,0)}
+  base.estate = g.stopped ? integer(source.estate,base.balance) : null
+  return base
+}

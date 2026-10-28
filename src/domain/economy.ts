@@ -92,30 +92,42 @@ export function repairEconomy(g: GameState): Economy {
   const number = (v: unknown, fallback: number, max = Number.MAX_SAFE_INTEGER) => typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(max, v) : fallback
   const integer = (v: unknown, fallback: number, max = Number.MAX_SAFE_INTEGER) => Math.floor(number(v, fallback, max))
   const choice = <T extends string>(v: unknown, valid: readonly T[], fallback: T): T => valid.includes(v as T) ? v as T : fallback
+  // T3 has not shipped an authoritative offer catalogue. Keep forward-compatible kebab-case IDs; discard malformed keys or dates only.
   const dates = (v: unknown) => Object.fromEntries(Object.entries(object(v)).filter(([key, value]) => /^[a-z0-9-]+$/.test(key) && typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= age)) as Record<string, number>
   const srcWork = object(source.work), w = base.work
+  w.job = choice(srcWork.job, Object.keys(ECONOMY_TUNING.wages) as Job[], g.protagonist.job)
   w.kind = choice(srcWork.kind, ['child','trainee','working','between','sick','retired'] as const, w.kind)
   if (age < 16) w.kind = 'child'
   else if (age < 18) w.kind = 'trainee'
-  else if (w.kind === 'child' && typeof source.settledAge === 'number' && source.settledAge >= 18) w.kind = 'working'
-  if (age >= 77) w.kind = 'retired'
+  else if (w.kind === 'child' && Number(source.settledAge) >= 18 || w.kind === 'trainee' && (srcWork.until === null || srcWork.until === undefined || Number(srcWork.until) < age)) w.kind = 'working'
+  if (age >= 77 && w.kind !== 'retired') w.kind = 'retired'
+  if (age < 60 && w.kind === 'retired') { w.kind = 'working'; w.path = null; w.mentor = false }
+  if (age >= 60 && w.kind === 'retired' && !['left','mentor','continue'].includes(String(srcWork.path))) w.path = g.flags.retirement ? 'left' : 'left'
+  if (w.kind === 'working' && (w.path === 'left' || w.path === 'mentor')) w.kind = 'retired'
+  if (w.path === 'continue' && age < 77) w.kind = 'working'
+  if ((w.kind === 'between' || w.kind === 'sick') && age < 18) w.kind = age < 16 ? 'child' : 'trainee'
+  if ((w.kind === 'between' || w.kind === 'sick') && typeof srcWork.until === 'number' && srcWork.until < age) { w.kind = 'working'; w.until = null }
   w.load = srcWork.load === .6 ? .6 : 1
-  w.grade = Math.max(1, integer(srcWork.grade, w.grade, 4)) as Grade
-  w.jobSince = integer(srcWork.jobSince, w.jobSince, Math.max(18, age))
-  w.gradeSince = integer(srcWork.gradeSince, w.gradeSince, Math.max(18, age))
+  w.grade = srcWork.grade === 1 || srcWork.grade === 2 || srcWork.grade === 3 || srcWork.grade === 4 ? srcWork.grade : base.work.grade
+  w.jobSince = age < 18 ? 18 : Math.min(age, integer(srcWork.jobSince, w.jobSince, age))
+  w.gradeSince = age < 18 ? 18 : Math.max(w.jobSince, Math.min(age, integer(srcWork.gradeSince, w.gradeSince, age)))
   w.courses = integer(srcWork.courses, 0, 100)
-  w.service = number(srcWork.service, w.service, age)
-  w.lastWage = integer(srcWork.lastWage, w.lastWage)
+  w.service = number(srcWork.service, w.service, Math.max(0, age - 16))
+  w.lastWage = Number.isSafeInteger(srcWork.lastWage) && (srcWork.lastWage as number) >= 360 && (srcWork.lastWage as number) <= 3000 ? srcWork.lastWage as number : ECONOMY_TUNING.wages[w.job][w.grade - 1]!
   w.until = srcWork.until === undefined ? w.until : srcWork.until === null ? null : integer(srcWork.until, age, 120)
-  w.path = srcWork.path === undefined ? w.path : srcWork.path === null ? null : choice(srcWork.path, ['left','mentor','continue'] as const, w.path ?? 'left')
+  w.path = srcWork.path === undefined ? w.path : srcWork.path === null ? null : choice(srcWork.path, ['left','mentor','continue'] as const, w.path ?? (w.kind === 'retired' ? 'left' : 'continue'))
+  if (w.path === 'left' || w.path === 'mentor') w.kind = age >= 60 ? 'retired' : 'working'
+  if (w.path === 'continue' && age < 77) w.kind = 'working'
+  if (age >= 77) w.kind = 'retired'
   w.deferYears = integer(srcWork.deferYears, w.deferYears, age)
-  w.mentor = srcWork.mentor === true && w.kind === 'retired'
+  w.mentor = w.path === 'mentor' && srcWork.mentor === true && w.kind === 'retired' && age <= 80
+  if (w.path === 'mentor' && age <= 80 && w.kind === 'retired') w.mentor = true
+  if (w.kind === 'retired' && w.path === 'continue') w.mentor = false
   w.post = choice(srcWork.post, ['none','held','ended'] as const, w.post)
-  w.job = choice(srcWork.job, Object.keys(ECONOMY_TUNING.wages) as Job[], g.protagonist.job)
   base.balance = integer(source.balance, base.balance)
   base.housing = integer(source.housing, 0, 2) as Housing
   const right = object(source.housingRight)
-  base.housingRight = (right.tier === 1 || right.tier === 2) && typeof right.until === 'number' && Number.isInteger(right.until) && right.until >= age && right.until <= 120 ? {tier:right.tier, until:right.until} : null
+  base.housingRight = (right.tier === 1 || right.tier === 2) && right.tier > base.housing && typeof right.until === 'number' && Number.isInteger(right.until) && right.until >= age && right.until <= age + 3 ? {tier:right.tier, until:right.until} : null
   base.services = dates(source.services)
   base.owned = dates(source.owned)
   base.lastBought = dates(source.lastBought)
@@ -123,10 +135,11 @@ export function repairEconomy(g: GameState): Economy {
   base.tightStreak = integer(source.tightStreak, 0, age)
   // При повреждённом маркере считаем текущий год закрытым: повторная выплата хуже пропуска.
   base.settledAge = integer(source.settledAge, age, age)
-  const row = (v: unknown): YearRow | null => { const r=object(v); if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age) return null; return { age:r.age as number, wage:integer(r.wage,0), pension:integer(r.pension,0), bills:integer(r.bills,0), aid:integer(r.aid,0), balance:integer(r.balance,0) } }
+  const row = (v: unknown): YearRow | null => { const r=object(v); const fields=['wage','pension','bills','aid','balance']; if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age || fields.some(k=>!Number.isSafeInteger(r[k]) || (r[k] as number)<0)) return null; return { age:r.age as number, wage:r.wage as number, pension:r.pension as number, bills:r.bills as number, aid:r.aid as number, balance:r.balance as number } }
   base.years = Array.isArray(source.years) ? source.years.map(row).filter((r): r is YearRow => r !== null).slice(-80) : []
   const validKinds = ['start','purchase','gift','help','windfall','shock','aid','estate']
-  base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || typeof t.age !== 'number' || !Number.isInteger(t.age) || t.age<0 || t.age>age || typeof t.amount !== 'number' || !Number.isFinite(t.amount)) return []; return [{ n:integer(t.n,0), age:t.age, kind:String(t.kind), ref:typeof t.ref==='string'?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:Math.trunc(t.amount) }] }).slice(-40) : []
+  const txnIds = new Set<number>()
+  base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || !Number.isSafeInteger(t.age) || (t.age as number)<0 || (t.age as number)>age || !Number.isSafeInteger(t.amount) || (t.amount as number)<0 || !Number.isSafeInteger(t.n) || (t.n as number)<1 || txnIds.has(t.n as number)) return []; txnIds.add(t.n as number); return [{ n:t.n as number, age:t.age as number, kind:String(t.kind), ref:typeof t.ref==='string' && /^[a-z0-9-]*$/.test(t.ref)?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:t.amount as number }] }).slice(-40) : []
   base.nextTxn = Math.max(1, integer(source.nextTxn,1), ...base.ledger.map(t=>t.n+1))
   const totals=object(source.totals)
   base.totals={earned:integer(totals.earned,0),spent:integer(totals.spent,0),given:integer(totals.given,0),aid:integer(totals.aid,0)}

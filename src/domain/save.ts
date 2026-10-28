@@ -17,7 +17,9 @@ export interface Repaired {
  */
 export function repairSave(state: GameState): Repaired {
   const notes: string[] = []
+  const economyWasMigrated = !state.economy || state.economy.v !== 1
   let g = { ...state, economy: repairEconomy(state) }
+  if (economyWasMigrated) notes.push('Личные средства: выполнен расчёт по прошлым годам; история расходов до введения учёта недоступна.')
   const dropped = dropMissingPending(g)
   if (dropped !== g) {
     notes.push(`решение «${g.pending}» удалено из каталога и снято`)

@@ -4,9 +4,10 @@ import { renderToString } from 'vue/server-renderer'
 import { beforeEach, describe, expect, it } from 'vitest'
 import WorkFinancePanel from '../../components/panels/WorkFinancePanel.vue'
 import { useGameStore } from '../../stores/game'
-import { ECONOMY_TUNING, pensionOf, projectYear } from '../economy'
+import { ECONOMY_TUNING, pensionOf, projectYear, settleYear } from '../economy'
 import { formatCredits, formatSigned, groupDigits, workFinanceView } from '../economyView'
 import { advanceYear, createGame, decide } from '../engine'
+import { repairSave } from '../save'
 import type { Work } from '../economy'
 import type { GameState, Job } from '../types'
 
@@ -369,6 +370,107 @@ describe('workFinanceView: прогноз и предупреждения', () =
   })
 })
 
+describe('workFinanceView: пенсионные переходы', () => {
+  function deciding(age: number, over: Partial<Work> = {}): GameState {
+    const g = person(age, 'Техник', { grade: 3, service: 35, lastWage: 1600, post: 'held', deferYears: 2, ...over })
+    g.economy.balance = 30_000
+    g.pending = 'retirement'
+    return g
+  }
+
+  it('выбор «left»: панель сразу показывает пенсионера, хотя settleYear ещё не выполнялся', () => {
+    const g = decide(deciding(64), 0)
+    expect(g.economy.work.kind).toBe('working')
+    const v = workFinanceView(g)
+    const pension = pensionOf({ ...g.economy.work, kind: 'retired' })
+    expect(v.stage).toBe('retired')
+    expect(v.title).toBe('Пенсионер')
+    expect(v.lines[0]).toBe('Прежняя профессия: техник, III разряд')
+    expect(v.lines.join(' ')).not.toMatch(/Полная ставка/)
+    expect(v.income).toMatchObject({ label: 'Выплаты', total: pension })
+    expect(v.income?.parts.map(p => p.key)).toEqual(['pension'])
+  })
+
+  it('выбор «mentor»: пенсия и наставничество раздельно ещё до годового расчёта', () => {
+    const g = decide(deciding(64), 1)
+    expect(g.economy.work.mentor).toBe(false)
+    const v = workFinanceView(g)
+    expect(v.title).toBe('Пенсионер · наставник')
+    expect(v.income?.parts.map(p => p.key)).toEqual(['pension', 'mentoring'])
+    expect(v.income?.parts[1]!.amount).toBe(Math.round(1600 * .25))
+    expect(v.lines).not.toContain('Наставничество завершается')
+  })
+
+  it('выбор «continue»: остаётся работа с обычным доходом', () => {
+    const v = workFinanceView(decide(deciding(64), 2))
+    expect(v.stage).toBe('working')
+    expect(v.title).toBe('Техник · работает')
+    expect(v.income?.label).toBe('Доход')
+    expect(v.income?.parts.map(p => p.key)).toEqual(['wage'])
+  })
+
+  it('до решения (pending) и без возраста 60+ панель остаётся рабочей', () => {
+    expect(workFinanceView(deciding(64)).stage).toBe('working')
+    const g = person(55)
+    g.flags.retirementPath = 'left'
+    expect(workFinanceView(g).stage).toBe('working')
+  })
+
+  it.each([0, 1] as const)('вариант %i: панель до и после settleYear показывает одно и то же состояние и сумму', choice => {
+    const g = decide(deciding(64), choice)
+    const before = workFinanceView(g)
+    const forecast = before.forecast!
+    g.age += 1
+    settleYear(g)
+    const after = workFinanceView(g)
+    expect(after.stage).toBe('retired')
+    expect(after.title).toBe(before.title)
+    expect(after.savings?.amount).toBe(forecast.after)
+    expect(after.lines[0]).toBe(before.lines[0])
+    expect(after.income?.parts.map(p => p.key)).toEqual(before.income?.parts.map(p => p.key))
+  })
+
+  it('устаревшее сохранение (retirement=true без пути) в 60+ — обычная пенсия, как в settleYear', () => {
+    const g = person(66)
+    g.flags.retirement = true
+    const v = workFinanceView(g)
+    expect(v.stage).toBe('retired')
+    expect(v.income?.parts.map(p => p.key)).toEqual(['pension'])
+    const settled = structuredClone(g)
+    settled.age += 1
+    settleYear(settled)
+    expect(settled.economy.work.kind).toBe('retired')
+  })
+
+  it('в 76 лет следующий год — пенсионная выплата, а не зарплата', () => {
+    const g = person(76, 'Техник', { grade: 3, service: 40, lastWage: 1600, post: 'none' })
+    const v = workFinanceView(g)
+    const pension = pensionOf({ ...g.economy.work, kind: 'retired' })
+    expect(v.stage).toBe('working')
+    expect(v.title).toBe('Техник · работает')
+    expect(v.income?.label).toBe('Выплаты')
+    expect(v.income?.parts).toEqual([{ key: 'pension', label: 'пенсия', amount: pension }])
+    expect(v.income?.text).toBe(`пенсия ${groupDigits(pension)} в год`)
+    expect(v.lines).toContain('Со следующего года — пенсия')
+  })
+
+  it('в 75 лет без решения: обычный доход, без упоминания пенсии', () => {
+    const v = workFinanceView(person(75))
+    expect(v.income?.label).toBe('Доход')
+    expect(v.lines).not.toContain('Со следующего года — пенсия')
+  })
+
+  it('сохранение с принятым решением после сериализации и repairSave показывает то же', () => {
+    const g = decide(deciding(64), 1)
+    const before = workFinanceView(g)
+    const loaded = repairSave(JSON.parse(JSON.stringify(g)) as GameState).game
+    const after = workFinanceView(loaded)
+    expect(after.stage).toBe('retired')
+    expect(after.title).toBe(before.title)
+    expect(after.income?.parts).toEqual(before.income?.parts)
+  })
+})
+
 describe('workFinanceView: чистота', () => {
   const cases: [string, () => GameState][] = [
     ['ребёнок', () => { const g = createGame(5); g.age = 10; return g }],
@@ -422,7 +524,8 @@ describe('workFinanceView: чистота', () => {
         expect(v.title, label).not.toMatch(/undefined|NaN/)
         expect(v.rows.length + v.lines.length + 1, label).toBeLessThanOrEqual(10)
         if (v.stage === 'retired') expect(v.income?.parts.map(p => p.key), label).toContain('pension')
-        if (v.stage !== 'retired') expect(v.income?.parts.map(p => p.key) ?? [], label).not.toContain('pension')
+        // Пенсия в доходе вне пенсионного этапа допустима только как прямо названный переход.
+        if (v.stage !== 'retired' && v.income?.parts.some(p => p.key === 'pension')) expect(v.lines, label).toContain('Со следующего года — пенсия')
       }
     }
   })
@@ -493,6 +596,31 @@ describe('панель «Работа и финансы» и состояние 
     expect(html).toContain('Пенсионер · наставник')
     expect(html).toContain('Прежняя профессия: техник, IV разряд')
     expect(html).toContain('наставн.')
+
+    // Решение о пенсии принято в браузере: панель обновляется без годового расчёта.
+    const deciding = person(64, 'Техник', { grade: 3, service: 35, lastWage: 1600, post: 'held' })
+    deciding.economy.balance = 30_000
+    deciding.pending = 'retirement'
+    store.game = deciding
+    html = await renderToString(app)
+    expect(html).toContain('Техник · работает')
+    expect(html).not.toContain('Пенсионер')
+    store.game = decide(deciding, 0)
+    html = await renderToString(app)
+    expect(html).toContain('Пенсионер')
+    expect(html).toContain('Прежняя профессия: техник, III разряд')
+    expect(html).toContain('Выплаты')
+    expect(html).not.toContain('Полная ставка')
+    // Годовой расчёт и загрузка сохранения.
+    const settled = structuredClone(store.game)
+    settled.age += 1
+    settleYear(settled)
+    store.game = settled
+    html = await renderToString(app)
+    expect(html).toContain('Пенсионер')
+    store.game = repairSave(JSON.parse(JSON.stringify(settled)) as GameState).game
+    html = await renderToString(app)
+    expect(html).toContain('Пенсионер')
 
     store.game = { ...mentor, stopped: true, economy: { ...mentor.economy, estate: 9_999_999 } }
     html = await renderToString(app)

@@ -114,6 +114,18 @@ function gradeLine(grade: Grade) {
   return `${GRADE_ROMAN[grade - 1]} разряд (${GRADE_NAME[grade - 1]})`
 }
 
+/**
+ * Решение о пенсии принято (`flags`), но годовой расчёт ещё не перевёл экономику в `retired`.
+ * Условия повторяют начало `settleYear`, чтобы панель не ждала отметки года.
+ */
+function retirementPending(g: GameState) {
+  const w = g.economy.work
+  if (w.kind !== 'working' || g.age < 60) return false
+  const path = g.flags.retirementPath
+  if (path === 'left' || path === 'mentor') return true
+  return g.flags.retirement === true && path === undefined && w.path === null
+}
+
 function stageOf(g: GameState): WorkFinanceStage {
   const e = g.economy
   const kind: WorkKind = e.work.kind
@@ -124,7 +136,7 @@ function stageOf(g: GameState): WorkFinanceStage {
   if (retrainPending) return 'retraining'
   if (g.age < 18) return 'trainee'
   if (kind === 'trainee') return 'retraining'
-  if (kind === 'retired') return 'retired'
+  if (kind === 'retired' || retirementPending(g)) return 'retired'
   if (kind === 'between' || kind === 'sick') return kind
   return 'working'
 }
@@ -175,6 +187,10 @@ export function workFinanceView(g: GameState): WorkFinanceView {
     return view
   }
 
+  // Прогноз нужен и заголовку: наставничество видно по расчётному году даже у неразвёрнутого решения или восстановленного сохранения.
+  const projection = projectYear(g)
+  const next = projection.economy.work
+  const mentorNow = w.mentor || (next.kind === 'retired' && next.mentor)
   const retrain = stage === 'retraining'
   // При ожидающей смене профессии прежний разряд упадёт на ступень, как в settleYear.
   const grade = (retrain && hasProfession(w.job) && w.job !== job ? Math.max(1, w.grade - 1) : w.grade) as Grade
@@ -201,7 +217,7 @@ export function workFinanceView(g: GameState): WorkFinanceView {
       lines.push('Выплата 70% тарифа')
       break
     case 'retired':
-      view.title = w.mentor ? 'Пенсионер · наставник' : 'Пенсионер'
+      view.title = mentorNow ? 'Пенсионер · наставник' : 'Пенсионер'
       lines.push(profession ? `Прежняя профессия: ${job.toLowerCase()}, ${GRADE_ROMAN[w.grade - 1]} разряд` : 'Прежняя работа: общие службы')
       break
     default:
@@ -219,27 +235,28 @@ export function workFinanceView(g: GameState): WorkFinanceView {
   view.actionsSoon = true
   view.savings = { amount: whole(e.balance), text: formatCredits(e.balance), label: 'Накоплено' }
 
-  const projection = projectYear(g)
   const row = projection.economy.years.at(-1)
   if (projection.projectedAge === null || !row || row.age !== projection.projectedAge) return view
 
   const parts: WorkFinanceIncomePart[] = []
-  const mentoring = stage === 'retired' && w.mentor ? row.wage : 0
-  if (stage === 'retired') {
+  // Выплаты определяются состоянием в прогнозном году: в 76 лет следующий год уже пенсионный.
+  const pensionNext = next.kind === 'retired'
+  const mentoring = pensionNext && next.mentor ? row.wage : 0
+  if (pensionNext) {
     parts.push({ key: 'pension', label: 'пенсия', amount: row.pension })
     if (mentoring > 0) parts.push({ key: 'mentoring', label: 'наставн.', amount: mentoring })
   } else if (row.wage > 0) {
     parts.push({ key: 'wage', label: 'доход', amount: row.wage })
   }
   const incomeTotal = row.wage + row.pension
-  if (stage === 'retired' && w.mentor && mentoring === 0) lines.push('Наставничество завершается')
+  if (stage === 'retired' && mentorNow && mentoring === 0) lines.push('Наставничество завершается')
+  if (stage !== 'retired' && pensionNext) lines.push('Со следующего года — пенсия')
   // Подпись следует за состоянием в прогнозном году: в 17 лет стипендия уже сменяется обычной оплатой.
-  const next = projection.economy.work.kind
-  const incomeLabel = stage === 'retired' ? 'Выплаты'
-    : next === 'trainee' ? (projection.projectedAge! < 18 ? 'Стипендия' : 'Оплата стажировки')
-    : next === 'between' || next === 'sick' ? 'Выплата'
+  const incomeLabel = pensionNext ? 'Выплаты'
+    : next.kind === 'trainee' ? (projection.projectedAge! < 18 ? 'Стипендия' : 'Оплата стажировки')
+    : next.kind === 'between' || next.kind === 'sick' ? 'Выплата'
     : 'Доход'
-  const incomeText = stage === 'retired'
+  const incomeText = pensionNext
     ? mentoring > 0 ? `пенсия ${groupDigits(row.pension)} + наставн. ${groupDigits(mentoring)}` : `пенсия ${groupDigits(row.pension)} в год`
     : `${groupDigits(incomeTotal)} в год`
   view.income = { label: incomeLabel, parts, total: incomeTotal, text: incomeText }

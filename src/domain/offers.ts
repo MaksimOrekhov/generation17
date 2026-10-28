@@ -50,6 +50,7 @@ export const OFFERS = {
     opens: ['Следующее повышение разряда при выполнении условий earnedGrade().'],
     effects: { professionalSkill: { byJob: professionSkills, amount: 3, cap: 60 }, courses: 1 },
     requirements: (g: GameState) => {
+      if (g.economy.work.job !== g.protagonist.job) return 'Сначала завершите переобучение.'
       if (g.economy.work.kind !== 'working') return 'Для покупки курса нужно работать.'
       if (!professionSkills[g.protagonist.job]) return 'Курс доступен только по основной специальности.'
       const previous = g.economy.lastBought['course-pro']
@@ -100,7 +101,8 @@ export interface PurchaseAvailability {
   action: 'purchase' | 'restore'
 }
 
-export const getOffer = (id: string): OfferDefinition | undefined => OFFERS[id as OfferId]
+export const getOffer = (id: string): OfferDefinition | undefined =>
+  Object.prototype.hasOwnProperty.call(OFFERS, id) ? OFFERS[id as OfferId] : undefined
 
 const validHousingReturn = (g: GameState) =>
   g.economy.housing === 0 && g.economy.housingRight?.tier === 1 && g.economy.housingRight.until >= g.age

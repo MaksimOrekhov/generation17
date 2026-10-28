@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { cancelService, createGame, purchase } from '../engine'
+import { cancelService, createGame, decide, purchase } from '../engine'
 import { ECONOMY_TUNING, closeEstate, projectYear, settleYear } from '../economy'
 import { findInconsistencies } from '../invariants'
-import { canBuy } from '../offers'
+import { canBuy, getOffer } from '../offers'
 import { repairSave } from '../save'
 import type { GameState, Job, Skill } from '../types'
 
@@ -104,6 +104,17 @@ describe('доступность каталога и чистота провер
     expect(canBuy(workerAt(30), 'future-offer').reason).toMatch(/предложения нет/)
   })
 
+  it.each(['constructor', 'toString', '__proto__', '', 'unknown-offer'])('отклоняет небезопасный или неизвестный id: %s', id => {
+    const g = workerAt(30)
+    const before = structuredClone(g)
+    const rng = g.rng
+    expect(getOffer(id)).toBeUndefined()
+    expect(canBuy(g, id)).toMatchObject({ available: false, offerId: id, reason: 'Такого предложения нет.' })
+    expect(purchase(g, id)).toBe(g)
+    expect(g).toEqual(before)
+    expect(g.rng).toBe(rng)
+  })
+
   it('не требует держать будущую аренду на балансе, если её покрывает ожидаемый доход', () => {
     const g = workerAt(30)
     g.economy.balance = 400
@@ -132,6 +143,33 @@ describe('доступность каталога и чистота провер
 })
 
 describe('профессиональный курс', () => {
+  it('блокируется после настоящего решения mentor до завершения переобучения', () => {
+    const g = workerAt(30)
+    g.flags.trackChosen = true
+    g.flags.mentorTalk = false
+    g.pending = 'mentor'
+    g.economy.work.courses = 2
+
+    const changed = decide(g, 0)
+    expect(changed.protagonist.job).toBe('Медик')
+    expect(changed.economy.work.job).toBe('Техник')
+    expect(canBuy(changed, 'course-pro')).toMatchObject({ available: false, reason: 'Сначала завершите переобучение.' })
+    const before = structuredClone(changed)
+    expect(purchase(changed, 'course-pro')).toBe(changed)
+    expect(changed).toEqual(before)
+
+    changed.age = 31
+    settleYear(changed)
+    expect(changed.economy.work).toMatchObject({ job: 'Медик', kind: 'trainee', courses: 0, until: 32 })
+    changed.age = 32
+    settleYear(changed)
+    expect(changed.economy.work.kind).toBe('working')
+    expect(canBuy(changed, 'course-pro').available).toBe(true)
+    const course = purchase(changed, 'course-pro')
+    expect(course.economy.work.courses).toBe(1)
+    expect(course.skills.medicine).toBe(changed.skills.medicine + 3)
+  })
+
   it.each([
     ['Техник', 'engineering'], ['Медик', 'medicine'], ['Агроном', 'ecology'], ['Координатор', 'social']
   ] as const)('списывает курс для профиля %s и не повышает разряд немедленно', (job, skill) => {
@@ -318,6 +356,59 @@ describe('собственная каюта и право возврата', () 
     expect(upgraded.economy.housing).toBe(1)
     expect(upgraded.economy.housingRight).toEqual({ tier: 2, until: 32 })
     expect(findInconsistencies(upgraded)).toEqual([])
+  })
+
+  it('не повторяет однократный бонус после потери жилья и платного возврата', () => {
+    const g = workerAt(25)
+    g.economy.balance = 400
+    g.economy.work.kind = 'between'
+    g.economy.work.lastWage = 0
+    g.economy.work.until = 100
+
+    const first = purchase(g, 'own-cabin')
+    expect(first.economy.balance).toBe(0)
+    expect(first.stats.morale).toBe(52)
+    expect(first.economy.owned['own-cabin']).toBe(25)
+    first.age = 26
+    settleYear(first)
+    expect(first.economy.housing).toBe(0)
+    expect(first.economy.housingRight).toEqual({ tier: 1, until: 29 })
+
+    for (const age of [27, 28, 29]) {
+      first.age = age
+      settleYear(first)
+    }
+    first.economy.work.kind = 'working'
+    first.economy.work.until = null
+    first.age = 30
+    settleYear(first)
+    expect(first.economy.housingRight).toBeNull()
+    expect(first.economy.balance).toBeGreaterThanOrEqual(400)
+
+    const balanceBefore = first.economy.balance
+    const reacquired = purchase(first, 'own-cabin')
+    expect(reacquired.economy.balance).toBe(balanceBefore - 400)
+    expect(reacquired.economy.housing).toBe(1)
+    expect(reacquired.stats.morale).toBe(52)
+    expect(reacquired.economy.owned['own-cabin']).toBe(30)
+  })
+
+  it('бесплатное восстановление H1 не повторяет однократный бонус настроения', () => {
+    const g = workerAt(25)
+    g.economy.balance = 400
+    g.economy.work.kind = 'between'
+    g.economy.work.lastWage = 0
+    g.economy.work.until = 100
+    const first = purchase(g, 'own-cabin')
+    expect(first.stats.morale).toBe(52)
+
+    first.age = 26
+    settleYear(first)
+    const restored = purchase(first, 'own-cabin')
+    expect(restored.economy.housing).toBe(1)
+    expect(restored.economy.balance).toBe(first.economy.balance)
+    expect(restored.economy.housingRight).toBeNull()
+    expect(restored.stats.morale).toBe(52)
   })
 })
 

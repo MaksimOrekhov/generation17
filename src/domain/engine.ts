@@ -297,11 +297,12 @@ export function purchase(state: GameState, offerId: string): GameState {
     return g
   }
 
+  const previouslyOwned = offer.effects.recordOwnership && e.owned[offer.id] !== undefined
   e.balance -= availability.oneTimeCost
   e.totals.spent += availability.oneTimeCost
   recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, offer.title)
   applyOfferChanges(g, offer)
-  if (offer.effects.stats) applyEffects(g, { stats: offer.effects.stats })
+  if (offer.effects.stats && !previouslyOwned) applyEffects(g, { stats: offer.effects.stats })
   if (offer.attention > 0) g.attention -= offer.attention
   e.lastBought[offer.id] = g.age
   // An expired H1 right no longer applies after paying the ordinary entry fee.

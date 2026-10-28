@@ -535,6 +535,9 @@
         "since": {
           "familyChildAge": 4
         },
+        "until": {
+          "familyChildAge": 10
+        },
         "alive": [
           "child"
         ],
@@ -629,6 +632,11 @@
         "alive": [
           "parent"
         ],
+        "personAge": {
+          "parent": {
+            "min": 75
+          }
+        },
         "flagIs": {
           "adultParentCare": [
             "sharedCare",
@@ -1653,14 +1661,14 @@
       "text": "{{child}} ставит на стол вторую ложку и серьёзно объясняет: теперь ужинать нужно вместе.",
       "min": 26,
       "max": 75,
-      "weight": 3,
+      "weight": 4,
       "cooldown": null,
       "requires": {
         "flagIs": {
           "familyChild": "born"
         },
         "since": {
-          "familyChildAge": 1
+          "familyChildAge": 3
         }
       },
       "accept": {
@@ -1689,7 +1697,7 @@
       "text": "{{child}} у окна называет корабль домом и спрашивает, будет ли дом у тех, кто долетит.",
       "min": 29,
       "max": 80,
-      "weight": 3,
+      "weight": 4,
       "cooldown": null,
       "requires": {
         "flagIs": {
@@ -1794,7 +1802,7 @@
       "text": "{{child}} кладёт на стол рисунок корабля: рядом с иллюминаторами написаны имена вашей семьи.",
       "min": 32,
       "max": 85,
-      "weight": 3,
+      "weight": 4,
       "cooldown": null,
       "requires": {
         "flagIs": {
@@ -1866,7 +1874,7 @@
       "text": "На столе новой каюты стоит чашка со старой кухни. У двери соседка из биокупола зовёт ужинать.",
       "min": 27,
       "max": 85,
-      "weight": 3,
+      "weight": 2,
       "cooldown": null,
       "requires": {
         "flagIs": {
@@ -1899,7 +1907,7 @@
       "text": "У двери общей кухни соседка спрашивает, почему тебя снова нет за ужином: дорога со смены затянулась.",
       "min": 27,
       "max": 85,
-      "weight": 3,
+      "weight": 2,
       "cooldown": null,
       "requires": {
         "flagIs": {
@@ -1930,7 +1938,7 @@
       "text": "У растения на подоконнике свежая вода. Соседка оставляет у двери ключ от твоей каюты.",
       "min": 30,
       "max": 85,
-      "weight": 3,
+      "weight": 2,
       "cooldown": null,
       "requires": {
         "flagIs": {

@@ -146,6 +146,9 @@
       "since": {
         "familyChildAge": 4
       },
+      "until": {
+        "familyChildAge": 10
+      },
       "alive": [
         "child"
       ],
@@ -240,6 +243,9 @@
       "alive": [
         "parent"
       ],
+      "personAge": {
+        "parent": { "min": 75 }
+      },
       "flagIs": {
         "adultParentCare": [
           "sharedCare",

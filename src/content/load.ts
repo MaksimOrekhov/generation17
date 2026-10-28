@@ -19,6 +19,16 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
       const at = g.flags[k]
       if (typeof at !== 'number' || g.age < at + years) return false
     }
+    for (const [k, years] of Object.entries(r.until ?? {})) {
+      const at = g.flags[k]
+      if (typeof at !== 'number' || g.age > at + years) return false
+    }
+    for (const [id, range] of Object.entries(r.personAge ?? {})) {
+      const person = g.people.find(p => p.id === id)
+      if (!person) return false
+      if (range.min !== undefined && person.age < range.min) return false
+      if (range.max !== undefined && person.age > range.max) return false
+    }
     if (r.job && !r.job.includes(g.protagonist.job)) return false
     const home = residenceOf(g)
     if (r.sector && !r.sector.includes(home)) return false

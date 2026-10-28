@@ -148,3 +148,41 @@ describe('новые эффекты и условия', () => {
     expect(errors([{ ...sample(), requires: { sector: ['mars'] } }])).toContain('неизвестный сектор')
   })
 })
+
+describe('until и personAge', () => {
+  const state = () => {
+    const g = createGame(1)
+    g.age = 30
+    g.flags = { born: 26 }
+    return g
+  }
+
+  it('until вместе с since задаёт окно', () => {
+    const g = state()
+    const window = compileRequires({ since: { born: 3 }, until: { born: 6 } })
+    expect(window(g)).toBe(true)
+    g.age = 33
+    expect(window(g)).toBe(false)
+    g.age = 28
+    expect(window(g)).toBe(false)
+    expect(compileRequires({ until: { missing: 5 } })(g)).toBe(false)
+  })
+
+  it('personAge смотрит на возраст человека и требует, чтобы он был', () => {
+    const g = state()
+    const parent = g.people.find(p => p.id === 'parent')!
+    parent.age = 76
+    expect(compileRequires({ personAge: { parent: { min: 75 } } })(g)).toBe(true)
+    expect(compileRequires({ personAge: { parent: { max: 70 } } })(g)).toBe(false)
+    expect(compileRequires({ personAge: { child: { min: 0 } } })(g)).toBe(false)
+  })
+
+  it('валидатор проверяет until и personAge', () => {
+    const s = sample()
+    s.requires = { until: { tinWhistleAge: 6 }, personAge: { stranger: { min: 5 } } } as never
+    const out = errors([s])
+    expect(out).toContain('stranger')
+    s.requires = { until: { tinWhistleAge: 6 }, personAge: { parent: { min: 75 } } }
+    expect(errors([s])).toBe('')
+  })
+})

@@ -123,7 +123,7 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'job', 'alive', 'stat', 'sector', 'sectorNot'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'until', 'personAge', 'job', 'alive', 'stat', 'sector', 'sectorNot'], where)
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
@@ -137,14 +137,23 @@ class Ctx {
       if (key === 'sector' || key === 'sectorNot') v.filter(s => !SECTORS.includes(s)).forEach(s => this.err(`${where}.${key}`, `неизвестный сектор «${s}» (есть: ${SECTORS.join(', ')})`))
       if (key === 'job') v.filter(j => !JOBS.includes(j)).forEach(j => this.err(`${where}.job`, `неизвестная профессия «${j}»`))
     }
-    const maps: Array<'flagIs' | 'since'> = ['flagIs', 'since']
+    const maps: Array<'flagIs' | 'since' | 'until'> = ['flagIs', 'since', 'until']
     for (const key of maps) {
       const v = r[key]
       if (v === undefined) continue
       if (!isObj(v)) { this.err(`${where}.${key}`, 'должен быть объектом'); continue }
       for (const [k, val] of Object.entries(v)) {
         knownFlag(k, `${where}.${key}`)
-        if (key === 'since' && !isNum(val)) this.err(`${where}.since.${k}`, 'нужно число лет')
+        if ((key === 'since' || key === 'until') && !isNum(val)) this.err(`${where}.${key}.${k}`, 'нужно число лет')
+      }
+    }
+    if (r.personAge !== undefined) {
+      if (!isObj(r.personAge)) this.err(`${where}.personAge`, 'должен быть объектом')
+      else {
+        for (const [id, range] of Object.entries(r.personAge)) {
+          if (!PEOPLE.includes(id)) this.err(`${where}.personAge.${id}`, `неизвестный человек (есть: ${PEOPLE.join(', ')})`)
+          if (!isObj(range) || (!isNum(range.min) && !isNum(range.max))) this.err(`${where}.personAge.${id}`, 'нужен объект {min?, max?} с годами')
+        }
       }
     }
     if (r.stat !== undefined) {

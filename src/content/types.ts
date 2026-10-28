@@ -12,6 +12,10 @@ export interface Requires {
   flagIs?: Record<string, FlagValue | FlagValue[]>
   /** Числовой флаг (возраст, записанный через "@age") и прошло не меньше N лет. */
   since?: Record<string, number>
+  /** Числовой флаг-возраст и прошло не более N лет (вместе с `since` задаёт окно «от и до»). */
+  until?: Record<string, number>
+  /** Возраст человека (id: parent, child, ...) в границах; человек должен существовать. */
+  personAge?: Record<string, { min?: number; max?: number }>
   /** Профессия героя — одна из списка. */
   job?: Job[]
   /** Эти люди должны быть живы (id: parent, friend, neighbor, mentor, sibling). */

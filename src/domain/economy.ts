@@ -20,6 +20,7 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  const e=g.economy,w=e.work, stats:{health?:number;stress?:number;morale?:number;bonds?:number}={},logs:string[]=[]
  if(g.stopped || e.estate!==null || g.age<=e.settledAge)return {stats,logs}
  e.settledAge=g.age
+ if(e.housingRight && g.age>e.housingRight.until)e.housingRight=null
  if(g.age===16 && w.kind==='child'){ w.kind='trainee';w.until=18; const n=ECONOMY_TUNING.start[g.birth.wealth]??0;e.balance+=n;txn(e,g.age,'start',n) }
  if(g.age>=18 && (w.kind==='child'||(w.kind==='trainee' && w.until!==null && g.age>=w.until))){w.kind='working';w.until=null;if(!isProfession(w.job)){w.jobSince=g.age;w.gradeSince=g.age}}
  if((w.kind==='between'||w.kind==='sick') && w.until!==null && g.age>w.until){w.kind='working';w.until=null}
@@ -56,16 +57,53 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  if(w.kind==='sick')wage=Math.round(tariff*.7)
  if(w.kind==='retired'){pension=pensionOf(w);if(w.mentor && g.age<=80)wage=Math.round(w.lastWage*.25)}
  let money=e.balance+wage+pension;const minimum=obligationsOf(g).essentials;const aid=Math.max(0,minimum-money);money=Math.max(0,money-minimum); if(aid){txn(e,g.age,'aid',aid);logs.push(`Фонд покрыл ${aid} кр.`)}
- let tight=aid>0; const prior=e.housing;while(ECONOMY_TUNING.rent[e.housing]>money){e.housing=(e.housing-1) as Housing;tight=true}if(e.housing!==prior){e.housingRight={tier:prior as 1|2,until:g.age+3};logs.push('Жильё понижено до доступной ступени.')}
+ let tight=aid>0; const paidServices:string[]=[]; const prior=e.housing;while(ECONOMY_TUNING.rent[e.housing]>money){e.housing=(e.housing-1) as Housing;tight=true}if(e.housing!==prior){e.housingRight={tier:prior as 1|2,until:g.age+3};logs.push('Жильё понижено до доступной ступени.')}
  const rent=ECONOMY_TUNING.rent[e.housing];money-=rent;let bills=minimum+rent
  const closed=g.flags.shipIncidentAge===g.age || g.ship.air<55 || g.ship.food<45
- if(!closed) for(const id of Object.keys(e.services).sort()){const cost=id==='dome-pass'?(g.protagonist.job==='Агроном'?0:90):0;if(cost>money){delete e.services[id];tight=true;logs.push(`Услуга ${id} отменена.`)}else{money-=cost;bills+=cost}}
+ if(!closed) for(const id of Object.keys(e.services).sort()){const cost=id==='dome-pass'?(g.protagonist.job==='Агроном'?0:90):0;if(cost>money){delete e.services[id];tight=true;logs.push(`Услуга ${id} отменена.`)}else{money-=cost;bills+=cost;paidServices.push(id)}}
  e.balance=money;e.tightStreak=tight?e.tightStreak+1:0;if(tight){stats.morale=-2;stats.stress=2}
- if(w.kind==='working'){w.service+=w.load;if(g.age>=62)w.deferYears++;if(g.age>=65 && w.load>=1){stats.health=-1;stats.stress=(stats.stress??0)+2}if(w.load<1){stats.stress=(stats.stress??0)-2;stats.bonds=1}const grade=earnedGrade(g);if(grade>w.grade){w.grade=grade;w.gradeSince=g.age;logs.push(`Новый тарифный разряд: ${grade}.`)}}
+ for(const id of paidServices)if(id==='dome-pass'){stats.stress=(stats.stress??0)-2;stats.morale=(stats.morale??0)+1}
+ if(w.kind==='working'){
+  w.service+=w.load
+  // Отсрочка считает полные календарные годы, а стаж отдельно учитывает load.
+  if(g.age>62)w.deferYears++
+  if(g.age>=65 && w.load>=1){stats.health=-1;stats.stress=(stats.stress??0)+2}
+  if(w.load<1){stats.stress=(stats.stress??0)-2;stats.bonds=1}
+  const grade=earnedGrade(g)
+  if(grade>w.grade){w.grade=grade;w.gradeSince=g.age;logs.push(`Новый тарифный разряд: ${grade}.`)}
+ }
  e.totals.earned+=wage+pension;e.totals.spent+=bills-aid;e.totals.aid+=aid;e.years.push({age:g.age,wage,pension,bills,aid,balance:e.balance});e.years=e.years.slice(-80)
  return {stats,logs}
 }
-export function projectYear(g:GameState){const copy=structuredClone(g);return { effects:settleYear(copy), economy:copy.economy }}
+export interface YearProjection {
+ projectedAge:number|null
+ effects:ReturnType<typeof settleYear>
+ economy:Economy
+ pendingDecision:string|null
+ assumptions:string[]
+}
+/**
+ * Оценка одного следующего финансового года по текущему состоянию и известным регулярным обязательствам.
+ * Не выбирает ожидающие сюжетные решения, не моделирует случайные события/аварии и не меняет исходную игру/RNG.
+ */
+export function projectYear(g:GameState):YearProjection {
+ const copy=structuredClone(g)
+ const assumptions=[
+  'Учитываются текущие профессия, разряд, нагрузка, фокус, жильё и регулярные услуги, а также известные возрастные переходы.',
+  'Не учитываются будущие сюжетные эффекты, случайные события, аварии и изменения показателей корабля.'
+ ]
+ if(g.pending)assumptions.push(`Ожидающее решение «${g.pending}» не выбрано и его последствия не учтены.`)
+ if(g.moment)assumptions.push(`Активный момент «${g.moment}» не выбран и его последствия не учтены.`)
+ if(copy.stopped||copy.economy.estate!==null){
+  assumptions.push('Персонаж умер: будущие доходы и расчёты не прогнозируются.')
+  return {projectedAge:null,effects:{stats:{},logs:[]},economy:copy.economy,pendingDecision:copy.pending,assumptions}
+ }
+ copy.age+=1
+ const child=copy.people.find(person=>person.id==='child'&&person.alive)
+ if(child)child.age+=1
+ const effects=settleYear(copy)
+ return {projectedAge:copy.age,effects,economy:copy.economy,pendingDecision:copy.pending,assumptions}
+}
 export function closeEstate(g:GameState){if(g.economy.estate===null){g.economy.estate=g.economy.balance;txn(g.economy,g.age,'estate',g.economy.balance)}}
 // Старые сохранения не содержат годовых данных о зарплате или курсах.
 // Восстанавливаем только доступные факты: нынешнюю профессию и навык,
@@ -85,7 +123,7 @@ export function migrateEconomy(g: GameState): Economy {
   if (key && g.skills[key] >= 18 && w.service >= 3) w.grade = 2
   // Курсы в старом формате неизвестны и принимаются равными нулю.
   w.lastWage = ECONOMY_TUNING.wages[w.job][w.grade - 1]!
-  w.deferYears = w.kind === 'retired' && g.flags.retirement ? 0 : Math.max(0, Math.min(age, 76) - 61)
+  w.deferYears = w.kind === 'retired' && g.flags.retirement ? 0 : Math.max(0, Math.min(age, 76) - 62)
   w.post = g.flags.promotion === 'accepted' ? 'held' : 'none'
   let net = age >= 16 ? (ECONOMY_TUNING.start[g.birth.wealth] ?? 0) : 0
   for (let year = 16; year <= age; year++) {
@@ -160,14 +198,15 @@ export function repairEconomy(g: GameState): Economy {
   base.tightStreak = integer(source.tightStreak, 0, age)
   // При повреждённом маркере считаем текущий год закрытым: повторная выплата хуже пропуска.
   base.settledAge = integer(source.settledAge, age, age)
-  const row = (v: unknown): YearRow | null => { const r=object(v); const fields=['wage','pension','bills','aid','balance']; if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age || fields.some(k=>!Number.isSafeInteger(r[k]) || (r[k] as number)<0)) return null; return { age:r.age as number, wage:r.wage as number, pension:r.pension as number, bills:r.bills as number, aid:r.aid as number, balance:r.balance as number } }
-  base.years = Array.isArray(source.years) ? source.years.map(row).filter((r): r is YearRow => r !== null).slice(-80) : []
+  const row = (v: unknown): YearRow | null => { const r=object(v); const fields=['wage','pension','bills','aid','balance']; if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age || fields.some(k=>!Number.isSafeInteger(r[k]) || (r[k] as number)<0) || (r.aid as number)>(r.bills as number)) return null; return { age:r.age as number, wage:r.wage as number, pension:r.pension as number, bills:r.bills as number, aid:r.aid as number, balance:r.balance as number } }
+  base.years = Array.isArray(source.years) ? source.years.map(row).filter((r): r is YearRow => r !== null).sort((a,b)=>a.age-b.age).filter((r,i,rows)=>i===rows.findIndex(x=>x.age===r.age)).slice(-80) : []
   const validKinds = ['start','purchase','gift','help','windfall','shock','aid','estate']
   const txnIds = new Set<number>()
   base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || !Number.isSafeInteger(t.age) || (t.age as number)<0 || (t.age as number)>age || !Number.isSafeInteger(t.amount) || (t.amount as number)<0 || !Number.isSafeInteger(t.n) || (t.n as number)<1 || txnIds.has(t.n as number)) return []; txnIds.add(t.n as number); return [{ n:t.n as number, age:t.age as number, kind:String(t.kind), ref:typeof t.ref==='string' && /^[a-z0-9-]*$/.test(t.ref)?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:t.amount as number }] }).slice(-40) : []
   base.nextTxn = Math.max(1, integer(source.nextTxn,1), ...base.ledger.map(t=>t.n+1))
   const totals=object(source.totals)
-  base.totals={earned:integer(totals.earned,0),spent:integer(totals.spent,0),given:integer(totals.given,0),aid:integer(totals.aid,0)}
+  const fromYears=(select:(r:YearRow)=>number)=>base.years.reduce((sum,r)=>Math.min(Number.MAX_SAFE_INTEGER,sum+select(r)),0)
+  base.totals={earned:Math.max(integer(totals.earned,0),fromYears(r=>r.wage+r.pension)),spent:Math.max(integer(totals.spent,0),fromYears(r=>r.bills-r.aid)),given:integer(totals.given,0),aid:Math.max(integer(totals.aid,0),fromYears(r=>r.aid))}
   base.estate = g.stopped ? integer(source.estate,base.balance) : null
   return base
 }

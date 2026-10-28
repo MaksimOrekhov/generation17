@@ -38,12 +38,34 @@ export function findInconsistencies(g: GameState): string[] {
     if (work.mentor !== (work.kind === 'retired' && work.path === 'mentor' && g.age <= 80)) bad('состояние наставничества не согласовано с выходом на пенсию и возрастом')
     if (economy.housingRight && (economy.housingRight.tier <= economy.housing || economy.housingRight.until < g.age || economy.housingRight.until > g.age + 3)) bad('недействительное право возврата жилья')
     if (economy.years.length > 80 || economy.ledger.length > 40) bad('превышен предел финансовой истории')
-    for (const row of economy.years) if (!Number.isInteger(row.age) || row.age < 0 || row.age > economy.settledAge || [row.wage,row.pension,row.bills,row.aid,row.balance].some(n => !Number.isSafeInteger(n) || n < 0)) bad('повреждённая строка годовой истории')
+    let previousYearAge = -1
+    let observedEarned = 0, observedSpent = 0, observedAid = 0
+    for (const row of economy.years) {
+      const valid = Number.isInteger(row.age) && row.age >= 0 && row.age <= economy.settledAge && [row.wage,row.pension,row.bills,row.aid,row.balance].every(n => Number.isSafeInteger(n) && n >= 0)
+      if (!valid) { bad('повреждённая строка годовой истории'); continue }
+      if (row.age <= previousYearAge) bad('возрастные строки финансовой истории повторяются или идут не по порядку')
+      if (row.aid > row.bills) bad('помощь фонда превышает расходы защищённого минимума')
+      previousYearAge = row.age
+      observedEarned += row.wage + row.pension
+      observedSpent += row.bills - row.aid
+      observedAid += row.aid
+    }
+    if (economy.totals.earned < observedEarned) bad('итог доходов меньше сохранённой годовой истории')
+    if (economy.totals.spent < observedSpent) bad('итог собственных расходов меньше сохранённой годовой истории')
+    if (economy.totals.aid < observedAid) bad('итог фонда меньше сохранённой годовой истории')
     const txnIds = new Set<number>()
+    const aidTxnAges = new Set<number>()
     for (const txn of economy.ledger) {
       if (!Number.isSafeInteger(txn.n) || txn.n < 1 || txnIds.has(txn.n) || !Number.isInteger(txn.age) || txn.age < 0 || txn.age > g.age || !Number.isSafeInteger(txn.amount) || txn.amount < 0) bad('повреждённая запись финансового журнала')
       txnIds.add(txn.n)
+      if (txn.kind === 'aid') {
+        if (aidTxnAges.has(txn.age)) bad('фонд записан в журнале больше одного раза за год')
+        aidTxnAges.add(txn.age)
+        const row = economy.years.find(year => year.age === txn.age)
+        if (row && row.aid !== txn.amount) bad('запись фонда не совпадает с годовой выплатой')
+      }
     }
+    if (!Number.isSafeInteger(economy.nextTxn) || economy.nextTxn < 1 || [...txnIds].some(n => n >= economy.nextTxn)) bad('маркер следующей финансовой операции уже использован')
     if (Object.values(economy.totals).some(n => !Number.isSafeInteger(n) || n < 0)) bad('недопустимые итоги финансовой истории')
     if (g.stopped && economy.estate !== economy.balance) bad('остаток наследства не совпадает с балансом после смерти')
     if (!g.stopped && economy.estate !== null) bad('наследство закрыто при жизни')

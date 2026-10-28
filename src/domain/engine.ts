@@ -1,3 +1,4 @@
+import { initEconomy, settleYear, closeEstate } from './economy'
 import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
@@ -29,6 +30,7 @@ const allowedHere = (g: GameState, weird?: 1 | 2) => !weird || ATMOSPHERE_LEVEL[
 export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): GameState {
   const g: GameState = {
     schemaVersion: 2,
+    economy: initEconomy(),
     atmosphere,
     seed: seed >>> 0,
     rng: seed >>> 0,
@@ -371,6 +373,7 @@ function worldTick(g: GameState) {
       { title: 'Перегрузка вентиляции', text: 'Несколько инженерных отсеков временно перевели на резервный воздухообмен.', change: { air: -6, hull: -1 } }
     ] as const
     const item = pick(g, reports)
+    if (item.title === 'Авария водоочистки' || item.title === 'Перегрузка вентиляции') g.flags.shipIncidentAge = g.age
     applyEffects(g, { ship: { ...item.change } })
     addLog(g, 'ship', item.title, item.text)
   }
@@ -421,6 +424,7 @@ function deathTick(g: GameState) {
     : elderDeathChance(g.age, g.stats.health, g.birth.wealth)
   if (g.age < 105 && random(g) >= p) return
   g.stopped = true
+  closeEstate(g)
   g.pending = null
   g.moment = null
   g.causeOfDeath = infant ? 'болезни раннего детства' : g.stats.health < 30 ? 'осложнений хронического заболевания' : 'естественных причин'
@@ -445,6 +449,9 @@ export function tick(state: GameState): GameState {
   peopleTick(g)
   peersTick(g)
   focusTick(g)
+  const economyResult = settleYear(g)
+  applyEffects(g, { stats: economyResult.stats })
+  for (const message of economyResult.logs) addLog(g, 'notice', 'Личные средства', message)
   introScene(g)
   deathTick(g)
   if (g.stopped) {

@@ -1,3 +1,4 @@
+import { repairEconomy } from './economy'
 import { dropMissingPending } from './engine'
 import { cohabitationOk } from './invariants'
 import { getMomentDef } from './moments'
@@ -16,7 +17,7 @@ export interface Repaired {
  */
 export function repairSave(state: GameState): Repaired {
   const notes: string[] = []
-  let g = state
+  let g = { ...state, economy: repairEconomy(state) }
   const dropped = dropMissingPending(g)
   if (dropped !== g) {
     notes.push(`решение «${g.pending}» удалено из каталога и снято`)

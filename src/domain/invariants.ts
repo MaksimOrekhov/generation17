@@ -18,6 +18,9 @@ export function findInconsistencies(g: GameState): string[] {
   const problems: string[] = []
   const bad = (text: string) => problems.push(`возраст ${g.age}: ${text}`)
 
+  if (!g.economy || !Number.isInteger(g.economy.balance) || g.economy.balance < 0) bad('недопустимый баланс экономики')
+  if (g.economy && g.economy.settledAge > g.age) bad('экономика рассчитана за будущий возраст')
+  if (g.economy && g.economy.estate !== null && !g.stopped) bad('наследство закрыто при жизни')
   if (g.pending && !storylets.some(s => s.id === g.pending)) bad(`ожидается решение «${g.pending}», которого нет в каталоге`)
   const moment = g.moment ? getMomentDef(g.moment) : null
   if (g.moment && !moment) bad(`активен неизвестный момент «${g.moment}»`)

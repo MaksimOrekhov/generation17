@@ -1,3 +1,4 @@
+import type { Economy } from './economy'
 import type { Director } from './director'
 
 export type Focus = 'study' | 'relationships' | 'work' | 'rest' | 'civic'
@@ -161,6 +162,7 @@ export interface Fork {
 }
 
 export interface GameState {
+  economy: Economy
   schemaVersion: 2
   atmosphere: Atmosphere
   seed: number

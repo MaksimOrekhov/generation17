@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { createGame, purchase } from '../../domain/engine'
+import { advanceYear, createGame, purchase } from '../../domain/engine'
 import { ECONOMY_TUNING } from '../../domain/economy'
 import { workFinanceView } from '../../domain/economyView'
 import { needsConfirmation, spendView } from '../../domain/spendView'
@@ -296,5 +296,61 @@ describe('покупки через хранилище', () => {
     const v = spendView(workerAt(30))
     expect(v.history.years).toEqual([])
     expect(v.history.ledger).toEqual([])
+  })
+
+  it('после сохранения и загрузки баланс, услуги, обязательства и прогноз совпадают', () => {
+    const store = startAt(workerAt(30))
+    store.buy('own-cabin')
+    store.buy('dome-pass')
+    store.buy('course-pro')
+    const loaded = repairSave(JSON.parse(JSON.stringify(store.game)) as GameState).game
+    const a = workFinanceView(store.game)
+    const b = workFinanceView(loaded)
+    expect(b.savings).toEqual(a.savings)
+    expect(b.obligations).toEqual(a.obligations)
+    expect(b.forecast).toEqual(a.forecast)
+    expect(loaded.economy.services).toEqual(store.game.economy.services)
+    expect(loaded.economy.lastBought).toEqual(store.game.economy.lastBought)
+    expect(spendView(loaded)).toEqual(spendView(store.game))
+  })
+
+  it('покупка перед сменой года списывается один раз и совпадает с прогнозом', () => {
+    const store = startAt(workerAt(30))
+    store.buy('dome-pass')
+    store.buy('dome-pass')
+    const forecast = workFinanceView(store.game).forecast!
+    const rng = store.game.rng
+    const next = advanceYear(store.game)
+    expect(next.economy.balance).toBe(forecast.after)
+    expect(next.economy.years.at(-1)!.bills).toBe(350 + 90)
+    expect(store.game.rng).toBe(rng)
+    expect(store.game.economy.ledger.filter(t => t.ref === 'dome-pass')).toHaveLength(1)
+  })
+
+  it('оформление каюты перед сменой года: взнос один раз, затем годовая аренда', () => {
+    const base = workerAt(30)
+    const store = startAt(structuredClone(base))
+    store.buy('own-cabin')
+    store.buy('own-cabin')
+    const forecast = workFinanceView(store.game).forecast!
+    const next = advanceYear(store.game)
+    const control = advanceYear(base)
+    expect(next.economy.balance).toBe(forecast.after)
+    expect(control.economy.balance - next.economy.balance).toBe(400 + 280)
+    expect(next.economy.housing).toBe(1)
+    expect(next.rng).toBe(control.rng)
+  })
+
+  it('отмена перед сменой года убирает платёж и не меняет RNG относительно игры без покупки', () => {
+    const base = workerAt(30)
+    const store = startAt(structuredClone(base))
+    store.buy('dome-pass')
+    store.cancelServiceById('dome-pass')
+    const next = advanceYear(store.game)
+    const control = advanceYear(base)
+    expect(next.economy.balance).toBe(control.economy.balance)
+    expect(next.economy.years.at(-1)!.bills).toBe(control.economy.years.at(-1)!.bills)
+    expect(next.rng).toBe(control.rng)
+    expect(next.economy.services['dome-pass']).toBeUndefined()
   })
 })

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, createGame, decide, epitaph, getMoment, getStorylet, setFocus, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, skipMoment, takeMoment } from '../domain/engine'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
 import { randomSeed } from '../domain/random'
@@ -70,6 +70,10 @@ export const useGameStore = defineStore('game', () => {
   /** Записи хроники, появившиеся от последнего решения: показываются перед продолжением. */
   const result = ref<LogEntry[] | null>(null)
   const resumeAfter = ref(false)
+  /** Окно «Траты и карьера» открыто: время стоит. */
+  const shopOpen = ref(false)
+  /** Шло ли время до открытия окна. Отдельно от `resumeAfter`, чтобы два сценария не путали возобновление. */
+  const shopResume = ref(false)
   /** Сколько реального времени игрок провёл в живой игре (для отчёта тестера). */
   const playedSeconds = ref(saved?.playedSeconds ?? 0)
   const hintsSeen = ref<Record<string, boolean>>(loadHints())
@@ -82,7 +86,9 @@ export const useGameStore = defineStore('game', () => {
   const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.phase / 4) * 4)))
   const remaining = computed(() => Math.max(0, 340 - game.value.shipYear))
   const finalText = computed(() => epitaph(game.value))
-  const blocked = computed(() => hasDecision.value || game.value.stopped || !!result.value)
+  const blocked = computed(() => hasDecision.value || game.value.stopped || !!result.value || shopOpen.value)
+  /** Магазин открывается с 16 лет в живой игре без ожидающего решения и результата. */
+  const canOpenShop = computed(() => started.value && !game.value.stopped && !game.value.pending && !result.value && game.value.age >= 16)
   const latest = computed(() => filter.value === 'all'
     ? game.value.history
     : game.value.history.filter(h => h.kind === filter.value))
@@ -148,10 +154,12 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function acceptMoment() {
+    if (shopOpen.value) return
     game.value = takeMoment(game.value)
   }
 
   function dismissMoment() {
+    if (shopOpen.value) return
     game.value = skipMoment(game.value)
   }
 
@@ -171,6 +179,38 @@ export const useGameStore = defineStore('game', () => {
     playing.value = !playing.value
   }
 
+  function openShop() {
+    if (shopOpen.value || !canOpenShop.value) return
+    shopResume.value = playing.value
+    playing.value = false
+    shopOpen.value = true
+  }
+
+  function closeShop() {
+    if (!shopOpen.value) return
+    shopOpen.value = false
+    const resume = shopResume.value
+    shopResume.value = false
+    if (resume && !blocked.value) playing.value = true
+  }
+
+  /** Покупка целиком на доменном слое: он повторно проверяет доступность. `false` — ничего не изменилось. */
+  function buy(offerId: string): boolean {
+    if (!started.value) return false
+    const next = purchase(game.value, offerId)
+    if (next === game.value) return false
+    game.value = next
+    return true
+  }
+
+  function cancelServiceById(serviceId: string): boolean {
+    if (!started.value) return false
+    const next = cancelService(game.value, serviceId)
+    if (next === game.value) return false
+    game.value = next
+    return true
+  }
+
   function begin() {
     started.value = true
     playing.value = true
@@ -179,6 +219,8 @@ export const useGameStore = defineStore('game', () => {
   function newLife(seed?: number) {
     playing.value = false
     resumeAfter.value = false
+    shopOpen.value = false
+    shopResume.value = false
     result.value = null
     progress.value = 0
     filter.value = 'all'
@@ -208,9 +250,9 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    game, started, preset, playedSeconds, hintsSeen, speed, playing, progress, filter, result,
+    game, started, preset, playedSeconds, hintsSeen, speed, playing, progress, filter, result, shopOpen, canOpenShop,
     secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
-    frame, step, runToDecision, choose, continueAfterResult, acceptMoment, dismissMoment,
+    frame, step, runToDecision, openShop, closeShop, buy, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }
 })

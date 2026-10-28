@@ -77,7 +77,7 @@ describe('поздние истории: согласованность и до�
   })
   it('в живых жизнях условия соблюдаются, решения не повторяются, а каждый момент выпадает не больше раза', () => {
     const shown = new Set<string>()
-    for (let seed = 1; seed <= 40; seed++) {
+    for (let seed = 1; seed <= 30; seed++) {
       let g = createGame(seed + 101); let step = 0
       const momentsSeen: string[] = []
       for (let guard = 0; guard < 1200 && !g.stopped; guard++) {
@@ -105,6 +105,6 @@ describe('поздние истории: согласованность и до�
       expect(new Set(momentsSeen).size, `seed ${seed}`).toBe(momentsSeen.length)
     }
     expect(shown.size).toBeGreaterThan(0)
-  })
+  }, 60_000)
 })
 

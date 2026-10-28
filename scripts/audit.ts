@@ -45,7 +45,7 @@ function flatten(value: unknown, prefix = '', out: Record<string, number> = {}) 
 
 /** Таблица изменившихся числовых показателей (частоты отдельных сюжетов не печатаются). */
 function printDiff(old: unknown, next: unknown) {
-  const skip = (k: string) => k.startsWith('encounter.rates') || k === 'lives'
+  const skip = (k: string) => k.startsWith('encounter.rates') || k.startsWith('lateLife.rates') || k === 'lives'
   const a = flatten(old), b = flatten(next)
   const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => !skip(k)).sort()
   console.log('| показатель | было | стало | изменение |\n|---|---:|---:|---:|')
@@ -63,6 +63,11 @@ if (diffAt >= 0) {
 
 // ───────────────────────── прогон одной жизни ─────────────────────────
 
+const retrospective = new Set<string>(
+  (JSON.parse(readFileSync(join(root, 'src/content/bundle.json'), 'utf8')) as { storylets: any[] }).storylets
+    .filter(s => Object.values(s.requires?.since ?? {}).some(y => (y as number) >= 15)).map(s => s.id)
+)
+
 type Policy = (event: Storylet, step: number, seed: number) => number
 const policies: Record<string, Policy> = {
   first: () => 0,
@@ -76,7 +81,7 @@ interface Life {
   seed: number
   age: number
   job: string
-  decisions: { age: number; id: string }[]
+  decisions: { age: number; id: string; old: boolean }[]
   momentsByAge: number[]
   momentIds: string[]
   seen: string[]
@@ -94,7 +99,9 @@ function playLife(seed: number, policy: Policy, opts: { focus?: Focus; acceptMom
     if (g.pending) {
       const event = storylets.find(e => e.id === g.pending)
       if (!event) throw Error(`Неизвестное решение ${g.pending}`)
-      life.decisions.push({ age: g.age, id: event.id })
+      // «Отсылка к прошлому»: линия, начатая решением 15 и более лет назад, либо сюжет с окном since ≥ 15 в JSON
+      const old = g.forks.some(f => f.arc === event.arc && f.age <= g.age - 15) || retrospective.has(event.id)
+      life.decisions.push({ age: g.age, id: event.id, old })
       g = decide(g, policy(event, step++, seed))
       continue
     }
@@ -209,6 +216,54 @@ function rhythmReport(runs: Life[]) {
     yearsAfterLastDecision: { mean: round(mean(silence), 1), max: Math.max(...silence) },
     topMomentsPerLife: Object.fromEntries(Object.entries(momentCounts).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => [id, round(n / runs.length, 2)])),
     momentsNeverOpened: moments.filter(m => !momentCounts[m.id]).map(m => m.id)
+  }
+}
+
+/**
+ * Поздняя жизнь. Окна считаются только по годам, которые герои действительно прожили:
+ * в знаменатель идут прожитые годы внутри окна, в «дожили» — те, кто вошёл в окно.
+ */
+function lateLifeReport(runs: Life[], pooled: Life[]) {
+  const windows = [[65, 74], [75, 84], [80, 95], [85, 95]] as const
+  const win = Object.fromEntries(windows.map(([a, b]) => {
+    const reached = runs.filter(l => l.age >= a)
+    const years = reached.reduce((n, l) => n + Math.min(l.age, b + 1) - a, 0)
+    const decisions = reached.reduce((n, l) => n + l.decisions.filter(d => d.age >= a && d.age <= b).length, 0)
+    const withAny = reached.filter(l => l.decisions.some(d => d.age >= a && d.age <= b)).length
+    return [`${a}-${b}`, { livesReached: reached.length, sharePct: pct(reached.length, runs.length), yearsLived: years, decisionsPer10Years: round(decisions / Math.max(1, years) * 10, 3), livesWithDecisionPct: pct(withAny, reached.length) }]
+  }))
+  const r65 = runs.filter(l => l.age >= 65)
+  const late = r65.map(l => l.decisions.filter(d => d.age >= 65))
+  const gaps: number[] = []
+  const streaks: number[] = []
+  late.forEach(ds => {
+    ds.slice(1).forEach((d, i) => gaps.push(d.age - ds[i]!.age))
+    let run = 1
+    ds.slice(1).forEach((d, i) => { if (d.age - ds[i]!.age <= 2) run++; else { streaks.push(run); run = 1 } })
+    if (ds.length) streaks.push(run)
+  })
+  const lastGap = r65.map(l => l.age - Math.max(0, ...l.decisions.map(d => d.age)))
+  const lateIds = new Set(storylets.filter(s => s.id.startsWith('late-')).map(s => s.id))
+  const lateMoments = new Set(moments.filter(m => m.id.startsWith('m-late-')).map(m => m.id))
+  const share = (ids: Set<string>, get: (l: Life) => string[]) => Object.fromEntries([...ids].map(id => [id, pct(r65.filter(l => get(l).includes(id)).length, r65.length)]))
+  const p65 = pooled.filter(l => l.age >= 65)
+  const rate = (id: string) => round(p65.filter(l => l.seen.includes(id)).length / Math.max(1, p65.length), 3)
+  return {
+    windows: win,
+    livesReaching65: r65.length,
+    lateDecisionsPerLife65: round(mean(late.map(d => d.length)), 2),
+    livesWithRetrospectivePct: pct(late.filter(ds => ds.some(d => d.old)).length, r65.length),
+    retrospectiveShareOfLateDecisionsPct: pct(late.flat().filter(d => d.old).length, late.flat().length),
+    gapBetweenLateDecisions: { mean: round(mean(gaps), 2), eqMinGapPct: pct(gaps.filter(g => g <= 2).length, gaps.length) },
+    longestRunOfMinGapDecisions: { mean: round(mean(streaks), 2), max: Math.max(0, ...streaks) },
+    yearsAfterLastDecision65: { mean: round(mean(lastGap), 2), over10Pct: pct(lastGap.filter(g => g > 10).length, lastGap.length), over5Pct: pct(lastGap.filter(g => g > 5).length, lastGap.length) },
+    meanAge: round(mean(runs.map(l => l.age)), 2),
+    lateStoryletsSeenPct: share(lateIds, l => l.seen),
+    lateStoryletsAnyPct: pct(r65.filter(l => l.seen.some(id => lateIds.has(id))).length, r65.length),
+    lateMomentsSeenPct: share(lateMoments, l => l.momentIds),
+    momentsPerYear65: round(r65.reduce((n, l) => n + l.momentIds.length, 0) / Math.max(1, r65.reduce((n, l) => n + l.age, 0)), 3),
+    lateMomentsPerLife: round(mean(r65.map(l => l.momentIds.filter(id => lateMoments.has(id)).length)), 2),
+    rates: Object.fromEntries(storylets.filter(s => s.max >= 65).map(s => [s.id, rate(s.id)]))
   }
 }
 
@@ -339,6 +394,8 @@ const report = {
   strategies: Object.fromEntries(Object.entries(byStrategy).map(([k, v]) => [k, strategyReport(k, v)])),
   rhythm: rhythmReport(byStrategy.mixed!),
   encounter: encounterReport(pooled),
+  lateLife: lateLifeReport(byStrategy.mixed!, pooled),
+  lateLifeByStrategy: Object.fromEntries(['first', 'last', 'cycling', 'mixed'].map(k => [k, (({ rates: _r, ...rest }) => rest)(lateLifeReport(byStrategy[k]!, byStrategy[k]!))])),
   professions: professionReport(byStrategy.mixed!),
   focus: focusReport(byStrategy.mixed!, Object.fromEntries(Object.entries(focuses).filter(([k]) => k !== 'study'))),
   pace: paceReport()
@@ -352,7 +409,8 @@ if (jsonPath) writeFileSync(jsonPath, JSON.stringify(report, null, 2) + '\n')
 if (comparePath) {
   printDiff(JSON.parse(readFileSync(comparePath, 'utf8')), report)
 } else {
-  const { encounter, ...rest } = report
+  const { encounter, lateLife, ...rest } = report
   const { rates: _rates, ...encounterBrief } = encounter
-  console.log(JSON.stringify({ ...rest, encounter: encounterBrief }, null, 2))
+  const { rates: _lateRates, ...lateBrief } = lateLife
+  console.log(JSON.stringify({ ...rest, encounter: encounterBrief, lateLife: lateBrief }, null, 2))
 }

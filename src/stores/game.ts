@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, cancelService, canChoose, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, canChoose, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setGoal, setLoad, skipMoment, takeMoment } from '../domain/engine'
 import type { PurchaseTarget } from '../domain/offers'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
@@ -233,6 +233,15 @@ export const useGameStore = defineStore('game', () => {
     return true
   }
 
+  /** Цель накопления: бесплатно, без хроники и RNG. `null` снимает цель. `false` — ничего не изменилось. */
+  function chooseGoal(offerId: string | null): boolean {
+    if (!started.value) return false
+    const next = setGoal(game.value, offerId)
+    if (next === game.value) return false
+    game.value = next
+    return true
+  }
+
   function cancelServiceById(serviceId: string): boolean {
     if (!started.value) return false
     const next = cancelService(game.value, serviceId)
@@ -282,7 +291,7 @@ export const useGameStore = defineStore('game', () => {
   return {
     game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop,
     secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
-    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
+    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }
 })

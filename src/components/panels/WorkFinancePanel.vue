@@ -34,6 +34,7 @@ const open = ref(false)
       </p>
       <p v-if="view.forecast" class="wf__caption wf__x" :title="view.forecast.assumptions.join(' ')">{{ view.forecast.caption }}</p>
       <p v-if="view.runway" class="wf__line wf__x">{{ view.runway }}</p>
+      <p v-if="view.goal" class="wf__line wf__x" data-test="goal-line">{{ view.goal }}</p>
       <p v-if="view.notice" class="wf__notice wrap" :class="`wf__notice--${view.notice.level}`" role="status">{{ view.notice.text }}</p>
       <button
         v-if="view.spendOffered" type="button" class="btn btn--accent wf__spend"

@@ -34,6 +34,9 @@ export function findInconsistencies(g: GameState): string[] {
     if (g.age >= 16 && g.age < 18 && work.kind !== 'trainee') bad('статус вне стажировки в 16–17 лет')
     if (g.age >= 18 && work.kind === 'child' && economy.settledAge >= 18) bad('статус ребёнка после 18 лет')
     if (g.age >= 77 && work.kind !== 'retired') bad('полная занятость после предела 77 лет')
+    // Взрослая стажировка — ровно один расчётный год после смены профессии (§3.2).
+    if (work.kind === 'trainee' && g.age >= 18 && (work.until === null || work.until <= g.age || work.until > g.age + 1)) bad('стажировка по новой специальности длится не один расчётный год')
+    if (economy.goal !== null && !getOffer(economy.goal)) bad(`неизвестная цель накопления «${economy.goal}»`)
     if (work.kind === 'retired' && g.age < 60) bad('пенсионный статус до доступного возраста')
     if ((work.kind === 'between' || work.kind === 'sick') && (g.age < 18 || g.age >= 77)) bad('статус временной нетрудоспособности вне рабочего возраста')
     if ((work.kind === 'working' || work.kind === 'between' || work.kind === 'sick') && (work.path === 'left' || work.path === 'mentor')) bad('рабочий статус противоречит пути выхода на пенсию')
@@ -99,6 +102,8 @@ export function findInconsistencies(g: GameState): string[] {
     if (economy.services['dome-pass'] !== undefined && g.age < 16) bad('абонемент подключён до допустимого возраста')
     const lastCourse = economy.lastBought['course-pro']
     if (lastCourse !== undefined && (lastCourse < 18 || lastCourse > 58 || lastCourse > g.age)) bad('недопустимый возраст последнего профессионального курса')
+    const lastRetrain = economy.lastBought.retrain
+    if (lastRetrain !== undefined && (lastRetrain < 22 || lastRetrain > 55 || lastRetrain > g.age)) bad('недопустимый возраст последнего переобучения')
     const lastFamilyTrip = economy.lastBought['family-trip']
     if (lastFamilyTrip !== undefined && (lastFamilyTrip < 20 || lastFamilyTrip > g.age)) bad('недопустимый возраст последней семейной поездки')
     if (g.stopped && economy.estate !== economy.balance) bad('остаток наследства не совпадает с балансом после смерти')

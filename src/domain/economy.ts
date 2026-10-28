@@ -1,3 +1,4 @@
+import { clamp } from './random'
 import type { GameState, Job, Skill } from './types'
 export type WorkKind = 'child'|'trainee'|'working'|'between'|'sick'|'retired'
 export type Grade = 1|2|3|4
@@ -8,10 +9,93 @@ export interface YearRow { age:number; wage:number; pension:number; bills:number
 export interface Economy { v:1; balance:number; work:Work; housing:Housing; housingRight:{tier:1|2;until:number}|null; services:Record<string,number>; owned:Record<string,number>; lastBought:Record<string,number>; goal:string|null; tightStreak:number; settledAge:number; years:YearRow[]; ledger:Txn[]; nextTxn:number; totals:{earned:number;spent:number;given:number;aid:number}; estate:number|null }
 export const ECONOMY_TUNING = { wages: { 'Техник':[1100,1350,1600,1850], 'Медик':[1050,1300,1600,1900], 'Агроном':[950,1200,1450,1700], 'Координатор':[1150,1400,1700,2050], 'Ученик':[650,650,650,650], 'Без специальности':[650,650,650,650] } satisfies Record<Job,number[]>, start:[0,0,200,400,700,1100], rent:[0,280,640], services:{domePass:90}, personal:350, child:150, trainee:360, limit:77 } as const
 const skill:Partial<Record<Job,Skill>> = { 'Техник':'engineering','Медик':'medicine','Агроном':'ecology','Координатор':'social' }
-const isProfession = (job: Job) => job === 'Техник' || job === 'Медик' || job === 'Агроном' || job === 'Координатор'
+/** Четыре основные специальности: только между ними возможно переобучение. */
+export const PROFESSIONS = ['Техник','Медик','Агроном','Координатор'] as const satisfies readonly Job[]
+export const isProfession = (job: Job) => job === 'Техник' || job === 'Медик' || job === 'Агроном' || job === 'Координатор'
+export const professionSkillOf = (job: Job): Skill | null => skill[job] ?? null
+/** Прибавка к профильному навыку новой специальности при любом переобучении (сюжетном или купленном). */
+export const RETRAIN_SKILL_BONUS = 9
 export function initEconomy():Economy { return {v:1,balance:0,work:{kind:'child',load:1,grade:1,jobSince:18,gradeSince:18,courses:0,service:0,lastWage:650,until:null,path:null,deferYears:0,mentor:false,post:'none',job:'Ученик'},housing:0,housingRight:null,services:{},owned:{},lastBought:{},goal:null,tightStreak:0,settledAge:0,years:[],ledger:[],nextTxn:1,totals:{earned:0,spent:0,given:0,aid:0},estate:null} }
 export function wageOf(g:GameState):number { const w=g.economy.work; return ECONOMY_TUNING.wages[g.protagonist.job][w.grade-1]! }
-export function earnedGrade(g:GameState):Grade { const w=g.economy.work; const key=skill[g.protagonist.job]; if(!key)return w.grade; const n=g.skills[key]; if(w.grade===1 && n>=18 && g.age-w.jobSince>=3)return 2; if(w.grade===2 && n>=45 && w.courses>=1 && g.age-w.jobSince>=10)return 3; if(w.grade===3 && n>=60 && w.courses>=2 && g.age-w.gradeSince>=8)return 4; return w.grade }
+
+/**
+ * Пороги присвоения разряда (§3.2) — единственный источник и для earnedGrade(), и для gradeProgress().
+ * `since: 'job'` — годы на специальности (с work.jobSince), `'grade'` — годы в текущем разряде (с work.gradeSince).
+ */
+export const GRADE_RULES = [
+ { from: 1, skill: 18, courses: 0, years: 3, since: 'job' },
+ { from: 2, skill: 45, courses: 1, years: 10, since: 'job' },
+ { from: 3, skill: 60, courses: 2, years: 8, since: 'grade' }
+] as const
+export interface GradeRequirement { key: 'skill' | 'courses' | 'years'; since?: 'job' | 'grade'; current: number; required: number; met: boolean }
+export interface GradeProgress {
+ job: Job
+ skill: Skill | null
+ grade: Grade
+ /** Следующий разряд; `null` — у специальности нет разрядов или достигнут IV. */
+ next: Grade | null
+ requirements: GradeRequirement[]
+ /** Все условия выполнены: earnedGrade() повысит разряд на ближайшем расчёте обычной работы. */
+ ready: boolean
+ /** Карьерное состояние, по которому считаются условия (после оформленной, но не рассчитанной смены профессии — уже новое). */
+ work: Work
+}
+
+/**
+ * Карьерное состояние после смены профессии (§3.2). Единственное место, где экономика применяет переход:
+ * разряд −1 (не ниже I), курсы обнуляются, назначение завершается, год стажировки на 60% тарифа.
+ * Мутирует переданный Work. Вызывается settleYear() на первом расчёте после смены `protagonist.job` —
+ * и для сюжетной смены, и для купленной `retrain`. После вызова `work.job` совпадает с профессией героя,
+ * поэтому повторный расчёт, прогноз или загрузка сохранения не применяют переход второй раз.
+ */
+export function onJobChange(w: Work, job: Job, age: number) {
+ const retraining = isProfession(w.job)
+ if (retraining) {
+  w.grade = Math.max(1, w.grade - 1) as Grade
+  w.courses = 0
+  if (w.post === 'held') w.post = 'ended'
+  w.kind = 'trainee'
+  w.until = age + 1
+ }
+ w.job = job
+ // Сюжет или покупка уже изменили навык; экономика отвечает только за карьерное состояние.
+ w.jobSince = retraining ? age : Math.max(16, age - 1)
+ w.gradeSince = age
+}
+
+/**
+ * Герой переходит в другую специальность: профессия меняется сразу, профильный навык новой специальности +9.
+ * Общая часть сюжетного `effects.job: 'Переобучение'` и покупки `retrain`; карьерные последствия
+ * (разряд, курсы, назначение, стажировка) применит onJobChange() на ближайшем годовом расчёте.
+ */
+export function changeProfession(g: GameState, job: Job) {
+ g.protagonist.job = job
+ const key = skill[job]
+ if (key) g.skills[key] = clamp(g.skills[key] + RETRAIN_SKILL_BONUS)
+}
+
+/**
+ * Путь к следующему разряду по тем же правилам, что earnedGrade(). Чистая функция.
+ * Если смена профессии оформлена, но ещё не рассчитана, условия показываются для новой специальности
+ * (как они будут выглядеть после onJobChange), а не по стажу прежней.
+ */
+export function gradeProgress(g: GameState): GradeProgress {
+ const job = g.protagonist.job
+ let w = g.economy.work
+ if (w.job !== job) { w = { ...w }; onJobChange(w, job, g.age + 1) }
+ const key = skill[job] ?? null
+ const rule = GRADE_RULES.find(r => r.from === w.grade)
+ if (!key || !rule) return { job, skill: key, grade: w.grade, next: null, requirements: [], ready: false, work: w }
+ const skillValue = g.skills[key]
+ const years = g.age - (rule.since === 'job' ? w.jobSince : w.gradeSince)
+ const requirements: GradeRequirement[] = [{ key: 'skill', current: skillValue, required: rule.skill, met: skillValue >= rule.skill }]
+ if (rule.courses > 0) requirements.push({ key: 'courses', current: w.courses, required: rule.courses, met: w.courses >= rule.courses })
+ requirements.push({ key: 'years', since: rule.since, current: Math.max(0, years), required: rule.years, met: years >= rule.years })
+ return { job, skill: key, grade: w.grade, next: (rule.from + 1) as Grade, requirements, ready: requirements.every(r => r.met), work: w }
+}
+
+/** Разряд по квалификации на текущий возраст. Пока смена профессии не рассчитана, разряд не растёт. */
+export function earnedGrade(g:GameState):Grade { const w=g.economy.work; if(w.job!==g.protagonist.job)return w.grade; const p=gradeProgress(g); return p.ready&&p.next!==null?p.next:w.grade }
 export function pensionOf(w:Work):number {return Math.round(Math.max(360,Math.round(w.lastWage*(.2+.008*Math.min(w.service,40))))*(1+Math.min(.25,.04*w.deferYears)))}
 export function obligationsOf(g:GameState) { const child=g.people.find(p=>p.id==='child' && p.alive && p.since<=g.age && p.age<16); return { essentials:(g.age>=18 ? ECONOMY_TUNING.personal-(g.protagonist.job==='Агроном'?60:0):0)+(child?150:0), rent:ECONOMY_TUNING.rent[g.economy.housing] } }
 const servicesClosed = (g: GameState) => g.flags.shipIncidentAge === g.age || g.ship.air < 55 || g.ship.food < 45
@@ -37,20 +121,7 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  if(g.age===16 && w.kind==='child'){ w.kind='trainee';w.until=18; const n=ECONOMY_TUNING.start[g.birth.wealth]??0;e.balance+=n;txn(e,g.age,'start',n) }
  if(g.age>=18 && (w.kind==='child'||(w.kind==='trainee' && w.until!==null && g.age>=w.until))){w.kind='working';w.until=null;if(!isProfession(w.job)){w.jobSince=g.age;w.gradeSince=g.age}}
  if((w.kind==='between'||w.kind==='sick') && w.until!==null && g.age>w.until){w.kind='working';w.until=null}
- if(w.job!==g.protagonist.job){
-   const retraining = isProfession(w.job)
-   if(retraining){
-     w.grade=Math.max(1,w.grade-1) as Grade
-     w.courses=0
-     if(w.post==='held')w.post='ended'
-     w.kind='trainee'
-     w.until=g.age+1
-   }
-   w.job=g.protagonist.job
-   // Сюжет смены профессии уже изменил навык; экономика отвечает только за карьерное состояние.
-   w.jobSince=retraining?g.age:Math.max(16,g.age-1)
-   w.gradeSince=g.age
- }
+ if(w.job!==g.protagonist.job)onJobChange(w,g.protagonist.job,g.age)
  if(g.flags.promotion==='accepted' && w.post==='none')w.post='held'
  const path=g.flags.retirementPath
  if(path==='left'||path==='mentor'||path==='continue')w.path=path
@@ -114,11 +185,26 @@ export function projectYear(g:GameState):YearProjection {
   assumptions.push('Персонаж умер: будущие доходы и расчёты не прогнозируются.')
   return {projectedAge:null,effects:{stats:{},logs:[]},economy:copy.economy,pendingDecision:copy.pending,assumptions}
  }
+ const effects=settleProjected(copy)
+ return {projectedAge:copy.age,effects,economy:copy.economy,pendingDecision:copy.pending,assumptions}
+}
+/** Один прогнозный расчёт на копии: возраст героя и ребёнка, затем обычный settleYear(). */
+function settleProjected(copy:GameState) {
  copy.age+=1
  const child=copy.people.find(person=>person.id==='child'&&person.alive)
  if(child)child.age+=1
- const effects=settleYear(copy)
- return {projectedAge:copy.age,effects,economy:copy.economy,pendingDecision:copy.pending,assumptions}
+ return settleYear(copy)
+}
+export interface ProjectedYear { age:number; row:YearRow; work:Work }
+/**
+ * Несколько годовых расчётов подряд с теми же допущениями, что projectYear(): без сюжетов, случайных событий
+ * и роста навыков. Нужен, чтобы показать год стажировки и следующий за ним год. Исходную игру и RNG не меняет.
+ */
+export function projectYears(g:GameState,count:number):ProjectedYear[] {
+ if(g.stopped||g.economy.estate!==null)return []
+ const copy=structuredClone(g),out:ProjectedYear[]=[]
+ for(let i=0;i<count;i++){settleProjected(copy);const row=copy.economy.years.at(-1);if(!row||row.age!==copy.age)break;out.push({age:copy.age,row:{...row},work:{...copy.economy.work}})}
+ return out
 }
 export function closeEstate(g:GameState){if(g.economy.estate===null){g.economy.estate=g.economy.balance;txn(g.economy,g.age,'estate',g.economy.balance)}}
 // Старые сохранения не содержат годовых данных о зарплате или курсах.
@@ -174,7 +260,7 @@ export function repairEconomy(g: GameState): Economy {
   w.kind = choice(srcWork.kind, ['child','trainee','working','between','sick','retired'] as const, w.kind)
   if (age < 16) w.kind = 'child'
   else if (age < 18) w.kind = 'trainee'
-  else if (w.kind === 'child' && Number(source.settledAge) >= 18 || w.kind === 'trainee' && (srcWork.until === null || srcWork.until === undefined || Number(srcWork.until) < age)) w.kind = 'working'
+  else if (w.kind === 'child' && Number(source.settledAge) >= 18 || w.kind === 'trainee' && (srcWork.until === null || srcWork.until === undefined || Number(srcWork.until) <= age)) w.kind = 'working'
   if (age >= 77 && w.kind !== 'retired') w.kind = 'retired'
   if (age < 60 && w.kind === 'retired') { w.kind = 'working'; w.path = null; w.mentor = false }
   if (age >= 60 && w.kind === 'retired' && !['left','mentor','continue'].includes(String(srcWork.path))) w.path = g.flags.retirement ? 'left' : 'left'
@@ -190,6 +276,8 @@ export function repairEconomy(g: GameState): Economy {
   w.service = number(srcWork.service, w.service, Math.max(0, age - 16))
   w.lastWage = Number.isSafeInteger(srcWork.lastWage) && (srcWork.lastWage as number) >= 360 && (srcWork.lastWage as number) <= 3000 ? srcWork.lastWage as number : ECONOMY_TUNING.wages[w.job][w.grade - 1]!
   w.until = srcWork.until === undefined ? w.until : srcWork.until === null ? null : integer(srcWork.until, age, 120)
+  // Взрослая стажировка (переобучение) длится ровно один расчётный год: повреждённый срок не продлевает её.
+  if (w.kind === 'trainee' && age >= 18 && (w.until === null || w.until > age + 1)) w.until = age + 1
   w.path = srcWork.path === undefined ? w.path : srcWork.path === null ? null : choice(srcWork.path, ['left','mentor','continue'] as const, w.path ?? (w.kind === 'retired' ? 'left' : 'continue'))
   const hasRetirementPath = g.flags.retirementPath === 'left' || g.flags.retirementPath === 'mentor' || g.flags.retirementPath === 'continue'
   // Economy v1 saves made before retirementPath existed only recorded retirement=true.

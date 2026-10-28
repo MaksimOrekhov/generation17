@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { groupDigits, workFinanceView } from '../../domain/economyView'
-import type { SectorId } from '../../domain/types'
+import type { Job, SectorId } from '../../domain/types'
 import { spendView } from '../../domain/spendView'
 import type { OfferView, SpendTab } from '../../domain/spendView'
 import { useGameStore } from '../../stores/game'
 import { years } from '../../ui/format'
 import ModalShell from '../common/ModalShell.vue'
+import CareerPanel from './CareerPanel.vue'
 import LoadPanel from './LoadPanel.vue'
 import ParticipantPicker from './ParticipantPicker.vue'
+import ProfessionPicker from './ProfessionPicker.vue'
 import SectorPicker from './SectorPicker.vue'
 
 const MAX_PARTICIPANTS = 3
@@ -20,8 +22,9 @@ const store = useGameStore()
 // Локальный выбор игрока; допустимость проверяет доменный слой через spendView().
 const pickedSector = ref<SectorId | null>(null)
 const pickedPeople = ref<string[]>([])
+const pickedJob = ref<Job | null>(null)
 // Игра иммутабельна (shallowRef): всё окно пересчитывается при каждой замене состояния.
-const view = computed(() => spendView(store.game, { sectorId: pickedSector.value, participantIds: pickedPeople.value }))
+const view = computed(() => spendView(store.game, { sectorId: pickedSector.value, participantIds: pickedPeople.value, job: pickedJob.value }))
 const forecast = computed(() => workFinanceView(store.game).forecast)
 
 const tabs: { id: SpendTab; label: string }[] = [
@@ -40,16 +43,18 @@ const DONE: Record<string, string> = {
   'own-cabin': 'Собственная каюта оформлена.',
   'dome-pass': 'Абонемент подключён.'
 }
+const body = ref<HTMLElement | null>(null)
 
 // Устаревший выбор (человек умер, сектор посещён) снимается сам.
 watch(() => view.value.selection, sel => {
   if (pickedSector.value !== sel.sectorId) pickedSector.value = sel.sectorId
   if (pickedPeople.value.join() !== sel.participantIds.join()) pickedPeople.value = sel.participantIds
+  if (pickedJob.value !== sel.job) pickedJob.value = sel.job
 })
 
 // Любое изменение игры (даже без смены ключа: бесплатный абонемент, нагрузка) и любая смена выбора сбрасывает подтверждение.
 watch(() => store.game, () => { confirming.value = null })
-watch([pickedSector, pickedPeople], () => { confirming.value = null })
+watch([pickedSector, pickedPeople, pickedJob], () => { confirming.value = null })
 watch(view, v => {
   if (confirming.value && !v.offers.some(o => o.confirmKey === confirming.value)) confirming.value = null
 })
@@ -62,6 +67,26 @@ function selectTab(next: SpendTab) {
 
 function pickSector(id: SectorId) {
   pickedSector.value = pickedSector.value === id ? null : id
+}
+
+function pickJob(job: Job) {
+  pickedJob.value = pickedJob.value === job ? null : job
+}
+
+/** Кнопка во вкладке «Работа» ведёт к той же карточке переобучения: процедура покупки одна. */
+async function goRetrain() {
+  selectTab('offers')
+  await nextTick()
+  const card = body.value?.querySelector<HTMLElement>('[data-offer="retrain"]')
+  if (!card) return
+  // Шапка окна липкая: карточка не должна прятаться под ней.
+  const head = card.closest('.spend')?.querySelector<HTMLElement>('.spend__head')
+  card.style.scrollMarginTop = `${(head?.offsetHeight ?? 0) + 8}px`
+  card.scrollIntoView({ block: 'start', behavior: 'smooth' })
+}
+
+function toggleGoal(o: OfferView) {
+  store.chooseGoal(o.isGoal ? null : o.id)
 }
 
 function togglePerson(id: string) {
@@ -77,6 +102,10 @@ function doneText(o: OfferView): string {
   if (o.kind === 'family') {
     const names = o.participantOptions.filter(x => o.target?.participantIds?.includes(x.id)).map(x => x.name)
     return `Неделя вместе: ${names.join(' и ')}. Связь с каждым укрепилась (до +2), запись добавлена в хронику.`
+  }
+  if (o.kind === 'profession') {
+    const internship = o.retrain?.timeline[0] ?? 'Стажировка начнётся с ближайшего годового расчёта.'
+    return `Переобучение оформлено: ${store.game.protagonist.job} → ${o.target?.job ?? ''}. ${internship} Запись добавлена в хронику.`
   }
   return o.buttonLabel === 'Восстановить бесплатно' ? 'Прежняя каюта восстановлена.' : DONE[o.id]!
 }
@@ -95,6 +124,7 @@ function act(clicked: OfferView) {
   if (ok) {
     if (offer.kind === 'sector') pickedSector.value = null
     if (offer.kind === 'family') pickedPeople.value = []
+    if (offer.kind === 'profession') pickedJob.value = null
   }
   const after = view.value.offers.find(o => o.id === offer.id)
   notes.value = {
@@ -142,8 +172,20 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
         </div>
       </header>
 
-      <div id="spend-panel" class="spend__body" role="tabpanel" :aria-labelledby="`spend-tab-${tab}`">
+      <div id="spend-panel" ref="body" class="spend__body" role="tabpanel" :aria-labelledby="`spend-tab-${tab}`">
         <template v-if="tab === 'offers'">
+          <section v-if="view.goal" class="goal" aria-label="Цель накопления" data-test="goal">
+            <div class="goal__head">
+              <p class="goal__title"><span class="goal__tag">Цель</span> {{ view.goal.title }}</p>
+              <button type="button" class="btn btn--sm btn--ghost" data-test="goal-clear" @click="store.chooseGoal(null)">Снять цель</button>
+            </div>
+            <p v-if="view.goal.costText" class="goal__line">{{ view.goal.costText }} · {{ view.goal.savedText }}<template v-if="view.goal.percent !== null"> ({{ view.goal.percent }}%)</template></p>
+            <p v-else class="goal__line">{{ view.goal.savedText }}</p>
+            <div v-if="view.goal.percent !== null" class="goal__bar" role="progressbar" aria-label="Накоплено для цели" :aria-valuenow="view.goal.percent" aria-valuemin="0" aria-valuemax="100"><span :style="{ width: `${view.goal.percent}%` }" /></div>
+            <p v-if="view.goal.etaText" class="goal__line" :class="{ 'goal__line--ok': view.goal.enough }" data-test="goal-eta">{{ view.goal.etaText }}</p>
+            <p v-if="view.goal.conditionText" class="goal__cond" data-test="goal-cond">{{ view.goal.conditionText }}</p>
+            <p class="goal__fine">Цель ничего не резервирует и ничего не покупает сама: это просто ориентир.</p>
+          </section>
           <article v-for="o in view.offers" :key="o.id" class="offer" :class="{ 'offer--off': !o.available && !o.active }" :data-offer="o.id">
             <div class="offer__head">
               <h3 class="offer__title">{{ o.title }}</h3>
@@ -156,9 +198,13 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
               <li v-if="o.attentionText">{{ o.attentionText }}</li>
             </ul>
             <p v-if="o.resultText" class="offer__opens">{{ o.resultText }}</p>
+            <ul v-if="o.consequences.length" class="offer__cons">
+              <li v-for="c in o.consequences" :key="c">{{ c }}</li>
+            </ul>
             <p v-for="line in o.opens" :key="line" class="offer__opens">Открывает: {{ line }}</p>
             <SectorPicker v-if="o.kind === 'sector' && o.stage !== 'unavailable'" :options="o.sectorOptions" :selected="view.selection.sectorId" @select="pickSector" />
             <ParticipantPicker v-if="o.kind === 'family' && o.stage !== 'unavailable'" :options="o.participantOptions" :selected="view.selection.participantIds" :max="MAX_PARTICIPANTS" @toggle="togglePerson" />
+            <ProfessionPicker v-if="o.kind === 'profession' && o.jobOptions.length" :options="o.jobOptions" :selected="view.selection.job" :forecast="o.retrain" @select="pickJob" />
             <p v-if="o.hint" class="offer__hint" data-test="hint">{{ o.hint }}</p>
             <p v-if="o.cooldownText" class="offer__hint" data-test="cooldown">{{ o.cooldownText }}</p>
             <p v-for="w in (o.available ? o.warnings : [])" :key="w" class="offer__warn" role="note">⚠ {{ w }}</p>
@@ -169,6 +215,10 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
                 :disabled="!o.available" data-test="action" @click="act(o)"
               >{{ buttonText(o) }}</button>
               <button v-if="confirming !== null && confirming === o.confirmKey" type="button" class="btn btn--ghost" @click="confirming = null">Отмена</button>
+              <button
+                v-else type="button" class="btn btn--sm btn--ghost offer__goal"
+                :aria-pressed="o.isGoal" data-test="goal-toggle" @click="toggleGoal(o)"
+              >{{ o.isGoal ? 'Цель · снять' : 'Сделать целью' }}</button>
             </div>
             <p v-if="notes[o.id]" class="offer__note" :class="{ 'offer__note--bad': !notes[o.id]!.ok }" role="status">{{ notes[o.id]!.text }}</p>
           </article>
@@ -178,9 +228,8 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
           <dl class="rows">
             <div v-for="r in view.work.rows" :key="r.label" class="rows__row"><dt>{{ r.label }}</dt><dd>{{ r.value }}</dd></div>
           </dl>
-          <p v-if="view.work.hint" class="spend__hint">{{ view.work.hint }}</p>
+          <CareerPanel :career="view.work.career" :retirement="view.work.retirement" @retrain="goRetrain" />
           <LoadPanel :load="view.work.load" :note="notes.load ?? null" @change="changeLoad" />
-          <p class="spend__hint">Переобучение пока недоступно.</p>
         </template>
 
         <template v-else-if="tab === 'mine'">
@@ -276,6 +325,21 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
 .offer__reason--info { color: var(--muted); }
 .offer__act { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .offer__btn { min-height: 44px; padding: 8px 16px; font-size: 14px; max-width: 100%; }
+.offer__cons { display: grid; gap: 3px; margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.45; color: var(--text-soft); }
+.offer__goal { min-height: 40px; }
+.offer__goal[aria-pressed='true'] { color: var(--amber); border-color: var(--amber-2); }
+.goal { display: grid; gap: 6px; padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--amber-2); min-width: 0; }
+.goal p { margin: 0; }
+.goal__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.goal__head .btn { min-height: 40px; }
+.goal__title { font: 600 15px/1.3 var(--font-ui); color: var(--text); min-width: 0; overflow-wrap: anywhere; }
+.goal__tag { margin-right: 6px; font: 500 11px/1.3 var(--font-mono); letter-spacing: .8px; text-transform: uppercase; color: var(--amber); }
+.goal__line { font: 500 13px/1.45 var(--font-mono); color: var(--text-soft); overflow-wrap: anywhere; }
+.goal__line--ok { color: var(--good); }
+.goal__bar { height: 6px; background: var(--panel); border: 1px solid var(--line); }
+.goal__bar span { display: block; height: 100%; background: var(--amber); }
+.goal__cond { font-size: 13px; line-height: 1.45; color: var(--cool); overflow-wrap: anywhere; }
+.goal__fine { font-size: 11.5px; line-height: 1.4; color: var(--faint); }
 .offer__note { font-size: 13px; line-height: 1.45; color: var(--good); overflow-wrap: anywhere; }
 .offer__note--bad { color: var(--bad); }
 

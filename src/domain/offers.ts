@@ -1,4 +1,4 @@
-import { ECONOMY_TUNING, projectYear, type Housing } from './economy'
+import { ECONOMY_TUNING, PROFESSIONS, changeProfession, isProfession, projectYear, type Housing } from './economy'
 import { isKnown, residenceOf, sectors } from './birth'
 import type { GameState, Job, SectorId, Skill, Stat } from './types'
 
@@ -14,6 +14,8 @@ export interface OfferEffects {
   service?: boolean
   sectorVisit?: boolean
   familyTripBond?: number
+  /** Переобучение: смена профессии на выбранную в `PurchaseTarget.job` (changeProfession). */
+  profession?: boolean
 }
 
 export interface OfferDefinition {
@@ -38,6 +40,11 @@ const professionSkills: Partial<Record<Job, Skill>> = {
   Техник: 'engineering', Медик: 'medicine', Агроном: 'ecology', Координатор: 'social'
 }
 
+/** Пауза между покупками переобучения, лет. */
+export const RETRAIN_GAP = 10
+
+const yearsWord = (n: number) => n % 10 === 1 && n % 100 !== 11 ? 'год' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'года' : 'лет'
+
 const closedByShipState = (g: GameState) =>
   g.flags.shipIncidentAge === g.age || g.ship.air < 55 || g.ship.food < 45
 
@@ -61,6 +68,29 @@ export const OFFERS = {
       if (previous !== undefined && g.age - previous < 4) {
         const remaining = 4 - (g.age - previous)
         return `Следующий курс доступен через ${remaining} ${remaining === 1 ? 'год' : 'года'}.`
+      }
+      return null
+    }
+  },
+  retrain: {
+    id: 'retrain', title: 'Переобучение',
+    description: 'Переход в другую службу корабля: год стажировки, затем работа и разряды уже по новой специальности.',
+    category: 'career', oneTimeCost: 500, annualCost: 0,
+    minAge: 22, maxAge: 55, attention: 1, type: 'repeatable',
+    opens: ['Другая профессия: её сюжеты, особенности и собственный путь по тарифным разрядам.'],
+    effects: { profession: true },
+    requirements: (g: GameState) => {
+      const w = g.economy.work
+      const path = g.flags.retirementPath
+      if (w.path === 'left' || w.path === 'mentor' || path === 'left' || path === 'mentor') return 'Решение о выходе на пенсию уже принято.'
+      if (w.job !== g.protagonist.job) return 'Переобучение уже оформлено: стажировка начнётся с ближайшего годового расчёта.'
+      if (w.kind === 'trainee') return 'Идёт стажировка по новой специальности: прежний переход ещё не завершён.'
+      if (w.kind !== 'working') return 'Переобучение доступно только при обычной работе.'
+      if (!isProfession(g.protagonist.job)) return 'Переобучение доступно только при основной специальности.'
+      const previous = g.economy.lastBought.retrain
+      if (previous !== undefined && g.age - previous < RETRAIN_GAP) {
+        const remaining = RETRAIN_GAP - (g.age - previous)
+        return `Следующее переобучение возможно в ${previous + RETRAIN_GAP} ${yearsWord(previous + RETRAIN_GAP)} (через ${remaining} ${yearsWord(remaining)}).`
       }
       return null
     }
@@ -136,11 +166,15 @@ export interface PurchaseAvailability {
   regularCost?: number
   sectorOptions?: SectorOption[]
   familyParticipants?: FamilyParticipantOption[]
+  /** Только для переобучения: специальности, которые можно выбрать (все основные, кроме нынешней). */
+  jobOptions?: Job[]
 }
 
 export interface PurchaseTarget {
   sectorId?: SectorId
   participantIds?: string[]
+  /** Новая специальность для `retrain`. */
+  job?: Job
 }
 
 export interface SectorOption {
@@ -175,6 +209,11 @@ export function familyTripParticipants(g: GameState): FamilyParticipantOption[] 
     .map(({ id, name, role, bond }) => ({ id, name, role, bond }))
 }
 
+/** Специальности, в которые можно переобучиться: все основные, кроме нынешней. Без случайного или циклического выбора. */
+export function retrainOptions(g: GameState): Job[] {
+  return PROFESSIONS.filter(job => job !== g.protagonist.job)
+}
+
 const sectorIds = new Set<SectorId>(sectors.map(sector => sector.id))
 
 export const getOffer = (id: string): OfferDefinition | undefined =>
@@ -197,18 +236,19 @@ export function applyOfferChanges(g: GameState, offer: OfferDefinition, target?:
   if (effects.housing !== undefined) g.economy.housing = effects.housing
   if (effects.recordOwnership) g.economy.owned[offer.id] = g.age
   if (effects.service) g.economy.services[offer.id] = g.age
+  if (effects.profession && target?.job) changeProfession(g, target.job)
   if (effects.sectorVisit && target?.sectorId) {
     // Keep visit facts in the kebab-case economic collection so they survive repair/save.
     g.economy.owned[sectorVisitKey(target.sectorId)] = g.age
   }
 }
 
-function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, action: 'purchase' | 'restore'): string[] {
-  if (offer.annualCost === 0) return []
+function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, action: 'purchase' | 'restore', target?: PurchaseTarget): string[] {
+  if (offer.annualCost === 0 && !offer.effects.profession) return []
   const hypothetical = structuredClone(g)
   hypothetical.economy.balance -= cost
   if (action === 'restore') hypothetical.economy.housingRight = null
-  applyOfferChanges(hypothetical, offer)
+  applyOfferChanges(hypothetical, offer, target)
   hypothetical.economy.lastBought[offer.id] = hypothetical.age
   const projection = projectYear(hypothetical)
   if (projection.projectedAge === null) return []
@@ -220,6 +260,11 @@ function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, a
   }
   if (offer.effects.service && projection.economy.services[offer.id] === undefined) {
     warnings.push('По текущему прогнозу средств может не хватить на годовой платёж; абонемент будет отменён.')
+  }
+  if (offer.effects.profession) {
+    // Год стажировки оплачивается на 60%: необязательные платежи могут не выдержать.
+    if (projection.economy.housing < g.economy.housing) warnings.push('В год стажировки средств может не хватить на аренду: жильё будет понижено.')
+    if (Object.keys(g.economy.services).some(id => projection.economy.services[id] === undefined)) warnings.push('В год стажировки средств может не хватить на регулярную услугу: она будет отменена.')
   }
   if (projectedRow?.aid) warnings.push(`По прогнозу фонд покроет ${projectedRow.aid} кр. базовых нужд в следующем году.`)
   return warnings
@@ -252,6 +297,7 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, s
   const annualCost = offer.freeFor === g.protagonist.job ? 0 : offer.annualCost
   const sectorOptions = offer.id === 'sector-trip' ? availableSectorOptions(g) : undefined
   const familyParticipants = offer.id === 'family-trip' ? familyTripParticipants(g) : undefined
+  const jobOptions = offer.id === 'retrain' ? retrainOptions(g) : undefined
   let reason: string | null = null
 
   if (g.stopped || g.economy.estate !== null) reason = 'Персонаж умер.'
@@ -266,6 +312,12 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, s
       else if (!sectorIds.has(sectorId)) reason = 'Выбран неизвестный сектор.'
       else if (sectorId === residenceOf(g)) reason = 'Нельзя посетить собственный текущий сектор.'
       else if (g.economy.owned[sectorVisitKey(sectorId)] !== undefined) reason = 'Этот сектор уже посещён.'
+    }
+    if (!reason && offer.id === 'retrain') {
+      const job = target?.job
+      if (!job) reason = 'Выберите новую специальность.'
+      else if (!(PROFESSIONS as readonly string[]).includes(job)) reason = 'Выбрана неизвестная специальность.'
+      else if (job === g.protagonist.job) reason = 'Это и есть нынешняя специальность: выберите другую.'
     }
     if (!reason && offer.id === 'family-trip') {
       const participantIds = target?.participantIds
@@ -289,11 +341,12 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, s
 
   return {
     offerId, available: reason === null, oneTimeCost, annualCost, attention: offer.attention,
-    reason, warnings: reason === null ? projectedWarnings(g, offer, oneTimeCost, action) : [],
+    reason, warnings: reason === null ? projectedWarnings(g, offer, oneTimeCost, action, target) : [],
     opens: [...offer.opens], action,
     ...(story ? { regularCost } : {}),
     ...(sectorOptions ? { sectorOptions } : {}),
-    ...(familyParticipants ? { familyParticipants } : {})
+    ...(familyParticipants ? { familyParticipants } : {}),
+    ...(jobOptions ? { jobOptions } : {})
   }
 }
 

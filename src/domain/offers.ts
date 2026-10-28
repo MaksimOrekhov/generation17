@@ -154,9 +154,13 @@ export interface FamilyParticipantOption {
   bond: number
 }
 
-const sectorVisitKey = (id: SectorId) => `visit-sector-${id}`
+const sectorVisitPrefix = 'visit-sector-'
+const sectorVisitKey = (id: SectorId) => `${sectorVisitPrefix}${id}`
 
 export function availableSectorOptions(g: GameState): SectorOption[] {
+  const visitedCount = Object.keys(g.economy.owned).filter(id => id.startsWith(sectorVisitPrefix)).length
+  if (visitedCount >= 4) return []
+
   const home = residenceOf(g)
   return sectors
     .filter(sector => sector.id !== home && g.economy.owned[sectorVisitKey(sector.id)] === undefined)

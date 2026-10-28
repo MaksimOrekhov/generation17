@@ -315,10 +315,13 @@ export function purchase(state: GameState, offerId: string, target?: PurchaseTar
     const bonds = Object.fromEntries(target.participantIds.map(id => [id, offer.effects.familyTripBond!]))
     const names = target.participantIds.map(id => g.people.find(person => person.id === id)!.name)
     const guests = names.length === 2 ? names.join(' и ') : `${names.slice(0, -1).join(', ')} и ${names.at(-1)}`
+    const yearPart = g.age % 100 >= 11 && g.age % 100 <= 14
+      ? 'лет'
+      : g.age % 10 === 1 ? 'год' : g.age % 10 >= 2 && g.age % 10 <= 4 ? 'года' : 'лет'
     applyEffects(g, {
       bonds,
       flags: { familyTrip: true },
-      memory: `Провёл неделю на обзорной палубе вместе с ${guests}.`
+      memory: `В ${g.age} ${yearPart} провёл неделю на обзорной палубе вместе с ${guests}.`
     })
     logTitle = 'Неделя на обзорной палубе'
     logText = `Ты провёл неделю вместе с ${guests}.`
@@ -344,8 +347,7 @@ export interface LoadAvailability {
 
 const hasChosenRetirement = (g: GameState) => {
   const path = g.flags.retirementPath
-  return g.pending === 'retirement'
-    || path === 'left' || path === 'mentor'
+  return path === 'left' || path === 'mentor'
     || g.economy.work.path === 'left' || g.economy.work.path === 'mentor'
     || g.flags.retirement === true && g.age >= 60 && path !== 'continue'
 }
@@ -361,6 +363,8 @@ export function canSetLoad(state: GameState, nextLoad: number): LoadAvailability
 
   if (nextLoad !== 1 && nextLoad !== 0.6) reason = 'Нагрузка должна быть равна 1 или 0,6.'
   else if (state.stopped || state.economy.estate !== null) reason = 'Изменить нагрузку после смерти нельзя.'
+  else if (state.pending === 'retirement') reason = 'Сначала завершите решение о выходе на пенсию.'
+  else if (state.pending) reason = 'Сначала завершите ожидающее сюжетное решение.'
   else if (hasChosenRetirement(state)) reason = 'Сначала завершите решение о выходе на пенсию.'
   else if (work.kind !== 'working') reason = 'Изменение нагрузки доступно только при обычной работе.'
   else if (work.job !== state.protagonist.job) reason = 'Сначала завершите переобучение.'

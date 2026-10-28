@@ -151,6 +151,38 @@ describe('экскурсия в дальний сектор', () => {
     expect(availableSectorOptions(g)).toEqual([])
     expect(canBuy(g, 'sector-trip').reason).toMatch(/Нет доступных/)
   })
+
+  it('не открывает пятую экскурсию после переезда и загрузки сохранения', () => {
+    let g = workerAt(30)
+    const birthSector = g.birth.sectorId
+    const visited: SectorId[] = []
+    for (let index = 0; index < 4; index++) {
+      if (g.attention === 0) {
+        g.age++
+        g.economy.settledAge = g.age
+        g.attention = 3
+      }
+      const target = availableSectorOptions(g)[0]!
+      g = purchase(g, 'sector-trip', { sectorId: target.id })
+      visited.push(target.id)
+    }
+
+    const loaded = roundTrip(g)
+    loaded.residence = visited[0]!
+    expect(loaded.residence).not.toBe(birthSector)
+    expect(residenceOf(loaded)).toBe(visited[0])
+    expect(loaded.economy.owned[`visit-sector-${birthSector}`]).toBeUndefined()
+    expect(availableSectorOptions(loaded)).toEqual([])
+
+    const before = structuredClone(loaded)
+    const rng = loaded.rng
+    expect(purchase(loaded, 'sector-trip', { sectorId: birthSector })).toBe(loaded)
+    expect(loaded).toEqual(before)
+    expect(loaded.economy.balance).toBe(before.economy.balance)
+    expect(loaded.attention).toBe(before.attention)
+    expect(loaded.memories).toEqual(before.memories)
+    expect(loaded.rng).toBe(rng)
+  })
 })
 
 describe('семейная поездка', () => {
@@ -235,6 +267,31 @@ describe('семейная поездка', () => {
     checkClean(second)
   })
 
+  it('сохраняет отдельные воспоминания о поездках с теми же людьми в 25 и 30 лет', () => {
+    const g = workerAt(25)
+    closeFamily(g)
+    g.economy.balance = 1_000
+    const first = purchase(g, 'family-trip', { participantIds: ['parent', 'parent2'] })
+    const loaded = roundTrip(first)
+    expect(loaded.memories.filter(memory => memory.includes('провёл неделю на обзорной палубе'))).toEqual([
+      'В 25 лет провёл неделю на обзорной палубе вместе с Ада Марек и Томас Марек.'
+    ])
+
+    loaded.age = 30
+    loaded.economy.settledAge = 30
+    loaded.attention = 3
+    expect(canBuy(loaded, 'family-trip', { participantIds: ['parent', 'parent2'] }).available).toBe(true)
+    const second = purchase(loaded, 'family-trip', { participantIds: ['parent', 'parent2'] })
+    const tripMemories = second.memories.filter(memory => memory.includes('провёл неделю на обзорной палубе'))
+    expect(tripMemories).toEqual([
+      'В 25 лет провёл неделю на обзорной палубе вместе с Ада Марек и Томас Марек.',
+      'В 30 лет провёл неделю на обзорной палубе вместе с Ада Марек и Томас Марек.'
+    ])
+    expect(second.economy.lastBought['family-trip']).toBe(30)
+    expect(roundTrip(second).memories.filter(memory => memory.includes('провёл неделю на обзорной палубе'))).toEqual(tripMemories)
+    checkClean(second)
+  })
+
   it('не повторяет покупку с умершим участником после завершения паузы', () => {
     const g = workerAt(30)
     closeFamily(g)
@@ -285,6 +342,26 @@ describe('режим рабочей нагрузки', () => {
     leaving.flags.retirement = true
     leaving.flags.retirementPath = 'left'
     expect(canSetLoad(leaving, 0.6).available).toBe(false)
+  })
+
+  it.each(['mentor', 'retirement', 'microcrack'])('отклоняет смену нагрузки при обязательном решении %s без изменений состояния', pendingId => {
+    const g = workerAt(50)
+    g.pending = pendingId
+    const before = structuredClone(g)
+    const rng = g.rng
+
+    const result = setLoad(g, 0.6)
+
+    expect(canSetLoad(g, 0.6)).toMatchObject({
+      available: false,
+      reason: pendingId === 'retirement'
+        ? 'Сначала завершите решение о выходе на пенсию.'
+        : 'Сначала завершите ожидающее сюжетное решение.'
+    })
+    expect(result).toBe(g)
+    expect(g).toEqual(before)
+    expect(g.history).toEqual(before.history)
+    expect(g.rng).toBe(rng)
   })
 
   it('вычисляет резерв из projectYear при сохранении регулярных обязательств', () => {

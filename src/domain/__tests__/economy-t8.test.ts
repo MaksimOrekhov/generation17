@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { annualObligationsOf, projectYears, reserveYearsOf, settleYear } from '../economy'
+import { annualObligationsOf, projectYear, projectYears, reserveYearsOf, settleYear } from '../economy'
 import { canChoose, canSetLoad, purchase } from '../engine'
 import { availableSectorOptions, canBuy, familyTripParticipants, retrainOptions } from '../offers'
 import { findInconsistencies } from '../invariants'
@@ -75,6 +75,38 @@ describe('T8 protocol and real domain actions', () => {
     expect(c.available).toBe(true); expect(r.game.economy.work.load).toBe(.6)
     expect(r.loadChanges[0]!.requiredReserve).toBe(c.requiredReserve)
     expect(r.game.economy.balance).toBe(g.economy.balance); expect(r.game.rng).toBe(g.rng)
+  })
+})
+
+describe('T8 isolated numerical experiments', () => {
+  it('restores every tuning and displayed offer fee after each scenario, nested run and exception', () => {
+    const before = rulesSnapshot()
+    for (const scenario of ['S1', 'S2', 'S3'] as const) {
+      expect(() => withScenario(scenario, () => {
+        const outer = rulesSnapshot()
+        expect(outer).not.toEqual(before)
+        withScenario('S2', () => { expect(rulesSnapshot().offers['sector-trip']!.oneTimeCost).toBe(270) })
+        expect(rulesSnapshot()).toEqual(outer)
+        throw Error('diagnostic failure')
+      })).toThrow('diagnostic failure')
+      expect(rulesSnapshot()).toEqual(before)
+    }
+  })
+  it('each scenario uses the real forecast/settlement, protects essentials only and preserves T7 discounts', () => {
+    for (const scenario of ['S1', 'S2', 'S3'] as const) withScenario(scenario, () => {
+      const g = worker(0, 80); g.economy.work.kind = 'retired'; g.economy.work.path = 'left'
+      g.economy.work.lastWage = 650; g.economy.work.service = 0
+      g.economy.housing = 1; g.economy.services['dome-pass'] = 30
+      const before = structuredClone(g), forecast = projectYear(g), actual = structuredClone(g)
+      actual.age++; settleYear(actual)
+      expect(actual.economy).toEqual(forecast.economy); expect(g).toEqual(before)
+      expect(actual.economy.years.at(-1)!.aid).toBe(scenario === 'S1' ? 20 : 0)
+      expect(actual.economy.balance).toBeGreaterThanOrEqual(0)
+      expect(actual.economy.housing).toBe(0); expect(actual.economy.services['dome-pass']).toBeUndefined()
+      const working = worker(); working.pending = 'window-offer'
+      expect(canBuy({ ...working, pending: null }, 'course-pro').oneTimeCost).toBe(350)
+      expect(canChoose(working, 0).purchase?.oneTimeCost).toBe(300)
+    })
   })
 })
 

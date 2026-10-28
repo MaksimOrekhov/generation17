@@ -1,5 +1,5 @@
 import { clamp, random, weighted } from './random'
-import type { GameState, Storylet } from './types'
+import type { GameState, Priority, Storylet } from './types'
 
 /**
  * Директор повествования решает, КОГДА и КАКОЕ сюжетное решение показать в этом году.
@@ -72,6 +72,41 @@ export function afterDecision(d: Director, s: Storylet, age: number): Director {
 
 const fits = (d: Director, s: Storylet) => d.tension + Math.max(0, TONE_COST[toneOf(s)]) <= TENSION_CAP
 
+export const priorityOf = (s: Storylet): Priority => s.priority ?? 'normal'
+
+/** Сколько лет ещё можно показать сюжет (0 — сейчас последний год): по возрасту героя или по окну продолжения. */
+export const yearsLeft = (g: GameState, s: Storylet) => Math.min(s.max - g.age, s.expiresIn?.(g) ?? Infinity)
+
+/** Последний год, когда сюжет ещё можно показать. */
+export const isLastChance = (g: GameState, s: Storylet) => yearsLeft(g, s) <= 0
+
+/**
+ * Продолжения (followup и critical), которые нельзя откладывать ни на год, иначе какое-то из них пропадёт.
+ * За год можно показать одно решение, поэтому по сроку действует правило «раньше всех — самое срочное»:
+ * если сюжетов со сроком не более r лет больше, чем r (то есть мест до срока меньше, чем сюжетов), нужно показывать сейчас.
+ * Один сюжет — это его последний год; два с одним сроком — предпоследний, чтобы второй успел в последний.
+ */
+function dueByDeadline(g: GameState, options: Storylet[]) {
+  const timed = options
+    .filter(s => priorityOf(s) !== 'normal')
+    .map(s => ({ s, left: yearsLeft(g, s) }))
+    .filter(x => Number.isFinite(x.left))
+    .sort((a, b) => a.left - b.left)
+  for (let i = 0; i < timed.length; i++) {
+    const r = Math.max(0, timed[i]!.left)
+    if (timed.filter(x => x.left <= r).length > r) {
+      const first = timed[0]!.left
+      return timed.filter(x => x.left === first).map(x => x.s)
+    }
+  }
+  return []
+}
+
+/** Выбор по весу; единственный кандидат не тратит RNG. */
+function chooseByWeight(g: GameState, pool: Storylet[]) {
+  return pool.length === 1 ? pool[0]! : weighted(g, pool.map(s => [s, s.weight] as const))
+}
+
 /**
  * Выбирает сюжетное решение года из доступных или возвращает null (тихий год).
  * Расходует RNG только при выборе из пула, поэтому порядок случайных чисел остаётся детерминированным.
@@ -80,19 +115,21 @@ export function pickStorylet(g: GameState, options: Storylet[]): Storylet | null
   if (!options.length) return null
   const d = g.director
   const gap = g.age - d.lastAge
-  // Распределение по специальностям обязательно: в 16 лет, а если прошлое решение было год назад, — в 17
-  const forced = options.find(s => s.id === 'school-track' && (g.age >= 17 || (g.age === 16 && gap >= MIN_GAP)))
-  if (forced) return forced
+  // 0) обязательные: срок поджимает (см. dueByDeadline) либо critical после минимального интервала.
+  //    Бюджет напряжения и «тихий год» их не откладывают.
+  const byDeadline = dueByDeadline(g, options)
+  if (byDeadline.length) return chooseByWeight(g, byDeadline)
+  const ready = options.filter(s => priorityOf(s) === 'critical' && gap >= MIN_GAP)
+  if (ready.length) return chooseByWeight(g, ready)
   if (g.age < 3) return null
   if (gap < MIN_GAP) return null
 
   // 1) продолжения прошлых решений идут первыми, но не сразу после тяжёлого события
-  const started = options.filter(s => s.weight >= 10)
-  if (started.length) {
-    const ready = started.filter(s => fits(d, s))
-    const pool = ready.length ? ready : gap >= MAX_GAP ? started : []
-    if (pool.length) return pool.sort((a, b) => b.weight - a.weight)[0]!
-    return null
+  const followups = options.filter(s => priorityOf(s) === 'followup')
+  if (followups.length) {
+    const ready = followups.filter(s => fits(d, s))
+    const pool = ready.length ? ready : gap >= MAX_GAP ? followups : []
+    return pool.length ? chooseByWeight(g, pool) : null
   }
 
   // 2) обычные события: вероятность растёт с тишиной, на MAX_GAP — гарантированно

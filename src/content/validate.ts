@@ -202,7 +202,7 @@ function flagsSet(items: unknown): Set<string> {
 
 function checkStorylet(c: Ctx, s: unknown, where: string) {
   if (!isObj(s)) { c.err(where, 'сюжет должен быть объектом'); return }
-  c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'arc', 'fork', 'weird', 'requires', 'choices'], where)
+  c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'priority', 'arc', 'fork', 'weird', 'requires', 'choices'], where)
   c.text(s.title, `${where}.title`, LIMITS.title)
   c.text(s.body, `${where}.body`, LIMITS.body, LIMITS.bodyWarn)
   if (!isStr(s.category) || !c.known.categories.has(s.category)) c.err(`${where}.category`, `«${String(s.category)}» — категория из списка: ${[...c.known.categories].join(', ')}`)
@@ -211,6 +211,12 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
   if (isNum(s.min) && isNum(s.max) && s.min > s.max) c.err(where, 'min больше max')
   c.int(s.weight, `${where}.weight`, LIMITS.weight)
   if (s.weird !== undefined && s.weird !== 1 && s.weird !== 2) c.err(`${where}.weird`, 'только 1 (тайна) или 2 (тревога), либо без поля')
+  if (s.priority !== undefined) {
+    if (s.priority !== 'followup' && s.priority !== 'critical') c.err(`${where}.priority`, 'followup, critical или без поля')
+    else if (!isObj(s.requires) || !['flag', 'flagIs', 'since', 'until'].some(k => (s.requires as Record<string, unknown>)[k] !== undefined)) {
+      c.err(`${where}.priority`, `${s.priority} — это продолжение: нужен requires с flag, flagIs, since или until, иначе сюжет будет идти раньше всех остальных всегда`)
+    }
+  }
   if (s.arc !== undefined && (!isStr(s.arc) || !c.known.arcs.has(s.arc))) c.err(`${where}.arc`, `линия из списка: ${[...c.known.arcs].join(', ')} (новые линии согласуйте с Claude)`)
   if (s.fork !== undefined && (typeof s.fork !== 'boolean' || !s.arc)) c.err(`${where}.fork`, 'fork: true только вместе с arc')
   if (!Array.isArray(s.choices) || s.choices.length < LIMITS.choices[0] || s.choices.length > LIMITS.choices[1]) {

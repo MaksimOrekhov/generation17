@@ -43,6 +43,8 @@ export interface JsonStorylet {
   arc?: string
   fork?: boolean
   weird?: 1 | 2
+  /** Очерёдность выбора директором; без поля — обычное событие. Подробнее в content/README.md. */
+  priority?: 'followup' | 'critical'
   requires?: Requires
   choices: JsonChoice[]
 }

@@ -53,7 +53,7 @@ const baseStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'school-track', arc: 'career', fork: true, category: 'Профессия', min: 16, max: 17, weight: 10,
+    id: 'school-track', arc: 'career', fork: true, category: 'Профессия', min: 16, max: 17, priority: 'critical', weight: 10,
     title: 'Распределение по специальностям', body: 'Комиссия предлагает четыре направления. От этого решения зависит, какие двери будут открыты следующие годы. Никто не обещает, что выбор окончательный.', available: g => !g.flags.trackChosen,
     choices: [
       { text: 'Инженерные системы', hint: 'Техническая работа · Инженерия ↑', result: 'Тебя направляют в технический корпус. За стенами мастерских непрерывно работает сердце корабля.', effects: { job: 'Техник', skills: { engineering: 12 }, flags: { trackChosen: true }, memory: 'Выбрал{{hero:|а}} инженерное дело.' } },

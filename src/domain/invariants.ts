@@ -18,6 +18,58 @@ export function findInconsistencies(g: GameState): string[] {
   const problems: string[] = []
   const bad = (text: string) => problems.push(`возраст ${g.age}: ${text}`)
 
+  const economy = g.economy
+  if (!economy || !Number.isSafeInteger(economy.balance) || economy.balance < 0) bad('недопустимый баланс экономики')
+  if (economy) {
+    const work = economy.work
+    if (!Number.isInteger(economy.settledAge) || economy.settledAge < 0 || economy.settledAge > g.age) bad('недопустимый годовой маркер экономики')
+    if (![1, 2, 3, 4].includes(work.grade) || !Number.isInteger(work.grade)) bad('недопустимый тарифный разряд')
+    if (!Number.isInteger(work.jobSince) || !Number.isInteger(work.gradeSince) || work.jobSince < 0 || work.gradeSince < work.jobSince || work.gradeSince > g.age && g.age >= 18) bad('несогласованы даты специальности и разряда')
+    if (!Number.isFinite(work.service) || work.service < 0 || work.service > g.age) bad('недопустимый стаж экономики')
+    if (!Number.isSafeInteger(work.lastWage) || work.lastWage < 0) bad('недопустимый последний тариф')
+    if (g.age < 16 && work.kind !== 'child') bad('рабочий статус до 16 лет')
+    if (g.age >= 16 && g.age < 18 && work.kind !== 'trainee') bad('статус вне стажировки в 16–17 лет')
+    if (g.age >= 18 && work.kind === 'child' && economy.settledAge >= 18) bad('статус ребёнка после 18 лет')
+    if (g.age >= 77 && work.kind !== 'retired') bad('полная занятость после предела 77 лет')
+    if (work.kind === 'retired' && g.age < 60) bad('пенсионный статус до доступного возраста')
+    if ((work.kind === 'between' || work.kind === 'sick') && (g.age < 18 || g.age >= 77)) bad('статус временной нетрудоспособности вне рабочего возраста')
+    if ((work.kind === 'working' || work.kind === 'between' || work.kind === 'sick') && (work.path === 'left' || work.path === 'mentor')) bad('рабочий статус противоречит пути выхода на пенсию')
+    if (work.kind === 'retired' && work.path === 'continue' && g.age < 77) bad('путь продолжения работы завершён раньше 77 лет')
+    if (work.mentor !== (work.kind === 'retired' && work.path === 'mentor' && g.age <= 80)) bad('состояние наставничества не согласовано с выходом на пенсию и возрастом')
+    if (economy.housingRight && (economy.housingRight.tier <= economy.housing || economy.housingRight.until < g.age || economy.housingRight.until > g.age + 3)) bad('недействительное право возврата жилья')
+    if (economy.years.length > 80 || economy.ledger.length > 40) bad('превышен предел финансовой истории')
+    let previousYearAge = -1
+    let observedEarned = 0, observedSpent = 0, observedAid = 0
+    for (const row of economy.years) {
+      const valid = Number.isInteger(row.age) && row.age >= 0 && row.age <= economy.settledAge && [row.wage,row.pension,row.bills,row.aid,row.balance].every(n => Number.isSafeInteger(n) && n >= 0)
+      if (!valid) { bad('повреждённая строка годовой истории'); continue }
+      if (row.age <= previousYearAge) bad('возрастные строки финансовой истории повторяются или идут не по порядку')
+      if (row.aid > row.bills) bad('помощь фонда превышает расходы защищённого минимума')
+      previousYearAge = row.age
+      observedEarned += row.wage + row.pension
+      observedSpent += row.bills - row.aid
+      observedAid += row.aid
+    }
+    if (economy.totals.earned < observedEarned) bad('итог доходов меньше сохранённой годовой истории')
+    if (economy.totals.spent < observedSpent) bad('итог собственных расходов меньше сохранённой годовой истории')
+    if (economy.totals.aid < observedAid) bad('итог фонда меньше сохранённой годовой истории')
+    const txnIds = new Set<number>()
+    const aidTxnAges = new Set<number>()
+    for (const txn of economy.ledger) {
+      if (!Number.isSafeInteger(txn.n) || txn.n < 1 || txnIds.has(txn.n) || !Number.isInteger(txn.age) || txn.age < 0 || txn.age > g.age || !Number.isSafeInteger(txn.amount) || txn.amount < 0) bad('повреждённая запись финансового журнала')
+      txnIds.add(txn.n)
+      if (txn.kind === 'aid') {
+        if (aidTxnAges.has(txn.age)) bad('фонд записан в журнале больше одного раза за год')
+        aidTxnAges.add(txn.age)
+        const row = economy.years.find(year => year.age === txn.age)
+        if (row && row.aid !== txn.amount) bad('запись фонда не совпадает с годовой выплатой')
+      }
+    }
+    if (!Number.isSafeInteger(economy.nextTxn) || economy.nextTxn < 1 || [...txnIds].some(n => n >= economy.nextTxn)) bad('маркер следующей финансовой операции уже использован')
+    if (Object.values(economy.totals).some(n => !Number.isSafeInteger(n) || n < 0)) bad('недопустимые итоги финансовой истории')
+    if (g.stopped && economy.estate !== economy.balance) bad('остаток наследства не совпадает с балансом после смерти')
+    if (!g.stopped && economy.estate !== null) bad('наследство закрыто при жизни')
+  }
   if (g.pending && !storylets.some(s => s.id === g.pending)) bad(`ожидается решение «${g.pending}», которого нет в каталоге`)
   const moment = g.moment ? getMomentDef(g.moment) : null
   if (g.moment && !moment) bad(`активен неизвестный момент «${g.moment}»`)

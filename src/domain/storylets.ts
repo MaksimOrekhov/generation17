@@ -210,9 +210,9 @@ const baseStorylets: Storylet[] = [
     id: 'retirement', category: 'Личное', min: 60, max: 76, weight: 4,
     title: 'Последний рабочий контракт', body: 'Твой очередной контракт подходит к концу. Молодые сотрудники уже работают по другим инструкциям. Руководство предлагает тебе остаться на облегчённом графике.', available: g => !g.flags.retirement,
     choices: [
-      { text: 'Уйти с должности', hint: 'Стресс ↓ · Новая глава', result: 'Ты сдаёшь пропуск. Оказывается, самые непривычные звуки — те, которых вдруг больше нет.', effects: { stats: { stress: -9, morale: 4, reputation: -3 }, flags: { retirement: true }, memory: 'Завершил{{hero:|а}} многолетнюю профессиональную карьеру.' } },
-      { text: 'Остаться наставником', hint: 'Репутация ↑ · Стресс ↔', result: 'Ты остаёшься рядом, когда молодые специалисты принимают собственные решения.', effects: { stats: { reputation: 5, bonds: 3 }, flags: { retirement: true, mentored: true }, memory: 'Остал{{hero:ся|ась}} передавать опыт следующему поколению.' } },
-      { text: 'Продолжить работать как прежде', hint: 'Карьера ↑ · Здоровье ↓', result: 'Тебе важно быть нужным. Но каждую смену теперь приходится восстанавливать силы дольше.', effects: { stats: { reputation: 5, health: -5, stress: 7 }, flags: { retirement: true } } }
+      { text: 'Уйти с должности', hint: 'Стресс ↓ · Новая глава', result: 'Ты сдаёшь пропуск. Оказывается, самые непривычные звуки — те, которых вдруг больше нет.', effects: { stats: { stress: -9, morale: 4, reputation: -3 }, flags: { retirement: true, retirementPath: 'left' }, memory: 'Завершил{{hero:|а}} многолетнюю профессиональную карьеру.' } },
+      { text: 'Остаться наставником', hint: 'Репутация ↑ · Стресс ↔', result: 'Ты остаёшься рядом, когда молодые специалисты принимают собственные решения.', effects: { stats: { reputation: 5, bonds: 3 }, flags: { retirement: true, retirementPath: 'mentor', mentored: true }, memory: 'Остал{{hero:ся|ась}} передавать опыт следующему поколению.' } },
+      { text: 'Продолжить работать как прежде', hint: 'Карьера ↑ · Здоровье ↓', result: 'Тебе важно быть нужным. Но каждую смену теперь приходится восстанавливать силы дольше.', effects: { stats: { reputation: 5, health: -5, stress: 7 }, flags: { retirement: true, retirementPath: 'continue' } } }
     ]
   },
   {

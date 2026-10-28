@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { groupDigits, workFinanceView } from '../../domain/economyView'
+import type { SectorId } from '../../domain/types'
 import { spendView } from '../../domain/spendView'
 import type { OfferView, SpendTab } from '../../domain/spendView'
 import { useGameStore } from '../../stores/game'
 import { years } from '../../ui/format'
 import ModalShell from '../common/ModalShell.vue'
+import LoadPanel from './LoadPanel.vue'
+import ParticipantPicker from './ParticipantPicker.vue'
+import SectorPicker from './SectorPicker.vue'
+
+const MAX_PARTICIPANTS = 3
 
 defineEmits<{ close: [] }>()
 
 const store = useGameStore()
+
+// Локальный выбор игрока; допустимость проверяет доменный слой через spendView().
+const pickedSector = ref<SectorId | null>(null)
+const pickedPeople = ref<string[]>([])
 // Игра иммутабельна (shallowRef): всё окно пересчитывается при каждой замене состояния.
-const view = computed(() => spendView(store.game))
+const view = computed(() => spendView(store.game, { sectorId: pickedSector.value, participantIds: pickedPeople.value }))
 const forecast = computed(() => workFinanceView(store.game).forecast)
 
 const tabs: { id: SpendTab; label: string }[] = [
@@ -21,8 +31,8 @@ const tabs: { id: SpendTab; label: string }[] = [
   { id: 'history', label: 'История' }
 ]
 const tab = ref<SpendTab>('offers')
-/** Предложение, ожидающее второго нажатия, и подпись, под которой его запросили. */
-const confirming = ref<{ id: string; label: string } | null>(null)
+/** Ключ ожидающего подтверждения: предложение + выбранная цель + фактическая стоимость. */
+const confirming = ref<string | null>(null)
 const notes = ref<Record<string, { ok: boolean; text: string }>>({})
 
 const DONE: Record<string, string> = {
@@ -31,10 +41,17 @@ const DONE: Record<string, string> = {
   'dome-pass': 'Абонемент подключён.'
 }
 
-// Любое изменение состояния или доступности сбрасывает подтверждение.
+// Устаревший выбор (человек умер, сектор посещён) снимается сам.
+watch(() => view.value.selection, sel => {
+  if (pickedSector.value !== sel.sectorId) pickedSector.value = sel.sectorId
+  if (pickedPeople.value.join() !== sel.participantIds.join()) pickedPeople.value = sel.participantIds
+})
+
+// Любое изменение игры (даже без смены ключа: бесплатный абонемент, нагрузка) и любая смена выбора сбрасывает подтверждение.
+watch(() => store.game, () => { confirming.value = null })
+watch([pickedSector, pickedPeople], () => { confirming.value = null })
 watch(view, v => {
-  const c = confirming.value
-  if (c && v.offers.find(o => o.id === c.id)?.confirmLabel !== c.label) confirming.value = null
+  if (confirming.value && !v.offers.some(o => o.confirmKey === confirming.value)) confirming.value = null
 })
 
 function selectTab(next: SpendTab) {
@@ -43,21 +60,46 @@ function selectTab(next: SpendTab) {
   notes.value = {}
 }
 
-function act(offer: OfferView) {
-  if (!offer.available) return
-  if (offer.confirmLabel && confirming.value?.id !== offer.id) {
-    confirming.value = { id: offer.id, label: offer.confirmLabel }
+function pickSector(id: SectorId) {
+  pickedSector.value = pickedSector.value === id ? null : id
+}
+
+function togglePerson(id: string) {
+  const list = pickedPeople.value
+  pickedPeople.value = list.includes(id) ? list.filter(x => x !== id) : list.length < MAX_PARTICIPANTS ? [...list, id] : list
+}
+
+function doneText(o: OfferView): string {
+  if (o.kind === 'sector') {
+    const name = o.sectorOptions.find(x => x.id === o.target?.sectorId)?.name ?? 'сектор'
+    return `Экскурсия состоялась: ${name}. Знания могли вырасти, память о месте сохранена.`
+  }
+  if (o.kind === 'family') {
+    const names = o.participantOptions.filter(x => o.target?.participantIds?.includes(x.id)).map(x => x.name)
+    return `Неделя вместе: ${names.join(' и ')}. Связь с каждым укрепилась (до +2), запись добавлена в хронику.`
+  }
+  return o.buttonLabel === 'Восстановить бесплатно' ? 'Прежняя каюта восстановлена.' : DONE[o.id]!
+}
+
+function act(clicked: OfferView) {
+  // Быстрый повторный клик приходит со старой карточкой: решает актуальное состояние, а не то, что видел игрок.
+  const offer = view.value.offers.find(o => o.id === clicked.id)
+  if (!offer?.available) return
+  if (offer.confirmKey && confirming.value !== offer.confirmKey) {
+    confirming.value = offer.confirmKey
     return
   }
   confirming.value = null
-  const restore = offer.id === 'own-cabin' && offer.buttonLabel === 'Восстановить бесплатно'
-  const ok = store.buy(offer.id)
+  const text = doneText(offer)
+  const ok = store.buy(offer.id, offer.target ?? undefined)
+  if (ok) {
+    if (offer.kind === 'sector') pickedSector.value = null
+    if (offer.kind === 'family') pickedPeople.value = []
+  }
   const after = view.value.offers.find(o => o.id === offer.id)
   notes.value = {
     ...notes.value,
-    [offer.id]: ok
-      ? { ok, text: restore ? 'Прежняя каюта восстановлена.' : DONE[offer.id]! }
-      : { ok, text: `Не удалось: ${after?.reason ?? 'предложение недоступно.'}` }
+    [offer.id]: ok ? { ok, text } : { ok, text: `Не удалось: ${after?.reason ?? 'предложение недоступно.'}` }
   }
 }
 
@@ -65,7 +107,18 @@ function cancel(id: string) {
   if (store.cancelServiceById(id)) notes.value = { ...notes.value, [id]: { ok: true, text: 'Абонемент отменён. Будущий платёж убран из прогноза.' } }
 }
 
-const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLabel : o.buttonLabel
+function changeLoad(next: 1 | 0.6) {
+  const reason = view.value.work.load.action.reason
+  const ok = store.changeLoad(next)
+  notes.value = {
+    ...notes.value,
+    load: ok
+      ? { ok, text: next === 0.6 ? 'Теперь 0,6 ставки. Кредиты и внимание не списаны; изменение учтётся в следующем году.' : 'Возврат на полную ставку. Кредиты и внимание не списаны.' }
+      : { ok, text: `Не удалось: ${reason ?? 'изменение недоступно.'}` }
+  }
+}
+
+const buttonText = (o: OfferView) => confirming.value !== null && confirming.value === o.confirmKey ? o.confirmLabel : o.buttonLabel
 </script>
 
 <template>
@@ -102,15 +155,20 @@ const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLa
               <li v-if="o.annualText">{{ o.annualText }}</li>
               <li v-if="o.attentionText">{{ o.attentionText }}</li>
             </ul>
+            <p v-if="o.resultText" class="offer__opens">{{ o.resultText }}</p>
             <p v-for="line in o.opens" :key="line" class="offer__opens">Открывает: {{ line }}</p>
+            <SectorPicker v-if="o.kind === 'sector' && o.stage !== 'unavailable'" :options="o.sectorOptions" :selected="view.selection.sectorId" @select="pickSector" />
+            <ParticipantPicker v-if="o.kind === 'family' && o.stage !== 'unavailable'" :options="o.participantOptions" :selected="view.selection.participantIds" :max="MAX_PARTICIPANTS" @toggle="togglePerson" />
+            <p v-if="o.hint" class="offer__hint" data-test="hint">{{ o.hint }}</p>
+            <p v-if="o.cooldownText" class="offer__hint" data-test="cooldown">{{ o.cooldownText }}</p>
             <p v-for="w in (o.available ? o.warnings : [])" :key="w" class="offer__warn" role="note">⚠ {{ w }}</p>
             <p v-if="o.reason" class="offer__reason" :class="{ 'offer__reason--info': o.active }" data-test="reason">{{ o.reason }}</p>
             <div class="offer__act">
               <button
-                type="button" class="btn offer__btn" :class="confirming?.id === o.id ? 'btn--primary' : 'btn--accent'"
+                type="button" class="btn offer__btn" :class="confirming !== null && confirming === o.confirmKey ? 'btn--primary' : 'btn--accent'"
                 :disabled="!o.available" data-test="action" @click="act(o)"
               >{{ buttonText(o) }}</button>
-              <button v-if="confirming?.id === o.id" type="button" class="btn btn--ghost" @click="confirming = null">Отмена</button>
+              <button v-if="confirming !== null && confirming === o.confirmKey" type="button" class="btn btn--ghost" @click="confirming = null">Отмена</button>
             </div>
             <p v-if="notes[o.id]" class="offer__note" :class="{ 'offer__note--bad': !notes[o.id]!.ok }" role="status">{{ notes[o.id]!.text }}</p>
           </article>
@@ -121,7 +179,8 @@ const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLa
             <div v-for="r in view.work.rows" :key="r.label" class="rows__row"><dt>{{ r.label }}</dt><dd>{{ r.value }}</dd></div>
           </dl>
           <p v-if="view.work.hint" class="spend__hint">{{ view.work.hint }}</p>
-          <p class="spend__hint">Переобучение и изменение нагрузки пока недоступны.</p>
+          <LoadPanel :load="view.work.load" :note="notes.load ?? null" @change="changeLoad" />
+          <p class="spend__hint">Переобучение пока недоступно.</p>
         </template>
 
         <template v-else-if="tab === 'mine'">
@@ -142,6 +201,12 @@ const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLa
               <button type="button" class="btn btn--sm" :aria-label="`Отказаться: ${s.title}`" data-test="cancel" @click="cancel(s.id)">Отказаться</button>
             </div>
             <p v-for="(n, id) in notes" :key="id" class="offer__note" role="status">{{ n.text }}</p>
+          </section>
+          <section class="block">
+            <h3 class="block__title">Посещённые сектора</h3>
+            <p class="block__sub" data-test="visited-count">{{ view.mine.visitedLine }}</p>
+            <p v-for="v in view.mine.visited" :key="v.id" class="block__sub"><b>{{ v.name }}</b> · {{ v.deck }} · {{ v.text }}</p>
+            <p v-if="view.mine.familyTripText" class="block__sub" data-test="family-trip">{{ view.mine.familyTripText }}</p>
           </section>
           <section class="block">
             <h3 class="block__title">Имущество</h3>
@@ -207,6 +272,7 @@ const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLa
 .offer__opens { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
 .offer__warn { padding: 5px 8px; font-size: 12.5px; line-height: 1.45; color: var(--amber); border-left: 2px solid var(--amber-2); background: var(--panel); overflow-wrap: anywhere; }
 .offer__reason { font-size: 13px; line-height: 1.45; color: var(--bad); overflow-wrap: anywhere; }
+.offer__hint { font-size: 13px; line-height: 1.45; color: var(--cool); overflow-wrap: anywhere; }
 .offer__reason--info { color: var(--muted); }
 .offer__act { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .offer__btn { min-height: 44px; padding: 8px 16px; font-size: 14px; max-width: 100%; }

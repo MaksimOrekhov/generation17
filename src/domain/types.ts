@@ -80,7 +80,8 @@ export interface Effects {
   /** В жизни героя появляется человек: сейчас только ребёнок (`child`). Повторный эффект ничего не меняет. */
   addPerson?: NewPersonId
   /** Герой переезжает в другой сектор. */
-  moveTo?: SectorId
+  /** Сектор или 'partner' — сектор близкого человека (не совпадает с нынешним домом). */
+  moveTo?: SectorId | 'partner'
 }
 
 export interface ChoiceDef {

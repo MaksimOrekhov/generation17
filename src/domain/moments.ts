@@ -158,7 +158,7 @@ const baseMoments: MomentDef[] = [
     skip: { label: 'Оставить как есть' }
   },
   {
-    id: 'm-partner', spot: 'parent', title: 'Вечер вдвоём', min: 24, max: 90, weight: 5, cooldown: 3,
+    id: 'm-partner', spot: 'parent', title: 'Вечер вдвоём', min: 24, max: 90, weight: 5, cooldown: 3, needs: ['friend'],
     available: g => g.flags.livingTogether === true,
     text: 'В каюте тихо и тепло. Близкий человек придвигает второй стул к столу.',
     accept: { label: 'Остаться вместе', result: 'Вы почти не говорите, но вечер получается одним из лучших за этот год.', effects: { stats: { morale: 4, bonds: 3, stress: -2 } } },

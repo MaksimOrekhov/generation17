@@ -14,7 +14,7 @@ const mrz = computed(() => {
   return `PLG<${g.value.shipYear - g.value.age}<${last}<<${first}<<<<<<<<<<<<<<<<<<<<<<<<`
 })
 const home = computed(() => sectorById(residenceOf(g.value)))
-const lives = computed(() => (g.value.age < 16 ? 'с семьёй' : g.value.flags.movedOut ? 'отдельно' : g.value.flags.livingTogether ? 'вдвоём' : g.value.residence && g.value.residence !== g.value.birth.sectorId ? 'в новом секторе' : 'в родном секторе'))
+const lives = computed(() => (g.value.age < 16 ? 'с семьёй' : g.value.flags.livingTogether ? 'вдвоём' : g.value.flags.movedOut ? 'отдельно' : g.value.residence && g.value.residence !== g.value.birth.sectorId ? 'в новом секторе' : 'в родном секторе'))
 </script>
 
 <template>

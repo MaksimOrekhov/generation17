@@ -74,7 +74,7 @@ class Ctx {
     else if (warnAt && v.length > warnAt) this.warn(where, `длинный текст (${v.length}), лучше до ${warnAt}`)
     if (v !== v.trim()) this.err(where, 'пробелы в начале или конце')
     if (/\s{2,}/.test(v)) this.err(where, 'двойные пробелы или переносы строк внутри текста')
-    if (/[a-zA-Z]{3,}/.test(v.replace(/\{\{\w+\}\}/g, ''))) this.warn(where, 'латиница в тексте — точно нужна?')
+    if (/[a-zA-Z]{3,}/.test(v.replace(/\{\{\w+(:[^{}]*)?\}\}/g, ''))) this.warn(where, 'латиница в тексте — точно нужна?')
     const forms = [...v.matchAll(/\{\{(\w+):([^|{}]*)\|([^|{}]*)\}\}/g)]
     for (const f of forms) {
       if (!GENDER_SUBJECTS.includes(f[1])) this.err(where, `форма рода {{${f[1]}:…}}: кто — один из ${GENDER_SUBJECTS.join(', ')}`)
@@ -133,17 +133,17 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'until', 'personAge', 'job', 'alive', 'stat', 'sector', 'sectorNot'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot'], where)
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
-    const lists: Array<'flag' | 'flagNot' | 'alive' | 'job' | 'sector' | 'sectorNot'> = ['flag', 'flagNot', 'alive', 'job', 'sector', 'sectorNot']
+    const lists: Array<'flag' | 'flagNot' | 'alive' | 'present' | 'job' | 'sector' | 'sectorNot'> = ['flag', 'flagNot', 'alive', 'present', 'job', 'sector', 'sectorNot']
     for (const key of lists) {
       const v = r[key]
       if (v === undefined) continue
       if (!Array.isArray(v) || !v.every(isStr)) { this.err(`${where}.${key}`, 'должен быть массивом строк'); continue }
       if (key === 'flag' || key === 'flagNot') v.forEach(k => knownFlag(k, `${where}.${key}`))
-      if (key === 'alive') v.filter(id => !PEOPLE.includes(id)).forEach(id => this.err(`${where}.alive`, `неизвестный человек «${id}»`))
+      if (key === 'alive' || key === 'present') v.filter(id => !PEOPLE.includes(id)).forEach(id => this.err(`${where}.${key}`, `неизвестный человек «${id}»`))
       if (key === 'sector' || key === 'sectorNot') v.filter(s => !SECTORS.includes(s)).forEach(s => this.err(`${where}.${key}`, `неизвестный сектор «${s}» (есть: ${SECTORS.join(', ')})`))
       if (key === 'job') v.filter(j => !JOBS.includes(j)).forEach(j => this.err(`${where}.job`, `неизвестная профессия «${j}»`))
     }
@@ -257,6 +257,11 @@ function checkMoment(c: Ctx, m: unknown, where: string) {
   if (m.needs !== undefined) {
     if (!Array.isArray(m.needs) || !m.needs.every(id => PEOPLE.includes(id))) c.err(`${where}.needs`, `массив id из: ${PEOPLE.join(', ')}`)
     else needs = m.needs
+  }
+  // сцены с ребёнком обязаны привязывать себя к возрасту ребёнка: «детская» сцена не должна дожить до его взрослости
+  if (needs.includes('child')) {
+    const age = isObj(m.requires) && isObj(m.requires.personAge) ? m.requires.personAge.child : undefined
+    if (!isObj(age) || !isNum(age.max)) c.err(`${where}.requires.personAge.child`, 'момент с ребёнком (needs: child) должен ограничить возраст ребёнка через personAge.child.max')
   }
   if (c.text(m.text, `${where}.text`, LIMITS.momentText, LIMITS.momentTextWarn)) c.personGuard(m.text, needs, `${where}.text`)
   const { accept, skip } = m

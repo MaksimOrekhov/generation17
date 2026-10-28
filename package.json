@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "build": "npm run content:check && vue-tsc --noEmit && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "vite preview",

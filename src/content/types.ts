@@ -14,12 +14,14 @@ export interface Requires {
   since?: Record<string, number>
   /** Числовой флаг-возраст и прошло не более N лет (вместе с `since` задаёт окно «от и до»). */
   until?: Record<string, number>
-  /** Возраст человека (id: parent, child, ...) в границах; человек должен существовать. */
+  /** Возраст человека (id: parent, child, ...) в границах; человек должен существовать, но может быть мёртв: для живых добавляйте `present`. */
   personAge?: Record<string, { min?: number; max?: number }>
   /** Профессия героя — одна из списка. */
   job?: Job[]
   /** Эти люди должны быть живы (id: parent, friend, neighbor, mentor, sibling). */
   alive?: string[]
+  /** Эти люди живы и уже появились в жизни героя: безопасная пара к `personAge`, когда нужны возраст и присутствие. */
+  present?: string[]
   /** Герой сейчас живёт в одном из этих секторов. */
   sector?: SectorId[]
   /** Герой сейчас живёт не в этих секторах. */

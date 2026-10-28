@@ -4,6 +4,7 @@ import { advanceYear, createGame, decide, epitaph, getMoment, getStorylet, setFo
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
 import { randomSeed } from '../domain/random'
+import { repairSave } from '../domain/save'
 import type { Atmosphere, Focus, GameState, LogEntry, LogKind } from '../domain/types'
 
 const STORAGE_KEY = 'generation17-v2'
@@ -41,6 +42,10 @@ function loadSaved(): Saved | null {
     if (!g.atmosphere) g.atmosphere = 'mystery'
     if (!g.director) g.director = { lastAge: g.age, tension: 0, lastCategory: null, lastTone: 'calm' }
     if (!LIFE_PRESETS.some(p => p.minutes === saved.preset)) saved.preset = DEFAULT_PRESET
+    // Каталог событий мог измениться с прошлой игры: устаревшие ссылки снимаются, жизнь остаётся.
+    const repaired = repairSave(g)
+    saved.game = repaired.game
+    if (repaired.notes.length) console.warn('Сохранение исправлено:', repaired.notes.join('; '))
     return saved
   } catch {
     return null

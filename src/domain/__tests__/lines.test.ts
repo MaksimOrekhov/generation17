@@ -60,6 +60,7 @@ const love: Case[] = [
   ['жить вместе', 40, { lovePath: 'confessed', loveStage: 'together', loveStageAge: 33 }, ['love-home-offer']],
   ['оставить как есть', 42, { lovePath: 'confessed', loveStage: 'open', loveStageAge: 33 }, ['love-drift']],
   ['расстаться', 45, { lovePath: 'confessed', loveStage: 'parted', loveStageAge: 33 }, ['love-parted-meeting']],
+  ['пожить врозь', 40, { lovePath: 'confessed', loveStage: 'apart', loveStageAge: 33 }, ['love-apart-return']],
   ['после переезда', 50, { lovePath: 'confessed', loveStage: 'moved-together', loveStageAge: 40 }, []]
 ]
 

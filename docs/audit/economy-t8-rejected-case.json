@@ -1,0 +1,994 @@
+{
+  "schemaVersion": 1,
+  "engineBaseRevision": "add6aa3c90a7b555333609a4326f9bd19699cab5",
+  "seed": 106,
+  "methodology": "Illustrative matched development pair chosen after S1 was rejected; no holdout or parameter selection. Same actual Family policy and seed; only declared S1 numbers differ. Outcome-only observer.",
+  "S0": {
+    "seed": 106,
+    "policy": {
+      "name": "Family",
+      "base": "Family",
+      "strictSaver": false
+    },
+    "acceptMoments": true,
+    "deathAge": 85,
+    "checkpoints": [
+      {
+        "age": 20,
+        "balance": 2870,
+        "reserveYears": 8.2,
+        "tariffYears": 2.7333333333333334,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 88.2,
+          "morale": 78.6411181156511,
+          "stress": 0,
+          "knowledge": 33,
+          "bonds": 87.61764192792309,
+          "reputation": 38
+        },
+        "personBonds": 330,
+        "service": 3,
+        "memories": 4,
+        "followups": 0,
+        "meanBond": 55,
+        "liveClosePeople": 4
+      },
+      {
+        "age": 40,
+        "balance": 10170,
+        "reserveYears": 14.125,
+        "tariffYears": 9.685714285714285,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 87.43217500000003,
+          "morale": 79.02351432037523,
+          "stress": 5.699999999999999,
+          "knowledge": 36,
+          "bonds": 94.51409549010907,
+          "reputation": 41.90000000000005
+        },
+        "personBonds": 356,
+        "service": 23,
+        "memories": 14,
+        "followups": 4,
+        "meanBond": 71.2,
+        "liveClosePeople": 4
+      },
+      {
+        "age": 60,
+        "balance": 7090,
+        "reserveYears": 9.847222222222221,
+        "tariffYears": 6.752380952380952,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 79.8251281343751,
+          "morale": 70.41349708532127,
+          "stress": 4.5,
+          "knowledge": 41,
+          "bonds": 100,
+          "reputation": 40.30000000000008
+        },
+        "personBonds": 210,
+        "service": 35.00000000000003,
+        "memories": 22,
+        "followups": 4,
+        "meanBond": 70,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 65,
+        "balance": 6256,
+        "reserveYears": 8.688888888888888,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 73.82512813437509,
+          "morale": 77.67363775348522,
+          "stress": 0.09999999999999981,
+          "knowledge": 38.5,
+          "bonds": 100,
+          "reputation": 36.70000000000009
+        },
+        "personBonds": 214,
+        "service": 37.400000000000034,
+        "memories": 25,
+        "followups": 4,
+        "meanBond": 71.33333333333333,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 70,
+        "balance": 5166,
+        "reserveYears": 7.175,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 69.44677493446491,
+          "morale": 82.54849689571873,
+          "stress": 0,
+          "knowledge": 42,
+          "bonds": 100,
+          "reputation": 37.70000000000009
+        },
+        "personBonds": 225,
+        "service": 37.400000000000034,
+        "memories": 26,
+        "followups": 4,
+        "meanBond": 75,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 80,
+        "balance": 2986,
+        "reserveYears": 4.147222222222222,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 58.205605561103255,
+          "morale": 82.13095825944781,
+          "stress": 0,
+          "knowledge": 46,
+          "bonds": 100,
+          "reputation": 38.70000000000009
+        },
+        "personBonds": 186,
+        "service": 37.400000000000034,
+        "memories": 30,
+        "followups": 4,
+        "meanBond": 93,
+        "liveClosePeople": 2
+      }
+    ],
+    "purchases": [
+      {
+        "age": 18,
+        "id": "course-pro",
+        "source": "shop",
+        "cost": 350,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 20,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "parent2",
+            "friend"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 25,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "parent2",
+            "friend"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 26,
+        "id": "own-cabin",
+        "source": "shop",
+        "cost": 400,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 30,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 30,
+        "id": "dome-pass",
+        "source": "shop",
+        "cost": 0,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 35,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 40,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 45,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 50,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 55,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 60,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 65,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 70,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 75,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 80,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      }
+    ],
+    "storyDecisions": [
+      {
+        "age": 30,
+        "id": "family-need-cell-medium",
+        "index": 1,
+        "text": "Дать половину",
+        "cost": 200,
+        "income": 0,
+        "available": 4,
+        "paidCategories": 0,
+        "job": "Медик"
+      },
+      {
+        "age": 64,
+        "id": "retirement",
+        "index": 0,
+        "text": "Уйти с должности",
+        "cost": 0,
+        "income": 0,
+        "available": 3,
+        "paidCategories": 0,
+        "job": "Медик"
+      }
+    ],
+    "workChanges": [
+      {
+        "age": 1,
+        "job": "Ученик",
+        "kind": "child",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 16,
+        "job": "Ученик",
+        "kind": "trainee",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 17,
+        "job": "Медик",
+        "kind": "trainee",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 18,
+        "job": "Медик",
+        "kind": "working",
+        "grade": 1,
+        "load": 1,
+        "service": 1,
+        "path": null
+      },
+      {
+        "age": 41,
+        "job": "Медик",
+        "kind": "working",
+        "grade": 1,
+        "load": 0.6,
+        "service": 23.6,
+        "path": null
+      },
+      {
+        "age": 65,
+        "job": "Медик",
+        "kind": "retired",
+        "grade": 1,
+        "load": 0.6,
+        "service": 37.400000000000034,
+        "path": "left"
+      }
+    ],
+    "loadChanges": [
+      {
+        "age": 40,
+        "to": 0.6,
+        "balance": 10170,
+        "requiredReserve": 270,
+        "projectedBills": 720,
+        "projectedReducedIncome": 630,
+        "annualGap": 90,
+        "fullIncome": 1050,
+        "reducedIncome": 630,
+        "obligations": "H1/dome:true/child:false"
+      }
+    ],
+    "retirement": {
+      "age": 64,
+      "path": "left",
+      "beforeFingerprint": 3167307484
+    },
+    "hardship": [],
+    "narrative": [
+      {
+        "age": 30,
+        "id": "family-need-cell-medium",
+        "title": "Ячейка в архиве"
+      },
+      {
+        "age": 31,
+        "id": "m-dome-pruner",
+        "title": "Не та ветка"
+      },
+      {
+        "age": 40,
+        "id": "m-need-radio",
+        "title": "Царапина на ручке"
+      },
+      {
+        "age": 56,
+        "id": "cabin-closed-door",
+        "title": "Дверь, которая закрывается"
+      }
+    ],
+    "metrics": {
+      "wage": 39990,
+      "pension": 11886,
+      "totalSpent": 50380,
+      "storySpent": 200,
+      "memories": 32,
+      "followups": 4
+    }
+  },
+  "S1": {
+    "seed": 106,
+    "policy": {
+      "name": "Family",
+      "base": "Family",
+      "strictSaver": false
+    },
+    "acceptMoments": true,
+    "deathAge": 85,
+    "checkpoints": [
+      {
+        "age": 20,
+        "balance": 2780,
+        "reserveYears": 7.315789473684211,
+        "tariffYears": 2.6476190476190475,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 88.2,
+          "morale": 78.6411181156511,
+          "stress": 0,
+          "knowledge": 33,
+          "bonds": 87.61764192792309,
+          "reputation": 38
+        },
+        "personBonds": 330,
+        "service": 3,
+        "memories": 4,
+        "followups": 0,
+        "meanBond": 55,
+        "liveClosePeople": 4
+      },
+      {
+        "age": 40,
+        "balance": 9200,
+        "reserveYears": 11.948051948051948,
+        "tariffYears": 8.761904761904763,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 87.43217500000003,
+          "morale": 79.02351432037523,
+          "stress": 5.699999999999999,
+          "knowledge": 36,
+          "bonds": 94.51409549010907,
+          "reputation": 41.90000000000005
+        },
+        "personBonds": 356,
+        "service": 23,
+        "memories": 14,
+        "followups": 4,
+        "meanBond": 71.2,
+        "liveClosePeople": 4
+      },
+      {
+        "age": 60,
+        "balance": 5120,
+        "reserveYears": 6.64935064935065,
+        "tariffYears": 4.876190476190477,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 79.8251281343751,
+          "morale": 70.41349708532127,
+          "stress": 4.5,
+          "knowledge": 41,
+          "bonds": 100,
+          "reputation": 40.30000000000008
+        },
+        "personBonds": 210,
+        "service": 35.00000000000003,
+        "memories": 22,
+        "followups": 4,
+        "meanBond": 70,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 65,
+        "balance": 4036,
+        "reserveYears": 5.241558441558442,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 73.82512813437509,
+          "morale": 77.67363775348522,
+          "stress": 0.09999999999999981,
+          "knowledge": 38.5,
+          "bonds": 100,
+          "reputation": 36.70000000000009
+        },
+        "personBonds": 214,
+        "service": 37.400000000000034,
+        "memories": 25,
+        "followups": 4,
+        "meanBond": 71.33333333333333,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 70,
+        "balance": 2696,
+        "reserveYears": 3.501298701298701,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 69.44677493446491,
+          "morale": 82.54849689571873,
+          "stress": 0,
+          "knowledge": 42,
+          "bonds": 100,
+          "reputation": 37.70000000000009
+        },
+        "personBonds": 225,
+        "service": 37.400000000000034,
+        "memories": 26,
+        "followups": 4,
+        "meanBond": 75,
+        "liveClosePeople": 2
+      },
+      {
+        "age": 80,
+        "balance": 16,
+        "reserveYears": 0.02077922077922078,
+        "tariffYears": null,
+        "grade": 1,
+        "job": "Медик",
+        "stats": {
+          "health": 58.205605561103255,
+          "morale": 82.13095825944781,
+          "stress": 0,
+          "knowledge": 46,
+          "bonds": 100,
+          "reputation": 38.70000000000009
+        },
+        "personBonds": 186,
+        "service": 37.400000000000034,
+        "memories": 30,
+        "followups": 4,
+        "meanBond": 93,
+        "liveClosePeople": 2
+      }
+    ],
+    "purchases": [
+      {
+        "age": 18,
+        "id": "course-pro",
+        "source": "shop",
+        "cost": 350,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 20,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "parent2",
+            "friend"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 25,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "parent2",
+            "friend"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 26,
+        "id": "own-cabin",
+        "source": "shop",
+        "cost": 400,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 30,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 30,
+        "id": "dome-pass",
+        "source": "shop",
+        "cost": 0,
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 35,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 40,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "parent2"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 45,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 50,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 55,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "parent",
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 60,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 0
+      },
+      {
+        "age": 65,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 70,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      },
+      {
+        "age": 75,
+        "id": "family-trip",
+        "source": "shop",
+        "cost": 320,
+        "target": {
+          "participantIds": [
+            "friend",
+            "sibling"
+          ]
+        },
+        "action": "purchase",
+        "cappedEffects": 1
+      }
+    ],
+    "storyDecisions": [
+      {
+        "age": 30,
+        "id": "family-need-cell-medium",
+        "index": 1,
+        "text": "Дать половину",
+        "cost": 200,
+        "income": 0,
+        "available": 4,
+        "paidCategories": 0,
+        "job": "Медик"
+      },
+      {
+        "age": 64,
+        "id": "retirement",
+        "index": 0,
+        "text": "Уйти с должности",
+        "cost": 0,
+        "income": 0,
+        "available": 3,
+        "paidCategories": 0,
+        "job": "Медик"
+      }
+    ],
+    "workChanges": [
+      {
+        "age": 1,
+        "job": "Ученик",
+        "kind": "child",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 16,
+        "job": "Ученик",
+        "kind": "trainee",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 17,
+        "job": "Медик",
+        "kind": "trainee",
+        "grade": 1,
+        "load": 1,
+        "service": 0,
+        "path": null
+      },
+      {
+        "age": 18,
+        "job": "Медик",
+        "kind": "working",
+        "grade": 1,
+        "load": 1,
+        "service": 1,
+        "path": null
+      },
+      {
+        "age": 41,
+        "job": "Медик",
+        "kind": "working",
+        "grade": 1,
+        "load": 0.6,
+        "service": 23.6,
+        "path": null
+      },
+      {
+        "age": 65,
+        "job": "Медик",
+        "kind": "retired",
+        "grade": 1,
+        "load": 0.6,
+        "service": 37.400000000000034,
+        "path": "left"
+      }
+    ],
+    "loadChanges": [
+      {
+        "age": 40,
+        "to": 0.6,
+        "balance": 9200,
+        "requiredReserve": 420,
+        "projectedBills": 770,
+        "projectedReducedIncome": 630,
+        "annualGap": 140,
+        "fullIncome": 1050,
+        "reducedIncome": 630,
+        "obligations": "H1/dome:true/child:false"
+      }
+    ],
+    "retirement": {
+      "age": 64,
+      "path": "left",
+      "beforeFingerprint": 2972046486
+    },
+    "hardship": [
+      {
+        "age": 81,
+        "balance": 112,
+        "wage": 0,
+        "pension": 566,
+        "bills": 470,
+        "aid": 0,
+        "housingLoss": true,
+        "serviceCancelled": false
+      }
+    ],
+    "narrative": [
+      {
+        "age": 30,
+        "id": "family-need-cell-medium",
+        "title": "Ячейка в архиве"
+      },
+      {
+        "age": 31,
+        "id": "m-dome-pruner",
+        "title": "Не та ветка"
+      },
+      {
+        "age": 40,
+        "id": "m-need-radio",
+        "title": "Царапина на ручке"
+      },
+      {
+        "age": 56,
+        "id": "cabin-closed-door",
+        "title": "Дверь, которая закрывается"
+      },
+      {
+        "age": 83,
+        "id": "trip-memory-friend",
+        "title": "Чужая версия той недели"
+      }
+    ],
+    "metrics": {
+      "wage": 39990,
+      "pension": 11886,
+      "totalSpent": 51780,
+      "storySpent": 200,
+      "memories": 32,
+      "followups": 4
+    }
+  },
+  "integrity": {
+    "completedLives": 2,
+    "checks": 929,
+    "violations": 0,
+    "accountingErrors": []
+  }
+}

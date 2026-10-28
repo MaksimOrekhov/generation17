@@ -6,9 +6,25 @@ import { canBuy, getOffer } from '../src/domain/offers'
 import { canSetLoad, resolveText } from '../src/domain/engine'
 import { storylets } from '../src/domain/storylets'
 import { moments } from '../src/domain/moments'
-import { chooseStory, IDS, playT8, targetForOffer } from './economy-t8-core'
+import { chooseStory, ENGINE_BASE, IDS, playT8, policyFor, targetForOffer } from './economy-t8-core'
 import type { Policy } from './economy-t8-core'
 import { exampleLife } from './economy-t8-metrics'
+import { rulesSnapshot, withScenario } from './economy-t8-scenarios'
+
+// A separate illustrative development pair; it never replaces one of the five S0 lives.
+if (process.argv.includes('--rejected-case')) {
+  const policy = policyFor('Family'), options = { observeChoiceQuality: false }, before = rulesSnapshot()
+  const control = playT8(106, policy, true, options)
+  const treatment = withScenario('S1', () => playT8(106, policy, true, options))
+  if (JSON.stringify(before) !== JSON.stringify(rulesSnapshot())) throw Error('Scenario leaked')
+  const integrity = { completedLives: 2, checks: control.invariantChecks + treatment.invariantChecks,
+    violations: control.violations.length + treatment.violations.length, accountingErrors: [...control.accountingErrors, ...treatment.accountingErrors] }
+  if (integrity.violations || integrity.accountingErrors.length) throw Error('Rejected case integrity failed')
+  writeFileSync('docs/audit/economy-t8-rejected-case.json', JSON.stringify({ schemaVersion: 1, engineBaseRevision: ENGINE_BASE, seed: 106,
+    methodology: 'Illustrative matched development pair chosen after S1 was rejected; no holdout or parameter selection. Same actual Family policy and seed; only declared S1 numbers differ. Outcome-only observer.',
+    S0: exampleLife(control), S1: exampleLife(treatment), integrity }, null, 2) + '\n')
+  console.error(JSON.stringify(integrity)); process.exit(0)
+}
 
 const baseline = JSON.parse(readFileSync('docs/audit/economy-t8-baseline.json', 'utf8')) as { examples: { seed: number; policy: Policy; acceptMoments: boolean }[] }
 const diagnostic = JSON.parse(readFileSync('docs/audit/economy-t8-diagnostics.json', 'utf8')) as typeof baseline

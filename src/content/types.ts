@@ -1,9 +1,17 @@
 import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat } from '../domain/types'
+import type { WorkKind } from '../domain/economy'
 
 type FlagValue = string | number | boolean
 
 /** Декларативное условие показа. Все заданные поля должны выполняться одновременно. */
 export interface Requires {
+  money?: { min?: number; max?: number }
+  work?: WorkKind[]
+  grade?: { min?: number; max?: number }
+  housing?: { min?: number; max?: number }
+  owns?: string[]
+  ownsNot?: string[]
+  reserveYears?: { min?: number; max?: number }
   /** Флаги, которые должны быть заданы (не пустое значение). */
   flag?: string[]
   /** Флаги, которых быть не должно. */

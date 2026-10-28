@@ -1,0 +1,30 @@
+import { describe, expect, it } from 'vitest'
+import baseline from './economy-t6-baseline.json'
+import { beat, createGame, decide, takeMoment, tick } from '../engine'
+import { hash32 } from '../random'
+import { storylets } from '../storylets'
+
+describe(`T6 unchanged existing lives, captured at ${baseline.base}`, () => {
+  it.each(baseline.runs)('seed=$seed, acceptMoments=$acceptMoments matches decisions, RNG and finances', expected => {
+    const { seed, acceptMoments } = expected
+    let g = createGame(seed)
+    const trace: unknown[] = []
+    while (!g.stopped) {
+      if (g.pending) {
+        const event = storylets.find(s => s.id === g.pending)!
+        const choice = hash32('t6-baseline', seed, event.id, g.age) % event.choices.length
+        trace.push(['choice', g.age, event.id, choice, g.rng])
+        g = decide(g, choice)
+      } else {
+        while (g.phase < 3) {
+          g = beat(g)
+          if (acceptMoments && g.moment) { trace.push(['moment', g.age, g.moment]); g = takeMoment(g) }
+        }
+        g = tick(g)
+        trace.push(['year', g.age, g.rng, g.economy.balance, g.pending])
+      }
+    }
+    expect(trace).toEqual(expected.trace)
+    expect({ age: g.age, rng: g.rng, economy: g.economy, stats: g.stats, flags: g.flags }).toEqual(expected.final)
+  })
+})

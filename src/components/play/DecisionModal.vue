@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { checkChance, resolveText } from '../../domain/engine'
+import { canChoose, checkChance, resolveText } from '../../domain/engine'
+import { formatCredits } from '../../domain/economyView'
 import { useGameStore } from '../../stores/game'
 import { logKindLabels, skillLabels, years } from '../../ui/format'
 import ModalShell from '../common/ModalShell.vue'
@@ -8,6 +9,17 @@ import ModalShell from '../common/ModalShell.vue'
 const store = useGameStore()
 const g = computed(() => store.game)
 const event = computed(() => store.currentEvent)
+const availability = computed(() => event.value?.choices.map((_, i) => canChoose(g.value, i)) ?? [])
+const moneyText = (index: number) => {
+  const choice = event.value?.choices[index]
+  if (!choice) return null
+  const signed = (money: number) => `${money < 0 ? '−' : money > 0 ? '+' : ''}${formatCredits(Math.abs(money))}.`
+  const parts: string[] = []
+  if (choice.effects.money !== undefined) parts.push(signed(choice.effects.money))
+  if (choice.check?.success.money) parts.push(`При успехе: ${signed(choice.check.success.money)}`)
+  if (choice.check?.failure.money) parts.push(`При неудаче: ${signed(choice.check.failure.money)}`)
+  return parts.join(' · ') || null
+}
 
 const odds = (index: number) => {
   const check = event.value?.choices[index]?.check
@@ -26,11 +38,13 @@ const odds = (index: number) => {
       <p class="dec__text">{{ resolveText(g, event.body) }}</p>
       <p v-if="!store.hintsSeen.decision" class="dec__hint">Решения останавливают время. Выберите вариант кнопкой или клавишей 1–{{ event.choices.length }}. Последствия могут проявиться через годы.</p>
       <div class="dec__choices">
-        <button v-for="(choice, i) in event.choices" :key="i" class="choice" @click="store.choose(i)">
+        <button v-for="(choice, i) in event.choices" :key="i" class="choice" :disabled="!availability[i]?.available" @click="store.choose(i)">
           <kbd>{{ i + 1 }}</kbd>
           <span class="choice__main">
             <strong>{{ resolveText(g, choice.text) }}</strong>
             <small>{{ resolveText(g, choice.hint) }}</small>
+            <small v-if="moneyText(i)" class="choice__money">{{ moneyText(i) }}</small>
+            <small v-if="availability[i]?.reason" class="choice__reason">{{ availability[i]?.reason }}</small>
           </span>
           <span v-if="odds(i)" class="choice__odds">{{ odds(i) }}</span>
         </button>
@@ -63,7 +77,11 @@ const odds = (index: number) => {
 .dec__hint { font-size: 12.5px; color: var(--cool); padding: 6px 10px; border: 1px dashed #2c4658; }
 .dec__choices { display: grid; gap: 8px; }
 .choice { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: center; text-align: left; padding: 11px 14px; background: var(--bg-2); border: 2px solid var(--line-2); box-shadow: var(--shadow-key); transition: border-color .12s, background .12s; }
-.choice:hover { border-color: var(--amber); background: #2a2030; }
+.choice:hover:not(:disabled) { border-color: var(--amber); background: #2a2030; }
+.choice:disabled { cursor: not-allowed; }
+.choice:disabled strong, .choice:disabled kbd { opacity: .65; }
+.choice__main .choice__money { color: var(--amber); font-family: var(--font-mono); }
+.choice__main .choice__reason { color: var(--rose); }
 .choice kbd { display: grid; place-items: center; width: 28px; height: 28px; font: 600 13px var(--font-mono); background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-2); }
 .choice__main { display: grid; gap: 1px; min-width: 0; }
 .choice__main strong { font-weight: 600; font-size: 15px; overflow-wrap: anywhere; }

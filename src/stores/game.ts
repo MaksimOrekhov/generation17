@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, cancelService, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, canChoose, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setLoad, skipMoment, takeMoment } from '../domain/engine'
 import type { PurchaseTarget } from '../domain/offers'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
@@ -141,10 +141,12 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function choose(index: number) {
-    if (!game.value.pending) return
-    seeHint('decision')
+    if (!canChoose(game.value, index).available) return
     const before = game.value.nextLogId
-    game.value = decide(game.value, index)
+    const next = decide(game.value, index)
+    if (next === game.value) return
+    seeHint('decision')
+    game.value = next
     result.value = game.value.history.filter(h => h.id >= before).reverse()
   }
 

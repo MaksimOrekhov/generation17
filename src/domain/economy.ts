@@ -14,6 +14,18 @@ export function wageOf(g:GameState):number { const w=g.economy.work; return ECON
 export function earnedGrade(g:GameState):Grade { const w=g.economy.work; const key=skill[g.protagonist.job]; if(!key)return w.grade; const n=g.skills[key]; if(w.grade===1 && n>=18 && g.age-w.jobSince>=3)return 2; if(w.grade===2 && n>=45 && w.courses>=1 && g.age-w.jobSince>=10)return 3; if(w.grade===3 && n>=60 && w.courses>=2 && g.age-w.gradeSince>=8)return 4; return w.grade }
 export function pensionOf(w:Work):number {return Math.round(Math.max(360,Math.round(w.lastWage*(.2+.008*Math.min(w.service,40))))*(1+Math.min(.25,.04*w.deferYears)))}
 export function obligationsOf(g:GameState) { const child=g.people.find(p=>p.id==='child' && p.alive && p.since<=g.age && p.age<16); return { essentials:(g.age>=18 ? ECONOMY_TUNING.personal-(g.protagonist.job==='Агроном'?60:0):0)+(child?150:0), rent:ECONOMY_TUNING.rent[g.economy.housing] } }
+const servicesClosed = (g: GameState) => g.flags.shipIncidentAge === g.age || g.ship.air < 55 || g.ship.food < 45
+const serviceCostOf = (g: GameState, id: string) => id === 'dome-pass' ? (g.protagonist.job === 'Агроном' ? 0 : ECONOMY_TUNING.services.domePass) : 0
+/** Current annual obligations before affordability-driven cancellations; current closures waive services. */
+export function annualObligationsOf(g: GameState): number {
+ const { essentials, rent } = obligationsOf(g)
+ return essentials + rent + (servicesClosed(g) ? 0 : Object.keys(g.economy.services).reduce((n, id) => n + serviceCostOf(g, id), 0))
+}
+/** null means no annual obligations: unbounded coverage, without division by zero or Infinity. */
+export function reserveYearsOf(g: GameState): number | null {
+ const bills = annualObligationsOf(g)
+ return bills === 0 ? null : g.economy.balance / bills
+}
 export function recordEconomicTransaction(e:Economy,age:number,kind:string,amount:number,ref='',label=kind) {e.ledger.push({n:e.nextTxn++,age,kind,ref,label,amount});e.ledger=e.ledger.slice(-40)}
 function txn(e:Economy,age:number,kind:string,amount:number) {recordEconomicTransaction(e,age,kind,amount)}
 /** Мутирует только переданное состояние; вызывается один раз из tick. */
@@ -60,9 +72,9 @@ export function settleYear(g:GameState): {stats:{health?:number;stress?:number;m
  let money=e.balance+wage+pension;const minimum=obligationsOf(g).essentials;const aid=Math.max(0,minimum-money);money=Math.max(0,money-minimum); if(aid){txn(e,g.age,'aid',aid);logs.push(`Фонд покрыл ${aid} кр.`)}
  let tight=aid>0; const paidServices:string[]=[]; const prior=e.housing;while(ECONOMY_TUNING.rent[e.housing]>money){e.housing=(e.housing-1) as Housing;tight=true}if(e.housing!==prior){e.housingRight={tier:prior as 1|2,until:g.age+3};logs.push('Жильё понижено до доступной ступени.')}
  const rent=e.lastBought['own-cabin']===g.age?0:ECONOMY_TUNING.rent[e.housing];money-=rent;let bills=minimum+rent
- const closed=g.flags.shipIncidentAge===g.age || g.ship.air<55 || g.ship.food<45
+ const closed=servicesClosed(g)
  if(!closed) for(const id of Object.keys(e.services).sort()){
-  const cost=id==='dome-pass'?(g.protagonist.job==='Агроном'?0:ECONOMY_TUNING.services.domePass):0
+  const cost=serviceCostOf(g,id)
   if(cost>money){delete e.services[id];tight=true;logs.push(`Услуга ${id} отменена.`)}else{money-=cost;bills+=cost;paidServices.push(id)}
  }
  e.balance=money;e.tightStreak=tight?e.tightStreak+1:0;if(tight){stats.morale=-2;stats.stress=2}
@@ -204,14 +216,18 @@ export function repairEconomy(g: GameState): Economy {
   base.settledAge = integer(source.settledAge, age, age)
   const row = (v: unknown): YearRow | null => { const r=object(v); const fields=['wage','pension','bills','aid','balance']; if (!Number.isInteger(r.age) || (r.age as number)<0 || (r.age as number)>age || fields.some(k=>!Number.isSafeInteger(r[k]) || (r[k] as number)<0) || (r.aid as number)>(r.bills as number)) return null; return { age:r.age as number, wage:r.wage as number, pension:r.pension as number, bills:r.bills as number, aid:r.aid as number, balance:r.balance as number } }
   base.years = Array.isArray(source.years) ? source.years.map(row).filter((r): r is YearRow => r !== null).sort((a,b)=>a.age-b.age).filter((r,i,rows)=>i===rows.findIndex(x=>x.age===r.age)).slice(-80) : []
-  const validKinds = ['start','purchase','gift','help','windfall','shock','aid','estate']
+  const validKinds = ['start','purchase','story-expense','gift','help','windfall','shock','aid','estate']
+  const validStoryExpense = (t: Record<string, unknown>) => t.kind !== 'story-expense' ||
+    typeof t.ref === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(t.ref) && typeof t.label === 'string' && t.label.length > 0 &&
+    Number.isSafeInteger(t.amount) && (t.amount as number) > 0 && (t.amount as number) <= 1500
   const txnIds = new Set<number>()
-  base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || !Number.isSafeInteger(t.age) || (t.age as number)<0 || (t.age as number)>age || !Number.isSafeInteger(t.amount) || (t.amount as number)<0 || !Number.isSafeInteger(t.n) || (t.n as number)<1 || txnIds.has(t.n as number)) return []; txnIds.add(t.n as number); return [{ n:t.n as number, age:t.age as number, kind:String(t.kind), ref:typeof t.ref==='string' && /^[a-z0-9-]*$/.test(t.ref)?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:t.amount as number }] }).slice(-40) : []
+  base.ledger = Array.isArray(source.ledger) ? source.ledger.flatMap((entry: unknown) => { const t=object(entry); if (!validKinds.includes(String(t.kind)) || !validStoryExpense(t) || !Number.isSafeInteger(t.age) || (t.age as number)<0 || (t.age as number)>age || !Number.isSafeInteger(t.amount) || (t.amount as number)<0 || !Number.isSafeInteger(t.n) || (t.n as number)<1 || txnIds.has(t.n as number)) return []; txnIds.add(t.n as number); return [{ n:t.n as number, age:t.age as number, kind:String(t.kind), ref:typeof t.ref==='string' && /^[a-z0-9-]*$/.test(t.ref)?t.ref:'', label:typeof t.label==='string'?t.label:'', amount:t.amount as number }] }).slice(-40) : []
   base.nextTxn = Math.max(1, integer(source.nextTxn,1), ...base.ledger.map(t=>t.n+1))
   const totals=object(source.totals)
   const fromYears=(select:(r:YearRow)=>number)=>base.years.reduce((sum,r)=>Math.min(Number.MAX_SAFE_INTEGER,sum+select(r)),0)
-  const recentPurchases=base.ledger.filter(t=>t.kind==='purchase').reduce((sum,t)=>Math.min(Number.MAX_SAFE_INTEGER,sum+t.amount),0)
-  base.totals={earned:Math.max(integer(totals.earned,0),fromYears(r=>r.wage+r.pension)),spent:Math.max(integer(totals.spent,0),fromYears(r=>r.bills-r.aid)+recentPurchases),given:integer(totals.given,0),aid:Math.max(integer(totals.aid,0),fromYears(r=>r.aid))}
+  const recentPurchases=base.ledger.filter(t=>t.kind==='purchase'||t.kind==='story-expense').reduce((sum,t)=>Math.min(Number.MAX_SAFE_INTEGER,sum+t.amount),0)
+  const recentWindfalls=base.ledger.filter(t=>t.kind==='windfall').reduce((sum,t)=>Math.min(Number.MAX_SAFE_INTEGER,sum+t.amount),0)
+  base.totals={earned:Math.max(integer(totals.earned,0),Math.min(Number.MAX_SAFE_INTEGER,fromYears(r=>r.wage+r.pension)+recentWindfalls)),spent:Math.max(integer(totals.spent,0),Math.min(Number.MAX_SAFE_INTEGER,fromYears(r=>r.bills-r.aid)+recentPurchases)),given:integer(totals.given,0),aid:Math.max(integer(totals.aid,0),fromYears(r=>r.aid))}
   base.estate = g.stopped ? integer(source.estate,base.balance) : null
   return base
 }

@@ -1,5 +1,6 @@
 import { isKnown, residenceOf } from '../domain/birth'
 import { gYearPlaceholder } from '../domain/constants'
+import { reserveYearsOf } from '../domain/economy'
 import type { Effects, GameState, MomentDef, Storylet } from '../domain/types'
 import type { ContentBundle, JsonChoice, JsonMoment, JsonStorylet, Requires } from './types'
 
@@ -43,6 +44,19 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
       const value = g.stats[stat as keyof GameState['stats']]
       if (range.min !== undefined && value < range.min) return false
       if (range.max !== undefined && value > range.max) return false
+    }
+    const inRange = (value: number, range: { min?: number; max?: number }) =>
+      (range.min === undefined || value >= range.min) && (range.max === undefined || value <= range.max)
+    if (r.money && !inRange(g.economy.balance, r.money)) return false
+    if (r.work && !r.work.includes(g.economy.work.kind)) return false
+    if (r.grade && !inRange(g.economy.work.grade, r.grade)) return false
+    if (r.housing && !inRange(g.economy.housing, r.housing)) return false
+    const owns = (id: string) => Object.hasOwn(g.economy.owned, id) || Object.hasOwn(g.economy.services, id)
+    if (r.owns?.some(id => !owns(id))) return false
+    if (r.ownsNot?.some(owns)) return false
+    if (r.reserveYears) {
+      const years = reserveYearsOf(g)
+      if (years === null ? r.reserveYears.max !== undefined : !inRange(years, r.reserveYears)) return false
     }
     return true
   }

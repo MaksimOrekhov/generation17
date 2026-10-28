@@ -13,7 +13,7 @@ const friendFlag = (g: GameState) => g.flags.friendReturn
 export const arcStorylets: Storylet[] = [
   // ───────── Трещина: официальный рапорт ─────────
   {
-    id: 'crack-report-hearing', arc: 'crack', category: 'Последствие', min: 26, max: 82, weight: 25,
+    id: 'crack-report-hearing', arc: 'crack', category: 'Последствие', min: 26, max: 82, priority: 'followup', weight: 25,
     title: 'Комиссия по безопасности',
     body: 'Спустя годы комиссия пересматривает старые рапорты. Твой, №81-C, значится среди тех, что когда-то «закрыли без последствий». Тебя вызывают дать пояснения. В зале сидит бывший начальник.',
     available: g => g.flags.leakChoice === 'report' && leakFor(g, 4) && !g.flags.crackStage,
@@ -24,7 +24,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-inspector-offer', arc: 'crack', category: 'Последствие', min: 30, max: 82, weight: 22,
+    id: 'crack-inspector-offer', arc: 'crack', category: 'Последствие', min: 30, max: 82, priority: 'followup', weight: 22,
     title: 'Группа инспекции',
     body: 'После того разбирательства тебя запомнили. Служба безопасности предлагает место в группе инспекции: ходить по секторам и искать дефекты до того, как они станут авариями. Работа неблагодарная: люди не любят, когда им находят проблемы.',
     available: g => stage(g, 'reported-open') && leakFor(g, 9) && !g.flags.inspector && !!g.people.find(p => p.id === 'mentor')?.alive,
@@ -35,7 +35,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-recurrence', arc: 'crack', category: 'Последствие', min: 28, max: 82, weight: 22,
+    id: 'crack-recurrence', arc: 'crack', category: 'Последствие', min: 28, max: 82, priority: 'followup', weight: 22,
     title: 'Тот же контур',
     body: 'Воздушный контур в C-3 снова даёт течь. На этот раз всё серьёзнее. Аварийная бригада перебирает старые записи, а твоего рапорта в архиве нет: кто-то давно «почистил» папку. Ты помнишь схему почти наизусть.',
     available: g => stage(g, 'reported-silent') && leakFor(g, 6),
@@ -46,7 +46,7 @@ export const arcStorylets: Storylet[] = [
   },
   // ───────── Трещина: удачный ремонт ─────────
   {
-    id: 'crack-secret-hero', arc: 'crack', category: 'Последствие', min: 28, max: 82, weight: 22,
+    id: 'crack-secret-hero', arc: 'crack', category: 'Последствие', min: 28, max: 82, priority: 'followup', weight: 22,
     title: 'Кто здесь работал?',
     body: 'На соседнем участке C-3 случается небольшая авария. Бригада удивляется, что твой старый участок держится идеально. В журнале записей о ремонте нет, и начальник смены спрашивает, чьих это рук дело.',
     available: g => g.flags.leakChoice === 'repair' && g.flags.leakRepaired === true && leakFor(g, 6) && !g.flags.crackStage,
@@ -57,7 +57,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-student-return', arc: 'crack', category: 'Последствие', min: 34, max: 85, weight: 20,
+    id: 'crack-student-return', arc: 'crack', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 20,
     title: 'Ученик на своём месте',
     body: 'Молодой техник, которому ты когда-то рисовал{{hero:|а}} схему, теперь руководит бригадой. Он приходит с вопросом по сложному ремонту и признаётся, что до сих пор хранит ту накладную.',
     available: g => stage(g, 'taught') && leakFor(g, 12),
@@ -69,7 +69,7 @@ export const arcStorylets: Storylet[] = [
   },
   // ───────── Трещина: неудачный ремонт ─────────
   {
-    id: 'crack-failed-leak', arc: 'crack', category: 'Последствие', min: 25, max: 82, weight: 24,
+    id: 'crack-failed-leak', arc: 'crack', category: 'Последствие', min: 25, max: 82, priority: 'followup', weight: 24,
     title: 'Сочащиеся крепления',
     body: 'Крепления, которые ты когда-то тронул{{hero:|а}}, начинают сочиться. Утечка пока мелкая, но ты единственный, кто знает, откуда она взялась.',
     available: g => g.flags.leakChoice === 'repair' && g.flags.leakRepaired === false && leakFor(g, 3) && !g.flags.crackStage,
@@ -80,7 +80,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-worsened', arc: 'crack', category: 'Последствие', min: 26, max: 85, weight: 26,
+    id: 'crack-worsened', arc: 'crack', category: 'Последствие', min: 26, max: 85, priority: 'followup', weight: 26,
     title: 'Эвакуация сектора',
     body: 'Твоя ночная починка не выдерживает. Давление в секторе падает, часть блока эвакуируют, двое пострадавших попадают в клинику. Следователь листает журналы смен и находит записи о том, что ты задерживал{{hero:ся|ась}} на участке.',
     available: g => stage(g, 'worsened'),
@@ -92,7 +92,7 @@ export const arcStorylets: Storylet[] = [
   },
   // ───────── Трещина: молчание ─────────
   {
-    id: 'crack-silent-accident', arc: 'crack', category: 'Последствие', min: 28, max: 85, weight: 26,
+    id: 'crack-silent-accident', arc: 'crack', category: 'Последствие', min: 28, max: 85, priority: 'followup', weight: 26,
     title: 'Падение давления в C-3',
     body: 'Ночью в секторе C-3 падает давление. Два блока эвакуируют, обходится без жертв. В протоколе расследования появляется строка: «Ранее выявленный дефект не был зарегистрирован». Следователь листает журналы смен.',
     available: g => g.flags.leakChoice === 'silent' && leakFor(g, 6) && !g.flags.crackStage,
@@ -103,7 +103,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-confessed-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, weight: 20,
+    id: 'crack-confessed-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 20,
     title: 'Разговор с учениками',
     body: 'Молодые техники просят тебя выступить на занятии о культуре безопасности. Они слышали историю про C-3 и хотят услышать её от тебя, а не от учебного протокола.',
     available: g => stage(g, 'silent-confessed') && leakFor(g, 12),
@@ -113,7 +113,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-denied-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, weight: 20,
+    id: 'crack-denied-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 20,
     title: 'Знакомое лицо в очереди',
     body: 'В клинике тебя окликает человек, которого ты узнаёшь с трудом: один из тех, кого эвакуировали в ту ночь. Он улыбается и благодарит: «Хорошо, что вас не было на участке, а то бы и вам досталось».',
     available: g => stage(g, 'silent-denied') && leakFor(g, 12),
@@ -124,7 +124,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'crack-blamed-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, weight: 20,
+    id: 'crack-blamed-after', arc: 'crack', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 20,
     title: 'Бывший начальник',
     body: 'Бывший начальник сидит на скамье у обзорной палубы. Бывший начальник сильно постарел. Когда ты проходишь мимо, он поднимает глаза и говорит: «Ты тогда {{hero:был прав|была права}}. Я тоже».',
     available: g => stage(g, 'silent-blamed') && leakFor(g, 12),
@@ -135,7 +135,7 @@ export const arcStorylets: Storylet[] = [
   },
   // ───────── Дружба ─────────
   {
-    id: 'friend-return-stood', arc: 'friend', category: 'Последствие', min: 28, max: 65, weight: 14,
+    id: 'friend-return-stood', arc: 'friend', category: 'Последствие', min: 28, max: 65, priority: 'followup', weight: 14,
     title: 'Давняя защита',
     body: 'В коридоре клиники ты неожиданно встречаешь {{friend}}. Прошло много лет, но {{friend}} узнаёт тебя первым: «Ты {{hero:тот|та}}, кто заступил{{hero:ся|ась}} за меня у школьного очистителя. Я не забыл{{friend:|а}}».',
     available: g => g.flags.stoodForFriend === true && g.age >= 28 && !friendFlag(g),
@@ -146,7 +146,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'friend-return-quiet', arc: 'friend', category: 'Последствие', min: 28, max: 65, weight: 14,
+    id: 'friend-return-quiet', arc: 'friend', category: 'Последствие', min: 28, max: 65, priority: 'followup', weight: 14,
     title: 'Чужая благодарность',
     body: '{{friend}} до сих пор не знает, кто тогда рассказал учителю правду о неисправном очистителе. Ты случайно слышишь, как {{friend}} благодарит совершенно другого человека.',
     available: g => g.flags.quietWitness === true && g.age >= 28 && !friendFlag(g),
@@ -157,7 +157,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'friend-return-abandoned', arc: 'friend', category: 'Последствие', min: 28, max: 65, weight: 14,
+    id: 'friend-return-abandoned', arc: 'friend', category: 'Последствие', min: 28, max: 65, priority: 'followup', weight: 14,
     title: 'Взгляд сквозь тебя',
     body: '{{friend}} стоит в очереди в клинике и смотрит сквозь тебя. День у очистителя не стёрся ни у одного из вас: вы оба помните, кто промолчал.',
     available: g => g.flags.abandonedFriend === true && g.age >= 28 && !friendFlag(g),
@@ -168,7 +168,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'friend-crisis-close', arc: 'friend', category: 'Последствие', min: 35, max: 70, weight: 12,
+    id: 'friend-crisis-close', arc: 'friend', category: 'Последствие', min: 35, max: 70, priority: 'followup', weight: 12,
     title: 'Ночной звонок',
     body: '{{friend}} звонит среди ночи. Голос ровный, но слова подбираются плохо: потеря работы в совете, ссора с семьёй. Нужен кто-то, кто просто не будет осуждать.',
     available: g => g.flags.friendState === 'close' && g.age >= 35 && !g.flags.friendCrisis,
@@ -179,7 +179,7 @@ export const arcStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'friend-crisis-distant', arc: 'friend', category: 'Последствие', min: 35, max: 70, weight: 12,
+    id: 'friend-crisis-distant', arc: 'friend', category: 'Последствие', min: 35, max: 70, priority: 'followup', weight: 12,
     title: 'Осторожная просьба',
     body: 'От {{friend}} приходит короткое сообщение: нужна небольшая помощь с бумагами. Вы давно не близки, и просьба звучит осторожно, будто писать было непросто.',
     available: g => g.flags.friendState === 'distant' && g.age >= 35 && !g.flags.friendCrisis,

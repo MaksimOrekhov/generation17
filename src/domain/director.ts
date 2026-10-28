@@ -1,5 +1,5 @@
 import { clamp, random, weighted } from './random'
-import type { GameState, Storylet } from './types'
+import type { GameState, Priority, Storylet } from './types'
 
 /**
  * Директор повествования решает, КОГДА и КАКОЕ сюжетное решение показать в этом году.
@@ -72,6 +72,16 @@ export function afterDecision(d: Director, s: Storylet, age: number): Director {
 
 const fits = (d: Director, s: Storylet) => d.tension + Math.max(0, TONE_COST[toneOf(s)]) <= TENSION_CAP
 
+export const priorityOf = (s: Storylet): Priority => s.priority ?? 'normal'
+
+/** Последний год, когда сюжет ещё можно показать: по возрасту героя или по окну продолжения. */
+export const isLastChance = (g: GameState, s: Storylet) => g.age >= s.max || (s.expiresIn?.(g) ?? Infinity) <= 0
+
+/** Выбор по весу; единственный кандидат не тратит RNG. */
+function chooseByWeight(g: GameState, pool: Storylet[]) {
+  return pool.length === 1 ? pool[0]! : weighted(g, pool.map(s => [s, s.weight] as const))
+}
+
 /**
  * Выбирает сюжетное решение года из доступных или возвращает null (тихий год).
  * Расходует RNG только при выборе из пула, поэтому порядок случайных чисел остаётся детерминированным.
@@ -80,19 +90,23 @@ export function pickStorylet(g: GameState, options: Storylet[]): Storylet | null
   if (!options.length) return null
   const d = g.director
   const gap = g.age - d.lastAge
-  // Распределение по специальностям обязательно: в 16 лет, а если прошлое решение было год назад, — в 17
-  const forced = options.find(s => s.id === 'school-track' && (g.age >= 17 || (g.age === 16 && gap >= MIN_GAP)))
-  if (forced) return forced
+  // 0) обязательные: critical (после минимального интервала) и последний шанс у followup/critical.
+  //    Бюджет напряжения и «тихий год» их не откладывают.
+  const due = options.filter(s => {
+    const priority = priorityOf(s)
+    if (priority === 'normal') return false
+    return isLastChance(g, s) || (priority === 'critical' && gap >= MIN_GAP)
+  })
+  if (due.length) return chooseByWeight(g, due)
   if (g.age < 3) return null
   if (gap < MIN_GAP) return null
 
   // 1) продолжения прошлых решений идут первыми, но не сразу после тяжёлого события
-  const started = options.filter(s => s.weight >= 10)
-  if (started.length) {
-    const ready = started.filter(s => fits(d, s))
-    const pool = ready.length ? ready : gap >= MAX_GAP ? started : []
-    if (pool.length) return pool.sort((a, b) => b.weight - a.weight)[0]!
-    return null
+  const followups = options.filter(s => priorityOf(s) === 'followup')
+  if (followups.length) {
+    const ready = followups.filter(s => fits(d, s))
+    const pool = ready.length ? ready : gap >= MAX_GAP ? followups : []
+    return pool.length ? chooseByWeight(g, pool) : null
   }
 
   // 2) обычные события: вероятность растёт с тишиной, на MAX_GAP — гарантированно

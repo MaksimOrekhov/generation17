@@ -14,7 +14,7 @@ const alive = (g: GameState, id: string) => !!g.people.find(p => p.id === id)?.a
 export const lineStorylets: Storylet[] = [
   // ═════════ СИГНАЛ ═════════
   {
-    id: 'signal-result', arc: 'signal', category: 'Тайна', min: 24, max: 80, weight: 20,
+    id: 'signal-result', arc: 'signal', category: 'Тайна', min: 24, max: 80, priority: 'followup', weight: 20,
     title: 'Происхождение сигнала',
     body: 'Спустя годы тебе удаётся сопоставить сигнал с архивом навигации: это автоматический маяк, отправленный ещё до рождения твоих родителей. Но зачем его скрыли от гражданского реестра?',
     available: g => typeof g.flags.signalInvestigated === 'number' && since(g, 'signalInvestigated', 4) && !g.flags.signalClosed,
@@ -25,7 +25,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-public-debate', arc: 'signal', category: 'Последствие', min: 28, max: 85, weight: 22,
+    id: 'signal-public-debate', arc: 'signal', category: 'Последствие', min: 28, max: 85, priority: 'followup', weight: 22,
     title: 'Комиссия по маяку',
     body: 'Администрация создала комиссию по твоей публикации. Жители спорят: одни называют тебя разрушителем спокойствия, другие требуют открыть остальные закрытые архивы.',
     available: g => is(g, 'signalStage', 'published') && since(g, 'signalStageAge', 5),
@@ -36,7 +36,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-report', arc: 'signal', category: 'Последствие', min: 32, max: 88, weight: 20,
+    id: 'signal-report', arc: 'signal', category: 'Последствие', min: 32, max: 88, priority: 'followup', weight: 20,
     title: 'Отчёт комиссии',
     body: 'Комиссия публикует итог: маяк оказывается автоматической системой наведения, которую никто не собирался скрывать. Просто со временем о ней забыли. Часть жителей разочарована, часть счастлива, что тайна оказалась безобидной.',
     available: g => is(g, 'signalStage', 'debated-open') && since(g, 'signalStageAge', 6),
@@ -47,7 +47,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-archive-opened', arc: 'signal', category: 'Последствие', min: 32, max: 88, weight: 18,
+    id: 'signal-archive-opened', arc: 'signal', category: 'Последствие', min: 32, max: 88, priority: 'followup', weight: 18,
     title: 'Пересмотр реестра',
     body: 'Архив пересматривает запечатанные материалы. Новый архивариус находит среди них твой отчёт о маяке и приглашает поговорить: обычно такие папки открывают лишь по просьбе авторов.',
     available: g => is(g, 'signalStage', 'archived') && since(g, 'signalStageAge', 8),
@@ -58,7 +58,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-secret-visitor', arc: 'signal', category: 'Последствие', min: 34, max: 88, weight: 20,
+    id: 'signal-secret-visitor', arc: 'signal', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 20,
     title: 'Гость из архива',
     body: 'К тебе приходит молодая сотрудница архива. Она нашла упоминание о старой записи сигнала и догадалась, что копия может быть у тебя. «Я никому не скажу, — говорит она. — Просто хочу знать, что там».',
     available: g => is(g, 'signalStage', 'secret') && since(g, 'signalStageAge', 10),
@@ -69,7 +69,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-rumor-circle', arc: 'signal', category: 'Тайна', min: 24, max: 80, weight: 18,
+    id: 'signal-rumor-circle', arc: 'signal', category: 'Тайна', min: 24, max: 80, priority: 'followup', weight: 18,
     title: 'Кружок любителей сигнала',
     body: 'Друзья, с которыми ты когда-то обсуждал{{hero:|а}} странный сигнал, собрались кружком. Они научились принимать его через самодельную антенну и теперь предлагают отправить в ответ короткое сообщение.',
     available: g => g.flags.heardSignal === true && !g.flags.signalInvestigated && since(g, 'signalAge', 4) && !g.flags.signalCircle,
@@ -80,7 +80,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-circle-joined', arc: 'signal', category: 'Последствие', min: 28, max: 85, weight: 18,
+    id: 'signal-circle-joined', arc: 'signal', category: 'Последствие', min: 28, max: 85, priority: 'followup', weight: 18,
     title: 'Ответ отправлен',
     body: 'Сообщение ушло. Ответа не было, но кружок не распался: теперь он собирается раз в месяц, и среди участников появляются те, кто пришёл уже не за тайной, а за компанией.',
     available: g => is(g, 'signalCircle', 'joined') && since(g, 'signalStageAge', 5),
@@ -91,7 +91,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-circle-warned', arc: 'signal', category: 'Последствие', min: 28, max: 85, weight: 18,
+    id: 'signal-circle-warned', arc: 'signal', category: 'Последствие', min: 28, max: 85, priority: 'followup', weight: 18,
     title: 'Прежние знакомые',
     body: 'В очереди в столовую тебя окликает человек из того самого кружка. Человек давно не здоровался, но сейчас подходит сам: «Нам нужно поговорить. Не о сигнале, а о том, что случилось потом».',
     available: g => is(g, 'signalCircle', 'warned') && since(g, 'signalStageAge', 6),
@@ -102,7 +102,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'signal-ignored-echo', arc: 'signal', category: 'Последствие', min: 28, max: 88, weight: 16,
+    id: 'signal-ignored-echo', arc: 'signal', category: 'Последствие', min: 28, max: 88, priority: 'followup', weight: 16,
     title: 'Старый сигнал',
     body: 'Молодой человек из соседнего сектора случайно нашёл в сети ту самую запись сигнала и теперь расспрашивает всех, кто помнит те времена. Тебе говорят: «Ты же тогда слышал{{hero:|а}} его. Что думаешь?»',
     available: g => g.flags.ignoredSignal === true && !g.flags.signalInvestigated && since(g, 'signalAge', 8) && !g.flags.signalLate,
@@ -115,7 +115,7 @@ export const lineStorylets: Storylet[] = [
 
   // ═════════ РОДИТЕЛЬ ═════════
   {
-    id: 'parent-illness-followup', arc: 'parent', category: 'Последствие', min: 28, max: 75, weight: 13,
+    id: 'parent-illness-followup', arc: 'parent', category: 'Последствие', min: 28, max: 75, priority: 'followup', weight: 13,
     title: 'Старые фотографии',
     body: '{{parent}} приглашает тебя разобрать семейный архив. Среди снимков — первый жилой блок, ещё до последней реконструкции, и десятки незнакомых лиц.',
     available: g => is(g, 'parentCare', 'close') && since(g, 'parentAge', 4) && !g.flags.parentArchive,
@@ -126,7 +126,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'parent-keepsake', arc: 'parent', category: 'Последствие', min: 34, max: 85, weight: 16,
+    id: 'parent-keepsake', arc: 'parent', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 16,
     title: 'Ключ от старой каюты',
     body: 'После того разговора об архиве {{parent}} достаёт из ящика маленький ключ: «От каюты, где мы жили до твоего рождения. Там уже давно никто не живёт, но кое-что осталось».',
     available: g => is(g, 'parentStage', 'recorded') && since(g, 'parentStageAge', 6) && alive(g, 'parent'),
@@ -137,7 +137,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'parent-regret', arc: 'parent', category: 'Последствие', min: 34, max: 85, weight: 16,
+    id: 'parent-regret', arc: 'parent', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 16,
     title: 'Несказанное',
     body: 'Спустя годы {{parent}} вдруг упоминает тот день, когда ты обещал{{hero:|а}} заглянуть и разобрать архив. Говорит спокойно, без упрёка. Но именно спокойствие больнее всего.',
     available: g => is(g, 'parentStage', 'postponed') && since(g, 'parentStageAge', 6) && alive(g, 'parent'),
@@ -148,7 +148,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'parent-treatment', arc: 'parent', category: 'Семья', min: 28, max: 75, weight: 20,
+    id: 'parent-treatment', arc: 'parent', category: 'Семья', min: 28, max: 75, priority: 'followup', weight: 20,
     title: 'Курс лечения',
     body: 'Медики предлагают {{parent}} три пути: стандартный курс, который даёт спокойные годы, но без больших надежд; экспериментальную программу, о которой мало известно; или домашний уход без вмешательств. Решение просят принять вместе с тобой.',
     available: g => is(g, 'parentCare', 'medical') && since(g, 'parentAge', 3) && !g.flags.parentTreatment,
@@ -159,7 +159,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'parent-letter', arc: 'parent', category: 'Семья', min: 28, max: 75, weight: 14,
+    id: 'parent-letter', arc: 'parent', category: 'Семья', min: 28, max: 75, priority: 'followup', weight: 14,
     title: 'Письмо от родителя',
     body: 'От {{parent}} приходит короткое письмо. Ни просьбы, ни упрёка, только пара строк о том, что сад в секторе зацвёл, и вопрос: «Ты не заходил{{hero:|а}} бы как-нибудь?»',
     available: g => is(g, 'parentCare', 'distant') && since(g, 'parentAge', 6) && !g.flags.parentLetter,
@@ -170,7 +170,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'parent-last-call', arc: 'parent', category: 'Семья', min: 36, max: 85, weight: 16,
+    id: 'parent-last-call', arc: 'parent', category: 'Семья', min: 36, max: 85, priority: 'followup', weight: 16,
     title: 'Спросили про тебя',
     body: 'Соседка {{parent}} звонит и говорит, что {{parent}} часто спрашивает о тебе, но «просить прийти не будет». Просит не рассказывать, что она звонила.',
     available: g => is(g, 'parentStage', 'silent') && since(g, 'parentStageAge', 6) && alive(g, 'parent'),
@@ -183,7 +183,7 @@ export const lineStorylets: Storylet[] = [
 
   // ═════════ СОСЕД ═════════
   {
-    id: 'neighbor-followup', arc: 'neighbor', category: 'Последствие', min: 28, max: 80, weight: 12,
+    id: 'neighbor-followup', arc: 'neighbor', category: 'Последствие', min: 28, max: 80, priority: 'followup', weight: 12,
     title: 'Соседняя дверь',
     body: 'Спустя годы {{neighbor}} сообщает, что освободилась небольшая каюта с видом на биокупол. О таких предложениях обычно узнают только по знакомству.',
     available: g => is(g, 'neighborPath', 'helped') && since(g, 'neighborAge', 8) && !g.flags.neighborStage,
@@ -194,7 +194,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-kid-moved', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, weight: 14,
+    id: 'neighbor-kid-moved', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 14,
     title: 'Ужин у биокупола',
     body: 'Ребёнок, с которым ты когда-то сидел{{hero:|а}} по просьбе {{neighbor}}, давно вырос и работает в биокуполе. Этот человек приглашает тебя на ужин: «Вы мне тогда читали вслух. Я до сих пор помню слова».',
     available: g => is(g, 'neighborStage', 'moved') && since(g, 'neighborStageAge', 8),
@@ -205,7 +205,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-kid-passed', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, weight: 14,
+    id: 'neighbor-kid-passed', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 14,
     title: 'Ответная доброта',
     body: 'Семья, которой ты когда-то уступил{{hero:|а}} каюту у биокупола, давно прижилась. В трудную неделю, когда ты слёг, у твоей двери появляется кастрюля с супом, а на ней записка: «От тех, кому вы помогли».',
     available: g => is(g, 'neighborStage', 'passed') && since(g, 'neighborStageAge', 8),
@@ -216,7 +216,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-kid-stayed', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, weight: 12,
+    id: 'neighbor-kid-stayed', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 12,
     title: 'Стук в старую дверь',
     body: 'Ребёнок, которого ты когда-то нянчил{{hero:|а}}, вырос и стал техником. Он стучит в дверь с коробкой инструментов: «Мне сказали, у вас давно скрипит вентиляция. Позвольте, я посмотрю».',
     available: g => is(g, 'neighborStage', 'stayed') && since(g, 'neighborStageAge', 8),
@@ -227,7 +227,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-weekend', arc: 'neighbor', category: 'Последствие', min: 26, max: 80, weight: 12,
+    id: 'neighbor-weekend', arc: 'neighbor', category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 12,
     title: 'Просьба повторяется',
     body: '{{neighbor}} просит присмотреть за детьми на выходные: у семьи неотложные дела. С тех пор, как ты тогда наш{{hero:ёл|ла}} замену, просьба повторяется, и отказать теперь немного неловко.',
     available: g => is(g, 'neighborPath', 'alt') && since(g, 'neighborAge', 6) && !g.flags.neighborStage,
@@ -238,7 +238,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-cold-leak', arc: 'neighbor', category: 'Последствие', min: 26, max: 85, weight: 18,
+    id: 'neighbor-cold-leak', arc: 'neighbor', category: 'Последствие', min: 26, max: 85, priority: 'followup', weight: 18,
     title: 'Течь за стеной',
     body: 'Ночью слышен плеск воды: у {{neighbor}} прорвало трубу, а хозяина нет дома: ночная смена. Вода уже подходит к твоей стене. Вы холодны друг с другом с тех пор, как ты отказал{{hero:ся|ась}} помочь.',
     available: g => is(g, 'neighborPath', 'refused') && since(g, 'neighborAge', 5) && !g.flags.neighborStage,
@@ -249,7 +249,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'neighbor-reconcile', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, weight: 14,
+    id: 'neighbor-reconcile', arc: 'neighbor', category: 'Последствие', min: 34, max: 88, priority: 'followup', weight: 14,
     title: 'Пирог через стену',
     body: 'На твоём столе оказывается пирог. Записка короткая: «Просто так». Ты помнишь ту ночь с трубой, и {{neighbor}}, судя по всему, тоже.',
     available: g => is(g, 'neighborStage', 'reconciled') && since(g, 'neighborStageAge', 6),
@@ -261,7 +261,7 @@ export const lineStorylets: Storylet[] = [
 
   // ═════════ ЛЮБОВЬ ═════════
   {
-    id: 'relationship-followup', arc: 'love', category: 'Последствие', min: 24, max: 75, weight: 12,
+    id: 'relationship-followup', arc: 'love', category: 'Последствие', min: 24, max: 75, priority: 'followup', weight: 12,
     title: 'Разговор о будущем',
     body: 'В личном дневнике {{friend}} находит старую запись о вашем разговоре в обзорном куполе. Вас обоих пугает, сколько времени пролетело.',
     available: g => is(g, 'lovePath', 'confessed') && g.age >= 27 && !g.flags.loveStage && alive(g, 'friend'),
@@ -272,7 +272,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-home-offer', arc: 'love', category: 'Последствие', min: 30, max: 80, weight: 16,
+    id: 'love-home-offer', arc: 'love', category: 'Последствие', min: 30, max: 80, priority: 'followup', weight: 16,
     title: 'Предложение о переезде',
     body: 'Близкому человеку предлагают работу в другом секторе: больше возможностей, но жильё там выдают только по месту службы. Предлагают переехать вместе, но тогда придётся уйти с твоего привычного места.',
     available: g => is(g, 'loveStage', 'together') && since(g, 'loveStageAge', 5) && alive(g, 'friend'),
@@ -283,7 +283,9 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-apart-return', arc: 'love', category: 'Последствие', min: 31, max: 82, weight: 16,
+    id: 'love-apart-return', arc: 'love', category: 'Последствие', min: 31, max: 82, priority: 'critical', weight: 16,
+    // обещанный «год врозь»: если ритм сдвинет встречу, она всё равно состоится не позже чем через три года
+    expiresIn: g => (typeof g.flags.loveStageAge === 'number' ? g.flags.loveStageAge + 3 - g.age : Infinity),
     title: 'Год врозь',
     body: 'Срок, о котором вы договорились, прошёл. По выходным вы по-прежнему встречаетесь, но каждый раз прощание у перехода становится чуть длиннее. {{friend}} спрашивает, что дальше.',
     available: g => is(g, 'loveStage', 'apart') && since(g, 'loveStageAge', 1) && alive(g, 'friend'),
@@ -294,7 +296,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-drift', arc: 'love', category: 'Последствие', min: 30, max: 80, weight: 16,
+    id: 'love-drift', arc: 'love', category: 'Последствие', min: 30, max: 80, priority: 'followup', weight: 16,
     title: 'Новое лицо',
     body: '{{friend}} начинает чаще упоминать нового коллегу: невзначай, между делом. Вы так и не называли своё положение словами, и теперь нет никого, кто мог бы сказать, что что-то нарушено.',
     available: g => is(g, 'loveStage', 'open') && since(g, 'loveStageAge', 6) && alive(g, 'friend'),
@@ -305,7 +307,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-parted-meeting', arc: 'love', category: 'Последствие', min: 34, max: 85, weight: 14,
+    id: 'love-parted-meeting', arc: 'love', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 14,
     title: 'Встреча в атриуме',
     body: 'В атриуме ты замечаешь {{friend}} с кем-то, кто явно близок: рядом ребёнок, на руках тёплая куртка. Прошло много лет. {{friend}} замечает тебя и неуверенно машет.',
     available: g => is(g, 'loveStage', 'parted') && since(g, 'loveStageAge', 8) && alive(g, 'friend'),
@@ -316,7 +318,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-friends-union', arc: 'love', category: 'Последствие', min: 26, max: 70, weight: 14,
+    id: 'love-friends-union', arc: 'love', category: 'Последствие', min: 26, max: 70, priority: 'followup', weight: 14,
     title: 'Приглашение на свадьбу',
     body: '{{friend}} приглашает тебя на торжество: союз с человеком из соседнего сектора. Приглашение тёплое, но среди имён в списке гостей ты находишь своё не в первом ряду.',
     available: g => is(g, 'lovePath', 'friends') && since(g, 'loveAge', 6) && !g.flags.loveStage && alive(g, 'friend'),
@@ -327,7 +329,7 @@ export const lineStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'love-missed', arc: 'love', category: 'Последствие', min: 34, max: 85, weight: 14,
+    id: 'love-missed', arc: 'love', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 14,
     title: 'Что осталось недосказанным',
     body: 'Случайная встреча со старым другом растягивается на целый вечер. Под конец {{friend}} признаётся: «Тогда у купола мне тоже было что сказать. Просто ты быстро сменил{{hero:|а}} тему».',
     available: g => is(g, 'lovePath', 'skipped') && since(g, 'loveAge', 10) && !g.flags.loveStage && alive(g, 'friend'),

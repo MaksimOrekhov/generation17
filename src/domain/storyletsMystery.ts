@@ -26,7 +26,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Проверка: запертая каюта ─────
   {
-    id: 'census-sealed-cabin', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 70, weight: 20,
+    id: 'census-sealed-cabin', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 70, priority: 'followup', weight: 20,
     title: 'Дверь без номера',
     body: 'В блоке C-9 между шестой и седьмой каютами находится дверь без номера. Краска на ней свежая, а на полу видны следы маленьких ботинок: слишком много для одного человека. По ночам оттуда доносится ровный стук, будто кто-то отсчитывает секунды вслух.',
     available: g => path(g, 'dig') && since(g, 'censusAge', 2) && !g.flags.censusStage,
@@ -37,7 +37,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-someone-answers', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 75, weight: 22,
+    id: 'census-someone-answers', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 75, priority: 'followup', weight: 22,
     title: 'Вы пришли поздно',
     body: 'Дверь открывает худая женщина с прозрачными руками. Она не удивлена. «Вы пришли поздно, — говорит она. — Мы уже думали, что нас забыли даже те, кто считает». За её спиной в тесной каюте слышно дыхание. Много дыханий. «Нас не вносят в реестр. Корабль считает людей, а не нас».',
     available: g => stage(g, 'knocked') && since(g, 'censusStageAge', 1),
@@ -48,7 +48,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-new-citizens', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 20,
+    id: 'census-new-citizens', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 20,
     title: 'Первый праздник',
     body: 'Совет признал их спустя три месяца и две ночи споров. На первом празднике Дня первой звезды в атриуме появляются бледные люди, которые не знают, куда девать руки. Они касаются стен и перил, как незнакомой вещи. Дети тянут их за рукава.',
     available: g => stage(g, 'registered') && since(g, 'censusStageAge', 3),
@@ -59,7 +59,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-keeper-night', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 22,
+    id: 'census-keeper-night', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 22,
     title: 'Жар за дверью',
     body: 'Ночью в твою дверь стучат: у младшего из тех, кто живёт за дверью без номера, жар. Врача они вызвать не могут: стоит приоткрыть дверь, и их найдут. Ты — единственный, кому они доверяют.',
     available: g => stage(g, 'keeper') && since(g, 'censusStageAge', 5) && !g.flags.censusNight,
@@ -70,7 +70,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-exposed', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 22,
+    id: 'census-exposed', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 22,
     title: 'Санитарная проверка',
     body: 'Совет закрывает блок C-9 на «санитарную проверку». Через неделю вывозят мебель, а дверь без номера заваривают. Людей из блока расселяют по другим секторам: никто не говорит куда. На общем собрании тебе вручают благодарность за бдительность.',
     available: g => stage(g, 'exposed') && since(g, 'censusStageAge', 3),
@@ -83,7 +83,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Проверка: записка ─────
   {
-    id: 'census-correspondence', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 75, weight: 20,
+    id: 'census-correspondence', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 75, priority: 'followup', weight: 20,
     title: 'Записки из щели',
     body: 'Записки идут уже месяц. Тебе отвечают коротко: «Не приходите ночью». «Принесите бумагу». «Спасибо за хлеб». Последняя записка длиннее: «Мы тоже считаем вас. Корабль рассчитан на 8 420 человек, и этого числа всегда держатся. Когда рождается лишний, его не вносят в реестр. Нас сорок».',
     available: g => stage(g, 'note') && since(g, 'censusStageAge', 2),
@@ -94,7 +94,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-petition-answer', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 22,
+    id: 'census-petition-answer', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 22,
     title: 'Ответ на запрос',
     body: 'Ответ приходит через полгода. Совет подтверждает: население корабля поддерживается на уровне 8 420 человек из соображений устойчивости замкнутого цикла. Все рождения свыше квоты «регулируются иными средствами». Приложена таблица. На последней странице цифра: 43.',
     available: g => stage(g, 'petition') && since(g, 'censusStageAge', 2),
@@ -107,7 +107,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Проверка: ночное наблюдение ─────
   {
-    id: 'census-watched', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 75, weight: 22,
+    id: 'census-watched', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 75, priority: 'followup', weight: 22,
     title: 'Третий час ночи',
     body: 'Ты ждёшь до трёх. Дверь открывается, и один за другим выходят люди. Ты насчитываешь шестнадцать, потом двадцать, потом сбиваешься. Они идут по коридору друг за другом, не издавая звука, и один за другим уходят в вентиляционный люк у стены. Люк закрывается. Остаётся запах влажной земли.',
     available: g => stage(g, 'watched') && since(g, 'censusStageAge', 0),
@@ -118,7 +118,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-hidden-garden', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 80, weight: 22,
+    id: 'census-hidden-garden', arc: 'census', weird: 1, category: 'Последствие', min: 24, max: 80, priority: 'followup', weight: 22,
     title: 'Сад между палубами',
     body: 'Технический ход выводит в карман между палубами, где светит самодельная лампа. Там растёт сад: помидоры, на которые в реестре нет заявки, низкие яблони, лук. Тридцать с лишним человек работают тихо, как в храме. Кто-то молча протягивает тебе тёплый ломоть хлеба.',
     available: g => stage(g, 'followed') && since(g, 'censusStageAge', 0),
@@ -131,7 +131,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Обращение в реестр ─────
   {
-    id: 'census-registry-answer', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 75, weight: 20,
+    id: 'census-registry-answer', arc: 'census', weird: 1, category: 'Тайна', min: 24, max: 75, priority: 'followup', weight: 20,
     title: 'Расхождение устранено',
     body: 'Реестр отвечает вежливо: «Расхождение устранено». На следующей неделе лишний паёк действительно исчезает. А через три дня в твою дверь стучит человек в сером. «Вам показалось, — говорит он мягко. — Такое случается при усталости».',
     available: g => path(g, 'report') && since(g, 'censusAge', 1) && !g.flags.censusStage,
@@ -142,7 +142,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-recording', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 22,
+    id: 'census-recording', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 22,
     title: 'Запись разговора',
     body: 'Спустя годы ты находишь старую запись разговора. Голос человека в сером звучит чуть иначе, будто собран из чужих слов. В конце, уже после «до свидания», слышен негромкий счёт: «…восемь тысяч четыреста девятнадцать, восемь тысяч четыреста двадцать». Потом тишина.',
     available: g => stage(g, 'recorded') && since(g, 'censusStageAge', 4),
@@ -153,7 +153,7 @@ export const mysteryStorylets: Storylet[] = [
     ]
   },
   {
-    id: 'census-quota-letter', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, weight: 22,
+    id: 'census-quota-letter', arc: 'census', weird: 1, category: 'Последствие', min: 26, max: 80, priority: 'followup', weight: 22,
     title: 'Ответ на плотной бумаге',
     body: 'Ответ приходит без подписи. Три строки: «Население корабля поддерживается на уровне 8 420 человек. Это необходимо для устойчивости цикла. Дальнейшие обращения по этому вопросу нецелесообразны».',
     available: g => stage(g, 'pressed') && since(g, 'censusStageAge', 2),
@@ -166,7 +166,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Игнор ─────
   {
-    id: 'census-echo', arc: 'census', weird: 1, category: 'Тайна', min: 28, max: 78, weight: 18,
+    id: 'census-echo', arc: 'census', weird: 1, category: 'Тайна', min: 28, max: 78, priority: 'followup', weight: 18,
     title: 'Рисунки на стенах',
     body: 'С годами лишний паёк стал двумя, потом четырьмя. В коридорах блока C-9 на стенах появляются детские рисунки: корабль, окна, люди с одинаковыми лицами. Уборщики стирают их по утрам, а к вечеру они появляются снова.',
     available: g => (path(g, 'ignore') || stage(g, 'quiet')) && since(g, 'censusAge', 8) && !g.flags.censusEcho,
@@ -179,7 +179,7 @@ export const mysteryStorylets: Storylet[] = [
 
   // ───── Тревожная версия (атмосфера «Тревожная») ─────
   {
-    id: 'census-counting-voice', arc: 'census', weird: 2, category: 'Тайна', min: 28, max: 75, weight: 20,
+    id: 'census-counting-voice', arc: 'census', weird: 2, category: 'Тайна', min: 28, max: 75, priority: 'followup', weight: 20,
     title: 'Счёт в вентиляции',
     body: 'Ночью в вентиляции ровный голос считает вслух. Ты слышишь: «…сорок один, сорок два…» и понимаешь, что твои шаги по каюте совпадают со счётом. Когда голос доходит до числа твоих лет, он замолкает. Тишина длится секунд десять. Потом, почти шёпотом: «Ещё один».',
     available: g => (path(g, 'ignore') || stage(g, 'note', 'saw', 'burned')) && since(g, 'censusAge', 4) && !g.flags.voiceHeard,

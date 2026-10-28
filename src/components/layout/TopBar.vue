@@ -12,7 +12,7 @@ const g = computed(() => store.game)
 const status = computed(() => {
   if (g.value.stopped) return 'Жизнь завершена'
   if (store.hasDecision) return 'Время остановлено — нужно решение'
-  if (store.currentMoment) return 'Происходит момент: время замедлено'
+  if (store.currentMoment) return 'Происходит момент'
   return store.playing ? 'Время идёт' : 'Пауза'
 })
 </script>

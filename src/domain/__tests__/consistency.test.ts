@@ -45,8 +45,8 @@ function play(start: GameState, pick: (ev: Storylet, step: number) => number, ea
   return g
 }
 
-describe('закрытие моментов: последствия отказа ровно один раз', () => {
-  // m-call-parent: отказ стоит одной единицы связей, принятие связи героя не трогает
+describe('закрытие моментов: отказ героя и истечение момента', () => {
+  // m-call-parent: отказ («Ответить коротко») стоит единицы связей, принятие связи героя не трогает
   const withMoment = (phase: 0 | 1 | 2 | 3) => {
     const g = base()
     g.phase = phase
@@ -58,7 +58,7 @@ describe('закрытие моментов: последствия отказа
   }
   const phases = [0, 1, 2, 3] as const
 
-  it('skipMoment применяет отказ один раз', () => {
+  it('skipMoment — осознанный отказ: последствия применяются один раз', () => {
     for (const phase of phases) {
       const { g, baseline } = withMoment(phase)
       const skipped = skipMoment(g)
@@ -68,39 +68,40 @@ describe('закрытие моментов: последствия отказа
     }
   })
 
-  it('отметка года закрывает прошлый момент с последствиями', () => {
+  it('истечение момента на отметке года не наказывает героя', () => {
     for (const phase of [0, 1, 2] as const) {
       const { g, baseline } = withMoment(phase)
-      expect(beat(g).stats.bonds - beat(baseline).stats.bonds).toBeCloseTo(-1)
+      expect(beat(g).stats.bonds).toBeCloseTo(beat(baseline).stats.bonds)
     }
   })
 
-  it('смена года закрывает момент последней отметки с последствиями', () => {
+  it('истечение момента при смене года не наказывает героя', () => {
     for (const phase of phases) {
       const { g, baseline } = withMoment(phase)
       const next = tick(g)
       expect(next.moment).toBeNull()
-      expect(next.stats.bonds - tick(baseline).stats.bonds).toBeCloseTo(-1)
+      expect(next.stats.bonds).toBeCloseTo(tick(baseline).stats.bonds)
     }
   })
 
-  it('быстрое прохождение года (advanceYear) из любой фазы', () => {
+  it('быстрое прохождение года (advanceYear) оставляет моменты без последствий', () => {
     for (const phase of phases) {
       const { g, baseline } = withMoment(phase)
-      expect(advanceYear(g).stats.bonds - advanceYear(baseline).stats.bonds).toBeCloseTo(-1)
+      expect(advanceYear(g)).toEqual(advanceYear(baseline))
     }
   })
 
-  it('принятие момента не добавляет отказ ни сразу, ни при смене года', () => {
+  it('принятие момента: эффекты принятия один раз, отказа нет ни сразу, ни позже', () => {
     for (const phase of phases) {
       const { g, baseline } = withMoment(phase)
       const taken = takeMoment(g)
       expect(taken.moment).toBeNull()
+      expect(taken.stats.morale - baseline.stats.morale).toBeGreaterThan(0)
       expect(advanceYear(taken).stats.bonds).toBeCloseTo(advanceYear(baseline).stats.bonds)
     }
   })
 
-  it('на любой скорости часов результат один и тот же', () => {
+  it('на любой скорости часов результат один и тот же, а момент не штрафует', () => {
     const SECONDS_PER_YEAR = 22
     for (const phase of phases) {
       for (const speed of [.5, 1, 2, 4, 8, 16]) {
@@ -118,8 +119,7 @@ describe('закрытие моментов: последствия отказа
         const a = run(g)
         const b = run(baseline)
         expect(a.age, `фаза ${phase}, скорость ${speed}`).toBe(g.age + 1)
-        expect(a.stats.bonds - b.stats.bonds, `фаза ${phase}, скорость ${speed}`).toBeCloseTo(-1)
-        expect(a.moment).toBe(b.moment)
+        expect(a, `фаза ${phase}, скорость ${speed}`).toEqual(b)
       }
     }
   })

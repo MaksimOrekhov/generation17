@@ -99,6 +99,15 @@ export interface ChoiceDef {
   }
 }
 
+/**
+ * Очерёдность сюжета в выборе директора (не путать с `weight`: вес — вероятность среди равных по очерёдности).
+ *  - normal: обычное событие, выбирается по весу после проверок ритма;
+ *  - followup: продолжение начатой линии, идёт раньше обычных, но уважает ритм (интервал и бюджет напряжения);
+ *  - critical: обязательное и по сроку «обещанное»: не ждёт бюджета напряжения и не бросает кубик «тихого года».
+ * Последний год окна (см. `expiresIn`, `max`) поднимает followup до critical и снимает даже минимальный интервал.
+ */
+export type Priority = 'normal' | 'followup' | 'critical'
+
 export interface Storylet {
   id: string
   /** Сюжетная линия: решения одной линии собираются в «развилку». */
@@ -112,7 +121,12 @@ export interface Storylet {
   body: string
   min: number
   max: number
+  /** Вероятность выбора среди событий с той же очерёдностью. */
   weight: number
+  /** Нет поля — normal. */
+  priority?: Priority
+  /** Сколько лет ещё можно показать сюжет (0 — это последний год). Нет поля — ограничен только `max`. */
+  expiresIn?: (g: GameState) => number
   available: (g: GameState) => boolean
   choices: ChoiceDef[]
 }

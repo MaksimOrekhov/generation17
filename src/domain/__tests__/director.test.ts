@@ -4,8 +4,8 @@ import { MAX_GAP, TENSION_CAP, afterDecision, cool, initialDirector, pickStoryle
 import { storylets } from '../storylets'
 import type { GameState, Storylet } from '../types'
 
-const fake = (id: string, category: string, weight: number): Storylet => ({
-  id, category, title: id, body: '', min: 0, max: 100, weight, available: () => true,
+const fake = (id: string, category: string, weight: number, priority?: Storylet['priority']): Storylet => ({
+  id, category, title: id, body: '', min: 0, max: 100, weight, available: () => true, ...(priority ? { priority } : {}),
   choices: [{ text: 'a', hint: '', result: '', effects: {} }]
 })
 const byId = (id: string) => storylets.find(s => s.id === id)!
@@ -54,7 +54,7 @@ describe('директор повествования', () => {
 
   it('продолжение начатой линии идёт раньше случайных событий', () => {
     const g = at(40, { lastAge: 35, tension: 0, lastCategory: null, lastTone: 'calm' })
-    const started = fake('follow', 'Последствие', 20)
+    const started = fake('follow', 'Последствие', 20, 'followup')
     for (let i = 0; i < 20; i++) expect(pickStorylet({ ...g, rng: i }, [fake('a', 'Личное', 3), started, fake('b', 'Быт', 3)])).toBe(started)
   })
 

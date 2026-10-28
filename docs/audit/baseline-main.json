@@ -1,0 +1,779 @@
+{
+  "generatedAt": "2026-10-28T08:00:44.686Z",
+  "lives": 300,
+  "catalog": {
+    "storylets": 119,
+    "codeStorylets": 96,
+    "jsonStorylets": 23,
+    "moments": 90,
+    "codeMoments": 65,
+    "jsonMoments": 25,
+    "byArc": {
+      "—": 52,
+      "friend": 6,
+      "career": 1,
+      "signal": 10,
+      "crack": 12,
+      "love": 8,
+      "parent": 7,
+      "neighbor": 8,
+      "census": 15
+    },
+    "byPriority": {
+      "normal": 59,
+      "followup (по weight>=10)": 60
+    },
+    "momentsWithSkipEffects": 8,
+    "coverage": {
+      "0-9": {
+        "storylets": 8,
+        "moments": 19
+      },
+      "10-15": {
+        "storylets": 17,
+        "moments": 22
+      },
+      "16-24": {
+        "storylets": 42,
+        "moments": 49
+      },
+      "25-39": {
+        "storylets": 90,
+        "moments": 67
+      },
+      "40-59": {
+        "storylets": 91,
+        "moments": 70
+      },
+      "60-79": {
+        "storylets": 75,
+        "moments": 69
+      },
+      "80-95": {
+        "storylets": 45,
+        "moments": 33
+      }
+    }
+  },
+  "flags": {
+    "writtenWithoutAgeFlags": 88,
+    "unreadCount": 4,
+    "unread": [
+      "medicalIntegrity",
+      "closeRelationship",
+      "movedUp",
+      "censusLead"
+    ]
+  },
+  "strategies": {
+    "first": {
+      "label": "first",
+      "lives": 300,
+      "meanAge": 81.9,
+      "decisionsPerLife": 24.5,
+      "memoriesPerLife": 23.8,
+      "delayedPerLife": 2.86,
+      "momentsOpenedPerLife": 73.5,
+      "statsAt40": {
+        "health": 83.5,
+        "morale": 60.4,
+        "stress": 28.8,
+        "knowledge": 89.8,
+        "bonds": 51.4,
+        "reputation": 39.5
+      },
+      "arcShare": {
+        "career": {
+          "lives": 97.3,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 42.3,
+          "withFollowup": 42.3
+        },
+        "crack": {
+          "lives": 45,
+          "withFollowup": 45
+        },
+        "friend": {
+          "lives": 61,
+          "withFollowup": 61
+        },
+        "love": {
+          "lives": 47.7,
+          "withFollowup": 47.7
+        },
+        "neighbor": {
+          "lives": 51.3,
+          "withFollowup": 51
+        },
+        "parent": {
+          "lives": 19.3,
+          "withFollowup": 16.7
+        },
+        "signal": {
+          "lives": 22.3,
+          "withFollowup": 22.3
+        }
+      }
+    },
+    "last": {
+      "label": "last",
+      "lives": 300,
+      "meanAge": 81.6,
+      "decisionsPerLife": 22.4,
+      "memoriesPerLife": 11.7,
+      "delayedPerLife": 2.49,
+      "momentsOpenedPerLife": 74.3,
+      "statsAt40": {
+        "health": 82.4,
+        "morale": 53.9,
+        "stress": 14.7,
+        "knowledge": 89.1,
+        "bonds": 27.8,
+        "reputation": 33.3
+      },
+      "arcShare": {
+        "career": {
+          "lives": 97.3,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 62,
+          "withFollowup": 62
+        },
+        "friend": {
+          "lives": 61,
+          "withFollowup": 61
+        },
+        "love": {
+          "lives": 22.3,
+          "withFollowup": 22.3
+        },
+        "neighbor": {
+          "lives": 64,
+          "withFollowup": 64
+        },
+        "parent": {
+          "lives": 27.3,
+          "withFollowup": 22
+        },
+        "signal": {
+          "lives": 18,
+          "withFollowup": 18
+        }
+      }
+    },
+    "cycling": {
+      "label": "cycling",
+      "lives": 300,
+      "meanAge": 82.1,
+      "decisionsPerLife": 23.4,
+      "memoriesPerLife": 16.9,
+      "delayedPerLife": 2.67,
+      "momentsOpenedPerLife": 74.4,
+      "statsAt40": {
+        "health": 83.1,
+        "morale": 56,
+        "stress": 21.5,
+        "knowledge": 89.3,
+        "bonds": 38,
+        "reputation": 38.4
+      },
+      "arcShare": {
+        "career": {
+          "lives": 97.3,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 54.7,
+          "withFollowup": 54.7
+        },
+        "crack": {
+          "lives": 17,
+          "withFollowup": 16.7
+        },
+        "friend": {
+          "lives": 61,
+          "withFollowup": 61
+        },
+        "love": {
+          "lives": 44,
+          "withFollowup": 44
+        },
+        "neighbor": {
+          "lives": 57.3,
+          "withFollowup": 57.3
+        },
+        "parent": {
+          "lives": 24.7,
+          "withFollowup": 20.3
+        },
+        "signal": {
+          "lives": 12.7,
+          "withFollowup": 12.7
+        }
+      }
+    },
+    "mixed": {
+      "label": "mixed",
+      "lives": 300,
+      "meanAge": 81.9,
+      "decisionsPerLife": 23.6,
+      "memoriesPerLife": 16.9,
+      "delayedPerLife": 2.61,
+      "momentsOpenedPerLife": 74,
+      "statsAt40": {
+        "health": 83.1,
+        "morale": 55.4,
+        "stress": 22.2,
+        "knowledge": 89.3,
+        "bonds": 37.1,
+        "reputation": 38.6
+      },
+      "arcShare": {
+        "career": {
+          "lives": 97.3,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 54,
+          "withFollowup": 54
+        },
+        "crack": {
+          "lives": 16,
+          "withFollowup": 15.7
+        },
+        "friend": {
+          "lives": 61,
+          "withFollowup": 61
+        },
+        "love": {
+          "lives": 39.3,
+          "withFollowup": 39.3
+        },
+        "neighbor": {
+          "lives": 59.3,
+          "withFollowup": 58.7
+        },
+        "parent": {
+          "lives": 18.7,
+          "withFollowup": 17
+        },
+        "signal": {
+          "lives": 15.7,
+          "withFollowup": 15.7
+        }
+      }
+    },
+    "mixed+acceptMoments": {
+      "label": "mixed+acceptMoments",
+      "lives": 300,
+      "meanAge": 81.1,
+      "decisionsPerLife": 23.7,
+      "memoriesPerLife": 19.6,
+      "delayedPerLife": 2.82,
+      "momentsOpenedPerLife": 73.2,
+      "statsAt40": {
+        "health": 84.6,
+        "morale": 63.2,
+        "stress": 25,
+        "knowledge": 92.4,
+        "bonds": 50.4,
+        "reputation": 43.9
+      },
+      "arcShare": {
+        "career": {
+          "lives": 97.3,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 45,
+          "withFollowup": 45
+        },
+        "crack": {
+          "lives": 15.7,
+          "withFollowup": 15.3
+        },
+        "friend": {
+          "lives": 61,
+          "withFollowup": 61
+        },
+        "love": {
+          "lives": 46.3,
+          "withFollowup": 46.3
+        },
+        "neighbor": {
+          "lives": 52.7,
+          "withFollowup": 51.7
+        },
+        "parent": {
+          "lives": 21.3,
+          "withFollowup": 19.7
+        },
+        "signal": {
+          "lives": 43.3,
+          "withFollowup": 43.3
+        }
+      }
+    }
+  },
+  "rhythm": {
+    "lives": 300,
+    "decisionsPer10Years": {
+      "0-9": 2.2,
+      "10-19": 3.33,
+      "20-29": 3.44,
+      "30-39": 3.54,
+      "40-49": 3.41,
+      "50-59": 3.29,
+      "60-69": 3.17,
+      "70-79": 2.31,
+      "80-89": 0.08
+    },
+    "momentsPerYearByDecade": {
+      "0-9": 0.88,
+      "10-19": 0.88,
+      "20-29": 0.92,
+      "30-39": 0.96,
+      "40-49": 0.94,
+      "50-59": 0.92,
+      "60-69": 0.91,
+      "70-79": 0.88,
+      "80-89": 0.81
+    },
+    "momentsPerYear": 0.903,
+    "momentsPerLife": 74,
+    "gapBetweenDecisions": {
+      "mean": 3.04,
+      "max": 6,
+      "over5": 0.7
+    },
+    "yearsAfterLastDecision": {
+      "mean": 10.1,
+      "max": 32
+    },
+    "topMomentsPerLife": {
+      "m-window-evening": 4.33,
+      "m-lamp": 3.7,
+      "m-night-archive": 3.66,
+      "m-sprout": 2.84,
+      "m-friend-call": 2.74,
+      "m-night-footsteps": 2.56,
+      "m-garden-plot": 2.5,
+      "m-lights-sync": 2.31
+    },
+    "momentsNeverOpened": [
+      "m-extra-cup",
+      "m-stair-count",
+      "m-window-reflection",
+      "m-lamp-dim",
+      "m-family-born-hand",
+      "m-family-answer-honest",
+      "m-family-answer-hopeful",
+      "m-family-answer-diverted"
+    ]
+  },
+  "encounter": {
+    "pooledLives": 1200,
+    "seenInOver50Percent": 13,
+    "seenIn10To50Percent": 52,
+    "seenInUnder10Percent": 51,
+    "neverSeen": [
+      "crack-student-return",
+      "crack-worsened",
+      "census-counting-voice"
+    ],
+    "byArc": {
+      "—": {
+        "stories": 52,
+        "meanRate": 0.298,
+        "neverSeen": 0
+      },
+      "friend": {
+        "stories": 6,
+        "meanRate": 0.268,
+        "neverSeen": 0
+      },
+      "career": {
+        "stories": 1,
+        "meanRate": 0.973,
+        "neverSeen": 0
+      },
+      "signal": {
+        "stories": 10,
+        "meanRate": 0.05,
+        "neverSeen": 0
+      },
+      "crack": {
+        "stories": 12,
+        "meanRate": 0.043,
+        "neverSeen": 2
+      },
+      "love": {
+        "stories": 8,
+        "meanRate": 0.12,
+        "neverSeen": 0
+      },
+      "parent": {
+        "stories": 7,
+        "meanRate": 0.074,
+        "neverSeen": 0
+      },
+      "neighbor": {
+        "stories": 8,
+        "meanRate": 0.174,
+        "neverSeen": 0
+      },
+      "census": {
+        "stories": 15,
+        "meanRate": 0.103,
+        "neverSeen": 1
+      }
+    },
+    "mostFrequent": {
+      "school-track": 0.973,
+      "garden-plot": 0.892,
+      "legacy": 0.887,
+      "political-crisis": 0.864,
+      "retirement": 0.863,
+      "last-window": 0.813,
+      "health-scare": 0.737,
+      "festival": 0.723,
+      "strike": 0.718,
+      "friend-accusation": 0.61
+    },
+    "rates": {
+      "child-window": 0.33,
+      "child-library": 0.253,
+      "friend-accusation": 0.61,
+      "home-repair": 0.256,
+      "school-track": 0.973,
+      "first-pay": 0.156,
+      "signal": 0.172,
+      "microcrack": 0.195,
+      "clinic": 0.14,
+      "seed-vault": 0.073,
+      "council": 0.313,
+      "relationship": 0.383,
+      "parent-illness": 0.225,
+      "water-shortage": 0.583,
+      "festival": 0.723,
+      "strike": 0.718,
+      "lost-district": 0.042,
+      "midlife": 0.363,
+      "apprentice": 0.263,
+      "political-crisis": 0.864,
+      "old-friend": 0.455,
+      "retirement": 0.863,
+      "legacy": 0.887,
+      "neighbor-medical": 0.58,
+      "mentor": 0.308,
+      "nursery-day": 0.387,
+      "night-fear": 0.493,
+      "lost-corridor": 0.353,
+      "school-play": 0.247,
+      "curfew-night": 0.06,
+      "annual-exam": 0.043,
+      "promotion": 0.469,
+      "deck-lottery": 0.138,
+      "health-scare": 0.737,
+      "garden-plot": 0.892,
+      "last-window": 0.813,
+      "crack-report-hearing": 0.149,
+      "crack-inspector-offer": 0.083,
+      "crack-recurrence": 0.024,
+      "crack-secret-hero": 0.011,
+      "crack-student-return": 0,
+      "crack-failed-leak": 0.009,
+      "crack-worsened": 0,
+      "crack-silent-accident": 0.024,
+      "crack-confessed-after": 0.003,
+      "crack-denied-after": 0.015,
+      "crack-blamed-after": 0.007,
+      "friend-return-stood": 0.258,
+      "friend-return-quiet": 0.103,
+      "friend-return-abandoned": 0.248,
+      "friend-crisis-close": 0.308,
+      "friend-crisis-distant": 0.08,
+      "signal-result": 0.08,
+      "signal-public-debate": 0.057,
+      "signal-report": 0.056,
+      "signal-archive-opened": 0.008,
+      "signal-secret-visitor": 0.015,
+      "signal-rumor-circle": 0.023,
+      "signal-circle-joined": 0.013,
+      "signal-circle-warned": 0.003,
+      "signal-ignored-echo": 0.068,
+      "parent-illness-followup": 0.077,
+      "parent-keepsake": 0.03,
+      "parent-regret": 0.021,
+      "parent-treatment": 0.036,
+      "parent-letter": 0.078,
+      "parent-last-call": 0.052,
+      "neighbor-followup": 0.22,
+      "neighbor-kid-moved": 0.163,
+      "neighbor-kid-passed": 0.027,
+      "neighbor-kid-stayed": 0.021,
+      "neighbor-weekend": 0.106,
+      "neighbor-cold-leak": 0.252,
+      "neighbor-reconcile": 0.022,
+      "relationship-followup": 0.186,
+      "love-home-offer": 0.129,
+      "love-apart-return": 0.005,
+      "love-drift": 0.031,
+      "love-parted-meeting": 0.028,
+      "love-friends-union": 0.081,
+      "love-missed": 0.117,
+      "census-extra": 0.533,
+      "census-sealed-cabin": 0.207,
+      "census-someone-answers": 0.116,
+      "census-new-citizens": 0.106,
+      "census-keeper-night": 0.009,
+      "census-exposed": 0.013,
+      "census-correspondence": 0.068,
+      "census-petition-answer": 0.004,
+      "census-watched": 0.023,
+      "census-hidden-garden": 0.008,
+      "census-registry-answer": 0.103,
+      "census-recording": 0.068,
+      "census-quota-letter": 0.013,
+      "census-echo": 0.267,
+      "census-counting-voice": 0,
+      "adult-shift-error": 0.183,
+      "adult-parent-care": 0.329,
+      "adult-sector-repair": 0.338,
+      "adult-family-choice": 0.339,
+      "adult-sector-move": 0.297,
+      "adult-family-return": 0.066,
+      "tin-whistle": 0.287,
+      "family-a-life-ahead": 0.053,
+      "family-crossing-decks": 0.138,
+      "family-child-question": 0.008,
+      "family-parent-last-days": 0.118,
+      "family-home-in-bio": 0.023,
+      "family-life-ahead-again": 0.002,
+      "youth-shared-notes": 0.087,
+      "youth-window-shift": 0.101,
+      "youth-first-duty": 0.125,
+      "youth-family-table": 0.133,
+      "youth-garden-label": 0.072,
+      "youth-voice-message": 0.118,
+      "youth-lunch-line": 0.085,
+      "youth-map-corner": 0.1,
+      "youth-swap-evening": 0.158,
+      "youth-quiet-corner": 0.101
+    }
+  },
+  "professions": {
+    "lives": {
+      "Координатор": 87,
+      "Агроном": 63,
+      "Медик": 74,
+      "Техник": 68
+    },
+    "decisionsPerLife": {
+      "Координатор": 24.2,
+      "Агроном": 23.6,
+      "Медик": 24.3,
+      "Техник": 24.8
+    },
+    "storyletsGatedByJob": 5,
+    "momentsGatedByJob": 4,
+    "meanRateDistanceBetweenJobs": 0.054
+  },
+  "focus": {
+    "relationships": {
+      "decisionsPerLife": 23.6,
+      "memoriesPerLife": 16.9,
+      "meanAge": 82,
+      "knowledgeAt40": 38.4,
+      "stressAt40": 2,
+      "bondsAt40": 88,
+      "sameDecisionSequenceAsStudy": 90.3,
+      "rateDistanceFromStudy": 0.002
+    },
+    "rest": {
+      "decisionsPerLife": 23.6,
+      "memoriesPerLife": 16.9,
+      "meanAge": 82.1,
+      "knowledgeAt40": 38.4,
+      "stressAt40": 1.1,
+      "bondsAt40": 36.2,
+      "sameDecisionSequenceAsStudy": 90.3,
+      "rateDistanceFromStudy": 0.002
+    },
+    "work": {
+      "decisionsPerLife": 23.4,
+      "memoriesPerLife": 16.2,
+      "meanAge": 78.8,
+      "knowledgeAt40": 38.4,
+      "stressAt40": 70,
+      "bondsAt40": 36.4,
+      "sameDecisionSequenceAsStudy": 20.7,
+      "rateDistanceFromStudy": 0.0131
+    },
+    "civic": {
+      "decisionsPerLife": 23.4,
+      "memoriesPerLife": 16.3,
+      "meanAge": 80.6,
+      "knowledgeAt40": 61.4,
+      "stressAt40": 21.7,
+      "bondsAt40": 57.3,
+      "sameDecisionSequenceAsStudy": 22.3,
+      "rateDistanceFromStudy": 0.0122
+    }
+  },
+  "pace": {
+    "22s": {
+      "0.5x": {
+        "secondsPerYear": 44,
+        "minutesPerLife": 58.9,
+        "nominalSecondsPerYear": 44,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.231,
+        "momentsOpenedPerYear": 0.922
+      },
+      "1x": {
+        "secondsPerYear": 22,
+        "minutesPerLife": 29.4,
+        "nominalSecondsPerYear": 22,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.231,
+        "momentsOpenedPerYear": 0.922
+      },
+      "2x": {
+        "secondsPerYear": 13.51,
+        "minutesPerLife": 18.1,
+        "nominalSecondsPerYear": 11,
+        "effectiveSpeedup": 1.63,
+        "shareOfTimeWithMomentOpen": 0.372,
+        "momentsOpenedPerYear": 0.922
+      },
+      "4x": {
+        "secondsPerYear": 9.21,
+        "minutesPerLife": 12.3,
+        "nominalSecondsPerYear": 5.5,
+        "effectiveSpeedup": 2.39,
+        "shareOfTimeWithMomentOpen": 0.537,
+        "momentsOpenedPerYear": 0.922
+      },
+      "8x": {
+        "secondsPerYear": 7,
+        "minutesPerLife": 9.4,
+        "nominalSecondsPerYear": 2.75,
+        "effectiveSpeedup": 3.14,
+        "shareOfTimeWithMomentOpen": 0.694,
+        "momentsOpenedPerYear": 0.922
+      },
+      "16x": {
+        "secondsPerYear": 5.59,
+        "minutesPerLife": 7.5,
+        "nominalSecondsPerYear": 1.38,
+        "effectiveSpeedup": 3.94,
+        "shareOfTimeWithMomentOpen": 0.804,
+        "momentsOpenedPerYear": 0.922
+      }
+    },
+    "49s": {
+      "0.5x": {
+        "secondsPerYear": 98,
+        "minutesPerLife": 131.1,
+        "nominalSecondsPerYear": 98,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.231,
+        "momentsOpenedPerYear": 0.922
+      },
+      "1x": {
+        "secondsPerYear": 49,
+        "minutesPerLife": 65.5,
+        "nominalSecondsPerYear": 49,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.23,
+        "momentsOpenedPerYear": 0.922
+      },
+      "2x": {
+        "secondsPerYear": 30.12,
+        "minutesPerLife": 40.3,
+        "nominalSecondsPerYear": 24.5,
+        "effectiveSpeedup": 1.63,
+        "shareOfTimeWithMomentOpen": 0.373,
+        "momentsOpenedPerYear": 0.922
+      },
+      "4x": {
+        "secondsPerYear": 20.62,
+        "minutesPerLife": 27.6,
+        "nominalSecondsPerYear": 12.25,
+        "effectiveSpeedup": 2.38,
+        "shareOfTimeWithMomentOpen": 0.541,
+        "momentsOpenedPerYear": 0.922
+      },
+      "8x": {
+        "secondsPerYear": 15.78,
+        "minutesPerLife": 21.1,
+        "nominalSecondsPerYear": 6.13,
+        "effectiveSpeedup": 3.1,
+        "shareOfTimeWithMomentOpen": 0.699,
+        "momentsOpenedPerYear": 0.922
+      },
+      "16x": {
+        "secondsPerYear": 13.25,
+        "minutesPerLife": 17.7,
+        "nominalSecondsPerYear": 3.06,
+        "effectiveSpeedup": 3.7,
+        "shareOfTimeWithMomentOpen": 0.82,
+        "momentsOpenedPerYear": 0.922
+      }
+    },
+    "73s": {
+      "0.5x": {
+        "secondsPerYear": 146,
+        "minutesPerLife": 195.3,
+        "nominalSecondsPerYear": 146,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.231,
+        "momentsOpenedPerYear": 0.922
+      },
+      "1x": {
+        "secondsPerYear": 73,
+        "minutesPerLife": 97.6,
+        "nominalSecondsPerYear": 73,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.23,
+        "momentsOpenedPerYear": 0.922
+      },
+      "2x": {
+        "secondsPerYear": 44.88,
+        "minutesPerLife": 60,
+        "nominalSecondsPerYear": 36.5,
+        "effectiveSpeedup": 1.63,
+        "shareOfTimeWithMomentOpen": 0.374,
+        "momentsOpenedPerYear": 0.922
+      },
+      "4x": {
+        "secondsPerYear": 30.77,
+        "minutesPerLife": 41.2,
+        "nominalSecondsPerYear": 18.25,
+        "effectiveSpeedup": 2.37,
+        "shareOfTimeWithMomentOpen": 0.543,
+        "momentsOpenedPerYear": 0.922
+      },
+      "8x": {
+        "secondsPerYear": 23.62,
+        "minutesPerLife": 31.6,
+        "nominalSecondsPerYear": 9.13,
+        "effectiveSpeedup": 3.09,
+        "shareOfTimeWithMomentOpen": 0.701,
+        "momentsOpenedPerYear": 0.922
+      },
+      "16x": {
+        "secondsPerYear": 19.74,
+        "minutesPerLife": 26.4,
+        "nominalSecondsPerYear": 4.56,
+        "effectiveSpeedup": 3.7,
+        "shareOfTimeWithMomentOpen": 0.82,
+        "momentsOpenedPerYear": 0.922
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, MomentDef, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
+import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
@@ -259,9 +259,11 @@ export function eligibleMoments(g: GameState) {
   })
 }
 
-/** Единственный способ закрыть момент без принятия: отказ, отметка года, смена года. Последствия применяются один раз. */
-function closeMoment(g: GameState, def: MomentDef | null) {
-  if (def?.skip.effects) applyEffects(g, def.skip.effects)
+/**
+ * Момент истёк: следующая отметка года или смена года. Это не отказ героя, поэтому последствий нет.
+ * Последствия отказа (`skip.effects`) применяет только `skipMoment`: кнопка — осознанный поступок.
+ */
+function expireMoment(g: GameState) {
   g.moment = null
 }
 
@@ -280,7 +282,8 @@ export function skipMoment(state: GameState): GameState {
   const def = getMoment(state)
   if (!def || state.stopped) return state
   const g = structuredClone(state)
-  closeMoment(g, def)
+  if (def.skip.effects) applyEffects(g, def.skip.effects)
+  g.moment = null
   return g
 }
 
@@ -293,7 +296,7 @@ export function skipMoment(state: GameState): GameState {
 export function beat(state: GameState): GameState {
   if (state.stopped || state.pending || state.phase >= 3) return state
   const g = structuredClone(state)
-  closeMoment(g, getMoment(g))
+  expireMoment(g)
   g.phase = (g.phase + 1) as Phase
   const line = ambientLine(g, g.phase)
   addLog(g, 'ambient', line.title, resolveText(g, line.text))
@@ -430,7 +433,7 @@ function deathTick(g: GameState) {
 export function tick(state: GameState): GameState {
   if (state.stopped || state.pending) return state
   const g = structuredClone(state)
-  closeMoment(g, getMoment(g))
+  expireMoment(g)
   g.moodByAge[g.age] = Math.round(g.stats.morale)
   g.age += 1
   g.shipYear += 1

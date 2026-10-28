@@ -58,9 +58,17 @@ function compileChoice(c: JsonChoice): JsonChoice {
   }
 }
 
+/** Сколько лет осталось до закрытия окна `until` (минимум по всем `until`); без `until` окна нет. */
+export function compileExpiry(r?: Requires): ((g: GameState) => number) | undefined {
+  const entries = Object.entries(r?.until ?? {})
+  if (!entries.length) return undefined
+  return g => Math.min(...entries.map(([k, years]) => (typeof g.flags[k] === 'number' ? (g.flags[k] as number) + years - g.age : Infinity)))
+}
+
 export function compileStorylet(s: JsonStorylet): Storylet {
   const { requires, choices, ...rest } = s
-  return { ...rest, available: compileRequires(requires), choices: choices.map(compileChoice) }
+  const expiresIn = compileExpiry(requires)
+  return { ...rest, available: compileRequires(requires), ...(expiresIn ? { expiresIn } : {}), choices: choices.map(compileChoice) }
 }
 
 export function compileMoment(m: JsonMoment): MomentDef {

@@ -373,3 +373,53 @@ describe('сценарный прогон: покупки и нагрузка с
     }
   }, 120_000)
 })
+
+describe('подтверждение и формулировки бонусов', () => {
+  beforeEach(() => setActivePinia(createPinia()))
+
+  it('ключ подтверждения курса не меняется от бесплатного абонемента и нагрузки — поэтому сброс следит за игрой', () => {
+    const g = workerAt(45, 'Техник', 1_000)
+    const key = offer(g, 'course-pro').confirmKey
+    expect(key).not.toBeNull()
+    const withDome = purchase(g, 'dome-pass')
+    expect(withDome).not.toBe(g)
+    expect(offer(withDome, 'course-pro').confirmKey).toBe(key)
+    const reduced = setLoad(g, 0.6)
+    expect(reduced).not.toBe(g)
+    expect(offer(reduced, 'course-pro').confirmKey).toBe(key)
+  })
+
+  it('подтверждение привязано к актуальной цели', () => {
+    const g = workerAt(30, 'Техник', 800)
+    const [a, b] = availableSectorOptions(g)
+    expect(offer(g, 'sector-trip', { sectorId: a!.id }).confirmKey).not.toBe(offer(g, 'sector-trip', { sectorId: b!.id }).confirmKey)
+  })
+
+  it('формулировки говорят «до», а не обещают точный прирост', () => {
+    const g = workerAt(30)
+    expect(offer(g, 'sector-trip').resultText).toMatch(/до \+1 к знаниям/)
+    expect(offer(g, 'family-trip').resultText).toMatch(/до \+2 к связи/)
+  })
+
+  it('при знаниях выше 55 и связи 99 фактический эффект не больше заявленного', () => {
+    const g = workerAt(30)
+    g.stats.knowledge = 70
+    g.people.find(p => p.id === 'parent')!.bond = 99
+    const sid = availableSectorOptions(g)[0]!.id
+    const after = purchase(g, 'sector-trip', { sectorId: sid })
+    const gain = after.stats.knowledge - 70
+    expect(gain).toBeGreaterThanOrEqual(0)
+    expect(gain).toBeLessThanOrEqual(1)
+    const trip = purchase(g, 'family-trip', { participantIds: ['parent', 'parent2'] })
+    expect(trip.people.find(p => p.id === 'parent')!.bond).toBe(100)
+    expect(trip.people.find(p => p.id === 'parent2')!.bond - 68).toBeLessThanOrEqual(2)
+  })
+
+  it('старые покупки T3a работают', () => {
+    const store = startAt(workerAt(30))
+    expect(store.buy('course-pro')).toBe(true)
+    expect(store.buy('own-cabin')).toBe(true)
+    expect(store.buy('dome-pass')).toBe(true)
+    expect(store.cancelServiceById('dome-pass')).toBe(true)
+  })
+})

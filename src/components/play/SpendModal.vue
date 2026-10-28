@@ -47,7 +47,9 @@ watch(() => view.value.selection, sel => {
   if (pickedPeople.value.join() !== sel.participantIds.join()) pickedPeople.value = sel.participantIds
 })
 
-// Любое изменение выбора, состояния или доступности сбрасывает подтверждение.
+// Любое изменение игры (даже без смены ключа: бесплатный абонемент, нагрузка) и любая смена выбора сбрасывает подтверждение.
+watch(() => store.game, () => { confirming.value = null })
+watch([pickedSector, pickedPeople], () => { confirming.value = null })
 watch(view, v => {
   if (confirming.value && !v.offers.some(o => o.confirmKey === confirming.value)) confirming.value = null
 })
@@ -70,11 +72,11 @@ function togglePerson(id: string) {
 function doneText(o: OfferView): string {
   if (o.kind === 'sector') {
     const name = o.sectorOptions.find(x => x.id === o.target?.sectorId)?.name ?? 'сектор'
-    return `Экскурсия состоялась: ${name}. Знания выросли, память о месте сохранена.`
+    return `Экскурсия состоялась: ${name}. Знания могли вырасти, память о месте сохранена.`
   }
   if (o.kind === 'family') {
     const names = o.participantOptions.filter(x => o.target?.participantIds?.includes(x.id)).map(x => x.name)
-    return `Неделя вместе: ${names.join(' и ')}. Связь +2 каждому, запись добавлена в хронику.`
+    return `Неделя вместе: ${names.join(' и ')}. Связь с каждым укрепилась (до +2), запись добавлена в хронику.`
   }
   return o.buttonLabel === 'Восстановить бесплатно' ? 'Прежняя каюта восстановлена.' : DONE[o.id]!
 }

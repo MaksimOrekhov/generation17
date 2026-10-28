@@ -204,8 +204,8 @@ function offerView(g: GameState, id: OfferId, sel: { sectorId: SectorId | null; 
     annualText: a.annualCost > 0 ? `${formatCredits(a.annualCost)} в год`
       : free ? `${formatCredits(0)} в год · бесплатно для профессии «${def.freeFor!.toLowerCase()}»` : null,
     attentionText: a.attention > 0 ? `Внимание: ${a.attention}` : null,
-    resultText: kind === 'sector' ? `Результат: знания +${effects.stats?.knowledge ?? 0}, память о месте`
-      : kind === 'family' ? `Результат: связь +${effects.familyTripBond ?? 0} каждому участнику, память и запись в хронике` : null,
+    resultText: kind === 'sector' ? `Результат: до +${effects.stats?.knowledge ?? 0} к знаниям, память о месте`
+      : kind === 'family' ? `Результат: до +${effects.familyTripBond ?? 0} к связи каждого участника, память и запись в хронике` : null,
     opens: a.opens.map(line => line.replace(' при выполнении условий earnedGrade().', ' при выполнении условий.').replace('; флаг familyTrip для будущих отсылок.', '.')), available: stage === 'ready', active, stage,
     statusText: active ? 'Действует' : stage === 'ready' ? 'Доступно' : stage === 'needs-choice' ? 'Нужен выбор' : 'Недоступно',
     reason: reasonText(a.reason), hint,

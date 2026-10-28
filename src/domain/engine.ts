@@ -1,5 +1,5 @@
 import { initEconomy, projectYear, recordEconomicTransaction, settleYear, closeEstate } from './economy'
-import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
+import type { Atmosphere, ChoiceDef, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
@@ -9,7 +9,7 @@ import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
 import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality'
-import { applyOfferChanges, canBuy, getOffer, type PurchaseTarget } from './offers'
+import { applyOfferChanges, canBuy, getOffer, type OfferDefinition, type PurchaseAvailability, type PurchaseTarget } from './offers'
 import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
 
 export const ATTENTION_PER_YEAR = 3
@@ -205,16 +205,30 @@ export function dropMissingPending(state: GameState): GameState {
   return g
 }
 
-export interface ChoiceAvailability { available: boolean; reason: string | null; cost: number }
+export interface ChoiceAvailability {
+  available: boolean
+  reason: string | null
+  cost: number
+  /** Только у выбора с настоящей покупкой (T7): доступность каталожной позиции в этом решении. */
+  purchase?: PurchaseAvailability
+}
+
+/** Каталожная доступность сюжетной покупки внутри ожидающего решения: те же правила, что у `purchase()`. */
+export function storyPurchaseAvailability(state: GameState, choice: ChoiceDef, target?: PurchaseTarget): PurchaseAvailability | undefined {
+  if (!choice.purchase) return undefined
+  return canBuy(state, choice.purchase.offer, target, { story: true, price: choice.purchase.price })
+}
 
 /** One current-state affordability contract for UI, store, hotkeys and decide(). */
-export function canChoose(state: GameState, choiceIndex: number): ChoiceAvailability {
+export function canChoose(state: GameState, choiceIndex: number, target?: PurchaseTarget): ChoiceAvailability {
   const event = storylets.find(e => e.id === state.pending)
   const choice = event?.choices[choiceIndex]
-  const cost = Math.max(0, -(choice?.effects.money ?? 0))
+  const purchase = choice ? storyPurchaseAvailability(state, choice, target) : undefined
+  const cost = Math.max(0, -(choice?.effects.money ?? 0)) + (purchase?.oneTimeCost ?? 0)
   let reason: string | null = null
   if (state.stopped || state.economy.estate !== null) reason = 'Персонаж умер.'
   else if (!event || !choice) reason = 'Нет доступного сюжетного варианта.'
+  else if (purchase && !purchase.available) reason = purchase.reason
   else {
     reason = storyMoneyReason(state, [choice.effects.money])
     if (!reason && choice.check) {
@@ -226,21 +240,25 @@ export function canChoose(state: GameState, choiceIndex: number): ChoiceAvailabi
       }
     }
   }
-  return { available: reason === null, reason, cost: Number.isFinite(cost) ? cost : 0 }
+  return { available: reason === null, reason, cost: Number.isFinite(cost) ? cost : 0, ...(purchase ? { purchase } : {}) }
 }
 
-export function decide(state: GameState, choiceIndex: number): GameState {
+export function decide(state: GameState, choiceIndex: number, target?: PurchaseTarget): GameState {
   if (state.stopped || !state.pending) return state
   const event = storylets.find(e => e.id === state.pending)
   // Сюжет из сохранения мог исчезнуть из каталога: снимаем ожидание, чтобы жизнь не застряла.
   if (!event) return dropMissingPending(state)
   const choice = event.choices[choiceIndex]
-  if (!choice || !canChoose(state, choiceIndex).available) return state
+  if (!choice) return state
+  const availability = canChoose(state, choiceIndex, target)
+  if (!availability.available) return state
 
   const g = structuredClone(state)
   applyStoryMoney(g, choice.effects.money, event)
   applyEffects(g, choice.effects)
   addLog(g, 'choice', `Решение: ${resolveText(g, choice.text)}`, resolveText(g, choice.result))
+  // Настоящая покупка каталога: одна операция, без RNG, с теми же последствиями, что из экрана трат.
+  if (choice.purchase && availability.purchase) applyPurchase(g, getOffer(choice.purchase.offer)!, availability.purchase, target, event.title)
   if (event.arc) {
     recordFork(g, event, choiceIndex)
     // каждое решение линии остаётся в памяти, даже если у варианта нет собственной записи
@@ -319,27 +337,41 @@ export function purchase(state: GameState, offerId: string, target?: PurchaseTar
   if (!offer) return state
 
   const g = structuredClone(state)
+  applyPurchase(g, offer, availability, target)
+  return g
+}
+
+/** Флаг-возраст последней семейной поездки с этим человеком: `familyTripFriend`, `familyTripParent2`… */
+export const familyTripFlag = (personId: string) => `familyTrip${personId.charAt(0).toUpperCase()}${personId.slice(1)}`
+
+/**
+ * Единственное место, где покупка меняет состояние: экран трат и сюжетное решение (`story` — его название).
+ * Мутирует переданную копию; доступность уже проверена `canBuy` с теми же аргументами.
+ */
+function applyPurchase(g: GameState, offer: OfferDefinition, availability: PurchaseAvailability, target?: PurchaseTarget, story?: string) {
   const e = g.economy
   if (availability.action === 'restore') {
     applyOfferChanges(g, offer)
     e.housingRight = null
     addLog(g, 'life', 'Возврат жилья', 'Восстановлена прежняя ступень H1 по праву возврата без вступительного взноса.')
-    return g
+    return
   }
 
   const previouslyOwned = offer.effects.recordOwnership && e.owned[offer.id] !== undefined
   e.balance -= availability.oneTimeCost
   e.totals.spent += availability.oneTimeCost
-  recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, offer.title)
+  recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, story ? `${offer.title} · сюжет «${story}»` : offer.title)
   applyOfferChanges(g, offer, target)
   if (offer.effects.stats && !previouslyOwned) applyEffects(g, { stats: offer.effects.stats })
   let logTitle = 'Личные средства'
-  let logText = `Приобретено: ${offer.title}. ${offer.description}`
+  let logText = availability.regularCost !== undefined && availability.oneTimeCost < availability.regularCost
+    ? `Приобретено: ${offer.title}, ${availability.oneTimeCost} кр. вместо ${availability.regularCost}. ${offer.description}`
+    : `Приобретено: ${offer.title}. ${offer.description}`
   if (offer.effects.sectorVisit && target?.sectorId) {
     const sector = sectorById(target.sectorId)
-    applyEffects(g, { memory: `Увидел сектор «${sector.name}».` })
+    applyEffects(g, { memory: `Увидел{{hero:|а}} сектор «${sector.name}».` })
     logTitle = 'Экскурсия в дальний сектор'
-    logText = `Ты побывал в секторе «${sector.name}», ${sector.deck}.`
+    logText = resolveText(g, `Ты побывал{{hero:|а}} в секторе «${sector.name}», ${sector.deck}.`)
   }
   if (offer.effects.familyTripBond && target?.participantIds) {
     const bonds = Object.fromEntries(target.participantIds.map(id => [id, offer.effects.familyTripBond!]))
@@ -348,20 +380,21 @@ export function purchase(state: GameState, offerId: string, target?: PurchaseTar
     const yearPart = g.age % 100 >= 11 && g.age % 100 <= 14
       ? 'лет'
       : g.age % 10 === 1 ? 'год' : g.age % 10 >= 2 && g.age % 10 <= 4 ? 'года' : 'лет'
+    // Участники записываются поимённо: поздние сюжеты не угадывают их по тексту воспоминания.
+    const withWhom = Object.fromEntries(target.participantIds.map(id => [familyTripFlag(id), g.age]))
     applyEffects(g, {
       bonds,
-      flags: { familyTrip: true },
-      memory: `В ${g.age} ${yearPart} провёл неделю на обзорной палубе вместе с ${guests}.`
+      flags: { familyTrip: true, ...withWhom },
+      memory: `В ${g.age} ${yearPart} провёл{{hero:|а}} неделю на обзорной палубе вместе с ${guests}.`
     })
     logTitle = 'Неделя на обзорной палубе'
-    logText = `Ты провёл неделю вместе с ${guests}.`
+    logText = resolveText(g, `Ты провёл{{hero:|а}} неделю вместе с ${guests}.`)
   }
   if (offer.attention > 0) g.attention -= offer.attention
   e.lastBought[offer.id] = g.age
   // An expired H1 right no longer applies after paying the ordinary entry fee.
   if (e.housingRight?.tier === 1 && e.housingRight.until < g.age) e.housingRight = null
   addLog(g, 'life', logTitle, logText)
-  return g
 }
 
 export interface LoadAvailability {

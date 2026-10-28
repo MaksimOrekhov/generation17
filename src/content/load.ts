@@ -1,6 +1,7 @@
 import { isKnown, residenceOf } from '../domain/birth'
 import { gYearPlaceholder } from '../domain/constants'
 import { reserveYearsOf } from '../domain/economy'
+import { isClosedByShipState } from '../domain/offers'
 import type { Effects, GameState, MomentDef, Storylet } from '../domain/types'
 import type { ContentBundle, JsonChoice, JsonMoment, JsonStorylet, Requires } from './types'
 
@@ -54,6 +55,11 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
     const owns = (id: string) => Object.hasOwn(g.economy.owned, id) || Object.hasOwn(g.economy.services, id)
     if (r.owns?.some(id => !owns(id))) return false
     if (r.ownsNot?.some(owns)) return false
+    for (const [id, range] of Object.entries(r.ownedYears ?? {})) {
+      const at = Object.hasOwn(g.economy.owned, id) ? g.economy.owned[id] : Object.hasOwn(g.economy.services, id) ? g.economy.services[id] : undefined
+      if (at === undefined || !inRange(g.age - at, range)) return false
+    }
+    if (r.servicesOpen !== undefined && r.servicesOpen === isClosedByShipState(g)) return false
     if (r.reserveYears) {
       const years = reserveYearsOf(g)
       if (years === null ? r.reserveYears.max !== undefined : !inRange(years, r.reserveYears)) return false

@@ -19,8 +19,10 @@ export const PLACEHOLDERS = ['name', 'job', 'parent', 'friend', 'neighbor', 'men
 const PERSON_PLACEHOLDERS = ['parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
 /** Кого можно указывать в формах по роду: `{{hero:ся|ась}}`. */
 export const GENDER_SUBJECTS = ['hero', ...PERSON_PLACEHOLDERS]
-/** Флаги, которые ставит сам движок, а не эффекты сюжетов. */
-const ENGINE_FLAGS = ['familyHealthRisk']
+/** Сюжетный выбор может по-настоящему купить только эти позиции каталога (T7). */
+export const STORY_PURCHASE_OFFERS = ['course-pro', 'family-trip']
+/** Флаги, которые ставит сам движок, а не эффекты сюжетов: семейная поездка отмечает возраст поездки с каждым участником. */
+const ENGINE_FLAGS = ['familyHealthRisk', 'familyTrip', ...PEOPLE.map(id => `familyTrip${id.charAt(0).toUpperCase()}${id.slice(1)}`)]
 
 export const LIMITS = {
   age: [0, 95], weight: [1, 8], choices: [2, 4],
@@ -140,7 +142,7 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen'], where)
     const range = (key: string, min: number, max: number, step = 1) => {
       const value = r[key], w = `${where}.${key}`
       if (value === undefined) return
@@ -159,6 +161,7 @@ class Ctx {
     range('grade', 1, 4)
     range('housing', 0, 2)
     range('reserveYears', ...LIMITS.reserveYears, .1)
+    const knownOwnable = (id: string) => !!getOffer(id) || id.startsWith('visit-sector-') && SECTORS.includes(id.slice('visit-sector-'.length))
     for (const key of ['work', 'owns', 'ownsNot']) {
       const value = r[key], w = `${where}.${key}`
       if (value === undefined) continue
@@ -166,11 +169,27 @@ class Ctx {
       for (const id of value) {
         if (key === 'work') {
           if (!['child', 'trainee', 'working', 'between', 'sick', 'retired'].includes(id)) this.err(w, `неизвестный рабочий статус «${id}»`)
-        } else if (!getOffer(id) && !(id.startsWith('visit-sector-') && SECTORS.includes(id.slice('visit-sector-'.length)))) {
+        } else if (!knownOwnable(id)) {
           this.err(w, `неизвестная позиция или посещённый сектор «${id}»`)
         }
       }
     }
+    if (r.ownedYears !== undefined) {
+      if (!isObj(r.ownedYears)) this.err(`${where}.ownedYears`, 'должен быть объектом { "позиция": { min?, max? } }')
+      else for (const [id, value] of Object.entries(r.ownedYears)) {
+        const w = `${where}.ownedYears.${id}`
+        if (!knownOwnable(id)) this.err(w, `неизвестная позиция или посещённый сектор «${id}»`)
+        if (!isObj(value)) { this.err(w, 'нужен объект {min?, max?}'); continue }
+        this.keys(value, ['min', 'max'], w)
+        if (value.min === undefined && value.max === undefined) this.err(w, 'нужна хотя бы одна граница min или max')
+        for (const bound of ['min', 'max']) {
+          const n = value[bound]
+          if (n !== undefined && (!isNum(n) || !Number.isInteger(n) || n < 0 || n > 120)) this.err(`${w}.${bound}`, 'целое число лет от 0 до 120')
+        }
+        if (isNum(value.min) && isNum(value.max) && value.min > value.max) this.err(w, 'min больше max')
+      }
+    }
+    if (r.servicesOpen !== undefined && typeof r.servicesOpen !== 'boolean') this.err(`${where}.servicesOpen`, 'true или false')
     const knownFlag = (k: string, w: string) => {
       if (!this.known.flags.has(k) && !flagsSetHere.has(k)) this.err(w, `флаг «${k}» нигде не ставится — опечатка или нужен сюжет, который его выставит`)
     }
@@ -212,6 +231,20 @@ class Ctx {
         }
       }
     }
+  }
+
+  /** Настоящая покупка из сюжета: известная позиция, честная скидка, без второго списания и без броска навыка. */
+  purchase(ch: Obj, w: string) {
+    const p = ch.purchase
+    if (!isObj(p)) { this.err(`${w}.purchase`, 'нужен объект { "offer": "...", "price"?: число }'); return }
+    this.keys(p, ['offer', 'price'], `${w}.purchase`)
+    const offer = isStr(p.offer) && STORY_PURCHASE_OFFERS.includes(p.offer) ? getOffer(p.offer) : undefined
+    if (!offer) this.err(`${w}.purchase.offer`, `позиция из: ${STORY_PURCHASE_OFFERS.join(', ')}`)
+    if (p.price !== undefined && (!isNum(p.price) || !Number.isSafeInteger(p.price) || p.price < 1 || offer && p.price > offer.oneTimeCost)) {
+      this.err(`${w}.purchase.price`, `сюжетная цена — целое от 1 до каталожной${offer ? ` (${offer.oneTimeCost})` : ''}: скидка не может поднять цену`)
+    }
+    if (isObj(ch.effects) && ch.effects.money !== undefined && ch.effects.money !== 0) this.err(`${w}.effects.money`, 'выбор с покупкой не списывает деньги отдельно: цену задаёт purchase')
+    if (ch.check !== undefined) this.err(`${w}.check`, 'выбор с покупкой не может зависеть от проверки навыка')
   }
 
   /** Подстановки-люди допустимы, только если человек гарантирован заголовком. */
@@ -265,7 +298,8 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
   s.choices.forEach((ch: unknown, i: number) => {
     const w = `${where}.choices[${i}]`
     if (!isObj(ch)) { c.err(w, 'выбор должен быть объектом'); return }
-    c.keys(ch, ['text', 'hint', 'result', 'effects', 'check'], w)
+    c.keys(ch, ['text', 'hint', 'result', 'effects', 'check', 'purchase'], w)
+    if (ch.purchase !== undefined) c.purchase(ch, w)
     if (c.text(ch.text, `${w}.text`, LIMITS.label)) c.personGuard(ch.text, guaranteed, `${w}.text`)
     c.text(ch.hint, `${w}.hint`, LIMITS.hint)
     if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, guaranteed, `${w}.result`)
@@ -282,8 +316,8 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
     c.effects(k.success, `${w}.check.success`, false)
     c.effects(k.failure, `${w}.check.failure`, false)
   })
-  if (s.choices.some(ch => isObj(ch) && isObj(ch.effects) && isNum(ch.effects.money) && ch.effects.money < 0)) {
-    const free = s.choices.some(ch => isObj(ch) && isObj(ch.effects)
+  if (s.choices.some(ch => isObj(ch) && (ch.purchase !== undefined || isObj(ch.effects) && isNum(ch.effects.money) && ch.effects.money < 0))) {
+    const free = s.choices.some(ch => isObj(ch) && isObj(ch.effects) && ch.purchase === undefined
       && (ch.effects.money === undefined || validStoryMoney(ch.effects.money) && ch.effects.money >= 0)
       && (ch.check === undefined || isObj(ch.check) && ['success', 'failure'].every(key => {
         const effect = (ch.check as Obj)[key]

@@ -132,6 +132,8 @@ export interface PurchaseAvailability {
   warnings: string[]
   opens: string[]
   action: 'purchase' | 'restore'
+  /** Только для сюжетной покупки: обычная цена героя без сюжетной скидки. */
+  regularCost?: number
   sectorOptions?: SectorOption[]
   familyParticipants?: FamilyParticipantOption[]
 }
@@ -223,23 +225,37 @@ function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, a
   return warnings
 }
 
+/**
+ * Покупка из сюжетного решения (T7): проверяется внутри ожидающего решения, поэтому запрет «сначала завершите
+ * решение» к ней не относится. `price` — сюжетная цена; она действует, только если ниже обычной цены героя.
+ */
+export interface StoryPurchaseContext {
+  story: true
+  price?: number
+}
+
+/** Сюжетная цена не может поднять цену и не меняет каталог: берётся меньшая из двух. */
+export const storyPriceOf = (regular: number, price?: number) =>
+  price !== undefined && Number.isSafeInteger(price) && price >= 0 ? Math.min(regular, price) : regular
+
 /** Pure availability check. The hypothetical next-year settlement runs on a clone and consumes no RNG. */
-export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget): PurchaseAvailability {
+export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, story?: StoryPurchaseContext): PurchaseAvailability {
   const offer = getOffer(offerId)
   if (!offer) return { offerId, available: false, oneTimeCost: 0, annualCost: 0, attention: 0, reason: 'Такого предложения нет.', warnings: [], opens: [], action: 'purchase' }
 
   const restore = offer.id === 'own-cabin' && validHousingReturn(g)
   const action = restore ? 'restore' : 'purchase'
-  const oneTimeCost = restore ? 0 : offer.discount?.job === g.protagonist.job
+  const regularCost = restore ? 0 : offer.discount?.job === g.protagonist.job
     ? Math.round(offer.oneTimeCost * (100 - offer.discount.percent) / 100)
     : offer.oneTimeCost
+  const oneTimeCost = story ? storyPriceOf(regularCost, story.price) : regularCost
   const annualCost = offer.freeFor === g.protagonist.job ? 0 : offer.annualCost
   const sectorOptions = offer.id === 'sector-trip' ? availableSectorOptions(g) : undefined
   const familyParticipants = offer.id === 'family-trip' ? familyTripParticipants(g) : undefined
   let reason: string | null = null
 
   if (g.stopped || g.economy.estate !== null) reason = 'Персонаж умер.'
-  else if (g.pending) reason = 'Сначала завершите ожидающее сюжетное решение.'
+  else if (g.pending && !story) reason = 'Сначала завершите ожидающее сюжетное решение.'
   else if (g.age < offer.minAge) reason = `Доступно с ${offer.minAge} лет.`
   else if (offer.maxAge !== undefined && g.age > offer.maxAge) reason = `Доступно до ${offer.maxAge} лет включительно.`
   else {
@@ -275,6 +291,7 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget): 
     offerId, available: reason === null, oneTimeCost, annualCost, attention: offer.attention,
     reason, warnings: reason === null ? projectedWarnings(g, offer, oneTimeCost, action) : [],
     opens: [...offer.opens], action,
+    ...(story ? { regularCost } : {}),
     ...(sectorOptions ? { sectorOptions } : {}),
     ...(familyParticipants ? { familyParticipants } : {})
   }

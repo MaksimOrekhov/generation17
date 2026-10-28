@@ -5,16 +5,25 @@ import { formatCredits } from '../../domain/economyView'
 import { useGameStore } from '../../stores/game'
 import { logKindLabels, skillLabels, years } from '../../ui/format'
 import ModalShell from '../common/ModalShell.vue'
+import ParticipantPicker from './ParticipantPicker.vue'
 
 const store = useGameStore()
 const g = computed(() => store.game)
 const event = computed(() => store.currentEvent)
-const availability = computed(() => event.value?.choices.map((_, i) => canChoose(g.value, i)) ?? [])
+const availability = computed(() => event.value?.choices.map((_, i) => canChoose(g.value, i, store.storyTarget(i))) ?? [])
+const tripIndex = computed(() => event.value?.choices.findIndex(c => c.purchase?.offer === 'family-trip') ?? -1)
+const tripOptions = computed(() => tripIndex.value < 0 ? [] : availability.value[tripIndex.value]?.purchase?.familyParticipants ?? [])
 const moneyText = (index: number) => {
   const choice = event.value?.choices[index]
   if (!choice) return null
   const signed = (money: number) => `${money < 0 ? '−' : money > 0 ? '+' : ''}${formatCredits(Math.abs(money))}.`
   const parts: string[] = []
+  const bought = availability.value[index]?.purchase
+  if (bought) {
+    parts.push(signed(-bought.oneTimeCost))
+    if (bought.regularCost !== undefined && bought.oneTimeCost < bought.regularCost) parts.push(`вместо ${formatCredits(bought.regularCost)}.`)
+    if (bought.attention) parts.push(`внимание −${bought.attention}`)
+  }
   if (choice.effects.money !== undefined) parts.push(signed(choice.effects.money))
   if (choice.check?.success.money) parts.push(`При успехе: ${signed(choice.check.success.money)}`)
   if (choice.check?.failure.money) parts.push(`При неудаче: ${signed(choice.check.failure.money)}`)
@@ -38,16 +47,22 @@ const odds = (index: number) => {
       <p class="dec__text">{{ resolveText(g, event.body) }}</p>
       <p v-if="!store.hintsSeen.decision" class="dec__hint">Решения останавливают время. Выберите вариант кнопкой или клавишей 1–{{ event.choices.length }}. Последствия могут проявиться через годы.</p>
       <div class="dec__choices">
-        <button v-for="(choice, i) in event.choices" :key="i" class="choice" :disabled="!availability[i]?.available" @click="store.choose(i)">
-          <kbd>{{ i + 1 }}</kbd>
-          <span class="choice__main">
-            <strong>{{ resolveText(g, choice.text) }}</strong>
-            <small>{{ resolveText(g, choice.hint) }}</small>
-            <small v-if="moneyText(i)" class="choice__money">{{ moneyText(i) }}</small>
-            <small v-if="availability[i]?.reason" class="choice__reason">{{ availability[i]?.reason }}</small>
-          </span>
-          <span v-if="odds(i)" class="choice__odds">{{ odds(i) }}</span>
-        </button>
+        <template v-for="(choice, i) in event.choices" :key="i">
+          <button class="choice" :disabled="!availability[i]?.available" @click="store.choose(i)">
+            <kbd>{{ i + 1 }}</kbd>
+            <span class="choice__main">
+              <strong>{{ resolveText(g, choice.text) }}</strong>
+              <small>{{ resolveText(g, choice.hint) }}</small>
+              <small v-if="moneyText(i)" class="choice__money">{{ moneyText(i) }}</small>
+              <small v-if="availability[i]?.reason" class="choice__reason">{{ availability[i]?.reason }}</small>
+            </span>
+            <span v-if="odds(i)" class="choice__odds">{{ odds(i) }}</span>
+          </button>
+          <div v-if="i === tripIndex && tripOptions.length" class="dec__trip">
+            <small>Кого позвать: двое или трое близких.</small>
+            <ParticipantPicker :options="tripOptions" :selected="store.storyParticipants" :max="3" @toggle="store.toggleStoryParticipant" />
+          </div>
+        </template>
       </div>
     </div>
   </ModalShell>
@@ -94,6 +109,8 @@ const odds = (index: number) => {
 .res h3 { font: 600 18px/1.25 var(--font-display); }
 .res p { color: var(--text-soft); font-size: 14.5px; line-height: 1.55; }
 .dec__actions { display: flex; justify-content: flex-end; }
+.dec__trip { display: grid; gap: 6px; padding: 8px 10px; border: 1px dashed var(--line-2); }
+.dec__trip small { font-size: 12.5px; color: var(--muted); }
 .dec__key { font: 500 10px var(--font-mono); opacity: .7; margin-left: 6px; }
 @media (max-width: 560px) {
   .choice { grid-template-columns: 28px minmax(0, 1fr); }

@@ -1,0 +1,1018 @@
+{
+  "generatedAt": "2026-10-28T18:45:46.645Z",
+  "perPolicy": 60,
+  "policies": [
+    "Saver",
+    "Moderate",
+    "Family",
+    "Explorer",
+    "Spender"
+  ],
+  "lives": 300,
+  "adultLives": 295,
+  "integrity": {
+    "violations": 0,
+    "samples": [],
+    "stuckDecisions": 0,
+    "rngDriftOnPlainChoices": 0,
+    "negativeBalances": 0
+  },
+  "decisions": {
+    "total": 7687,
+    "perLife": 25.6,
+    "money": 219,
+    "moneyShare": 2.8,
+    "moneySharePerPolicy": {
+      "Saver": 2.5,
+      "Moderate": 2.7,
+      "Family": 2.8,
+      "Explorer": 2.8,
+      "Spender": 3.6
+    },
+    "paidAmongMoney": 47.5,
+    "storyPurchases": {
+      "course-pro": 43,
+      "family-trip": 29
+    },
+    "consecutiveMoneyDecisions": 41,
+    "consecutivePairs": 7392,
+    "t7PerLife": 1.6
+  },
+  "consequences": {
+    "livesWithLateEcho": 87.8,
+    "continuationsPerLife": {
+      "before": 5.3,
+      "after": 8.8
+    },
+    "followupDecisionsPerLife": {
+      "before": 5.3,
+      "after": 5.3
+    }
+  },
+  "stories": {
+    "family-need-cell-small": {
+      "lives": 23,
+      "pctAdultLives": 7.8,
+      "byPolicy": {
+        "Saver": 2,
+        "Moderate": 3,
+        "Family": 4,
+        "Explorer": 4,
+        "Spender": 10
+      }
+    },
+    "family-need-cell-medium": {
+      "lives": 45,
+      "pctAdultLives": 15.3,
+      "byPolicy": {
+        "Saver": 9,
+        "Moderate": 11,
+        "Family": 12,
+        "Explorer": 8,
+        "Spender": 5
+      }
+    },
+    "family-need-cell-large": {
+      "lives": 22,
+      "pctAdultLives": 7.5,
+      "byPolicy": {
+        "Saver": 4,
+        "Moderate": 7,
+        "Family": 3,
+        "Explorer": 5,
+        "Spender": 3
+      }
+    },
+    "family-need-key": {
+      "lives": 22,
+      "pctAdultLives": 7.5,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 6,
+        "Family": 4,
+        "Explorer": 5,
+        "Spender": 4
+      }
+    },
+    "family-need-apples": {
+      "lives": 5,
+      "pctAdultLives": 1.7,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 5
+      }
+    },
+    "window-offer": {
+      "lives": 89,
+      "pctAdultLives": 30.2,
+      "byPolicy": {
+        "Saver": 20,
+        "Moderate": 17,
+        "Family": 19,
+        "Explorer": 17,
+        "Spender": 16
+      }
+    },
+    "window-last-call": {
+      "lives": 35,
+      "pctAdultLives": 11.9,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 4,
+        "Family": 5,
+        "Explorer": 8,
+        "Spender": 15
+      }
+    },
+    "cabin-closed-door": {
+      "lives": 100,
+      "pctAdultLives": 33.9,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 21,
+        "Family": 25,
+        "Explorer": 27,
+        "Spender": 27
+      }
+    },
+    "trip-memory-friend": {
+      "lives": 50,
+      "pctAdultLives": 16.9,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 28,
+        "Family": 13,
+        "Explorer": 0,
+        "Spender": 9
+      }
+    },
+    "lower-deck-stranger": {
+      "lives": 90,
+      "pctAdultLives": 30.5,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 24,
+        "Family": 0,
+        "Explorer": 33,
+        "Spender": 33
+      }
+    }
+  },
+  "choices": {
+    "family-need-cell-small": {
+      "shown": 23,
+      "byChoice": {
+        "0": 6,
+        "1": 8,
+        "2": 4,
+        "3": 5
+      },
+      "paid": 14,
+      "fallbacks": 0
+    },
+    "family-need-cell-medium": {
+      "shown": 45,
+      "byChoice": {
+        "0": 10,
+        "1": 2,
+        "2": 20,
+        "3": 13
+      },
+      "paid": 12,
+      "fallbacks": 0
+    },
+    "family-need-cell-large": {
+      "shown": 22,
+      "byChoice": {
+        "0": 3,
+        "1": 3,
+        "2": 11,
+        "3": 5
+      },
+      "paid": 6,
+      "fallbacks": 0
+    },
+    "family-need-key": {
+      "shown": 22,
+      "byChoice": {
+        "0": 16,
+        "2": 6
+      },
+      "paid": 0,
+      "fallbacks": 0
+    },
+    "family-need-apples": {
+      "shown": 5,
+      "byChoice": {
+        "0": 3,
+        "1": 2
+      },
+      "paid": 0,
+      "fallbacks": 0
+    },
+    "window-offer": {
+      "shown": 89,
+      "byChoice": {
+        "0": 35,
+        "1": 19,
+        "2": 35
+      },
+      "paid": 54,
+      "fallbacks": 15
+    },
+    "window-last-call": {
+      "shown": 35,
+      "byChoice": {
+        "0": 8,
+        "1": 10,
+        "2": 17
+      },
+      "paid": 18,
+      "fallbacks": 8
+    },
+    "cabin-closed-door": {
+      "shown": 100,
+      "byChoice": {
+        "0": 27,
+        "1": 48,
+        "2": 25
+      },
+      "paid": 0,
+      "fallbacks": 0
+    },
+    "trip-memory-friend": {
+      "shown": 50,
+      "byChoice": {
+        "0": 19,
+        "1": 17,
+        "2": 14
+      },
+      "paid": 0,
+      "fallbacks": 0
+    },
+    "lower-deck-stranger": {
+      "shown": 90,
+      "byChoice": {
+        "0": 30,
+        "1": 31,
+        "2": 29
+      },
+      "paid": 0,
+      "fallbacks": 0
+    }
+  },
+  "momentsSeen": {
+    "m-need-radio": {
+      "lives": 6,
+      "pctAdultLives": 2,
+      "byPolicy": {
+        "Saver": 2,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 4
+      }
+    },
+    "m-need-letters": {
+      "lives": 23,
+      "pctAdultLives": 7.8,
+      "byPolicy": {
+        "Saver": 4,
+        "Moderate": 6,
+        "Family": 6,
+        "Explorer": 3,
+        "Spender": 4
+      }
+    },
+    "m-need-cup": {
+      "lives": 12,
+      "pctAdultLives": 4.1,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 2,
+        "Family": 3,
+        "Explorer": 3,
+        "Spender": 1
+      }
+    },
+    "m-apples-jar": {
+      "lives": 1,
+      "pctAdultLives": 0.3,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 1
+      }
+    },
+    "m-apples-boots": {
+      "lives": 0,
+      "pctAdultLives": 0,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 0
+      }
+    },
+    "m-apples-soup": {
+      "lives": 0,
+      "pctAdultLives": 0,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 0
+      }
+    },
+    "m-window-course": {
+      "lives": 24,
+      "pctAdultLives": 8.1,
+      "byPolicy": {
+        "Saver": 8,
+        "Moderate": 4,
+        "Family": 7,
+        "Explorer": 5,
+        "Spender": 0
+      }
+    },
+    "m-window-trip": {
+      "lives": 13,
+      "pctAdultLives": 4.4,
+      "byPolicy": {
+        "Saver": 5,
+        "Moderate": 4,
+        "Family": 1,
+        "Explorer": 2,
+        "Spender": 1
+      }
+    },
+    "m-cabin-asleep": {
+      "lives": 14,
+      "pctAdultLives": 4.7,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 2,
+        "Family": 4,
+        "Explorer": 5,
+        "Spender": 3
+      }
+    },
+    "m-cabin-thursday": {
+      "lives": 17,
+      "pctAdultLives": 5.8,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 2,
+        "Family": 3,
+        "Explorer": 7,
+        "Spender": 5
+      }
+    },
+    "m-cabin-curtain": {
+      "lives": 12,
+      "pctAdultLives": 4.1,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 2,
+        "Family": 3,
+        "Explorer": 4,
+        "Spender": 3
+      }
+    },
+    "m-trip-ticket": {
+      "lives": 100,
+      "pctAdultLives": 33.9,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 43,
+        "Family": 29,
+        "Explorer": 2,
+        "Spender": 23
+      }
+    },
+    "m-trip-photo": {
+      "lives": 64,
+      "pctAdultLives": 21.7,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 29,
+        "Family": 15,
+        "Explorer": 1,
+        "Spender": 16
+      }
+    },
+    "m-sector-engineering": {
+      "lives": 114,
+      "pctAdultLives": 38.6,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 34,
+        "Family": 0,
+        "Explorer": 38,
+        "Spender": 42
+      }
+    },
+    "m-sector-bio": {
+      "lives": 119,
+      "pctAdultLives": 40.3,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 40,
+        "Family": 0,
+        "Explorer": 39,
+        "Spender": 40
+      }
+    },
+    "m-sector-clinic": {
+      "lives": 137,
+      "pctAdultLives": 46.4,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 40,
+        "Family": 0,
+        "Explorer": 50,
+        "Spender": 47
+      }
+    },
+    "m-dome-pruner": {
+      "lives": 228,
+      "pctAdultLives": 77.3,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 56,
+        "Family": 58,
+        "Explorer": 57,
+        "Spender": 57
+      }
+    },
+    "m-dome-trays": {
+      "lives": 56,
+      "pctAdultLives": 19,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 17,
+        "Family": 14,
+        "Explorer": 13,
+        "Spender": 12
+      }
+    }
+  },
+  "momentsTaken": {
+    "m-need-radio": {
+      "lives": 2,
+      "pctAdultLives": 0.7,
+      "byPolicy": {
+        "Saver": 1,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 1
+      }
+    },
+    "m-need-letters": {
+      "lives": 13,
+      "pctAdultLives": 4.4,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 2,
+        "Family": 3,
+        "Explorer": 2,
+        "Spender": 3
+      }
+    },
+    "m-need-cup": {
+      "lives": 9,
+      "pctAdultLives": 3.1,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 1,
+        "Family": 2,
+        "Explorer": 2,
+        "Spender": 1
+      }
+    },
+    "m-apples-jar": {
+      "lives": 0,
+      "pctAdultLives": 0,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 0
+      }
+    },
+    "m-apples-boots": {
+      "lives": 0,
+      "pctAdultLives": 0,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 0
+      }
+    },
+    "m-apples-soup": {
+      "lives": 0,
+      "pctAdultLives": 0,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 0,
+        "Family": 0,
+        "Explorer": 0,
+        "Spender": 0
+      }
+    },
+    "m-window-course": {
+      "lives": 14,
+      "pctAdultLives": 4.7,
+      "byPolicy": {
+        "Saver": 3,
+        "Moderate": 3,
+        "Family": 4,
+        "Explorer": 4,
+        "Spender": 0
+      }
+    },
+    "m-window-trip": {
+      "lives": 6,
+      "pctAdultLives": 2,
+      "byPolicy": {
+        "Saver": 4,
+        "Moderate": 1,
+        "Family": 0,
+        "Explorer": 1,
+        "Spender": 0
+      }
+    },
+    "m-cabin-asleep": {
+      "lives": 8,
+      "pctAdultLives": 2.7,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 2,
+        "Family": 2,
+        "Explorer": 3,
+        "Spender": 1
+      }
+    },
+    "m-cabin-thursday": {
+      "lives": 14,
+      "pctAdultLives": 4.7,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 1,
+        "Family": 3,
+        "Explorer": 6,
+        "Spender": 4
+      }
+    },
+    "m-cabin-curtain": {
+      "lives": 5,
+      "pctAdultLives": 1.7,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 1,
+        "Family": 1,
+        "Explorer": 1,
+        "Spender": 2
+      }
+    },
+    "m-trip-ticket": {
+      "lives": 60,
+      "pctAdultLives": 20.3,
+      "byPolicy": {
+        "Saver": 2,
+        "Moderate": 26,
+        "Family": 18,
+        "Explorer": 1,
+        "Spender": 13
+      }
+    },
+    "m-trip-photo": {
+      "lives": 31,
+      "pctAdultLives": 10.5,
+      "byPolicy": {
+        "Saver": 1,
+        "Moderate": 11,
+        "Family": 9,
+        "Explorer": 1,
+        "Spender": 9
+      }
+    },
+    "m-sector-engineering": {
+      "lives": 56,
+      "pctAdultLives": 19,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 18,
+        "Family": 0,
+        "Explorer": 17,
+        "Spender": 21
+      }
+    },
+    "m-sector-bio": {
+      "lives": 48,
+      "pctAdultLives": 16.3,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 17,
+        "Family": 0,
+        "Explorer": 13,
+        "Spender": 18
+      }
+    },
+    "m-sector-clinic": {
+      "lives": 75,
+      "pctAdultLives": 25.4,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 22,
+        "Family": 0,
+        "Explorer": 27,
+        "Spender": 26
+      }
+    },
+    "m-dome-pruner": {
+      "lives": 108,
+      "pctAdultLives": 36.6,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 23,
+        "Family": 25,
+        "Explorer": 33,
+        "Spender": 27
+      }
+    },
+    "m-dome-trays": {
+      "lives": 38,
+      "pctAdultLives": 12.9,
+      "byPolicy": {
+        "Saver": 0,
+        "Moderate": 10,
+        "Family": 8,
+        "Explorer": 11,
+        "Spender": 9
+      }
+    }
+  },
+  "unreachable": {
+    "stories": [],
+    "moments": [
+      "m-apples-boots",
+      "m-apples-soup"
+    ]
+  },
+  "baselineDecisionsPerLife": 25.5,
+  "balanceAtRequest": {
+    "family-need-cell-small": [
+      "22:4970",
+      "22:4420",
+      "23:4900",
+      "22:4550",
+      "22:4500",
+      "23:4250",
+      "22:4050",
+      "23:4950",
+      "22:3750",
+      "23:3580",
+      "22:3710",
+      "23:4780",
+      "22:3010",
+      "27:3950",
+      "25:3860",
+      "23:1510",
+      "22:2510",
+      "22:1770",
+      "25:4500",
+      "23:2210",
+      "22:1570",
+      "23:3450",
+      "24:3630"
+    ],
+    "family-need-cell-medium": [
+      "26:9370",
+      "24:7270",
+      "25:8170",
+      "24:7520",
+      "24:6740",
+      "23:5170",
+      "31:11960",
+      "23:6370",
+      "23:6670",
+      "26:8360",
+      "27:7580",
+      "24:6750",
+      "25:7660",
+      "24:7250",
+      "36:13210",
+      "24:5720",
+      "35:13150",
+      "30:10440",
+      "23:5600",
+      "23:5650",
+      "26:7130",
+      "27:5850",
+      "24:5850",
+      "25:7500",
+      "24:6350",
+      "36:12330",
+      "24:6070",
+      "41:12194",
+      "41:9630",
+      "35:9340",
+      "30:7960",
+      "23:6000",
+      "26:7010",
+      "27:7130",
+      "25:6490",
+      "24:5690",
+      "32:10730",
+      "37:12610",
+      "30:9230",
+      "23:5080",
+      "33:6920",
+      "32:6630",
+      "30:5550",
+      "39:11932",
+      "33:7220"
+    ],
+    "family-need-cell-large": [
+      "37:20420",
+      "49:32582",
+      "47:28220",
+      "46:26640",
+      "41:16100",
+      "50:24970",
+      "50:22250",
+      "48:20512",
+      "41:18074",
+      "41:15240",
+      "47:24755",
+      "50:15710",
+      "46:16632",
+      "47:15034",
+      "44:16990",
+      "40:16070",
+      "40:18720",
+      "46:20012",
+      "47:21290",
+      "44:15650",
+      "40:16955",
+      "47:21605"
+    ],
+    "family-need-apples": [
+      "20:880",
+      "19:540",
+      "21:650",
+      "19:640",
+      "21:990"
+    ],
+    "window-offer": [
+      "48:29620",
+      "43:23582",
+      "31:14620",
+      "44:27532",
+      "46:29420",
+      "44:28520",
+      "48:28330",
+      "36:16580",
+      "39:22720",
+      "47:26520",
+      "35:16570",
+      "43:27220",
+      "32:15670",
+      "47:27920",
+      "32:13670",
+      "37:17620",
+      "30:13320",
+      "31:13310",
+      "48:31032",
+      "37:18230",
+      "34:12720",
+      "40:15630",
+      "37:15310",
+      "32:13210",
+      "45:20560",
+      "31:9650",
+      "39:14400",
+      "37:13640",
+      "48:21960",
+      "48:24364",
+      "40:16730",
+      "44:18260",
+      "48:23670",
+      "29:10120",
+      "33:11290",
+      "34:9680",
+      "48:21050",
+      "34:9410",
+      "43:16882",
+      "41:10050",
+      "37:12680",
+      "32:9850",
+      "45:15280",
+      "43:9380",
+      "31:6850",
+      "39:10770",
+      "37:9010",
+      "48:9400",
+      "40:14350",
+      "31:8020",
+      "44:9850",
+      "29:7890",
+      "33:7980",
+      "39:16290",
+      "34:7620",
+      "41:9630",
+      "43:18322",
+      "41:15130",
+      "44:19840",
+      "28:8110",
+      "36:15240",
+      "43:15620",
+      "31:9110",
+      "41:17014",
+      "35:11770",
+      "46:19550",
+      "44:16690",
+      "39:15100",
+      "42:16490",
+      "44:18740",
+      "33:11820",
+      "32:7700",
+      "48:20320",
+      "34:7400",
+      "43:14364",
+      "43:16032",
+      "41:11740",
+      "43:14812",
+      "44:17350",
+      "28:4830",
+      "36:11380",
+      "37:8870",
+      "31:5260",
+      "47:18902",
+      "41:13324",
+      "46:18260",
+      "27:4110",
+      "46:16940",
+      "44:15600"
+    ]
+  },
+  "followupShift": {
+    "family-home-in-bio": -21,
+    "family-crossing-decks": -18,
+    "neighbor-weekend": -18,
+    "census-recording": -17,
+    "census-registry-answer": -16,
+    "neighbor-kid-passed": -16,
+    "relationship-followup": -15,
+    "signal-ignored-echo": -15,
+    "family-parent-last-days": -14,
+    "love-missed": -9,
+    "census-watched": -9,
+    "crack-silent-accident": -9,
+    "love-parted-meeting": -8,
+    "crack-confessed-after": -7,
+    "love-drift": -6,
+    "crack-blamed-after": -6,
+    "crack-student-return": -4,
+    "parent-treatment": -3,
+    "signal-secret-visitor": -3,
+    "census-quota-letter": -2,
+    "friend-crisis-close": -2,
+    "neighbor-reconcile": -2,
+    "parent-letter": -2,
+    "crack-failed-leak": -2,
+    "adult-family-return": -1,
+    "census-keeper-night": -1,
+    "neighbor-cold-leak": -1,
+    "crack-secret-hero": -1,
+    "friend-crisis-distant": -1,
+    "crack-worsened": -1,
+    "signal-circle-warned": 1,
+    "census-hidden-garden": 1,
+    "parent-regret": 1,
+    "census-echo": 2,
+    "neighbor-followup": 2,
+    "census-petition-answer": 3,
+    "signal-rumor-circle": 3,
+    "crack-inspector-offer": 3,
+    "love-home-offer": 3,
+    "parent-keepsake": 3,
+    "neighbor-kid-stayed": 4,
+    "crack-denied-after": 4,
+    "signal-circle-joined": 5,
+    "census-exposed": 5,
+    "crack-recurrence": 5,
+    "love-friends-union": 6,
+    "signal-archive-opened": 6,
+    "signal-public-debate": 7,
+    "census-new-citizens": 7,
+    "family-life-ahead-again": 9,
+    "signal-result": 10,
+    "census-correspondence": 10,
+    "crack-report-hearing": 11,
+    "family-child-question": 12,
+    "census-someone-answers": 13,
+    "neighbor-kid-moved": 13,
+    "census-sealed-cabin": 14,
+    "family-a-life-ahead": 16,
+    "family-need-key": 22,
+    "window-last-call": 35
+  },
+  "allDecisionShift": {
+    "midlife": -69,
+    "health-scare": -54,
+    "garden-plot": -30,
+    "lost-district": -30,
+    "adult-sector-move": -22,
+    "old-friend": -22,
+    "water-shortage": -21,
+    "family-home-in-bio": -21,
+    "late-friend-bench": -21,
+    "adult-sector-repair": -21,
+    "family-crossing-decks": -18,
+    "relationship": -18,
+    "neighbor-weekend": -18,
+    "neighbor-medical": -17,
+    "seed-vault": -17,
+    "census-recording": -17,
+    "census-registry-answer": -16,
+    "legacy": -16,
+    "neighbor-kid-passed": -16,
+    "retirement": -15,
+    "relationship-followup": -15,
+    "mentor": -15,
+    "signal-ignored-echo": -15,
+    "family-parent-last-days": -14,
+    "adult-family-choice": -12,
+    "political-crisis": -11,
+    "apprentice": -11,
+    "parent-illness": -10,
+    "love-missed": -9,
+    "census-watched": -9,
+    "crack-silent-accident": -9,
+    "census-extra": -8,
+    "love-parted-meeting": -8,
+    "crack-confessed-after": -7,
+    "festival": -6,
+    "love-drift": -6,
+    "late-tech-handbook": -6,
+    "crack-blamed-after": -6,
+    "late-common-room": -5,
+    "council": -5,
+    "crack-student-return": -4,
+    "adult-parent-care": -3,
+    "parent-treatment": -3,
+    "signal-secret-visitor": -3,
+    "census-petition-answer": 3,
+    "signal-rumor-circle": 3,
+    "crack-inspector-offer": 3,
+    "late-neighbor-night": 3,
+    "love-home-offer": 3,
+    "parent-keepsake": 3,
+    "neighbor-kid-stayed": 4,
+    "crack-denied-after": 4,
+    "signal-circle-joined": 5,
+    "census-exposed": 5,
+    "crack-recurrence": 5,
+    "family-need-apples": 5,
+    "late-crack-record": 6,
+    "love-friends-union": 6,
+    "signal-archive-opened": 6,
+    "late-adult-child-route": 6,
+    "signal-public-debate": 7,
+    "census-new-citizens": 7,
+    "love-apart-return": 8,
+    "family-life-ahead-again": 9,
+    "signal-result": 10,
+    "census-correspondence": 10,
+    "crack-report-hearing": 11,
+    "family-child-question": 12,
+    "census-someone-answers": 13,
+    "neighbor-kid-moved": 13,
+    "census-sealed-cabin": 14,
+    "family-a-life-ahead": 16,
+    "adult-shift-error": 19,
+    "family-need-cell-large": 22,
+    "family-need-key": 22,
+    "family-need-cell-small": 23,
+    "strike": 28,
+    "window-last-call": 35,
+    "family-need-cell-medium": 45,
+    "trip-memory-friend": 50,
+    "window-offer": 89,
+    "lower-deck-stranger": 90,
+    "cabin-closed-door": 100
+  }
+}

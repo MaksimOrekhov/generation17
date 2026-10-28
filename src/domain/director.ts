@@ -74,8 +74,33 @@ const fits = (d: Director, s: Storylet) => d.tension + Math.max(0, TONE_COST[ton
 
 export const priorityOf = (s: Storylet): Priority => s.priority ?? 'normal'
 
-/** Последний год, когда сюжет ещё можно показать: по возрасту героя или по окну продолжения. */
-export const isLastChance = (g: GameState, s: Storylet) => g.age >= s.max || (s.expiresIn?.(g) ?? Infinity) <= 0
+/** Сколько лет ещё можно показать сюжет (0 — сейчас последний год): по возрасту героя или по окну продолжения. */
+export const yearsLeft = (g: GameState, s: Storylet) => Math.min(s.max - g.age, s.expiresIn?.(g) ?? Infinity)
+
+/** Последний год, когда сюжет ещё можно показать. */
+export const isLastChance = (g: GameState, s: Storylet) => yearsLeft(g, s) <= 0
+
+/**
+ * Продолжения (followup и critical), которые нельзя откладывать ни на год, иначе какое-то из них пропадёт.
+ * За год можно показать одно решение, поэтому по сроку действует правило «раньше всех — самое срочное»:
+ * если сюжетов со сроком не более r лет больше, чем r (то есть мест до срока меньше, чем сюжетов), нужно показывать сейчас.
+ * Один сюжет — это его последний год; два с одним сроком — предпоследний, чтобы второй успел в последний.
+ */
+function dueByDeadline(g: GameState, options: Storylet[]) {
+  const timed = options
+    .filter(s => priorityOf(s) !== 'normal')
+    .map(s => ({ s, left: yearsLeft(g, s) }))
+    .filter(x => Number.isFinite(x.left))
+    .sort((a, b) => a.left - b.left)
+  for (let i = 0; i < timed.length; i++) {
+    const r = Math.max(0, timed[i]!.left)
+    if (timed.filter(x => x.left <= r).length > r) {
+      const first = timed[0]!.left
+      return timed.filter(x => x.left === first).map(x => x.s)
+    }
+  }
+  return []
+}
 
 /** Выбор по весу; единственный кандидат не тратит RNG. */
 function chooseByWeight(g: GameState, pool: Storylet[]) {
@@ -90,14 +115,12 @@ export function pickStorylet(g: GameState, options: Storylet[]): Storylet | null
   if (!options.length) return null
   const d = g.director
   const gap = g.age - d.lastAge
-  // 0) обязательные: critical (после минимального интервала) и последний шанс у followup/critical.
+  // 0) обязательные: срок поджимает (см. dueByDeadline) либо critical после минимального интервала.
   //    Бюджет напряжения и «тихий год» их не откладывают.
-  const due = options.filter(s => {
-    const priority = priorityOf(s)
-    if (priority === 'normal') return false
-    return isLastChance(g, s) || (priority === 'critical' && gap >= MIN_GAP)
-  })
-  if (due.length) return chooseByWeight(g, due)
+  const byDeadline = dueByDeadline(g, options)
+  if (byDeadline.length) return chooseByWeight(g, byDeadline)
+  const ready = options.filter(s => priorityOf(s) === 'critical' && gap >= MIN_GAP)
+  if (ready.length) return chooseByWeight(g, ready)
   if (g.age < 3) return null
   if (gap < MIN_GAP) return null
 

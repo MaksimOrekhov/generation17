@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { MAX_GAP, MIN_GAP, TENSION_CAP, isLastChance, pickStorylet, priorityOf } from '../director'
+import { MAX_GAP, MIN_GAP, TENSION_CAP, afterDecision, cool, isLastChance, pickStorylet, priorityOf } from '../director'
 import type { Director } from '../director'
 import { advanceYear, createGame, decide } from '../engine'
 import { compileExpiry, compileStorylet } from '../../content/load'
@@ -214,4 +214,56 @@ describe('старые линии после смены механизма', () 
     for (const arc of ['friend', 'crack', 'neighbor', 'love']) expect(arcs[arc] ?? 0, `линия ${arc}`).toBeGreaterThan(0)
     expect(JSON.stringify(life(7))).toBe(JSON.stringify(life(7)))
   }, 120000)
+})
+
+describe('несколько продолжений с одним сроком', () => {
+  const deadline = 40
+  const twin = (id: string, left = (g: GameState) => deadline - g.age) => fake(id, 3, 'followup', { category: 'Тайна', max: 95, expiresIn: left })
+
+  /** Годы подряд, как в `tick`: напряжение остывает, потом директор выбирает. Напряжение высокое, поэтому спокойно продолжения не проходят. */
+  function run(items: Storylet[], from = deadline - 3) {
+    const g = at(from, { lastAge: from - 1, tension: 4, lastCategory: null, lastTone: 'crisis' })
+    const shown: string[] = []
+    for (let age = from; age <= deadline + 1; age++) {
+      g.age = age
+      g.director = cool(g.director)
+      const options = items.filter(s => !shown.includes(s.id) && Math.min(s.max - age, s.expiresIn?.(g) ?? Infinity) >= 0)
+      const picked = pickStorylet(g, options)
+      if (picked) {
+        shown.push(picked.id)
+        g.director = afterDecision(g.director, picked, age)
+      }
+    }
+    return shown
+  }
+
+  it('два продолжения с одним сроком показываются оба: второе не теряется навсегда', () => {
+    expect([...run([twin('a'), twin('b')])].sort()).toEqual(['a', 'b'])
+  })
+
+  it('три продолжения с одним сроком и запасом в четыре года показываются все', () => {
+    expect([...run([twin('a'), twin('b'), twin('c')])].sort()).toEqual(['a', 'b', 'c'])
+  })
+
+  it('более срочное идёт первым', () => {
+    const urgent = twin('urgent', g => deadline - 1 - g.age)
+    const relaxed = twin('relaxed')
+    expect(run([relaxed, urgent])).toEqual(['urgent', 'relaxed'])
+  })
+
+  it('запас не расходуется зря: пока места хватает, продолжения ждут напряжения', () => {
+    const picked = pickStorylet(at(deadline - 3, { lastAge: deadline - 4, tension: 3, lastCategory: null, lastTone: 'crisis' }), [twin('a'), twin('b')])
+    expect(picked).toBeNull()
+  })
+
+  it('если срок действительно один на троих (запаса нет), показываются сколько успевает, без сбоев', () => {
+    const shown = run([twin('a'), twin('b'), twin('c')], deadline - 1)
+    expect(shown).toHaveLength(2)
+    expect(new Set(shown).size).toBe(2)
+  })
+
+  it('последний возраст (max) считается сроком так же, как окно until', () => {
+    const byAge = (id: string) => fake(id, 3, 'followup', { category: 'Тайна', max: deadline })
+    expect([...run([byAge('a'), byAge('b')])].sort()).toEqual(['a', 'b'])
+  })
 })

@@ -40,21 +40,29 @@ export const beatAt = (phase: number) => phase / 4
  */
 export function runClock(game: GameState, progress: number, dtSeconds: number, speed: number, secondsPerYear: number): ClockResult {
   if (game.stopped || game.pending) return { game, progress }
-  const effective = game.moment ? Math.min(speed, momentSpeedCap(secondsPerYear)) : speed
-  let p = progress + dtSeconds * effective / secondsPerYear
+  const cap = momentSpeedCap(secondsPerYear)
   let g = game
-  for (let guard = 0; guard < 16; guard++) {
-    if (g.stopped || g.pending) return { game: g, progress: Math.min(p, 1) }
-    if (g.phase < 3 && p >= beatAt(g.phase + 1)) {
+  let p = progress
+  let left = dtSeconds
+  // Кадр режется по границам отметок: после каждой скорость пересчитывается. Момент, появившийся
+  // посреди кадра, сразу получает свою скорость, поэтому окно чтения не зависит от размера кадра.
+  for (let guard = 0; guard < 10000; guard++) {
+    const effective = g.moment ? Math.min(speed, cap) : speed
+    const boundary = g.phase < 3 ? beatAt(g.phase + 1) : 1
+    const need = (Math.max(0, boundary - p) * secondsPerYear) / effective
+    if (need > left) {
+      p += (left * effective) / secondsPerYear
+      break
+    }
+    left -= need
+    if (g.phase < 3) {
+      p = boundary
       g = beat(g)
-      continue
-    }
-    if (p >= 1) {
-      p -= 1
+    } else {
+      p = 0
       g = tick(g)
-      continue
     }
-    break
+    if (g.stopped || g.pending) return { game: g, progress: p }
   }
   return { game: g, progress: p }
 }

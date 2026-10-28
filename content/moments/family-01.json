@@ -1,0 +1,312 @@
+[
+  {
+    "id": "m-family-born-hand",
+    "spot": "table",
+    "title": "Своя ложка",
+    "text": "{{child}} ставит на стол вторую ложку и серьёзно объясняет: теперь ужинать нужно вместе.",
+    "min": 26,
+    "max": 75,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyChild": "born"
+      },
+      "since": {
+        "familyChildAge": 1
+      }
+    },
+    "accept": {
+      "label": "Подвинуть тарелку",
+      "result": "{{child}} придвигает стул вплотную и просит оставить ложку на столе до утра.",
+      "effects": {
+        "stats": {
+          "bonds": 1
+        },
+        "bonds": {
+          "child": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Попросить подождать"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-child-window",
+    "spot": "window",
+    "title": "Слово для корабля",
+    "text": "{{child}} у окна называет корабль домом и спрашивает, будет ли дом у тех, кто долетит.",
+    "min": 29,
+    "max": 80,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyChild": "born"
+      },
+      "since": {
+        "familyChildAge": 4
+      }
+    },
+    "accept": {
+      "label": "Спросить, какой дом нужен",
+      "result": "{{child}} рисует пальцем на стекле круг: «Такой, чтобы всем хватило места».",
+      "effects": {
+        "stats": {
+          "bonds": 1
+        },
+        "bonds": {
+          "child": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Посмотреть на рисунок"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-child-door",
+    "spot": "door",
+    "title": "У двери",
+    "text": "{{child}} стоит у двери с маленьким свёртком: сегодня хочется остаться на ночь у друзей.",
+    "min": 33,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyChild": "born"
+      },
+      "since": {
+        "familyChildAge": 8
+      }
+    },
+    "accept": {
+      "label": "Помочь собрать вещи",
+      "result": "{{child}} убирает в свёрток фонарик и обещает вернуться к утреннему свету.",
+      "effects": {
+        "stats": {
+          "stress": 1
+        },
+        "bonds": {
+          "child": 3
+        }
+      }
+    },
+    "skip": {
+      "label": "Пожелать спокойной ночи"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-answer-honest",
+    "spot": "window",
+    "title": "Чужие имена",
+    "text": "{{child}} у окна пересчитывает звёзды и спрашивает, запомнят ли имена людей, которые не долетят.",
+    "min": 32,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyAnswer": "honest"
+      },
+      "since": {
+        "familyAnswerAge": 3
+      }
+    },
+    "accept": {
+      "label": "Вспомнить одно имя",
+      "result": "{{child}} повторяет имя и просит рассказать про человека ещё раз, уже без карты полёта.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Послушать молча"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-answer-hopeful",
+    "spot": "table",
+    "title": "Рисунок на память",
+    "text": "{{child}} кладёт на стол рисунок корабля: рядом с иллюминаторами написаны имена вашей семьи.",
+    "min": 32,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyAnswer": "hopeful"
+      },
+      "since": {
+        "familyAnswerAge": 3
+      }
+    },
+    "accept": {
+      "label": "Добавить своё имя",
+      "result": "{{child}} оставляет на листе место для следующих имён и придвигает к тебе карандаш.",
+      "effects": {
+        "stats": {
+          "morale": 2
+        },
+        "bonds": {
+          "child": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Повесить рисунок"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-answer-diverted",
+    "spot": "window",
+    "title": "Вопрос возвращается",
+    "text": "{{child}} у окна снова спрашивает о конце пути. Названия созвездий сегодня не отвлекают.",
+    "min": 32,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyAnswer": "diverted"
+      },
+      "since": {
+        "familyAnswerAge": 3
+      }
+    },
+    "accept": {
+      "label": "Рассказать о пути",
+      "result": "Вы говорите долго. {{child}} не просит назвать больше звёзд, только остаётся рядом.",
+      "effects": {
+        "stats": {
+          "stress": 1
+        },
+        "bonds": {
+          "child": 3
+        }
+      }
+    },
+    "skip": {
+      "label": "Помолчать вместе"
+    },
+    "needs": [
+      "child"
+    ]
+  },
+  {
+    "id": "m-family-move-moved",
+    "spot": "table",
+    "title": "Чашка с трещиной",
+    "text": "На столе новой каюты стоит чашка со старой кухни. У двери соседка из биокупола зовёт ужинать.",
+    "min": 27,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyMove": "moved"
+      },
+      "since": {
+        "familyMoveAge": 3
+      },
+      "sector": [
+        "bio"
+      ]
+    },
+    "accept": {
+      "label": "Взять чашку с собой",
+      "result": "За новым столом соседка спрашивает про трещину на ручке и слушает историю о прежней кухне.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Оставить чашку на столе"
+    }
+  },
+  {
+    "id": "m-family-move-stayed",
+    "spot": "door",
+    "title": "Чужая смена",
+    "text": "У двери общей кухни соседка спрашивает, почему тебя снова нет за ужином: дорога со смены затянулась.",
+    "min": 27,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyMove": "stayed"
+      },
+      "since": {
+        "familyMoveAge": 3
+      }
+    },
+    "accept": {
+      "label": "Поужинать вместе",
+      "result": "На столе всё ещё есть твоя чашка. Соседка подогревает ужин и рассказывает о новых жильцах.",
+      "effects": {
+        "stats": {
+          "bonds": 2,
+          "stress": 1
+        }
+      }
+    },
+    "skip": {
+      "label": "Поблагодарить и уйти"
+    }
+  },
+  {
+    "id": "m-family-bio-trusted",
+    "spot": "plant",
+    "title": "Росток у двери",
+    "text": "У растения на подоконнике свежая вода. Соседка оставляет у двери ключ от твоей каюты.",
+    "min": 30,
+    "max": 85,
+    "weight": 3,
+    "cooldown": null,
+    "requires": {
+      "flagIs": {
+        "familyBioHome": "trusted"
+      },
+      "since": {
+        "familyBioHomeAge": 3
+      },
+      "sector": [
+        "bio"
+      ]
+    },
+    "accept": {
+      "label": "Поблагодарить соседку",
+      "result": "Соседка говорит, что росток выпустил новый лист, и спрашивает, можно ли зайти посмотреть позже.",
+      "effects": {
+        "stats": {
+          "bonds": 2
+        }
+      }
+    },
+    "skip": {
+      "label": "Забрать ключ"
+    }
+  }
+]

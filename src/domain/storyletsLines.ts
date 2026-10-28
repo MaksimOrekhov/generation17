@@ -277,9 +277,20 @@ export const lineStorylets: Storylet[] = [
     body: 'Близкому человеку предлагают работу в другом секторе: больше возможностей, но жильё там выдают только по месту службы. Предлагают переехать вместе, но тогда придётся уйти с твоего привычного места.',
     available: g => is(g, 'loveStage', 'together') && since(g, 'loveStageAge', 5) && alive(g, 'friend'),
     choices: [
-      { text: 'Переехать вместе', hint: 'Отношения ↑ · Карьера ↓', result: 'Новое место встречает тесной каютой и чужими коридорами. Но вечером, возвращаясь, ты видишь, что дверь не заперта, и понимаешь, что дом там, где вас двое.', effects: { stats: { bonds: 6, morale: 4, reputation: -4, stress: 4 }, bonds: { friend: 8 }, flags: { loveStage: 'moved-together', loveStageAge: NOW }, memory: 'Переезд в другой сектор вслед за близким человеком.' } },
+      { text: 'Переехать вместе', hint: 'Отношения ↑ · Карьера ↓', result: 'Новое место встречает тесной каютой и чужими коридорами. Но вечером, возвращаясь, ты видишь, что дверь не заперта, и понимаешь, что дом там, где вас двое.', effects: { stats: { bonds: 6, morale: 4, reputation: -4, stress: 4 }, bonds: { friend: 8 }, moveTo: 'partner', flags: { loveStage: 'moved-together', loveStageAge: NOW }, memory: 'Переезд в другой сектор вслед за близким человеком.' } },
       { text: 'Попросить остаться', hint: 'Карьера ↑ · Отношения ↓', result: 'Близкий человек молчит долго. Потом соглашается, но в каюте с тех пор слышнее тиканье часов.', effects: { stats: { bonds: -5, stress: 4, reputation: 2 }, bonds: { friend: -8 }, flags: { loveStage: 'held', loveStageAge: NOW } } },
-      { text: 'Предложить пожить врозь год', hint: 'Компромисс · Риск', result: 'Вы расходитесь без обид и условий, договорившись встречаться по выходным. Первое время это даже забавляет.', effects: { stats: { morale: -1, stress: 2, reputation: 3 }, bonds: { friend: -2 }, flags: { loveStage: 'apart', loveStageAge: NOW } } }
+      { text: 'Предложить пожить врозь год', hint: 'Компромисс · Риск', result: 'Вы расходитесь без обид и условий, договорившись встречаться по выходным. Первое время это даже забавляет.', effects: { stats: { morale: -1, stress: 2, reputation: 3 }, bonds: { friend: -2 }, flags: { livingTogether: false, loveStage: 'apart', loveStageAge: NOW } } }
+    ]
+  },
+  {
+    id: 'love-apart-return', arc: 'love', category: 'Последствие', min: 31, max: 82, weight: 16,
+    title: 'Год врозь',
+    body: 'Срок, о котором вы договорились, прошёл. По выходным вы по-прежнему встречаетесь, но каждый раз прощание у перехода становится чуть длиннее. {{friend}} спрашивает, что дальше.',
+    available: g => is(g, 'loveStage', 'apart') && since(g, 'loveStageAge', 1) && alive(g, 'friend'),
+    choices: [
+      { text: 'Вернуться в общую каюту', hint: 'Отношения ↑', result: 'Вещи возвращаются на старые полки так быстро, будто и не уходили. Ужин в этот вечер получается тихим и очень домашним.', effects: { stats: { bonds: 5, morale: 4, stress: -2 }, bonds: { friend: 8 }, flags: { livingTogether: true, loveStage: 'reunited', loveStageAge: NOW }, memory: 'Возвращение под одну крышу после года врозь.' } },
+      { text: 'Оставить всё как есть', hint: 'Свобода · Дистанция', result: 'Вы решаете не менять устоявшийся порядок. Выходные остаются вашими, а всё остальное время — каждого своим.', effects: { stats: { morale: 1 }, flags: { loveStage: 'open', loveStageAge: NOW } } },
+      { text: 'Признать, что вы стали друг другу гостями', hint: 'Боль сейчас · Ясность', result: 'Разговор получается спокойным, почти бережным. Никто не говорит «навсегда», но обоим понятно, что общей жизни уже не будет.', effects: { stats: { morale: -5, stress: 4 }, bonds: { friend: -8 }, flags: { loveStage: 'parted', loveStageAge: NOW }, memory: 'Год врозь, после которого общая жизнь так и не возобновилась.' } }
     ]
   },
   {

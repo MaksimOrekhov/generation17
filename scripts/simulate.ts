@@ -2,11 +2,21 @@ import { beat, createGame, decide, setFocus, takeMoment, tick } from '../src/dom
 import { storylets } from '../src/domain/storylets'
 import { moments } from '../src/domain/moments'
 import { toneOf } from '../src/domain/director'
+import { findInconsistencies } from '../src/domain/invariants'
 import type { Focus, GameState } from '../src/domain/types'
 
 const strategies = ['first', 'last', 'cycling', 'study', 'rest', 'relationships', 'moments'] as const
 const sampleCount = Number(process.argv[2] ?? 200)
 if (!Number.isInteger(sampleCount) || sampleCount < 1 || sampleCount > 10000) throw Error('Usage: npm run sim -- 200')
+
+/** Невозможные состояния мира (см. src/domain/invariants.ts): сколько раз каждое встретилось за все прогоны. */
+const problems: Record<string, number> = {}
+function audit(g: GameState) {
+  for (const p of findInconsistencies(g)) {
+    const key = p.slice(p.indexOf(': ') + 2)
+    problems[key] = (problems[key] ?? 0) + 1
+  }
+}
 
 function mean(values: number[]) {
   return Math.round(values.reduce((sum, n) => sum + n, 0) / values.length * 10) / 10
@@ -21,6 +31,7 @@ function quantile(values: number[], p: number) {
 function playYear(g: GameState, acceptMoments: boolean) {
   while (!g.stopped && !g.pending && g.phase < 3) {
     g = beat(g)
+    audit(g)
     if (acceptMoments && g.moment) g = takeMoment(g)
   }
   return tick(g)
@@ -66,6 +77,7 @@ for (const strategy of strategies) {
         if (g.age === 6 && ['rest', 'relationships'].includes(strategy)) g = setFocus(g, strategy as Focus)
         if (g.age === 40) at40.push({ ...g.stats })
       }
+      audit(g)
       for (const value of [...Object.values(g.stats), ...Object.values(g.ship), ...Object.values(g.skills)]) {
         if (!Number.isFinite(value) || value < 0 || value > 100) throw Error(`Invalid stat in seed=${seed}`)
       }
@@ -104,4 +116,5 @@ for (const strategy of strategies) {
     momentsNeverTaken: strategy === 'moments' ? moments.filter(m => !momentFrequencies[m.title]).map(m => m.id) : undefined
   }
 }
-console.log(JSON.stringify({ generatedAt: new Date().toISOString(), samplesPerStrategy: sampleCount, totalRuns: strategies.length * sampleCount, storylets: storylets.length, moments: moments.length, strategies: report }, null, 2))
+if (Object.keys(problems).length) process.exitCode = 1
+console.log(JSON.stringify({ generatedAt: new Date().toISOString(), samplesPerStrategy: sampleCount, totalRuns: strategies.length * sampleCount, inconsistencies: problems, storylets: storylets.length, moments: moments.length, strategies: report }, null, 2))

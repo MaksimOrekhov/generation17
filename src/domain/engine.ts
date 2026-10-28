@@ -3,7 +3,7 @@ import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
 import { moments, getMomentDef } from './moments'
 import { ambientLine } from './ambient'
-import { childGender, genderOfName, heroGender, peerJob, pickChildName, residenceOf, rollBirth, sectorById } from './birth'
+import { childGender, genderOfName, heroGender, isKnown, partnerSector, peerJob, pickChildName, residenceOf, rollBirth, sectorById } from './birth'
 import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
@@ -168,7 +168,8 @@ function addPerson(g: GameState, id: NewPersonId) {
   addLog(g, 'life', 'В семье пополнение', `В твоей жизни появляется ${name}.`)
 }
 
-function moveTo(g: GameState, sector: SectorId) {
+function moveTo(g: GameState, target: SectorId | 'partner') {
+  const sector = target === 'partner' ? partnerSector(g) : target
   if (residenceOf(g) === sector) return
   g.residence = sector
   const s = sectorById(sector)
@@ -191,11 +192,22 @@ function recordFork(g: GameState, event: Storylet, index: number) {
   }
 }
 
+/** Ожидание решения, которого нет в каталоге (удалён или переименован): снимается с записью в хронике. */
+export function dropMissingPending(state: GameState): GameState {
+  if (!state.pending || storylets.some(e => e.id === state.pending)) return state
+  const g = structuredClone(state)
+  addLog(g, 'notice', 'Старая запись', 'Событие, которое ждало ответа, больше не существует в каталоге. Жизнь продолжается без него.')
+  g.pending = null
+  return g
+}
+
 export function decide(state: GameState, choiceIndex: number): GameState {
   if (state.stopped || !state.pending) return state
   const event = storylets.find(e => e.id === state.pending)
-  const choice = event?.choices[choiceIndex]
-  if (!event || !choice) return state
+  // Сюжет из сохранения мог исчезнуть из каталога: снимаем ожидание, чтобы жизнь не застряла.
+  if (!event) return dropMissingPending(state)
+  const choice = event.choices[choiceIndex]
+  if (!choice) return state
 
   const g = structuredClone(state)
   applyEffects(g, choice.effects)
@@ -228,20 +240,16 @@ export function decide(state: GameState, choiceIndex: number): GameState {
 
 export const getMoment = (g: GameState) => getMomentDef(g.moment)
 
-/** Человек жив и уже появился в жизни героя (друг — с детского сада, наставник — с 16 лет). */
 /** Упоминает ли текст человека меткой {{id}} или формой {{id:м|ж}}. */
 const mentions = (text: string, id: string) => text.includes(`{{${id}}}`) || text.includes(`{{${id}:`)
 
-export function isKnown(g: GameState, id: string) {
-  const p = g.people.find(x => x.id === id)
-  return !!p && p.alive && g.age >= p.since
-}
+export { isKnown }
 
 function peopleAlive(g: GameState, ids: string[] = []) {
   return ids.every(id => isKnown(g, id))
 }
 
-function eligibleMoments(g: GameState) {
+export function eligibleMoments(g: GameState) {
   return moments.filter(m => {
     if (g.age < m.min || g.age > m.max) return false
     const last = g.momentLog[m.id]
@@ -251,6 +259,7 @@ function eligibleMoments(g: GameState) {
   })
 }
 
+/** Единственный способ закрыть момент без принятия: отказ, отметка года, смена года. Последствия применяются один раз. */
 function closeMoment(g: GameState, def: MomentDef | null) {
   if (def?.skip.effects) applyEffects(g, def.skip.effects)
   g.moment = null
@@ -372,6 +381,7 @@ function peopleTick(g: GameState) {
     const probability = Math.min(.58, Math.pow((person.age - 62) / 42, 2.2) * .24)
     if (random(g) < probability || person.age > 103) {
       person.alive = false
+      if (person.id === 'friend') g.flags.livingTogether = false
       addLog(g, 'memory', `Уход: ${person.name}`, `В возрасте ${person.age} лет ${person.name} уходит из жизни. На корабле продолжают работать двигатели, но привычный мир становится немного другим.`)
       g.memories.push(resolveText(g, `Пережил{{hero:|а}} уход человека, с которым была связана значительная часть жизни: ${person.name}.`))
       g.stats.morale = clamp(g.stats.morale - Math.min(13, Math.round(person.bond / 8)))
@@ -420,12 +430,12 @@ function deathTick(g: GameState) {
 export function tick(state: GameState): GameState {
   if (state.stopped || state.pending) return state
   const g = structuredClone(state)
+  closeMoment(g, getMoment(g))
   g.moodByAge[g.age] = Math.round(g.stats.morale)
   g.age += 1
   g.shipYear += 1
   g.phase = 0
   g.attention = ATTENTION_PER_YEAR
-  g.moment = null
   g.director = cool(g.director)
   if (!canFocus(g.age, g.focus) && g.age >= FOCUS_FROM_AGE) g.focus = 'study'
   worldTick(g)

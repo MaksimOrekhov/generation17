@@ -86,6 +86,19 @@ export const genderOfName = (name: string): Gender => (femaleNames.has(name.spli
 /** Сектор, где герой живёт сейчас: после переезда он отличается от сектора рождения. */
 export const residenceOf = (g: { residence?: SectorId; birth: Birth }) => g.residence ?? g.birth.sectorId
 
+/** Человек жив и уже появился в жизни героя (друг — с детского сада, наставник — с 16 лет). */
+export const isKnown = (g: { people: Person[]; age: number }, id: string) => {
+  const p = g.people.find(x => x.id === id)
+  return !!p && p.alive && g.age >= p.since
+}
+
+/** Сектор, где живёт близкий человек: зависит от seed, не расходует RNG и всегда отличается от нынешнего дома героя. */
+export function partnerSector(g: { seed: number; residence?: SectorId; birth: Birth }): SectorId {
+  const home = residenceOf(g)
+  const others = sectors.filter(s => s.id !== home)
+  return others[hash32('partner-sector', g.seed) % others.length]!.id
+}
+
 /** Имя ребёнка героя: из общего списка, без совпадений с уже известными людьми. */
 export function pickChildName(g: Rng, surname: string, taken: readonly string[]) {
   return `${pickUnique(g, givenNames, new Set(taken))} ${surname}`

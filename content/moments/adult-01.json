@@ -170,6 +170,7 @@
     "weight": 3,
     "cooldown": null,
     "requires": {
+      "flagNot": ["familyChild"],
       "flagIs": {
         "adultFamilyPlan": "applied"
       },
@@ -262,6 +263,8 @@
     "weight": 3,
     "cooldown": null,
     "requires": {
+      "flagNot": ["familyMove"],
+      "sectorNot": ["bio"],
       "flagIs": {
         "adultMovePlan": "applied"
       },

@@ -9,6 +9,9 @@
     "weight": 4,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 3, "max": 7 }
+      },
       "flagIs": {
         "familyChild": "born"
       },
@@ -45,6 +48,9 @@
     "weight": 4,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 6, "max": 12 }
+      },
       "flagIs": {
         "familyChild": "born"
       },
@@ -81,6 +87,9 @@
     "weight": 3,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 8, "max": 14 }
+      },
       "flagIs": {
         "familyChild": "born"
       },
@@ -117,6 +126,9 @@
     "weight": 3,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 7, "max": 14 }
+      },
       "flagIs": {
         "familyAnswer": "honest"
       },
@@ -150,6 +162,9 @@
     "weight": 4,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 6, "max": 14 }
+      },
       "flagIs": {
         "familyAnswer": "hopeful"
       },
@@ -186,6 +201,9 @@
     "weight": 3,
     "cooldown": null,
     "requires": {
+      "personAge": {
+        "child": { "min": 7, "max": 14 }
+      },
       "flagIs": {
         "familyAnswer": "diverted"
       },

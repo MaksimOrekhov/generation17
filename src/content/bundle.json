@@ -235,7 +235,7 @@
           }
         },
         {
-          "text": "Пока исключить родительство",
+          "text": "Исключить родительство",
           "hint": "Настроение ↑ · Связи ↓",
           "result": "Ты закрываешь заявление с пометкой «нет». На общем собрании знакомые обсуждают списки детской комнаты; ты остаёшься на разговор.",
           "effects": {
@@ -275,6 +275,9 @@
       "max": 45,
       "weight": 3,
       "requires": {
+        "sectorNot": [
+          "bio"
+        ],
         "flagNot": [
           "adultMovePlan"
         ]
@@ -323,6 +326,73 @@
             "flags": {
               "adultMovePlan": "trial",
               "adultMovePlanAge": "@age"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "adult-family-return",
+      "category": "Личное",
+      "title": "Черновик на терминале",
+      "min": 28,
+      "max": 48,
+      "weight": 8,
+      "body": "Черновик заявления о родительстве всё ещё лежит на терминале. Клиника напоминает, что запись на разговор открыта, но повторять это напоминание больше не будет. За эти годы вы с близкими многое обсудили, не назвав срока. Как ответить теперь?",
+      "requires": {
+        "flagIs": {
+          "adultFamilyPlan": "deferred"
+        },
+        "since": {
+          "adultFamilyPlanAge": 4
+        },
+        "until": {
+          "adultFamilyPlanAge": 15
+        }
+      },
+      "choices": [
+        {
+          "text": "Записаться на консультацию",
+          "hint": "Связи ↑ · Стресс ↑",
+          "result": "Ты отправляешь заявление, которое пролежало в черновиках несколько лет. Клиника отвечает в тот же день: место для разговора найдётся.",
+          "effects": {
+            "stats": {
+              "bonds": 2,
+              "stress": 3
+            },
+            "flags": {
+              "adultFamilyPlan": "applied",
+              "adultFamilyPlanAge": "@age"
+            },
+            "memory": "Заявка о родительстве, отправленная спустя годы раздумий."
+          }
+        },
+        {
+          "text": "Закрыть заявление окончательно",
+          "hint": "Настроение ↑ · Связи ↓",
+          "result": "Ты удаляешь черновик и впервые за долгое время ощущаешь тишину. Решение, которое годами висело в воздухе, перестаёт тянуть за плечи.",
+          "effects": {
+            "stats": {
+              "morale": 2,
+              "bonds": -2
+            },
+            "flags": {
+              "adultFamilyPlan": "declined",
+              "adultFamilyPlanAge": "@age"
+            }
+          }
+        },
+        {
+          "text": "Оставить решение времени",
+          "hint": "Спокойствие · Без возврата",
+          "result": "Ты не отправляешь заявление и не удаляешь его. Черновик остаётся лежать, а срок записи тихо проходит мимо.",
+          "effects": {
+            "stats": {
+              "stress": -1
+            },
+            "flags": {
+              "adultFamilyPlan": "lapsed",
+              "adultFamilyPlanAge": "@age"
             }
           }
         }
@@ -627,7 +697,7 @@
       "min": 45,
       "max": 70,
       "weight": 3,
-      "body": "Врач предупреждает: сил у {{parent}} остаётся мало. Вы рядом; чашка давно остыла, а в коридоре кто-то смеётся после смены. {{parent}} сжимает твою ладонь и ждёт, заговоришь ли ты.",
+      "body": "Врач говорит, что сил у {{parent}} стало заметно меньше, и советует не откладывать важные разговоры. Вы рядом; чашка давно остыла, а в коридоре кто-то смеётся после смены. {{parent}} сжимает твою ладонь и ждёт, заговоришь ли ты.",
       "requires": {
         "alive": [
           "parent"
@@ -788,6 +858,78 @@
             "flags": {
               "familyBioHome": "private",
               "familyBioHomeAge": "@age"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family-life-ahead-again",
+      "category": "Семья",
+      "title": "Вопрос у стекла",
+      "min": 28,
+      "max": 52,
+      "weight": 8,
+      "body": "Прошло несколько лет с тех пор, как ты отош{{hero:ёл|ла}} от стекла детской комнаты. Заявление всё ещё действует, но клиника предупреждает: этот разговор по нему последний. За стеклом всё так же мало места и много света. Что ты решаешь?",
+      "requires": {
+        "flagIs": {
+          "familyChild": "waiting"
+        },
+        "since": {
+          "familyChildAge": 3
+        },
+        "until": {
+          "familyChildAge": 15
+        }
+      },
+      "choices": [
+        {
+          "text": "Впустить новую жизнь",
+          "hint": "Связи ↑ · Стресс ↑",
+          "result": "В каюте появляется детская кроватка. Ночью рядом откликается тонкий голос, и ты впервые укачиваешь ребёнка.",
+          "effects": {
+            "addPerson": "child",
+            "bonds": {
+              "child": 5
+            },
+            "stats": {
+              "bonds": 3,
+              "stress": 4
+            },
+            "flags": {
+              "familyChild": "born",
+              "familyChildAge": "@age"
+            },
+            "memory": "Решение стать родителем, которое созревало годами."
+          }
+        },
+        {
+          "text": "Выбрать жизнь без детей",
+          "hint": "Настроение ↑ · Связи ↓",
+          "result": "Ты говоришь это вслух, и становится легче. Заявление закрывают без вопросов, только убирают со стола вторую чашку.",
+          "effects": {
+            "stats": {
+              "morale": 2,
+              "bonds": -2
+            },
+            "flags": {
+              "familyChild": "declined",
+              "familyChildAge": "@age"
+            }
+          }
+        },
+        {
+          "text": "Принять, что время ушло",
+          "hint": "Спокойствие · Без возврата",
+          "result": "Ты не называешь ответа. Заявление тихо теряет силу, а детская комната за стеклом остаётся просто местом, мимо которого проходишь по пути на смену.",
+          "effects": {
+            "stats": {
+              "stress": -1,
+              "morale": -1
+            },
+            "flags": {
+              "familyChild": "lapsed",
+              "familyChildAge": "@age"
             }
           }
         }
@@ -1510,6 +1652,9 @@
       "weight": 3,
       "cooldown": null,
       "requires": {
+        "flagNot": [
+          "familyChild"
+        ],
         "flagIs": {
           "adultFamilyPlan": "applied"
         },
@@ -1602,6 +1747,12 @@
       "weight": 3,
       "cooldown": null,
       "requires": {
+        "flagNot": [
+          "familyMove"
+        ],
+        "sectorNot": [
+          "bio"
+        ],
         "flagIs": {
           "adultMovePlan": "applied"
         },
@@ -1664,6 +1815,12 @@
       "weight": 4,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 3,
+            "max": 7
+          }
+        },
         "flagIs": {
           "familyChild": "born"
         },
@@ -1700,6 +1857,12 @@
       "weight": 4,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 6,
+            "max": 12
+          }
+        },
         "flagIs": {
           "familyChild": "born"
         },
@@ -1736,6 +1899,12 @@
       "weight": 3,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 8,
+            "max": 14
+          }
+        },
         "flagIs": {
           "familyChild": "born"
         },
@@ -1772,6 +1941,12 @@
       "weight": 3,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 7,
+            "max": 14
+          }
+        },
         "flagIs": {
           "familyAnswer": "honest"
         },
@@ -1805,6 +1980,12 @@
       "weight": 4,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 6,
+            "max": 14
+          }
+        },
         "flagIs": {
           "familyAnswer": "hopeful"
         },
@@ -1841,6 +2022,12 @@
       "weight": 3,
       "cooldown": null,
       "requires": {
+        "personAge": {
+          "child": {
+            "min": 7,
+            "max": 14
+          }
+        },
         "flagIs": {
           "familyAnswer": "diverted"
         },

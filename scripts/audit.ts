@@ -127,6 +127,7 @@ interface EconomyYear {
   tight: boolean
   housingDowngrade: boolean
   cancelledServices: number
+  /** Потенциальная недоступность услуг из-за аварии или состояния корабля в этом году; фактическую отмену абонемента показывает cancelledServices. */
   servicesClosed: boolean
   inconsistencyCount: number
   inconsistencies: string[]
@@ -637,6 +638,7 @@ const report = {
       ageCheckpoints: 'Только наблюдавшиеся живыми в указанном возрасте; отсутствующие наблюдения не заменяются нулём.',
       tariffEquivalent: 'Баланс делится на базовый годовой тариф текущей профессии и разряда без надбавок и нагрузки.',
       protectedNeedsDeficit: 'Год с aid > 0 означает, что баланс и доход не покрыли защищённый минимум.',
+      serviceClosure: 'Годы потенциальной недоступности услуг из-за аварии или состояния корабля (воздух < 55, припасы < 45); это не фактическая отмена абонемента — отмены считаются в voluntaryObligationShortfall.',
       voluntaryObligationShortfall: 'Год с понижением жилья или отменой услуги из-за нехватки остатка после минимума.',
       pensionCoverage: 'Пенсия сравнивается с фактическими записанными обязательствами данного пенсионного года.',
       mechanicalStrategies: 'Стратегии выбора механические и не являются моделью поведения людей.',

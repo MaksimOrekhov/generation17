@@ -55,8 +55,8 @@ export interface WorkFinanceView {
   notice: { level: 'warn' | 'calm'; text: string } | null
   /** Строки для вывода в панели в порядке показа. */
   rows: WorkFinanceRow[]
-  /** Раздел «Траты и карьера» появится в T4b. */
-  actionsSoon: boolean
+  /** С 16 лет, пока жизнь идёт: в панели показывается кнопка «Траты и карьера». */
+  spendOffered: boolean
 }
 
 const PROFESSIONS: readonly Job[] = ['Техник', 'Медик', 'Агроном', 'Координатор']
@@ -160,7 +160,7 @@ export function workFinanceView(g: GameState): WorkFinanceView {
   const lines: string[] = []
   const view: WorkFinanceView = {
     stage, aside: ASIDE[stage], title: '', lines, family: null, savings: null, income: null, obligations: null,
-    forecast: null, runway: null, notice: null, rows: [], actionsSoon: false
+    forecast: null, runway: null, notice: null, rows: [], spendOffered: false
   }
 
   if (stage === 'child') {
@@ -232,7 +232,7 @@ export function workFinanceView(g: GameState): WorkFinanceView {
     lines.push(`Стаж ${serviceText(w.service)}`)
   }
 
-  view.actionsSoon = true
+  view.spendOffered = true
   view.savings = { amount: whole(e.balance), text: formatCredits(e.balance), label: 'Накоплено' }
 
   const row = projection.economy.years.at(-1)

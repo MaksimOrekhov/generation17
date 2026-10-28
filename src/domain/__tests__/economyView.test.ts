@@ -85,7 +85,7 @@ describe('workFinanceView: этапы жизни', () => {
       expect(v.forecast).toBeNull()
       expect(v.runway).toBeNull()
       expect(v.rows).toEqual([])
-      expect(v.actionsSoon).toBe(false)
+      expect(v.spendOffered).toBe(false)
       expect(v.lines.join(' ')).not.toMatch(/разряд|стаж|кр\b/i)
     }
     g.age = 12
@@ -141,7 +141,7 @@ describe('workFinanceView: этапы жизни', () => {
     expect(v.obligations?.amount).toBe(ECONOMY_TUNING.personal)
     expect(v.forecast).toMatchObject({ delta: 1350 - 350, after: 2640 + 1000, direction: 'up' })
     expect(sp(v.rows.map(r => `${r.label}: ${r.value}`).join('|'))).toBe('Доход: 1 350 в год|Обязательства: 350 в год|За год: ≈ +1 000 → 3 640 кр')
-    expect(v.actionsSoon).toBe(true)
+    expect(v.spendOffered).toBe(true)
     expect(v.rows.length + v.lines.length + 2).toBeLessThanOrEqual(9)
   })
 
@@ -260,7 +260,7 @@ describe('workFinanceView: этапы жизни', () => {
     expect(v.forecast).toBeNull()
     expect(v.notice).toBeNull()
     expect(v.rows).toEqual([])
-    expect(v.actionsSoon).toBe(false)
+    expect(v.spendOffered).toBe(false)
     expect(v.lines).toEqual(['Техник, IV разряд', 'Стаж 40 лет'])
   })
 
@@ -586,9 +586,13 @@ describe('панель «Работа и финансы» и состояние 
     expect(html).toContain(`2${NBSP}640${NBSP}кр`)
     expect(html).toContain('≈ +1')
     expect(html).toContain('Оценка без случайных событий')
-    expect(html).toContain('Траты и карьера — скоро')
+    expect(html).not.toContain('скоро')
+    expect(html).toMatch(/<button[^>]*disabled[^>]*>Траты и карьера<\/button>/) // жизнь ещё не начата
     expect(html).not.toContain('Образование')
-    expect(html).not.toMatch(/<button[^>]*>\s*(Траты|Карьера)/)
+    store.started = true
+    html = await renderToString(app)
+    expect(html).toMatch(/<button(?![^>]*disabled)[^>]*>Траты и карьера<\/button>/)
+    store.started = false
 
     const mentor = retiree(70, { path: 'mentor', mentor: true })
     store.game = mentor

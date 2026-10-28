@@ -7,7 +7,11 @@ const root = ref<HTMLElement | null>(null)
 let previous: Element | null = null
 
 function onKey(e: KeyboardEvent) {
-  if (e.key === 'Escape' && props.closable) emit('close')
+  if (e.key === 'Escape' && props.closable) {
+    // Escape принадлежит окну: игровые горячие клавиши на window его уже не увидят.
+    e.stopPropagation()
+    emit('close')
+  }
 }
 
 onMounted(() => {

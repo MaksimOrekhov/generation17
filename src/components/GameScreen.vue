@@ -11,6 +11,7 @@ import FocusPicker from './play/FocusPicker.vue'
 import HelpModal from './play/HelpModal.vue'
 import HintCoach from './play/HintCoach.vue'
 import NewLifeModal from './play/NewLifeModal.vue'
+import SpendModal from './play/SpendModal.vue'
 import ChroniclePanel from './panels/ChroniclePanel.vue'
 import FamilyPanel from './panels/FamilyPanel.vue'
 import ForksPanel from './panels/ForksPanel.vue'
@@ -28,7 +29,7 @@ const showHelp = ref(false)
 const confirmNew = ref(false)
 const endingClosed = ref(false)
 
-const modalOpen = computed(() => showHelp.value || confirmNew.value)
+const modalOpen = computed(() => showHelp.value || confirmNew.value || store.shopOpen)
 const showEnding = computed(() => store.game.stopped && !store.result && !endingClosed.value && !confirmNew.value)
 
 useGameLoop()
@@ -80,6 +81,7 @@ function repeat() {
     <HintCoach />
     <EndingModal v-if="showEnding" @close="endingClosed = true" @new-life="fresh" @repeat="repeat" />
     <button v-else-if="store.game.stopped && !store.result" class="btn btn--primary game__again" @click="fresh">Прожить другую жизнь</button>
+    <SpendModal v-if="store.shopOpen" @close="store.closeShop()" />
     <HelpModal v-if="showHelp" @close="showHelp = false" />
     <NewLifeModal v-if="confirmNew" @cancel="confirmNew = false" @fresh="fresh" @repeat="repeat" />
   </div>

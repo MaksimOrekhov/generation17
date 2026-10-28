@@ -35,7 +35,10 @@ const open = ref(false)
       <p v-if="view.forecast" class="wf__caption wf__x" :title="view.forecast.assumptions.join(' ')">{{ view.forecast.caption }}</p>
       <p v-if="view.runway" class="wf__line wf__x">{{ view.runway }}</p>
       <p v-if="view.notice" class="wf__notice wrap" :class="`wf__notice--${view.notice.level}`" role="status">{{ view.notice.text }}</p>
-      <p v-if="view.actionsSoon" class="wf__caption wf__x">Траты и карьера — скоро</p>
+      <button
+        v-if="view.spendOffered" type="button" class="btn btn--accent wf__spend"
+        :disabled="!store.canOpenShop" @click="store.openShop()"
+      >Траты и карьера</button>
       <button v-if="view.savings || view.lines.length > 1" type="button" class="wf__toggle" :aria-expanded="open" @click="open = !open">
         {{ open ? 'Свернуть' : 'Подробнее' }}
       </button>
@@ -60,6 +63,8 @@ const open = ref(false)
 .wf__caption { font-size: 11px; line-height: 1.35; color: var(--faint); }
 .wf__notice { margin-top: 2px; padding: 5px 8px; font-size: 12px; line-height: 1.4; border-left: 2px solid var(--line-2); color: var(--text-soft); background: var(--bg-2); }
 .wf__notice--warn { border-left-color: var(--amber-2); color: var(--amber); }
+.wf__spend { justify-self: stretch; margin-top: 4px; padding: 8px 12px; font-size: 14px; min-height: 40px; }
+.wf__spend:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .wf__toggle { display: none; justify-self: start; margin-top: 2px; padding: 4px 0; font: 500 11px/1.2 var(--font-mono); letter-spacing: .6px; text-transform: uppercase; color: var(--muted); background: none; border: 0; cursor: pointer; }
 .wf__toggle:hover { color: var(--text); }
 .wf__toggle:focus-visible { outline: 1px solid var(--amber); outline-offset: 2px; }

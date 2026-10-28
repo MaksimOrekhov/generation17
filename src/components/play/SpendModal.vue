@@ -1,0 +1,243 @@
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { groupDigits, workFinanceView } from '../../domain/economyView'
+import { spendView } from '../../domain/spendView'
+import type { OfferView, SpendTab } from '../../domain/spendView'
+import { useGameStore } from '../../stores/game'
+import { years } from '../../ui/format'
+import ModalShell from '../common/ModalShell.vue'
+
+defineEmits<{ close: [] }>()
+
+const store = useGameStore()
+// Игра иммутабельна (shallowRef): всё окно пересчитывается при каждой замене состояния.
+const view = computed(() => spendView(store.game))
+const forecast = computed(() => workFinanceView(store.game).forecast)
+
+const tabs: { id: SpendTab; label: string }[] = [
+  { id: 'offers', label: 'Возможности' },
+  { id: 'work', label: 'Работа' },
+  { id: 'mine', label: 'Моё' },
+  { id: 'history', label: 'История' }
+]
+const tab = ref<SpendTab>('offers')
+/** Предложение, ожидающее второго нажатия, и подпись, под которой его запросили. */
+const confirming = ref<{ id: string; label: string } | null>(null)
+const notes = ref<Record<string, { ok: boolean; text: string }>>({})
+
+const DONE: Record<string, string> = {
+  'course-pro': 'Курс пройден. Навык повышен, курс учтён.',
+  'own-cabin': 'Собственная каюта оформлена.',
+  'dome-pass': 'Абонемент подключён.'
+}
+
+// Любое изменение состояния или доступности сбрасывает подтверждение.
+watch(view, v => {
+  const c = confirming.value
+  if (c && v.offers.find(o => o.id === c.id)?.confirmLabel !== c.label) confirming.value = null
+})
+
+function selectTab(next: SpendTab) {
+  tab.value = next
+  confirming.value = null
+  notes.value = {}
+}
+
+function act(offer: OfferView) {
+  if (!offer.available) return
+  if (offer.confirmLabel && confirming.value?.id !== offer.id) {
+    confirming.value = { id: offer.id, label: offer.confirmLabel }
+    return
+  }
+  confirming.value = null
+  const restore = offer.id === 'own-cabin' && offer.buttonLabel === 'Восстановить бесплатно'
+  const ok = store.buy(offer.id)
+  const after = view.value.offers.find(o => o.id === offer.id)
+  notes.value = {
+    ...notes.value,
+    [offer.id]: ok
+      ? { ok, text: restore ? 'Прежняя каюта восстановлена.' : DONE[offer.id]! }
+      : { ok, text: `Не удалось: ${after?.reason ?? 'предложение недоступно.'}` }
+  }
+}
+
+function cancel(id: string) {
+  if (store.cancelServiceById(id)) notes.value = { ...notes.value, [id]: { ok: true, text: 'Абонемент отменён. Будущий платёж убран из прогноза.' } }
+}
+
+const buttonText = (o: OfferView) => confirming.value?.id === o.id ? o.confirmLabel : o.buttonLabel
+</script>
+
+<template>
+  <ModalShell label="Траты и карьера" tone="neutral" closable wide @close="$emit('close')">
+    <div class="spend">
+      <header class="spend__head">
+        <div class="spend__top">
+          <h2 class="spend__title">Траты и карьера</h2>
+          <button type="button" class="btn btn--sm spend__close" aria-label="Закрыть окно" @click="$emit('close')">Закрыть ✕</button>
+        </div>
+        <dl class="spend__stats">
+          <div><dt>Баланс</dt><dd class="spend__money" data-test="balance">{{ view.balanceText }}</dd></div>
+          <div><dt>Внимание года</dt><dd data-test="attention">{{ view.attention }}</dd></div>
+          <div v-if="forecast"><dt>Прогноз за год</dt><dd :class="`spend__fc--${forecast.direction}`" data-test="forecast">{{ forecast.deltaText }} → {{ groupDigits(forecast.after) }}</dd></div>
+        </dl>
+        <div class="spend__tabs" role="tablist" aria-label="Разделы">
+          <button
+            v-for="t in tabs" :id="`spend-tab-${t.id}`" :key="t.id" type="button" role="tab"
+            class="spend__tab" :aria-selected="tab === t.id" :aria-controls="'spend-panel'" @click="selectTab(t.id)"
+          >{{ t.label }}</button>
+        </div>
+      </header>
+
+      <div id="spend-panel" class="spend__body" role="tabpanel" :aria-labelledby="`spend-tab-${tab}`">
+        <template v-if="tab === 'offers'">
+          <article v-for="o in view.offers" :key="o.id" class="offer" :class="{ 'offer--off': !o.available && !o.active }" :data-offer="o.id">
+            <div class="offer__head">
+              <h3 class="offer__title">{{ o.title }}</h3>
+              <span class="offer__status" :class="{ 'offer__status--on': o.active }">{{ o.statusText }}</span>
+            </div>
+            <p class="offer__text">{{ o.description }}</p>
+            <ul class="offer__facts">
+              <li v-if="o.oneTimeText">{{ o.oneTimeText }}</li>
+              <li v-if="o.annualText">{{ o.annualText }}</li>
+              <li v-if="o.attentionText">{{ o.attentionText }}</li>
+            </ul>
+            <p v-for="line in o.opens" :key="line" class="offer__opens">Открывает: {{ line }}</p>
+            <p v-for="w in (o.available ? o.warnings : [])" :key="w" class="offer__warn" role="note">⚠ {{ w }}</p>
+            <p v-if="o.reason" class="offer__reason" :class="{ 'offer__reason--info': o.active }" data-test="reason">{{ o.reason }}</p>
+            <div class="offer__act">
+              <button
+                type="button" class="btn offer__btn" :class="confirming?.id === o.id ? 'btn--primary' : 'btn--accent'"
+                :disabled="!o.available" data-test="action" @click="act(o)"
+              >{{ buttonText(o) }}</button>
+              <button v-if="confirming?.id === o.id" type="button" class="btn btn--ghost" @click="confirming = null">Отмена</button>
+            </div>
+            <p v-if="notes[o.id]" class="offer__note" :class="{ 'offer__note--bad': !notes[o.id]!.ok }" role="status">{{ notes[o.id]!.text }}</p>
+          </article>
+        </template>
+
+        <template v-else-if="tab === 'work'">
+          <dl class="rows">
+            <div v-for="r in view.work.rows" :key="r.label" class="rows__row"><dt>{{ r.label }}</dt><dd>{{ r.value }}</dd></div>
+          </dl>
+          <p v-if="view.work.hint" class="spend__hint">{{ view.work.hint }}</p>
+          <p class="spend__hint">Переобучение и изменение нагрузки пока недоступны.</p>
+        </template>
+
+        <template v-else-if="tab === 'mine'">
+          <section class="block">
+            <h3 class="block__title">Жильё</h3>
+            <p class="block__main">{{ view.mine.housing.name }}</p>
+            <p class="block__sub">{{ view.mine.housing.costText }}</p>
+            <p v-if="view.mine.housing.rightText" class="block__sub" data-test="right">{{ view.mine.housing.rightText }}</p>
+          </section>
+          <section class="block">
+            <h3 class="block__title">Услуги</h3>
+            <p v-if="!view.mine.services.length" class="block__sub">Нет подключённых услуг.</p>
+            <div v-for="s in view.mine.services" :key="s.id" class="svc">
+              <div class="svc__info">
+                <p class="block__main">{{ s.title }}</p>
+                <p class="block__sub">{{ s.annualText }} · {{ s.statusText }}</p>
+              </div>
+              <button type="button" class="btn btn--sm" :aria-label="`Отказаться: ${s.title}`" data-test="cancel" @click="cancel(s.id)">Отказаться</button>
+            </div>
+            <p v-for="(n, id) in notes" :key="id" class="offer__note" role="status">{{ n.text }}</p>
+          </section>
+          <section class="block">
+            <h3 class="block__title">Имущество</h3>
+            <p v-if="!view.mine.owned.length" class="block__sub">Пока ничего не приобретено.</p>
+            <p v-for="o in view.mine.owned" :key="o.id" class="block__sub"><b>{{ o.title }}</b> · {{ o.text }}</p>
+          </section>
+        </template>
+
+        <template v-else>
+          <section class="block">
+            <h3 class="block__title">Последние годы</h3>
+            <p v-if="!view.history.years.length" class="block__sub">История появится после первого года самостоятельной жизни.</p>
+            <table v-else class="hist">
+              <thead><tr><th scope="col">Возраст</th><th scope="col">Доход</th><th scope="col">Обязательства</th><th scope="col">Фонд</th><th scope="col">Баланс</th></tr></thead>
+              <tbody>
+                <tr v-for="r in view.history.years" :key="r.age">
+                  <th scope="row">{{ r.age }}</th><td>{{ groupDigits(r.wage + r.pension) }}</td><td>{{ groupDigits(r.bills) }}</td><td>{{ r.aid ? groupDigits(r.aid) : '—' }}</td><td>{{ groupDigits(r.balance) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="block">
+            <h3 class="block__title">Операции</h3>
+            <p v-if="!view.history.ledger.length" class="block__sub">Операций пока нет.</p>
+            <p v-for="t in view.history.ledger" :key="t.n" class="txn"><span>{{ years(t.age) }} · {{ t.label }}</span><b>{{ t.signed }}</b></p>
+          </section>
+        </template>
+      </div>
+    </div>
+  </ModalShell>
+</template>
+
+<style scoped>
+.spend { display: grid; min-width: 0; }
+.spend__head { position: sticky; top: 0; z-index: 1; display: grid; gap: 10px; padding: 14px 18px 0; background: var(--panel); border-bottom: 1px solid var(--line); }
+.spend__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.spend__title { font: 600 22px/1.2 var(--font-display); min-width: 0; }
+.spend__close { min-height: 40px; flex: none; }
+.spend__stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0; }
+.spend__stats div { min-width: 0; }
+.spend__stats dt { font: 500 11px/1.3 var(--font-mono); letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.spend__stats dd { margin: 0; font: 600 16px/1.3 var(--font-mono); color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.spend__money { color: var(--amber); font-size: 20px !important; }
+.spend__fc--up { color: var(--good) !important; }
+.spend__fc--down { color: var(--bad) !important; }
+.spend__tabs { display: flex; gap: 2px; overflow-x: auto; }
+.spend__tab { flex: 1 1 auto; min-height: 44px; padding: 8px 12px; font: 500 14px/1.2 var(--font-ui); color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+.spend__tab:hover { color: var(--text); }
+.spend__tab[aria-selected='true'] { color: var(--amber); border-bottom-color: var(--amber); }
+.spend__tab:focus-visible, .btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.spend__body { display: grid; gap: 12px; padding: 16px 18px 20px; min-width: 0; }
+.spend__hint { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+.offer { display: grid; gap: 7px; padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--line); min-width: 0; }
+.offer--off { opacity: .92; }
+.offer p, .block p { margin: 0; }
+.offer__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.offer__title { font: 600 16px/1.3 var(--font-ui); }
+.offer__status { flex: none; font: 500 11px/1.2 var(--font-mono); letter-spacing: .5px; text-transform: uppercase; color: var(--muted); }
+.offer__status--on { color: var(--good); }
+.offer__text { font-size: 13.5px; line-height: 1.5; color: var(--text-soft); }
+.offer__facts { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 500 13px/1.4 var(--font-mono); color: var(--amber); }
+.offer__opens { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.offer__warn { padding: 5px 8px; font-size: 12.5px; line-height: 1.45; color: var(--amber); border-left: 2px solid var(--amber-2); background: var(--panel); overflow-wrap: anywhere; }
+.offer__reason { font-size: 13px; line-height: 1.45; color: var(--bad); overflow-wrap: anywhere; }
+.offer__reason--info { color: var(--muted); }
+.offer__act { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.offer__btn { min-height: 44px; padding: 8px 16px; font-size: 14px; max-width: 100%; }
+.offer__note { font-size: 13px; line-height: 1.45; color: var(--good); overflow-wrap: anywhere; }
+.offer__note--bad { color: var(--bad); }
+
+.rows { display: grid; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
+.rows__row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; background: var(--bg-2); }
+.rows dt { color: var(--muted); font-size: 13px; }
+.rows dd { margin: 0; text-align: right; font: 500 13px var(--font-mono); color: var(--text); overflow-wrap: anywhere; }
+
+.block { display: grid; gap: 5px; padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--line); min-width: 0; }
+.block__title { font: 500 11px/1.3 var(--font-mono); letter-spacing: .8px; text-transform: uppercase; color: var(--muted); }
+.block__main { font: 600 14.5px/1.4 var(--font-ui); color: var(--text); }
+.block__sub { font-size: 13px; line-height: 1.5; color: var(--text-soft); overflow-wrap: anywhere; }
+.svc { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.svc .btn { min-height: 40px; flex: none; }
+
+.hist { width: 100%; border-collapse: collapse; font: 500 12.5px var(--font-mono); font-variant-numeric: tabular-nums; }
+.hist th, .hist td { padding: 6px 4px; text-align: right; border-bottom: 1px solid var(--line); }
+.hist thead th { font-size: 10.5px; color: var(--muted); font-weight: 500; }
+.hist tbody th { text-align: left; color: var(--muted); font-weight: 500; }
+.txn { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--text-soft); }
+.txn b { flex: none; font-family: var(--font-mono); color: var(--text); }
+
+@media (max-width: 560px) {
+  .spend__head { padding: 12px 12px 0; }
+  .spend__body { padding: 14px 12px 18px; }
+  .spend__title { font-size: 19px; }
+  .spend__tab { padding: 8px 8px; font-size: 13px; }
+  .offer__btn { width: 100%; }
+  .hist th, .hist td { padding: 6px 2px; font-size: 11.5px; }
+}
+</style>

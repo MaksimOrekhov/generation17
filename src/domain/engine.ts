@@ -1,4 +1,4 @@
-import { initEconomy, recordEconomicTransaction, settleYear, closeEstate } from './economy'
+import { initEconomy, projectYear, recordEconomicTransaction, settleYear, closeEstate } from './economy'
 import type { Atmosphere, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
@@ -9,7 +9,7 @@ import { ATMOSPHERE_LEVEL } from './constants'
 import { canFocus, FOCUS_FROM_AGE } from './focus'
 import { afterDecision, cool, initialDirector, pickStorylet } from './director'
 import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality'
-import { applyOfferChanges, canBuy, getOffer } from './offers'
+import { applyOfferChanges, canBuy, getOffer, type PurchaseTarget } from './offers'
 
 export const ATTENTION_PER_YEAR = 3
 const HISTORY_LIMIT = 1500
@@ -282,8 +282,8 @@ export function takeMoment(state: GameState): GameState {
 }
 
 /** Applies an available catalog purchase without mutating state or consuming RNG. */
-export function purchase(state: GameState, offerId: string): GameState {
-  const availability = canBuy(state, offerId)
+export function purchase(state: GameState, offerId: string, target?: PurchaseTarget): GameState {
+  const availability = canBuy(state, offerId, target)
   if (!availability.available) return state
   const offer = getOffer(offerId)
   if (!offer) return state
@@ -301,13 +301,110 @@ export function purchase(state: GameState, offerId: string): GameState {
   e.balance -= availability.oneTimeCost
   e.totals.spent += availability.oneTimeCost
   recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, offer.title)
-  applyOfferChanges(g, offer)
+  applyOfferChanges(g, offer, target)
   if (offer.effects.stats && !previouslyOwned) applyEffects(g, { stats: offer.effects.stats })
+  let logTitle = 'Личные средства'
+  let logText = `Приобретено: ${offer.title}. ${offer.description}`
+  if (offer.effects.sectorVisit && target?.sectorId) {
+    const sector = sectorById(target.sectorId)
+    applyEffects(g, { memory: `Увидел сектор «${sector.name}».` })
+    logTitle = 'Экскурсия в дальний сектор'
+    logText = `Ты побывал в секторе «${sector.name}», ${sector.deck}.`
+  }
+  if (offer.effects.familyTripBond && target?.participantIds) {
+    const bonds = Object.fromEntries(target.participantIds.map(id => [id, offer.effects.familyTripBond!]))
+    const names = target.participantIds.map(id => g.people.find(person => person.id === id)!.name)
+    const guests = names.length === 2 ? names.join(' и ') : `${names.slice(0, -1).join(', ')} и ${names.at(-1)}`
+    applyEffects(g, {
+      bonds,
+      flags: { familyTrip: true },
+      memory: `Провёл неделю на обзорной палубе вместе с ${guests}.`
+    })
+    logTitle = 'Неделя на обзорной палубе'
+    logText = `Ты провёл неделю вместе с ${guests}.`
+  }
   if (offer.attention > 0) g.attention -= offer.attention
   e.lastBought[offer.id] = g.age
   // An expired H1 right no longer applies after paying the ordinary entry fee.
   if (e.housingRight?.tier === 1 && e.housingRight.until < g.age) e.housingRight = null
-  addLog(g, 'life', 'Личные средства', `Приобретено: ${offer.title}. ${offer.description}`)
+  addLog(g, 'life', logTitle, logText)
+  return g
+}
+
+export interface LoadAvailability {
+  available: boolean
+  currentLoad: number
+  nextLoad: number
+  annualGap: number
+  requiredReserve: number
+  projectedBills: number
+  projectedIncomeAtReducedLoad: number
+  reason: string | null
+}
+
+const hasChosenRetirement = (g: GameState) => {
+  const path = g.flags.retirementPath
+  return g.pending === 'retirement'
+    || path === 'left' || path === 'mentor'
+    || g.economy.work.path === 'left' || g.economy.work.path === 'mentor'
+    || g.flags.retirement === true && g.age >= 60 && path !== 'continue'
+}
+
+/** Pure load-change eligibility and reserve projection for the next year. */
+export function canSetLoad(state: GameState, nextLoad: number): LoadAvailability {
+  const work = state.economy.work
+  let reason: string | null = null
+  let projectedBills = 0
+  let projectedIncomeAtReducedLoad = 0
+  let annualGap = 0
+  let requiredReserve = 0
+
+  if (nextLoad !== 1 && nextLoad !== 0.6) reason = 'Нагрузка должна быть равна 1 или 0,6.'
+  else if (state.stopped || state.economy.estate !== null) reason = 'Изменить нагрузку после смерти нельзя.'
+  else if (hasChosenRetirement(state)) reason = 'Сначала завершите решение о выходе на пенсию.'
+  else if (work.kind !== 'working') reason = 'Изменение нагрузки доступно только при обычной работе.'
+  else if (work.job !== state.protagonist.job) reason = 'Сначала завершите переобучение.'
+  else if (work.load === nextLoad) reason = 'Такая нагрузка уже установлена.'
+  else if (nextLoad === 0.6 && state.age < 40) reason = 'Сократить нагрузку можно с 40 лет.'
+  else if (nextLoad === 0.6 && work.load !== 1) reason = 'Сокращение доступно только с полной ставки.'
+  else if (nextLoad === 1 && work.load !== 0.6) reason = 'Вернуться на полную ставку можно с нагрузки 0,6.'
+
+  if (!reason && nextLoad === 0.6) {
+    const forecastState = structuredClone(state)
+    forecastState.economy.work.load = 0.6
+    // Prevent affordability-driven housing/service cancellations from hiding the obligations being assessed.
+    forecastState.economy.balance = Number.MAX_SAFE_INTEGER - 10_000
+    const forecast = projectYear(forecastState)
+    const row = forecast.economy.years.at(-1)
+    projectedBills = row?.bills ?? 0
+    projectedIncomeAtReducedLoad = (row?.wage ?? 0) + (row?.pension ?? 0)
+    annualGap = Math.max(0, projectedBills - projectedIncomeAtReducedLoad)
+    requiredReserve = annualGap * 3
+    if (state.economy.balance < requiredReserve) {
+      reason = `Для сокращения нагрузки нужен резерв ${requiredReserve} кр.; сейчас ${state.economy.balance} кр.`
+    }
+  }
+
+  return {
+    available: reason === null,
+    currentLoad: work.load,
+    nextLoad,
+    annualGap,
+    requiredReserve,
+    projectedBills,
+    projectedIncomeAtReducedLoad,
+    reason
+  }
+}
+
+/** Changes only the next annual settlement's workload; it neither pays nor consumes attention/RNG. */
+export function setLoad(state: GameState, nextLoad: number): GameState {
+  if (!canSetLoad(state, nextLoad).available) return state
+  const g = structuredClone(state)
+  g.economy.work.load = nextLoad as 0.6 | 1
+  addLog(g, 'life', 'Рабочий режим', nextLoad === 0.6
+    ? 'Рабочая нагрузка сокращена до 0,6 ставки.'
+    : 'Рабочая нагрузка возвращена на полную ставку.')
   return g
 }
 

@@ -1,8 +1,9 @@
 import { ECONOMY_TUNING, projectYear, type Housing } from './economy'
-import type { GameState, Job, Skill, Stat } from './types'
+import { isKnown, residenceOf, sectors } from './birth'
+import type { GameState, Job, SectorId, Skill, Stat } from './types'
 
 export type OfferType = 'repeatable' | 'unique' | 'regular'
-export type OfferCategory = 'career' | 'housing' | 'service'
+export type OfferCategory = 'career' | 'housing' | 'service' | 'travel' | 'family'
 
 export interface OfferEffects {
   stats?: Partial<Record<Stat, number>>
@@ -11,6 +12,8 @@ export interface OfferEffects {
   housing?: Housing
   recordOwnership?: boolean
   service?: boolean
+  sectorVisit?: boolean
+  familyTripBond?: number
 }
 
 export interface OfferDefinition {
@@ -21,6 +24,7 @@ export interface OfferDefinition {
   oneTimeCost: number
   annualCost: number
   freeFor?: Job
+  discount?: { job: Job; percent: number }
   minAge: number
   maxAge?: number
   attention: number
@@ -84,6 +88,35 @@ export const OFFERS = {
       if (closedByShipState(g)) return 'Биокупол временно закрыт.'
       return null
     }
+  },
+  'sector-trip': {
+    id: 'sector-trip', title: 'Экскурсия в дальний сектор',
+    description: 'Знакомство с другой частью корабля.',
+    category: 'travel', oneTimeCost: 240, annualCost: 0,
+    discount: { job: 'Координатор', percent: 25 },
+    minAge: 18, attention: 1, type: 'unique',
+    opens: ['Факт посещения выбранного сектора и память о нём.'],
+    effects: { stats: { knowledge: 1 }, sectorVisit: true },
+    requirements: (g: GameState) => availableSectorOptions(g).length === 0
+      ? 'Нет доступных для посещения секторов.'
+      : null
+  },
+  'family-trip': {
+    id: 'family-trip', title: 'Неделя вместе на обзорной палубе',
+    description: 'Совместная поездка с близкими людьми.',
+    category: 'family', oneTimeCost: 320, annualCost: 0,
+    minAge: 20, attention: 1, type: 'repeatable',
+    opens: ['Общая память о неделе вместе; флаг familyTrip для будущих отсылок.'],
+    effects: { familyTripBond: 2 },
+    requirements: (g: GameState) => {
+      if (familyTripParticipants(g).length < 2) return 'Нужно не менее двух известных близких людей.'
+      const previous = g.economy.lastBought['family-trip']
+      if (previous !== undefined && g.age - previous < 5) {
+        const remaining = 5 - (g.age - previous)
+        return `Следующая совместная поездка доступна через ${remaining} ${remaining === 1 ? 'год' : 'года'}.`
+      }
+      return null
+    }
   }
 } satisfies Record<string, OfferDefinition>
 
@@ -99,7 +132,44 @@ export interface PurchaseAvailability {
   warnings: string[]
   opens: string[]
   action: 'purchase' | 'restore'
+  sectorOptions?: SectorOption[]
+  familyParticipants?: FamilyParticipantOption[]
 }
+
+export interface PurchaseTarget {
+  sectorId?: SectorId
+  participantIds?: string[]
+}
+
+export interface SectorOption {
+  id: SectorId
+  name: string
+  deck: string
+}
+
+export interface FamilyParticipantOption {
+  id: string
+  name: string
+  role: string
+  bond: number
+}
+
+const sectorVisitKey = (id: SectorId) => `visit-sector-${id}`
+
+export function availableSectorOptions(g: GameState): SectorOption[] {
+  const home = residenceOf(g)
+  return sectors
+    .filter(sector => sector.id !== home && g.economy.owned[sectorVisitKey(sector.id)] === undefined)
+    .map(({ id, name, deck }) => ({ id, name, deck }))
+}
+
+export function familyTripParticipants(g: GameState): FamilyParticipantOption[] {
+  return g.people
+    .filter(person => isKnown(g, person.id) && person.bond >= 50)
+    .map(({ id, name, role, bond }) => ({ id, name, role, bond }))
+}
+
+const sectorIds = new Set<SectorId>(sectors.map(sector => sector.id))
 
 export const getOffer = (id: string): OfferDefinition | undefined =>
   Object.prototype.hasOwnProperty.call(OFFERS, id) ? OFFERS[id as OfferId] : undefined
@@ -108,7 +178,7 @@ const validHousingReturn = (g: GameState) =>
   g.economy.housing === 0 && g.economy.housingRight?.tier === 1 && g.economy.housingRight.until >= g.age
 
 /** Applies catalogued state mutations to a caller-owned copy; stat effects use engine.applyEffects(). */
-export function applyOfferChanges(g: GameState, offer: OfferDefinition) {
+export function applyOfferChanges(g: GameState, offer: OfferDefinition, target?: PurchaseTarget) {
   const effects = offer.effects
   if (effects.professionalSkill) {
     const key = effects.professionalSkill.byJob[g.protagonist.job]
@@ -121,6 +191,10 @@ export function applyOfferChanges(g: GameState, offer: OfferDefinition) {
   if (effects.housing !== undefined) g.economy.housing = effects.housing
   if (effects.recordOwnership) g.economy.owned[offer.id] = g.age
   if (effects.service) g.economy.services[offer.id] = g.age
+  if (effects.sectorVisit && target?.sectorId) {
+    // Keep visit facts in the kebab-case economic collection so they survive repair/save.
+    g.economy.owned[sectorVisitKey(target.sectorId)] = g.age
+  }
 }
 
 function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, action: 'purchase' | 'restore'): string[] {
@@ -146,21 +220,49 @@ function projectedWarnings(g: GameState, offer: OfferDefinition, cost: number, a
 }
 
 /** Pure availability check. The hypothetical next-year settlement runs on a clone and consumes no RNG. */
-export function canBuy(g: GameState, offerId: string): PurchaseAvailability {
+export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget): PurchaseAvailability {
   const offer = getOffer(offerId)
   if (!offer) return { offerId, available: false, oneTimeCost: 0, annualCost: 0, attention: 0, reason: 'Такого предложения нет.', warnings: [], opens: [], action: 'purchase' }
 
   const restore = offer.id === 'own-cabin' && validHousingReturn(g)
   const action = restore ? 'restore' : 'purchase'
-  const oneTimeCost = restore ? 0 : offer.oneTimeCost
+  const oneTimeCost = restore ? 0 : offer.discount?.job === g.protagonist.job
+    ? Math.round(offer.oneTimeCost * (100 - offer.discount.percent) / 100)
+    : offer.oneTimeCost
   const annualCost = offer.freeFor === g.protagonist.job ? 0 : offer.annualCost
+  const sectorOptions = offer.id === 'sector-trip' ? availableSectorOptions(g) : undefined
+  const familyParticipants = offer.id === 'family-trip' ? familyTripParticipants(g) : undefined
   let reason: string | null = null
 
   if (g.stopped || g.economy.estate !== null) reason = 'Персонаж умер.'
   else if (g.pending) reason = 'Сначала завершите ожидающее сюжетное решение.'
   else if (g.age < offer.minAge) reason = `Доступно с ${offer.minAge} лет.`
   else if (offer.maxAge !== undefined && g.age > offer.maxAge) reason = `Доступно до ${offer.maxAge} лет включительно.`
-  else reason = offer.requirements(g)
+  else {
+    reason = offer.requirements(g)
+    if (!reason && offer.id === 'sector-trip') {
+      const sectorId = target?.sectorId
+      if (!sectorId) reason = sectorOptions!.length ? 'Выберите сектор для экскурсии.' : 'Нет доступных для посещения секторов.'
+      else if (!sectorIds.has(sectorId)) reason = 'Выбран неизвестный сектор.'
+      else if (sectorId === residenceOf(g)) reason = 'Нельзя посетить собственный текущий сектор.'
+      else if (g.economy.owned[sectorVisitKey(sectorId)] !== undefined) reason = 'Этот сектор уже посещён.'
+    }
+    if (!reason && offer.id === 'family-trip') {
+      const participantIds = target?.participantIds
+      if (!Array.isArray(participantIds)) reason = 'Выберите двух или трёх близких участников.'
+      else if (participantIds.length < 2) reason = 'Для поездки нужно выбрать не менее двух участников.'
+      else if (participantIds.length > 3) reason = 'В поездку можно взять не более трёх участников.'
+      else if (new Set(participantIds).size !== participantIds.length) reason = 'Список участников содержит повторы.'
+      else {
+        for (const id of participantIds) {
+          const person = g.people.find(candidate => candidate.id === id)
+          if (!person) { reason = `Человек «${id}» не известен герою.`; break }
+          if (!isKnown(g, id)) { reason = `${person.name} не жив или ещё не знаком герою.`; break }
+          if (person.bond < 50) { reason = `${person.name} пока не считается близким человеком.`; break }
+        }
+      }
+    }
+  }
 
   if (!reason && g.attention < offer.attention) reason = `Не хватает ${offer.attention - g.attention} единицы внимания.`
   if (!reason && g.economy.balance < oneTimeCost) reason = `Не хватает ${oneTimeCost - g.economy.balance} кр.`
@@ -168,7 +270,9 @@ export function canBuy(g: GameState, offerId: string): PurchaseAvailability {
   return {
     offerId, available: reason === null, oneTimeCost, annualCost, attention: offer.attention,
     reason, warnings: reason === null ? projectedWarnings(g, offer, oneTimeCost, action) : [],
-    opens: [...offer.opens], action
+    opens: [...offer.opens], action,
+    ...(sectorOptions ? { sectorOptions } : {}),
+    ...(familyParticipants ? { familyParticipants } : {})
   }
 }
 

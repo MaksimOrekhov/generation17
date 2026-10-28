@@ -1,0 +1,3651 @@
+{
+  "schemaVersion": 1,
+  "engineBaseRevision": "add6aa3c90a7b555333609a4326f9bd19699cab5",
+  "scenario": "S0",
+  "seeds": {
+    "first": 102,
+    "last": 201,
+    "count": 100
+  },
+  "mode": "B",
+  "methodology": "Outcome-only supplementary replays, same policies and real actions; catalogue counterfactuals disabled. Next grade is the first grade above the initial post-switch grade in the new job. Missing recovery/promotion is censored, never zero. Late eligibility observed at real tick/beat states, before acceptance; no retirement-path-specific late content is invented.",
+  "retraining": {
+    "25/0": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "mean": 4
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -2.662381935798244,
+        "p50": 0.10799999999998988,
+        "p90": 3.7775468994235935,
+        "mean": 0.3079165240483034
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.7245361372222248,
+            "p50": 2.789439869688934,
+            "p90": 3.1804274540942914,
+            "mean": 1.2242911782567674
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -1.896953943662293,
+            "p50": 0.6742285955458698,
+            "p90": 1.5836663803385136,
+            "mean": 0.12031367740736343
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.3312491353499212,
+            "p50": 1.1643858828302243,
+            "p90": 4.926354134957331,
+            "mean": 1.378642126410205
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -2.4837501380918323,
+            "p50": 0.1963832272040733,
+            "p90": 1.8962008825702235,
+            "mean": -0.24541458608053723
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -1.3483938191278895,
+            "p50": 0.1579500000000138,
+            "p90": 4.739815499679532,
+            "mean": 0.9981330438229534
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 2,
+          "nextGradeAfterSwitchYears": {
+            "observations": 2,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 2,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 2,
+            "p10": 0.08993912260899037,
+            "p50": 0.6387229290716903,
+            "p90": 1.1875067355343902,
+            "mean": 0.6387229290716903
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -0.9497166279265868,
+            "p50": -0.05253328033261084,
+            "p90": 0.9116576232161716,
+            "mean": 0.0082398073015435
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 10,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 10,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 10,
+            "p10": -1.2823418885748794,
+            "p50": 1.9119593104661305,
+            "p90": 5.846814760146212,
+            "mean": 2.2669310475931908
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.698812846552002,
+            "p50": 0.3334658109785096,
+            "p90": 0.7730186935662928,
+            "mean": 0.11362396630722316
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -2.5874178068223443,
+            "p50": 0.06754500000000974,
+            "p90": 2.775326609992476,
+            "mean": 0.03538925367328845
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -4.863297959833003,
+            "p50": -1.971350371548624,
+            "p90": 0.328620481406265,
+            "mean": -2.0395537982587277
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -4.479891212673145,
+            "p50": -1.4297806515152303,
+            "p90": 0.7514350753030037,
+            "mean": -1.7194122629617905
+          }
+        }
+      }
+    },
+    "25/1": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "mean": 4
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -3.6690929022127987,
+        "p50": 0.1860712067225947,
+        "p90": 4.008239961682697,
+        "mean": 0.2469845917652872
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -3.043682335289212,
+            "p50": 0.42308420369911914,
+            "p90": 2.886843735305952,
+            "mean": 0.08874853457195304
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.3148361630732566,
+            "p50": 0.6637276159492131,
+            "p90": 3.77342997040944,
+            "mean": 0.9330292111635264
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.5669767748055847,
+            "p50": 0,
+            "p90": 4.274002600019745,
+            "mean": 1.0325205731749407
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -0.8759967146773163,
+            "p50": 0.3797730660516123,
+            "p90": 3.195411213102901,
+            "mean": 0.9245532520328786
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 2,
+          "nextGradeAfterSwitchYears": {
+            "observations": 2,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 2,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 2,
+            "p10": -4.369482988416341,
+            "p50": -3.778867132609058,
+            "p90": -3.1882512768017746,
+            "mean": -3.778867132609058
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.4208333407020377,
+            "p50": 1.118132794992956,
+            "p90": 3.9159349398146492,
+            "mean": 0.6367820095699184
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.698812846552002,
+            "p50": 0.36099904156871787,
+            "p90": 0.7113693348676406,
+            "mean": 0.13990531897873962
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -0.3299991364717371,
+            "p50": 0.14122700000002197,
+            "p90": 1.5807687830649397,
+            "mean": 0.5018636804384968
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 10,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 10,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 10,
+            "p10": -0.05237444749637915,
+            "p50": 2.7901795878232676,
+            "p90": 6.06770400920406,
+            "mean": 2.9634678312838347
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -4.4139084436746785,
+            "p50": -1.7344874640152526,
+            "p90": -0.28154176515277385,
+            "mean": -2.143312557614235
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -5.891560229937575,
+            "p50": 0.6656505265038533,
+            "p90": 2.935592054047362,
+            "mean": -0.4296493029246061
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -5.339664393405751,
+            "p50": -1.7390984800047988,
+            "p90": -0.39534891916531756,
+            "mean": -2.635303961096928
+          }
+        }
+      }
+    },
+    "25/2": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "mean": 4.01010101010101
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -3.018126360886046,
+        "p50": 0.2770146783544405,
+        "p90": 3.8438050789791673,
+        "mean": 0.19846751589771813
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.5677338512941958,
+            "p50": 0.7269688277266013,
+            "p90": 4.83816465179932,
+            "mean": 0.8374832867082317
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4.6,
+            "mean": 4.2
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.7407635207360839,
+            "p50": 0,
+            "p90": 2.8830730102479425,
+            "mean": 0.4997790301614643
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -2.1766784952909966,
+            "p50": 0.7100754781185259,
+            "p90": 3.254585777825035,
+            "mean": 0.5959942535508548
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 2,
+          "nextGradeAfterSwitchYears": {
+            "observations": 2,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 2,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 2,
+            "p10": -2.638547814217783,
+            "p50": -1.1743498196891053,
+            "p90": 0.2898481748395727,
+            "mean": -1.1743498196891053
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -2.530059468905935,
+            "p50": -0.10162805286456944,
+            "p90": 3.6088297969789527,
+            "mean": -0.25842072794923315
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": 0.32150763503045426,
+            "p50": 0.5830143812100914,
+            "p90": 5.965209674704505,
+            "mean": 1.8899164772802861
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 10,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 10,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 10,
+            "p10": -1.9044067066020602,
+            "p50": 1.407136610183052,
+            "p90": 6.057307974729646,
+            "mean": 1.8673856810928426
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -1.9240621726531515,
+            "p50": 0.265684260332975,
+            "p90": 1.946195390908997,
+            "mean": -0.06042787036128449
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -3.004042558593184,
+            "p50": -0.07363345545429922,
+            "p90": 1.4020616757534279,
+            "mean": -0.5245338624645823
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -4.559047363477859,
+            "p50": -1.4370973570020737,
+            "p90": 0,
+            "mean": -2.1825772147417766
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -3.6693195550695137,
+            "p50": -1.596571392263975,
+            "p90": 0.5302078829809638,
+            "mean": -1.5785610214508417
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 4,
+            "p90": 4,
+            "mean": 4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -2.086510392437205,
+            "p50": 0.41367621628123175,
+            "p90": 2.21585565351468,
+            "mean": 0.26369557592446763
+          }
+        }
+      }
+    },
+    "35/0": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 11.8,
+        "p50": 15,
+        "p90": 18.200000000000003,
+        "mean": 14.565656565656566
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -1.8651114295983033,
+        "p50": 0,
+        "p90": 2.595428402123105,
+        "mean": 0.07496251866454827
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 8,
+            "p50": 12,
+            "p90": 14,
+            "mean": 11.333333333333334
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -1.202049498700795,
+            "p50": 1.4859581313944616,
+            "p90": 5.005109427080178,
+            "mean": 1.763006019924615
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 15.2,
+            "p50": 19,
+            "p90": 19.6,
+            "mean": 17.8
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -0.8583694054348314,
+            "p50": -0.051333749999997735,
+            "p90": 0,
+            "mean": -0.33388630554822496
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 14,
+            "p90": 18,
+            "mean": 14.818181818181818
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -3.460664100567925,
+            "p50": 0.6194320626687357,
+            "p90": 3.618051716435346,
+            "mean": 0.7215962065504429
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 12,
+            "p50": 16.5,
+            "p90": 18,
+            "mean": 15.416666666666666
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.1449041531121025,
+            "p50": 0.3491596107695827,
+            "p90": 3.686224424099847,
+            "mean": 0.7549421740454623
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 10.3,
+            "p50": 16,
+            "p90": 19,
+            "mean": 14.875
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -0.6572514790170161,
+            "p50": -0.03203788358706561,
+            "p90": 0.5373880976937483,
+            "mean": -0.009368768344456768
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 5.8,
+            "p50": 13,
+            "p90": 13,
+            "mean": 10
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -0.09947180529686647,
+            "p50": 0,
+            "p90": 0.008604556875002346,
+            "mean": -0.03786135350911005
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 11.7,
+            "p50": 13.5,
+            "p90": 18,
+            "mean": 14.375
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -2.686177708898226,
+            "p50": -0.040005000000000734,
+            "p90": 0.16126398632011957,
+            "mean": -0.9089137088458781
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 11.8,
+            "p50": 12,
+            "p90": 16.2,
+            "mean": 13.444444444444445
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -0.6362050145710754,
+            "p50": 0.4016216250000184,
+            "p90": 2.1281793640076816,
+            "mean": 0.5724136562415099
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 13,
+            "p90": 19,
+            "mean": 15.090909090909092
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.45318733269679967,
+            "p50": 0.036000000000001364,
+            "p90": 0.40278016467995315,
+            "mean": -0.10476125726729632
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 13,
+            "p10": 5.400000000000001,
+            "p50": 17,
+            "p90": 18,
+            "mean": 14.384615384615385
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -1.4997158002209314,
+            "p50": 0,
+            "p90": 2.4878607949086,
+            "mean": 0.021899100490162374
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 12,
+            "p50": 17,
+            "p90": 17.4,
+            "mean": 15
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -3.079947284843916,
+            "p50": -0.8319910720542367,
+            "p90": 0.7219370184265533,
+            "mean": -1.0622188190424109
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 13,
+            "p50": 16,
+            "p90": 18,
+            "mean": 15.666666666666666
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -2.9983079186694184,
+            "p50": -0.9004533942682151,
+            "p90": -0.03765937499999694,
+            "mean": -1.3121402293125435
+          }
+        }
+      }
+    },
+    "35/1": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 11,
+        "p50": 15,
+        "p90": 19,
+        "mean": 14.747474747474747
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -2.0099881130207535,
+        "p50": 0,
+        "p90": 2.4400469229255184,
+        "mean": 0.1964538950279487
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 13.2,
+            "p50": 17,
+            "p90": 18,
+            "mean": 16
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.2267506931360983,
+            "p50": -0.051333749999997735,
+            "p90": 0.04319999999999312,
+            "mean": -0.467962230218383
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 15,
+            "p90": 18,
+            "mean": 15.272727272727273
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.5301178304572289,
+            "p50": 0.21859698423010343,
+            "p90": 1.8385793885895083,
+            "mean": 0.4513158379993217
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 8,
+            "p50": 12.5,
+            "p90": 15,
+            "mean": 11.833333333333334
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -1.2302962823573793,
+            "p50": 0,
+            "p90": 4.541642211328153,
+            "mean": 1.1037819763235912
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 8.9,
+            "p50": 16.5,
+            "p90": 19,
+            "mean": 14.5
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -1.265789460757692,
+            "p50": 0.3698600205560396,
+            "p90": 1.5263263684001869,
+            "mean": 0.19887711823111154
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 6,
+            "p50": 14,
+            "p90": 14,
+            "mean": 10.666666666666666
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -3.028906156860148,
+            "p50": -0.4031307843007994,
+            "p90": -0.1008215999851586,
+            "mean": -1.371241696069011
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 13,
+            "p50": 18,
+            "p90": 19,
+            "mean": 16.666666666666668
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": 0,
+            "p50": 0.5786657735501493,
+            "p90": 3.5636245322906577,
+            "mean": 1.5015640434137516
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 13,
+            "p90": 17,
+            "mean": 14.363636363636363
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.48918733269680104,
+            "p50": 0.036000000000001364,
+            "p90": 0.36099904156871787,
+            "mean": -0.1101029576555897
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 12.7,
+            "p50": 15.5,
+            "p90": 18.6,
+            "mean": 15.5
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -3.1894997974908375,
+            "p50": -0.2738948123973586,
+            "p90": 1.5076053780461078,
+            "mean": -0.597920805566357
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 11,
+            "p50": 13,
+            "p90": 18.4,
+            "mean": 14.222222222222221
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": 0,
+            "p50": 0.4978000389628221,
+            "p90": 4.734182214584715,
+            "mean": 1.8698690274367271
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 11.5,
+            "p50": 15,
+            "p90": 18.5,
+            "mean": 15
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -2.9304352382600243,
+            "p50": -0.7854260047212307,
+            "p90": 0.009000000000000341,
+            "mean": -1.2356204143270848
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 13,
+            "p10": 5.400000000000001,
+            "p50": 16,
+            "p90": 18,
+            "mean": 14
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -2.908454798984993,
+            "p50": 0,
+            "p90": 2.025971249264666,
+            "mean": 0.028814829193281575
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 12.6,
+            "p50": 16,
+            "p90": 19.4,
+            "mean": 15.857142857142858
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -3.0448472848439163,
+            "p50": -0.8319910720542367,
+            "p90": 0.07916173835685647,
+            "mean": -1.298524608202926
+          }
+        }
+      }
+    },
+    "35/2": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 99,
+        "p10": 11,
+        "p50": 16,
+        "p90": 19,
+        "mean": 14.919191919191919
+      },
+      "noNextGradeObserved": 0,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 99,
+        "p10": -2.575872092937672,
+        "p50": 0,
+        "p90": 2.4022323625356234,
+        "mean": -0.08698843520021587
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 16,
+            "p90": 18,
+            "mean": 15.363636363636363
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -2.6728969646630816,
+            "p50": 0.29320114133406605,
+            "p90": 3.4226956855221573,
+            "mean": 0.3199084431654352
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 8,
+            "p50": 13,
+            "p90": 15,
+            "mean": 12
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -0.34738667431660275,
+            "p50": -0.11049919316826617,
+            "p90": 4.559189294694953,
+            "mean": 1.3671011424033612
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 15,
+            "p50": 18,
+            "p90": 19,
+            "mean": 17.4
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.6784855460801253,
+            "p50": -0.051333749999997735,
+            "p90": 0.04319999999999312,
+            "mean": -0.5785202255549933
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 5.4,
+            "p50": 11,
+            "p90": 12.6,
+            "mean": 9.333333333333334
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -0.11940603747157752,
+            "p50": 0.010755696093752931,
+            "p90": 0.48280513921874335,
+            "mean": 0.1532089084102779
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 12,
+            "p10": 13,
+            "p50": 18,
+            "p90": 20,
+            "mean": 16.916666666666668
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.406492700325267,
+            "p50": 0,
+            "p90": 3.5738412891558387,
+            "mean": 0.7909238697175182
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 9.600000000000001,
+            "p50": 17,
+            "p90": 18,
+            "mean": 14.5
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -0.5385959574366126,
+            "p50": 0.29628803096561285,
+            "p90": 0.613952825078816,
+            "mean": 0.1584489242685958
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 11.8,
+            "p50": 13,
+            "p90": 17.4,
+            "mean": 14
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -1.3520492289357633,
+            "p50": 0,
+            "p90": 0.3922488604175726,
+            "mean": -0.266349018308391
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 12,
+            "p50": 14,
+            "p90": 18,
+            "mean": 14.727272727272727
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -1.1557780701968312,
+            "p50": 0,
+            "p90": 2.123333081777446,
+            "mean": 0.3359770699814442
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 11.7,
+            "p50": 15,
+            "p90": 18,
+            "mean": 14.875
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -5.4755907930894505,
+            "p50": -1.2833491901013794,
+            "p90": 1.5015005806017447,
+            "mean": -1.4978458906992067
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 11.6,
+            "p50": 16,
+            "p90": 17,
+            "mean": 14.571428571428571
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -4.1249210743044475,
+            "p50": -0.7922653211237503,
+            "p90": 0,
+            "mean": -1.4354258559526027
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 11.5,
+            "p50": 15,
+            "p90": 18,
+            "mean": 14.833333333333334
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -4.447808032624607,
+            "p50": -0.314948810874057,
+            "p90": 0.866709116633789,
+            "mean": -1.2986825756216251
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 13,
+            "p10": 5.800000000000002,
+            "p50": 18,
+            "p90": 20,
+            "mean": 15.692307692307692
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -0.8946721901826009,
+            "p50": 0,
+            "p90": 1.331727862244253,
+            "mean": -0.010378559715763257
+          }
+        }
+      }
+    },
+    "45/0": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 80,
+        "p10": 14,
+        "p50": 18,
+        "p90": 20,
+        "mean": 17.6
+      },
+      "noNextGradeObserved": 19,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 98,
+        "p10": -1.9361891572375076,
+        "p50": 0,
+        "p90": 0.5186505219619187,
+        "mean": -0.22597430028704513
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 4,
+            "p10": 13.5,
+            "p50": 17.5,
+            "p90": 19.4,
+            "mean": 16.75
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -1.0915503055325289,
+            "p50": 0.2106684587846459,
+            "p90": 1.9303530125405075,
+            "mean": 0.34982372193087485
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 4,
+            "p10": 16.2,
+            "p50": 19,
+            "p90": 19.7,
+            "mean": 18.25
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -0.6705416653713883,
+            "p50": -0.051333749999997735,
+            "p90": 0,
+            "mean": -0.23997243551650344
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 15.5,
+            "p50": 19.5,
+            "p90": 20.5,
+            "mean": 18.5
+          },
+          "noNextGradeObserved": 5,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.4201644710321233,
+            "p50": 0,
+            "p90": 0.24282787115934923,
+            "mean": -0.13256468031202864
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 15.8,
+            "p50": 18,
+            "p90": 20,
+            "mean": 17.7
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.359193394722557,
+            "p50": -0.03599999999999426,
+            "p90": 0.5994982290566642,
+            "mean": -0.20795545300372886
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 14.5,
+            "p50": 19.5,
+            "p90": 20,
+            "mean": 18
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -3.2735653545260774,
+            "p50": -0.05921594678387976,
+            "p90": 0.15911116391788696,
+            "mean": -0.9251393243509449
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 2,
+            "p10": 13.7,
+            "p50": 16.5,
+            "p90": 19.3,
+            "mean": 16.5
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -0.2921450643124956,
+            "p50": 0.010755696093752931,
+            "p90": 0.3660030205739929,
+            "mean": 0.03256676445791603
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 14.6,
+            "p50": 17,
+            "p90": 19,
+            "mean": 17
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -2.043807832462754,
+            "p50": 0.036000000000001364,
+            "p90": 0.22968008016263758,
+            "mean": -0.5142629446610546
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 9,
+            "p10": 15.6,
+            "p50": 19,
+            "p90": 20.2,
+            "mean": 18.22222222222222
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -0.720934506205819,
+            "p50": 0.4016216250000184,
+            "p90": 3.712214454255246,
+            "mean": 1.0438888124724504
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 18,
+            "p50": 19,
+            "p90": 20,
+            "mean": 18.90909090909091
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.23265000000000668,
+            "p50": 0.018000000000000682,
+            "p90": 0.21240000000001658,
+            "mean": -0.0030315582191917656
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 17,
+            "p90": 18,
+            "mean": 14.727272727272727
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -1.4997602230993663,
+            "p50": 0,
+            "p90": 0.09990900000000524,
+            "mean": -0.38134900217643686
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 16.4,
+            "p50": 19,
+            "p90": 20.6,
+            "mean": 18.6
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -2.6592989121238215,
+            "p50": 0,
+            "p90": 0.11185899700333553,
+            "mean": -0.9079340768287442
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 18,
+            "p50": 19,
+            "p90": 19,
+            "mean": 18.6
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -3.1332764215391187,
+            "p50": -0.05110875000000448,
+            "p90": 0.06628199436864435,
+            "mean": -1.039367725723493
+          }
+        }
+      }
+    },
+    "45/1": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 74,
+        "p10": 14,
+        "p50": 18.5,
+        "p90": 20,
+        "mean": 17.58108108108108
+      },
+      "noNextGradeObserved": 25,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 98,
+        "p10": -1.3660723729101059,
+        "p50": 0,
+        "p90": 1.0651107918958325,
+        "mean": -0.10494683898475565
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 4,
+            "p10": 16.6,
+            "p50": 18,
+            "p90": 18.7,
+            "mean": 17.75
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -0.7982107362433226,
+            "p50": -0.051333749999997735,
+            "p90": 0.04319999999999312,
+            "mean": -0.30020424436214055
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 19,
+            "p50": 20,
+            "p90": 20.6,
+            "mean": 19.8
+          },
+          "noNextGradeObserved": 6,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.17779500000001747,
+            "p50": 0,
+            "p90": 0.21859698423010343,
+            "mean": 0.16742461249470608
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 13.6,
+            "p50": 20,
+            "p90": 20.8,
+            "mean": 17.666666666666668
+          },
+          "noNextGradeObserved": 3,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -1.2302962823573793,
+            "p50": 0,
+            "p90": 1.313787280439179,
+            "mean": 0.02783033269393324
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 13.5,
+            "p50": 18,
+            "p90": 19.5,
+            "mean": 17
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -1.5924645231379584,
+            "p50": 0.13405379583618782,
+            "p90": 0.6533160958397778,
+            "mean": -0.29230488335020244
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 1,
+            "p10": 13,
+            "p50": 13,
+            "p90": 13,
+            "mean": 13
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -2.678805375504922,
+            "p50": -0.46648628430081374,
+            "p90": -0.11349269998516148,
+            "mean": -1.241205245504337
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 19,
+            "p50": 19,
+            "p90": 21,
+            "mean": 19.636363636363637
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -0.9172181249999866,
+            "p50": 0,
+            "p90": 0.4709286809167694,
+            "mean": 0.22858523520891497
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 17,
+            "p50": 18,
+            "p90": 19,
+            "mean": 17.818181818181817
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.1646403028586434,
+            "p50": 0.02923347621793937,
+            "p90": 0.36099904156871787,
+            "mean": 0.10387534331213354
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 15.6,
+            "p50": 19,
+            "p90": 19.6,
+            "mean": 18
+          },
+          "noNextGradeObserved": 3,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -2.099436832462753,
+            "p50": 0,
+            "p90": 1.1148766089377413,
+            "mean": -0.2344371065125474
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 12,
+            "p50": 17.5,
+            "p90": 20.5,
+            "mean": 16.666666666666668
+          },
+          "noNextGradeObserved": 3,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -0.6431462360169973,
+            "p50": 0.24777227812502645,
+            "p90": 3.7118544542552456,
+            "mean": 0.9256904060848683
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 15,
+            "p50": 17.5,
+            "p90": 19.5,
+            "mean": 17.333333333333332
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -2.5795900144531885,
+            "p50": -0.3480260047212269,
+            "p90": 0.04030312499999411,
+            "mean": -0.9624376313914738
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 4,
+            "p50": 16,
+            "p90": 19,
+            "mean": 14.545454545454545
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -1.6133930648477728,
+            "p50": 0,
+            "p90": 1.7101314114690738,
+            "mean": -0.20914265128219037
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 17.8,
+            "p50": 20,
+            "p90": 20.6,
+            "mean": 19.4
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -2.670131953726709,
+            "p50": -0.026575114218744034,
+            "p90": 0,
+            "mean": -0.9732417402978858
+          }
+        }
+      }
+    },
+    "45/2": {
+      "switchedLives": 99,
+      "nextGradeAfterSwitchYears": {
+        "observations": 79,
+        "p10": 13.400000000000002,
+        "p50": 19,
+        "p90": 20,
+        "mean": 17.518987341772153
+      },
+      "noNextGradeObserved": 20,
+      "postSwitchAdultTraineeYears": {
+        "observations": 99,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "mean": 1
+      },
+      "jointAge60HealthDelta": {
+        "observations": 98,
+        "p10": -1.345274788912789,
+        "p50": 0,
+        "p90": 1.060919530914456,
+        "mean": -0.04204485045559643
+      },
+      "byDirection": {
+        "Агроном → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 7,
+            "p10": 17,
+            "p50": 19,
+            "p90": 19.4,
+            "mean": 18.428571428571427
+          },
+          "noNextGradeObserved": 4,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.5042467065481873,
+            "p50": -0.023937513750013295,
+            "p90": 2.5109683568229215,
+            "mean": 0.35014394792370496
+          }
+        },
+        "Агроном → Медик": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 12.6,
+            "p50": 19,
+            "p90": 20.6,
+            "mean": 17
+          },
+          "noNextGradeObserved": 3,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -0.21065272972173688,
+            "p50": 0,
+            "p90": 1.6556848727410625,
+            "mean": 0.48167738100644186
+          }
+        },
+        "Агроном → Техник": {
+          "switchedLives": 5,
+          "nextGradeAfterSwitchYears": {
+            "observations": 4,
+            "p10": 18.3,
+            "p50": 19,
+            "p90": 19,
+            "mean": 18.75
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 5,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 5,
+            "p10": -1.5600692849104263,
+            "p50": -0.005377500000022906,
+            "p90": 0.04319999999999312,
+            "mean": -0.5101208449701489
+          }
+        },
+        "Координатор → Агроном": {
+          "switchedLives": 3,
+          "nextGradeAfterSwitchYears": {
+            "observations": 3,
+            "p10": 9.4,
+            "p50": 11,
+            "p90": 15,
+            "mean": 12
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 3,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 3,
+            "p10": -0.3203534882218889,
+            "p50": 0.010755696093752931,
+            "p90": 0.842101670573976,
+            "mean": 0.21918769199566177
+          }
+        },
+        "Координатор → Медик": {
+          "switchedLives": 12,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 18.8,
+            "p50": 19,
+            "p90": 21,
+            "mean": 19.5
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 12,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 12,
+            "p10": -1.4144758947225569,
+            "p50": -0.051300000000004786,
+            "p90": 0,
+            "mean": -0.37080377264172526
+          }
+        },
+        "Координатор → Техник": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 14.5,
+            "p50": 20,
+            "p90": 20,
+            "mean": 18.166666666666668
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 8,
+            "p10": -1.5924645231379584,
+            "p50": 0.07552888454987539,
+            "p90": 0.49067069339886227,
+            "mean": -0.3207419101078992
+          }
+        },
+        "Медик → Агроном": {
+          "switchedLives": 9,
+          "nextGradeAfterSwitchYears": {
+            "observations": 8,
+            "p10": 14,
+            "p50": 18,
+            "p90": 20,
+            "mean": 17.5
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 9,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 9,
+            "p10": -0.4207040923441724,
+            "p50": 0.24777227812502645,
+            "p90": 1.4385448675574684,
+            "mean": 0.5522358978290988
+          }
+        },
+        "Медик → Координатор": {
+          "switchedLives": 11,
+          "nextGradeAfterSwitchYears": {
+            "observations": 11,
+            "p10": 16,
+            "p50": 18,
+            "p90": 20,
+            "mean": 18.09090909090909
+          },
+          "noNextGradeObserved": 0,
+          "postSwitchAdultTraineeYears": {
+            "observations": 11,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 11,
+            "p10": -0.6020869360498011,
+            "p50": 0,
+            "p90": 1.946195390908997,
+            "mean": 0.4444531731539753
+          }
+        },
+        "Медик → Техник": {
+          "switchedLives": 8,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 12.5,
+            "p50": 17,
+            "p90": 19,
+            "mean": 16.166666666666668
+          },
+          "noNextGradeObserved": 2,
+          "postSwitchAdultTraineeYears": {
+            "observations": 8,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -2.6975428584367194,
+            "p50": 0.036000000000001364,
+            "p90": 1.1817571248098837,
+            "mean": -0.3850746851251858
+          }
+        },
+        "Техник → Агроном": {
+          "switchedLives": 7,
+          "nextGradeAfterSwitchYears": {
+            "observations": 6,
+            "p10": 16.5,
+            "p50": 17.5,
+            "p90": 19,
+            "mean": 17.666666666666668
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 7,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 7,
+            "p10": -1.4066001743388936,
+            "p50": 0,
+            "p90": 0,
+            "mean": -0.42211160266292325
+          }
+        },
+        "Техник → Координатор": {
+          "switchedLives": 6,
+          "nextGradeAfterSwitchYears": {
+            "observations": 5,
+            "p10": 12.6,
+            "p50": 19,
+            "p90": 20,
+            "mean": 17.2
+          },
+          "noNextGradeObserved": 1,
+          "postSwitchAdultTraineeYears": {
+            "observations": 6,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 6,
+            "p10": -2.5103899191126047,
+            "p50": -0.1368725608740533,
+            "p90": 0.6974480978067028,
+            "mean": -0.6499381273933184
+          }
+        },
+        "Техник → Медик": {
+          "switchedLives": 13,
+          "nextGradeAfterSwitchYears": {
+            "observations": 10,
+            "p10": 4,
+            "p50": 19,
+            "p90": 20.1,
+            "mean": 16.1
+          },
+          "noNextGradeObserved": 3,
+          "postSwitchAdultTraineeYears": {
+            "observations": 13,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "mean": 1
+          },
+          "jointAge60HealthDelta": {
+            "observations": 13,
+            "p10": -1.2199045327805662,
+            "p50": -0.06933210187500549,
+            "p90": 0.6174989040832122,
+            "mean": -0.17404588943839572
+          }
+        }
+      }
+    }
+  },
+  "pensions": {
+    "left": {
+      "lives": 100,
+      "reachedDecision": 71,
+      "lateContent": {
+        "late-friend-bench": {
+          "eligibleLives": 77,
+          "experiencedLives": 43,
+          "experiencedPctOfEligible": 55.84415584415584
+        },
+        "late-adult-child-route": {
+          "eligibleLives": 5,
+          "experiencedLives": 5,
+          "experiencedPctOfEligible": 100
+        },
+        "late-tech-handbook": {
+          "eligibleLives": 25,
+          "experiencedLives": 13,
+          "experiencedPctOfEligible": 52
+        },
+        "late-medic-routine": {
+          "eligibleLives": 29,
+          "experiencedLives": 17,
+          "experiencedPctOfEligible": 58.62068965517241
+        },
+        "late-crack-record": {
+          "eligibleLives": 4,
+          "experiencedLives": 2,
+          "experiencedPctOfEligible": 50
+        },
+        "late-signal-record": {
+          "eligibleLives": 11,
+          "experiencedLives": 9,
+          "experiencedPctOfEligible": 81.81818181818181
+        },
+        "late-neighbor-night": {
+          "eligibleLives": 13,
+          "experiencedLives": 7,
+          "experiencedPctOfEligible": 53.84615384615385
+        },
+        "late-common-room": {
+          "eligibleLives": 97,
+          "experiencedLives": 74,
+          "experiencedPctOfEligible": 76.28865979381443
+        },
+        "m-late-cup": {
+          "eligibleLives": 97,
+          "experiencedLives": 58,
+          "experiencedPctOfEligible": 59.79381443298969
+        },
+        "m-late-light": {
+          "eligibleLives": 97,
+          "experiencedLives": 54,
+          "experiencedPctOfEligible": 55.670103092783506
+        },
+        "m-late-plant": {
+          "eligibleLives": 97,
+          "experiencedLives": 54,
+          "experiencedPctOfEligible": 55.670103092783506
+        },
+        "m-late-music": {
+          "eligibleLives": 97,
+          "experiencedLives": 55,
+          "experiencedPctOfEligible": 56.70103092783505
+        },
+        "m-late-recipe": {
+          "eligibleLives": 97,
+          "experiencedLives": 57,
+          "experiencedPctOfEligible": 58.76288659793814
+        },
+        "m-late-friend": {
+          "eligibleLives": 77,
+          "experiencedLives": 37,
+          "experiencedPctOfEligible": 48.05194805194805
+        },
+        "m-late-quiet": {
+          "eligibleLives": 97,
+          "experiencedLives": 60,
+          "experiencedPctOfEligible": 61.855670103092784
+        }
+      }
+    },
+    "mentor": {
+      "lives": 100,
+      "reachedDecision": 71,
+      "lateContent": {
+        "late-friend-bench": {
+          "eligibleLives": 77,
+          "experiencedLives": 42,
+          "experiencedPctOfEligible": 54.54545454545455
+        },
+        "late-adult-child-route": {
+          "eligibleLives": 5,
+          "experiencedLives": 5,
+          "experiencedPctOfEligible": 100
+        },
+        "late-tech-handbook": {
+          "eligibleLives": 25,
+          "experiencedLives": 14,
+          "experiencedPctOfEligible": 56
+        },
+        "late-medic-routine": {
+          "eligibleLives": 29,
+          "experiencedLives": 18,
+          "experiencedPctOfEligible": 62.06896551724138
+        },
+        "late-crack-record": {
+          "eligibleLives": 4,
+          "experiencedLives": 2,
+          "experiencedPctOfEligible": 50
+        },
+        "late-signal-record": {
+          "eligibleLives": 11,
+          "experiencedLives": 9,
+          "experiencedPctOfEligible": 81.81818181818181
+        },
+        "late-neighbor-night": {
+          "eligibleLives": 13,
+          "experiencedLives": 7,
+          "experiencedPctOfEligible": 53.84615384615385
+        },
+        "late-common-room": {
+          "eligibleLives": 97,
+          "experiencedLives": 73,
+          "experiencedPctOfEligible": 75.25773195876289
+        },
+        "m-late-cup": {
+          "eligibleLives": 97,
+          "experiencedLives": 60,
+          "experiencedPctOfEligible": 61.855670103092784
+        },
+        "m-late-light": {
+          "eligibleLives": 97,
+          "experiencedLives": 50,
+          "experiencedPctOfEligible": 51.54639175257732
+        },
+        "m-late-plant": {
+          "eligibleLives": 97,
+          "experiencedLives": 52,
+          "experiencedPctOfEligible": 53.608247422680414
+        },
+        "m-late-music": {
+          "eligibleLives": 97,
+          "experiencedLives": 54,
+          "experiencedPctOfEligible": 55.670103092783506
+        },
+        "m-late-recipe": {
+          "eligibleLives": 97,
+          "experiencedLives": 56,
+          "experiencedPctOfEligible": 57.7319587628866
+        },
+        "m-late-friend": {
+          "eligibleLives": 77,
+          "experiencedLives": 38,
+          "experiencedPctOfEligible": 49.35064935064935
+        },
+        "m-late-quiet": {
+          "eligibleLives": 97,
+          "experiencedLives": 52,
+          "experiencedPctOfEligible": 53.608247422680414
+        }
+      }
+    },
+    "continue": {
+      "lives": 100,
+      "reachedDecision": 71,
+      "lateContent": {
+        "late-friend-bench": {
+          "eligibleLives": 77,
+          "experiencedLives": 44,
+          "experiencedPctOfEligible": 57.142857142857146
+        },
+        "late-adult-child-route": {
+          "eligibleLives": 5,
+          "experiencedLives": 5,
+          "experiencedPctOfEligible": 100
+        },
+        "late-tech-handbook": {
+          "eligibleLives": 25,
+          "experiencedLives": 13,
+          "experiencedPctOfEligible": 52
+        },
+        "late-medic-routine": {
+          "eligibleLives": 29,
+          "experiencedLives": 17,
+          "experiencedPctOfEligible": 58.62068965517241
+        },
+        "late-crack-record": {
+          "eligibleLives": 4,
+          "experiencedLives": 2,
+          "experiencedPctOfEligible": 50
+        },
+        "late-signal-record": {
+          "eligibleLives": 11,
+          "experiencedLives": 9,
+          "experiencedPctOfEligible": 81.81818181818181
+        },
+        "late-neighbor-night": {
+          "eligibleLives": 13,
+          "experiencedLives": 6,
+          "experiencedPctOfEligible": 46.15384615384615
+        },
+        "late-common-room": {
+          "eligibleLives": 97,
+          "experiencedLives": 73,
+          "experiencedPctOfEligible": 75.25773195876289
+        },
+        "m-late-cup": {
+          "eligibleLives": 97,
+          "experiencedLives": 57,
+          "experiencedPctOfEligible": 58.76288659793814
+        },
+        "m-late-light": {
+          "eligibleLives": 97,
+          "experiencedLives": 53,
+          "experiencedPctOfEligible": 54.63917525773196
+        },
+        "m-late-plant": {
+          "eligibleLives": 97,
+          "experiencedLives": 54,
+          "experiencedPctOfEligible": 55.670103092783506
+        },
+        "m-late-music": {
+          "eligibleLives": 97,
+          "experiencedLives": 54,
+          "experiencedPctOfEligible": 55.670103092783506
+        },
+        "m-late-recipe": {
+          "eligibleLives": 97,
+          "experiencedLives": 57,
+          "experiencedPctOfEligible": 58.76288659793814
+        },
+        "m-late-friend": {
+          "eligibleLives": 77,
+          "experiencedLives": 36,
+          "experiencedPctOfEligible": 46.753246753246756
+        },
+        "m-late-quiet": {
+          "eligibleLives": 97,
+          "experiencedLives": 59,
+          "experiencedPctOfEligible": 60.824742268041234
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "seed": 104,
+      "policy": {
+        "name": "Retirement-left",
+        "base": "Moderate",
+        "strictSaver": false,
+        "retirement": "left"
+      },
+      "acceptMoments": true,
+      "deathAge": 83,
+      "checkpoints": [
+        {
+          "age": 20,
+          "balance": 3320,
+          "reserveYears": 9.485714285714286,
+          "tariffYears": 2.4592592592592593,
+          "grade": 2,
+          "job": "Техник",
+          "stats": {
+            "health": 87,
+            "morale": 70.53216391650504,
+            "stress": 15.188377726010742,
+            "knowledge": 81.55283487259477,
+            "bonds": 61.18219520983722,
+            "reputation": 41.500000000000014
+          },
+          "personBonds": 293,
+          "service": 3,
+          "memories": 4,
+          "followups": 0,
+          "meanBond": 58.6,
+          "liveClosePeople": 3
+        },
+        {
+          "age": 40,
+          "balance": 17364,
+          "reserveYears": 24.116666666666667,
+          "tariffYears": 10.8525,
+          "grade": 3,
+          "job": "Техник",
+          "stats": {
+            "health": 85.86137500000002,
+            "morale": 72.05224769808275,
+            "stress": 12.257534248198175,
+            "knowledge": 93.72423832129796,
+            "bonds": 63.42884805980117,
+            "reputation": 47.50000000000007
+          },
+          "personBonds": 348,
+          "service": 23,
+          "memories": 13,
+          "followups": 4,
+          "meanBond": 69.6,
+          "liveClosePeople": 4
+        },
+        {
+          "age": 60,
+          "balance": 35376,
+          "reserveYears": 49.13333333333333,
+          "tariffYears": 19.122162162162162,
+          "grade": 4,
+          "job": "Техник",
+          "stats": {
+            "health": 77.6623605468751,
+            "morale": 62.625391304649625,
+            "stress": 19.53488700958362,
+            "knowledge": 100,
+            "bonds": 45.166173686848424,
+            "reputation": 51.50000000000013
+          },
+          "personBonds": 229,
+          "service": 43,
+          "memories": 21,
+          "followups": 4,
+          "meanBond": 76.33333333333333,
+          "liveClosePeople": 3
+        },
+        {
+          "age": 65,
+          "balance": 40706,
+          "reserveYears": 56.53611111111111,
+          "tariffYears": 22.003243243243244,
+          "grade": 4,
+          "job": "Техник",
+          "stats": {
+            "health": 71.09580153320321,
+            "morale": 59.862300497699465,
+            "stress": 21.257568479274028,
+            "knowledge": 100,
+            "bonds": 42.16617368684841,
+            "reputation": 53.00000000000014
+          },
+          "personBonds": 163,
+          "service": 48,
+          "memories": 24,
+          "followups": 4,
+          "meanBond": 81.5,
+          "liveClosePeople": 2
+        },
+        {
+          "age": 70,
+          "balance": 46356,
+          "reserveYears": 64.38333333333334,
+          "tariffYears": 25.057297297297296,
+          "grade": 4,
+          "job": "Техник",
+          "stats": {
+            "health": 61.621011456543044,
+            "morale": 65.34315394791074,
+            "stress": 20.57495555254481,
+            "knowledge": 100,
+            "bonds": 38.166173686848396,
+            "reputation": 51.500000000000156
+          },
+          "personBonds": 163,
+          "service": 53,
+          "memories": 24,
+          "followups": 4,
+          "meanBond": 81.5,
+          "liveClosePeople": 2
+        },
+        {
+          "age": 80,
+          "balance": 52897,
+          "reserveYears": 73.46805555555555,
+          "tariffYears": null,
+          "grade": 4,
+          "job": "Техник",
+          "stats": {
+            "health": 48.289960883715864,
+            "morale": 71.42283969523558,
+            "stress": 12.254701180878484,
+            "knowledge": 100,
+            "bonds": 31.16617368684837,
+            "reputation": 48.500000000000185
+          },
+          "personBonds": 169,
+          "service": 56,
+          "memories": 27,
+          "followups": 4,
+          "meanBond": 84.5,
+          "liveClosePeople": 2
+        }
+      ],
+      "purchases": [
+        {
+          "age": 18,
+          "id": "course-pro",
+          "source": "shop",
+          "cost": 350,
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 20,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "parent",
+              "friend",
+              "parent2"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 22,
+          "id": "course-pro",
+          "source": "shop",
+          "cost": 350,
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 24,
+          "id": "sector-trip",
+          "source": "shop",
+          "cost": 240,
+          "target": {
+            "sectorId": "atrium"
+          },
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 26,
+          "id": "own-cabin",
+          "source": "shop",
+          "cost": 400,
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 30,
+          "id": "dome-pass",
+          "source": "shop",
+          "cost": 0,
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 32,
+          "id": "sector-trip",
+          "source": "shop",
+          "cost": 240,
+          "target": {
+            "sectorId": "clinic"
+          },
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 40,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "friend",
+              "parent",
+              "parent2"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 2
+        },
+        {
+          "age": 48,
+          "id": "sector-trip",
+          "source": "shop",
+          "cost": 240,
+          "target": {
+            "sectorId": "engineering"
+          },
+          "action": "purchase",
+          "cappedEffects": 0
+        },
+        {
+          "age": 50,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "friend",
+              "parent",
+              "parent2"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 2
+        },
+        {
+          "age": 56,
+          "id": "sector-trip",
+          "source": "shop",
+          "cost": 240,
+          "target": {
+            "sectorId": "lower"
+          },
+          "action": "purchase",
+          "cappedEffects": 1
+        },
+        {
+          "age": 60,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "friend",
+              "parent2",
+              "neighbor"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 1
+        },
+        {
+          "age": 70,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "friend",
+              "neighbor"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 1
+        },
+        {
+          "age": 80,
+          "id": "family-trip",
+          "source": "shop",
+          "cost": 320,
+          "target": {
+            "participantIds": [
+              "friend",
+              "neighbor"
+            ]
+          },
+          "action": "purchase",
+          "cappedEffects": 1
+        }
+      ],
+      "storyDecisions": [
+        {
+          "age": 73,
+          "id": "retirement",
+          "index": 0,
+          "text": "Уйти с должности",
+          "cost": 0,
+          "income": 0,
+          "available": 3,
+          "paidCategories": 0,
+          "job": "Техник"
+        }
+      ],
+      "workChanges": [
+        {
+          "age": 1,
+          "job": "Ученик",
+          "kind": "child",
+          "grade": 1,
+          "load": 1,
+          "service": 0,
+          "path": null
+        },
+        {
+          "age": 16,
+          "job": "Ученик",
+          "kind": "trainee",
+          "grade": 1,
+          "load": 1,
+          "service": 0,
+          "path": null
+        },
+        {
+          "age": 18,
+          "job": "Техник",
+          "kind": "working",
+          "grade": 1,
+          "load": 1,
+          "service": 1,
+          "path": null
+        },
+        {
+          "age": 20,
+          "job": "Техник",
+          "kind": "working",
+          "grade": 2,
+          "load": 1,
+          "service": 3,
+          "path": null
+        },
+        {
+          "age": 40,
+          "job": "Техник",
+          "kind": "working",
+          "grade": 3,
+          "load": 1,
+          "service": 23,
+          "path": null
+        },
+        {
+          "age": 55,
+          "job": "Техник",
+          "kind": "working",
+          "grade": 4,
+          "load": 1,
+          "service": 38,
+          "path": null
+        },
+        {
+          "age": 74,
+          "job": "Техник",
+          "kind": "retired",
+          "grade": 4,
+          "load": 1,
+          "service": 56,
+          "path": "left"
+        }
+      ],
+      "loadChanges": [],
+      "retirement": {
+        "age": 73,
+        "path": "left",
+        "beforeFingerprint": 1908344447
+      },
+      "hardship": [],
+      "narrative": [
+        {
+          "age": 40,
+          "id": "m-sector-clinic",
+          "title": "Цифра на табло"
+        },
+        {
+          "age": 43,
+          "id": "cabin-closed-door",
+          "title": "Дверь, которая закрывается"
+        },
+        {
+          "age": 46,
+          "id": "m-trip-ticket",
+          "title": "Билет за рамкой"
+        },
+        {
+          "age": 49,
+          "id": "m-dome-pruner",
+          "title": "Не та ветка"
+        },
+        {
+          "age": 50,
+          "id": "m-sector-engineering",
+          "title": "Свет мигает дважды"
+        },
+        {
+          "age": 58,
+          "id": "trip-memory-friend",
+          "title": "Чужая версия той недели"
+        },
+        {
+          "age": 61,
+          "id": "lower-deck-stranger",
+          "title": "Женщина с корзиной"
+        }
+      ],
+      "metrics": {
+        "wage": 88836,
+        "pension": 12030,
+        "totalSpent": 47540,
+        "storySpent": 0,
+        "memories": 29,
+        "followups": 4
+      }
+    }
+  ],
+  "integrity": {
+    "completedLives": 1300,
+    "checks": 573496,
+    "violations": 0,
+    "accountingErrors": 0
+  }
+}

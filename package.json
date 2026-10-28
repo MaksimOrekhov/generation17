@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "sim": "tsx scripts/simulate.ts",
     "audit": "tsx scripts/audit.ts",
+    "audit:economy": "tsx scripts/economy-t8.ts",
     "content": "tsx scripts/content.ts",
     "content:check": "tsx scripts/content.ts --check"
   },

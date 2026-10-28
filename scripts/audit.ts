@@ -21,7 +21,10 @@ import { LIFE_PRESETS, SPEEDS, runClock } from '../src/domain/clock'
 import { codeStorylets, storylets } from '../src/domain/storylets'
 import { codeMoments, moments } from '../src/domain/moments'
 import { hash32 } from '../src/domain/random'
-import type { Focus, GameState, Storylet } from '../src/domain/types'
+import { findInconsistencies } from '../src/domain/invariants'
+import { wageOf } from '../src/domain/economy'
+import { describe as summarize } from './audit-stats'
+import type { Focus, GameState, Job, Storylet } from '../src/domain/types'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const args = process.argv.slice(2)
@@ -89,11 +92,61 @@ interface Life {
   delayed: number
   arcs: Record<string, boolean>
   stats40: GameState['stats'] | null
+  economy: EconomyLife
+}
+
+type EconomyAge = 20 | 40 | 60 | 80
+const economyAges: EconomyAge[] = [20, 40, 60, 80]
+const professions: Job[] = ['Техник', 'Медик', 'Агроном', 'Координатор']
+
+interface EconomyCheckpoint {
+  balance: number
+  tariffIncome: number
+  tariffYears: number | null
+  reserveYears: number | null
+  job: Job
+  grade: number
+  kind: string
+  pension: number
+  bills: number
+  aid: number
+}
+
+interface EconomyYear {
+  age: number
+  job: Job
+  kind: string
+  grade: number
+  wage: number
+  tariffIncome: number
+  pension: number
+  bills: number
+  aid: number
+  balance: number
+  openingBalance: number
+  tight: boolean
+  housingDowngrade: boolean
+  cancelledServices: number
+  servicesClosed: boolean
+  inconsistencyCount: number
+  inconsistencies: string[]
+}
+
+interface EconomyLife {
+  checkpoints: Partial<Record<EconomyAge, EconomyCheckpoint>>
+  years: EconomyYear[]
+  invariantChecks: number
+  invariantViolations: number
+  invariantMessages: Record<string, number>
+}
+
+function emptyEconomyLife(): EconomyLife {
+  return { checkpoints: {}, years: [], invariantChecks: 0, invariantViolations: 0, invariantMessages: {} }
 }
 
 function playLife(seed: number, policy: Policy, opts: { focus?: Focus; acceptMoments?: boolean } = {}): Life {
   let g = createGame(seed + 101)
-  const life: Life = { seed, age: 0, job: '', decisions: [], momentsByAge: new Array(120).fill(0), momentIds: [], seen: [], memories: 0, delayed: 0, arcs: {}, stats40: null }
+  const life: Life = { seed, age: 0, job: '', decisions: [], momentsByAge: new Array(120).fill(0), momentIds: [], seen: [], memories: 0, delayed: 0, arcs: {}, stats40: null, economy: emptyEconomyLife() }
   let step = 0
   for (let guard = 0; guard < 1200 && !g.stopped; guard++) {
     if (g.pending) {
@@ -113,7 +166,56 @@ function playLife(seed: number, policy: Policy, opts: { focus?: Focus; acceptMom
         if (opts.acceptMoments) g = takeMoment(g)
       }
     }
+    // Capture a read-only observation around the existing tick; do not alter game/RNG flow.
+    const beforeEconomy = {
+      balance: g.economy.balance,
+      housing: g.economy.housing,
+      services: Object.keys(g.economy.services),
+    }
     g = tick(g)
+    const year = g.economy.years.at(-1)
+    if (year?.age === g.age && g.economy.settledAge === g.age) {
+      const work = g.economy.work
+      const tariffIncome = wageOf(g)
+      const inconsistencies = findInconsistencies(g)
+      const observation: EconomyYear = {
+        age: g.age,
+        job: work.job,
+        kind: work.kind,
+        grade: work.grade,
+        wage: year.wage,
+        tariffIncome,
+        pension: year.pension,
+        bills: year.bills,
+        aid: year.aid,
+        balance: year.balance,
+        openingBalance: beforeEconomy.balance,
+        tight: g.economy.tightStreak > 0,
+        housingDowngrade: g.economy.housing < beforeEconomy.housing,
+        cancelledServices: beforeEconomy.services.filter(id => !(id in g.economy.services)).length,
+        servicesClosed: g.flags.shipIncidentAge === g.age || g.ship.air < 55 || g.ship.food < 45,
+        inconsistencyCount: inconsistencies.length,
+        inconsistencies,
+      }
+      life.economy.years.push(observation)
+      life.economy.invariantChecks++
+      life.economy.invariantViolations += inconsistencies.length
+      for (const issue of inconsistencies) life.economy.invariantMessages[issue] = (life.economy.invariantMessages[issue] ?? 0) + 1
+      if (economyAges.includes(g.age as EconomyAge)) {
+        life.economy.checkpoints[g.age as EconomyAge] = {
+          balance: year.balance,
+          tariffIncome,
+          tariffYears: tariffIncome > 0 ? year.balance / tariffIncome : null,
+          reserveYears: year.bills > 0 ? year.balance / year.bills : null,
+          job: work.job,
+          grade: work.grade,
+          kind: work.kind,
+          pension: year.pension,
+          bills: year.bills,
+          aid: year.aid,
+        }
+      }
+    }
     if (opts.focus && g.age === 14) g = setFocus(g, opts.focus)
     if (g.age === 40) life.stats40 = { ...g.stats }
   }
@@ -375,6 +477,139 @@ function paceReport(sample = 4) {
   return out
 }
 
+function economySummary(values: readonly (number | null | undefined)[]) {
+  const s = summarize(values)
+  const value = (n: number | null) => n === null ? null : round(n)
+  return { observations: s.observations, p10: value(s.p10), p50: value(s.p50), p90: value(s.p90), mean: value(s.mean) }
+}
+
+function economyStrategyReport(runs: Life[]) {
+  const years = runs.flatMap(l => l.economy.years)
+  const adults = runs.filter(l => l.economy.years.some(y => y.age >= 16))
+  const checkpointByAge = Object.fromEntries(economyAges.map(age => {
+    const observations = runs.flatMap(l => l.economy.checkpoints[age] ? [l.economy.checkpoints[age]!] : [])
+    return [age, {
+      livesObserved: observations.length,
+      balanceKr: economySummary(observations.map(o => o.balance)),
+      balanceInAnnualTariffs: economySummary(observations.map(o => o.tariffYears)),
+      reserveYears: economySummary(observations.map(o => o.reserveYears)),
+      tariffIncomeKr: economySummary(observations.map(o => o.tariffIncome)),
+    }]
+  }))
+
+  const gradeDistribution = Object.fromEntries(([40, 60] as const).map(age => {
+    const observations = runs.flatMap(l => l.economy.checkpoints[age] ? [l.economy.checkpoints[age]!] : [])
+    const byProfession = Object.fromEntries(professions.map(job => {
+      const professionRows = observations.filter(o => o.job === job)
+      const grades = Object.fromEntries(([1, 2, 3, 4] as const).map(grade => {
+        const count = professionRows.filter(o => o.grade === grade).length
+        return [grade, { count, pct: pct(count, professionRows.length) }]
+      }))
+      return [job, {
+        observations: professionRows.length,
+        grades,
+        tariffIncomeKr: economySummary(professionRows.map(o => o.tariffIncome)),
+      }]
+    }))
+    return [age, { livesObserved: observations.length, byProfession }]
+  }))
+
+  const annualIncomeByProfession = Object.fromEntries(professions.map(job => {
+    const rows = years.filter(y => y.job === job && y.age >= 18 && y.kind !== 'retired')
+    const byWorkState = Object.fromEntries(['working', 'trainee', 'between', 'sick'].map(kind => {
+      const stateRows = rows.filter(y => y.kind === kind)
+      return [kind, { observations: stateRows.length, wageKr: economySummary(stateRows.map(y => y.wage)) }]
+    }))
+    return [job, {
+      observations: rows.length,
+      wageKr: economySummary(rows.map(y => y.wage)),
+      tariffIncomeKr: economySummary(rows.map(y => y.tariffIncome)),
+      byWorkState,
+    }]
+  }))
+
+  const retiredRows = years.filter(y => y.kind === 'retired')
+  const retiredLives = runs.filter(l => l.economy.years.some(y => y.kind === 'retired'))
+  const firstPensionByLife = retiredLives.flatMap(l => {
+    const row = l.economy.years.find(y => y.kind === 'retired')
+    return row ? [row] : []
+  })
+  const retireesWithDecliningSavings = retiredLives.filter(l => l.economy.years.some(y => y.kind === 'retired' && y.balance < y.openingBalance))
+  const retireesWithExhaustedReserve = retiredLives.filter(l => l.economy.years.some(y => y.kind === 'retired' && y.balance === 0))
+  const coverageRatios = retiredRows.map(y => y.bills > 0 ? y.pension / y.bills : null)
+  const aidYears = years.filter(y => y.aid > 0)
+  const tightYears = years.filter(y => y.tight)
+  const voluntaryShortfallYears = years.filter(y => y.housingDowngrade || y.cancelledServices > 0)
+  const closedServiceYears = years.filter(y => y.age >= 16 && y.servicesClosed)
+  const sum = (rows: EconomyYear[], select: (row: EconomyYear) => number) => rows.reduce((total, row) => total + select(row), 0)
+  const aidPerLife = runs.map(l => sum(l.economy.years, y => y.aid))
+  const aidYearsPerAdultLife = adults.map(l => l.economy.years.filter(y => y.aid > 0).length)
+  const tightYearsPerAdultLife = adults.map(l => l.economy.years.filter(y => y.tight).length)
+  const voluntaryYearsPerAdultLife = adults.map(l => l.economy.years.filter(y => y.housingDowngrade || y.cancelledServices > 0).length)
+  const invariantMessages: Record<string, number> = {}
+  let invariantChecks = 0
+  let invariantViolations = 0
+  for (const life of runs) {
+    invariantChecks += life.economy.invariantChecks
+    invariantViolations += life.economy.invariantViolations
+    for (const [message, count] of Object.entries(life.economy.invariantMessages)) {
+      const normalized = message.replace(/^возраст \d+: /, '')
+      invariantMessages[normalized] = (invariantMessages[normalized] ?? 0) + count
+    }
+  }
+
+  return {
+    lives: runs.length,
+    adultsObserved: adults.length,
+    checkpointByAge,
+    gradeDistributionAtAgeByProfession: gradeDistribution,
+    annualIncomeByProfession,
+    pension: {
+      retireesObserved: retiredLives.length,
+      retiredYearsObserved: retiredRows.length,
+      firstAnnualPensionPerRetireeKr: economySummary(firstPensionByLife.map(y => y.pension)),
+      annualPensionPerRetiredYearKr: economySummary(retiredRows.map(y => y.pension)),
+      pensionToObligationsRatio: economySummary(coverageRatios),
+      retiredYearsWithPensionCoveringBillsPct: pct(retiredRows.filter(y => y.pension >= y.bills).length, retiredRows.length),
+      retireesWithDecliningSavings: { count: retireesWithDecliningSavings.length, pct: pct(retireesWithDecliningSavings.length, retiredLives.length) },
+      retireesWithExhaustedReserve: { count: retireesWithExhaustedReserve.length, pct: pct(retireesWithExhaustedReserve.length, retiredLives.length) },
+    },
+    scarcity: {
+      economicYearsObserved: years.length,
+      tightYears: tightYears.length,
+      tightYearsPctOfEconomicYears: pct(tightYears.length, years.length),
+      livesWithAnyTightYear: { count: runs.filter(l => l.economy.years.some(y => y.tight)).length, pct: pct(runs.filter(l => l.economy.years.some(y => y.tight)).length, runs.length) },
+      tightYearsPerAdultLife: economySummary(tightYearsPerAdultLife),
+      protectedNeedsDeficit: {
+        livesWithAid: { count: runs.filter(l => l.economy.years.some(y => y.aid > 0)).length, pct: pct(runs.filter(l => l.economy.years.some(y => y.aid > 0)).length, runs.length) },
+        yearsWithAid: aidYears.length,
+        aidPerLifeKr: economySummary(aidPerLife),
+        aidYearsPerAdultLife: economySummary(aidYearsPerAdultLife),
+        totalAidKr: sum(years, y => y.aid),
+        meanAidPerUseYearKr: economySummary(aidYears.map(y => y.aid)).mean,
+      },
+      voluntaryObligationShortfall: {
+        years: voluntaryShortfallYears.length,
+        yearsPerAdultLife: economySummary(voluntaryYearsPerAdultLife),
+        housingDowngradeYears: years.filter(y => y.housingDowngrade).length,
+        serviceCancellationYears: years.filter(y => y.cancelledServices > 0).length,
+        cancelledServices: sum(years, y => y.cancelledServices),
+      },
+      serviceClosure: {
+        adultYearsObserved: years.filter(y => y.age >= 16).length,
+        closedYears: closedServiceYears.length,
+        pctOfAdultYears: pct(closedServiceYears.length, years.filter(y => y.age >= 16).length),
+      },
+    },
+    invariants: {
+      checks: invariantChecks,
+      violations: invariantViolations,
+      livesWithViolations: runs.filter(l => l.economy.invariantViolations > 0).length,
+      byMessage: invariantMessages,
+    },
+  }
+}
+
 // ───────────────────────── сбор ─────────────────────────
 
 const started = Date.now()
@@ -397,6 +632,20 @@ const report = {
   lateLife: lateLifeReport(byStrategy.mixed!, pooled),
   lateLifeByStrategy: Object.fromEntries(['first', 'last', 'cycling', 'mixed'].map(k => [k, (({ rates: _r, ...rest }) => rest)(lateLifeReport(byStrategy[k]!, byStrategy[k]!))])),
   professions: professionReport(byStrategy.mixed!),
+  economy: {
+    methodology: {
+      ageCheckpoints: 'Только наблюдавшиеся живыми в указанном возрасте; отсутствующие наблюдения не заменяются нулём.',
+      tariffEquivalent: 'Баланс делится на базовый годовой тариф текущей профессии и разряда без надбавок и нагрузки.',
+      protectedNeedsDeficit: 'Год с aid > 0 означает, что баланс и доход не покрыли защищённый минимум.',
+      voluntaryObligationShortfall: 'Год с понижением жилья или отменой услуги из-за нехватки остатка после минимума.',
+      pensionCoverage: 'Пенсия сравнивается с фактическими записанными обязательствами данного пенсионного года.',
+      mechanicalStrategies: 'Стратегии выбора механические и не являются моделью поведения людей.',
+      purchases: 'Покупки не реализованы и не симулируются; частота покупок и их доступность не оцениваются.',
+      observation: 'Экономика только считывается после штатного tick(); дополнительный RNG не расходуется.'
+    },
+    byStrategy: Object.fromEntries(Object.entries(byStrategy).map(([name, runs]) => [name, economyStrategyReport(runs)])),
+    pooledChoiceStrategies: economyStrategyReport(pooled),
+  },
   focus: focusReport(byStrategy.mixed!, Object.fromEntries(Object.entries(focuses).filter(([k]) => k !== 'study'))),
   pace: paceReport()
 }

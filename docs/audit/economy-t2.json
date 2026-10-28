@@ -1,0 +1,5453 @@
+{
+  "generatedAt": "2026-10-28T11:33:03.199Z",
+  "lives": 100,
+  "catalog": {
+    "storylets": 127,
+    "codeStorylets": 96,
+    "jsonStorylets": 31,
+    "moments": 97,
+    "codeMoments": 65,
+    "jsonMoments": 32,
+    "byArc": {
+      "—": 60,
+      "friend": 6,
+      "career": 1,
+      "signal": 10,
+      "crack": 12,
+      "love": 8,
+      "parent": 7,
+      "neighbor": 8,
+      "census": 15
+    },
+    "byPriority": {
+      "normal": 60,
+      "critical": 2,
+      "followup": 65
+    },
+    "momentsWithSkipEffects": 8,
+    "coverage": {
+      "0-9": {
+        "storylets": 8,
+        "moments": 19
+      },
+      "10-15": {
+        "storylets": 17,
+        "moments": 22
+      },
+      "16-24": {
+        "storylets": 42,
+        "moments": 49
+      },
+      "25-39": {
+        "storylets": 90,
+        "moments": 67
+      },
+      "40-59": {
+        "storylets": 91,
+        "moments": 70
+      },
+      "60-79": {
+        "storylets": 83,
+        "moments": 76
+      },
+      "80-95": {
+        "storylets": 53,
+        "moments": 40
+      }
+    }
+  },
+  "flags": {
+    "writtenWithoutAgeFlags": 89,
+    "unreadCount": 4,
+    "unread": [
+      "medicalIntegrity",
+      "closeRelationship",
+      "movedUp",
+      "censusLead"
+    ]
+  },
+  "strategies": {
+    "first": {
+      "label": "first",
+      "lives": 100,
+      "meanAge": 82.8,
+      "decisionsPerLife": 26.8,
+      "memoriesPerLife": 23.4,
+      "delayedPerLife": 2.73,
+      "momentsOpenedPerLife": 75.4,
+      "statsAt40": {
+        "health": 84,
+        "morale": 60.2,
+        "stress": 28,
+        "knowledge": 89.9,
+        "bonds": 51.6,
+        "reputation": 38.1
+      },
+      "arcShare": {
+        "career": {
+          "lives": 99,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 38,
+          "withFollowup": 38
+        },
+        "crack": {
+          "lives": 44,
+          "withFollowup": 44
+        },
+        "friend": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "love": {
+          "lives": 47,
+          "withFollowup": 47
+        },
+        "neighbor": {
+          "lives": 47,
+          "withFollowup": 47
+        },
+        "parent": {
+          "lives": 19,
+          "withFollowup": 18
+        },
+        "signal": {
+          "lives": 22,
+          "withFollowup": 22
+        }
+      }
+    },
+    "last": {
+      "label": "last",
+      "lives": 100,
+      "meanAge": 81.9,
+      "decisionsPerLife": 24.1,
+      "memoriesPerLife": 11.9,
+      "delayedPerLife": 2.56,
+      "momentsOpenedPerLife": 74.2,
+      "statsAt40": {
+        "health": 83,
+        "morale": 53.7,
+        "stress": 15.3,
+        "knowledge": 89.2,
+        "bonds": 29.5,
+        "reputation": 33.4
+      },
+      "arcShare": {
+        "career": {
+          "lives": 99,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "friend": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "love": {
+          "lives": 24,
+          "withFollowup": 24
+        },
+        "neighbor": {
+          "lives": 68,
+          "withFollowup": 68
+        },
+        "parent": {
+          "lives": 36,
+          "withFollowup": 27
+        },
+        "signal": {
+          "lives": 23,
+          "withFollowup": 23
+        }
+      }
+    },
+    "cycling": {
+      "label": "cycling",
+      "lives": 100,
+      "meanAge": 82.1,
+      "decisionsPerLife": 25.2,
+      "memoriesPerLife": 16.9,
+      "delayedPerLife": 2.49,
+      "momentsOpenedPerLife": 75.4,
+      "statsAt40": {
+        "health": 83.6,
+        "morale": 55.8,
+        "stress": 21.3,
+        "knowledge": 89.3,
+        "bonds": 39.2,
+        "reputation": 38.2
+      },
+      "arcShare": {
+        "career": {
+          "lives": 99,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 51,
+          "withFollowup": 51
+        },
+        "crack": {
+          "lives": 15,
+          "withFollowup": 15
+        },
+        "friend": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "love": {
+          "lives": 49,
+          "withFollowup": 49
+        },
+        "neighbor": {
+          "lives": 42,
+          "withFollowup": 42
+        },
+        "parent": {
+          "lives": 27,
+          "withFollowup": 25
+        },
+        "signal": {
+          "lives": 10,
+          "withFollowup": 10
+        }
+      }
+    },
+    "mixed": {
+      "label": "mixed",
+      "lives": 100,
+      "meanAge": 81.8,
+      "decisionsPerLife": 25.3,
+      "memoriesPerLife": 17.4,
+      "delayedPerLife": 2.63,
+      "momentsOpenedPerLife": 74.8,
+      "statsAt40": {
+        "health": 83.5,
+        "morale": 55.3,
+        "stress": 22.4,
+        "knowledge": 89.4,
+        "bonds": 38.9,
+        "reputation": 37.7
+      },
+      "arcShare": {
+        "career": {
+          "lives": 99,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 60,
+          "withFollowup": 60
+        },
+        "crack": {
+          "lives": 19,
+          "withFollowup": 19
+        },
+        "friend": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "love": {
+          "lives": 42,
+          "withFollowup": 42
+        },
+        "neighbor": {
+          "lives": 51,
+          "withFollowup": 50
+        },
+        "parent": {
+          "lives": 23,
+          "withFollowup": 19
+        },
+        "signal": {
+          "lives": 16,
+          "withFollowup": 16
+        }
+      }
+    },
+    "mixed+acceptMoments": {
+      "label": "mixed+acceptMoments",
+      "lives": 100,
+      "meanAge": 84.3,
+      "decisionsPerLife": 25.7,
+      "memoriesPerLife": 20.6,
+      "delayedPerLife": 2.78,
+      "momentsOpenedPerLife": 77.4,
+      "statsAt40": {
+        "health": 84.5,
+        "morale": 63,
+        "stress": 24.8,
+        "knowledge": 92.5,
+        "bonds": 50,
+        "reputation": 43.3
+      },
+      "arcShare": {
+        "career": {
+          "lives": 99,
+          "withFollowup": 0
+        },
+        "census": {
+          "lives": 50,
+          "withFollowup": 50
+        },
+        "crack": {
+          "lives": 17,
+          "withFollowup": 17
+        },
+        "friend": {
+          "lives": 57,
+          "withFollowup": 57
+        },
+        "love": {
+          "lives": 48,
+          "withFollowup": 48
+        },
+        "neighbor": {
+          "lives": 46,
+          "withFollowup": 46
+        },
+        "parent": {
+          "lives": 23,
+          "withFollowup": 20
+        },
+        "signal": {
+          "lives": 40,
+          "withFollowup": 40
+        }
+      }
+    }
+  },
+  "rhythm": {
+    "lives": 100,
+    "decisionsPer10Years": {
+      "0-9": 2.18,
+      "10-19": 3.32,
+      "20-29": 3.4,
+      "30-39": 3.71,
+      "40-49": 3.49,
+      "50-59": 3.53,
+      "60-69": 3.22,
+      "70-79": 2.89,
+      "80-89": 1.24
+    },
+    "momentsPerYearByDecade": {
+      "0-9": 0.89,
+      "10-19": 0.87,
+      "20-29": 0.93,
+      "30-39": 0.91,
+      "40-49": 0.98,
+      "50-59": 0.96,
+      "60-69": 0.92,
+      "70-79": 0.85,
+      "80-89": 0.91
+    },
+    "momentsPerYear": 0.915,
+    "momentsPerLife": 74.8,
+    "gapBetweenDecisions": {
+      "mean": 3,
+      "max": 6,
+      "over5": 0.8
+    },
+    "yearsAfterLastDecision": {
+      "mean": 5.8,
+      "max": 25
+    },
+    "topMomentsPerLife": {
+      "m-window-evening": 3.86,
+      "m-lamp": 3.44,
+      "m-night-archive": 3.38,
+      "m-friend-call": 2.62,
+      "m-sprout": 2.58,
+      "m-night-footsteps": 2.48,
+      "m-garden-plot": 2.4,
+      "m-ship-notice": 2.2
+    },
+    "momentsNeverOpened": [
+      "m-extra-cup",
+      "m-stair-count",
+      "m-window-reflection",
+      "m-lamp-dim",
+      "m-adult-family-applied",
+      "m-family-born-hand",
+      "m-family-child-door",
+      "m-family-answer-honest"
+    ]
+  },
+  "encounter": {
+    "pooledLives": 400,
+    "seenInOver50Percent": 14,
+    "seenIn10To50Percent": 52,
+    "seenInUnder10Percent": 58,
+    "neverSeen": [
+      "crack-student-return",
+      "crack-worsened",
+      "census-counting-voice"
+    ],
+    "byArc": {
+      "—": {
+        "stories": 60,
+        "meanRate": 0.292,
+        "neverSeen": 0
+      },
+      "friend": {
+        "stories": 6,
+        "meanRate": 0.25,
+        "neverSeen": 0
+      },
+      "career": {
+        "stories": 1,
+        "meanRate": 0.99,
+        "neverSeen": 0
+      },
+      "signal": {
+        "stories": 10,
+        "meanRate": 0.051,
+        "neverSeen": 0
+      },
+      "crack": {
+        "stories": 12,
+        "meanRate": 0.042,
+        "neverSeen": 2
+      },
+      "love": {
+        "stories": 8,
+        "meanRate": 0.126,
+        "neverSeen": 0
+      },
+      "parent": {
+        "stories": 7,
+        "meanRate": 0.086,
+        "neverSeen": 0
+      },
+      "neighbor": {
+        "stories": 8,
+        "meanRate": 0.155,
+        "neverSeen": 0
+      },
+      "census": {
+        "stories": 15,
+        "meanRate": 0.103,
+        "neverSeen": 1
+      }
+    },
+    "mostFrequent": {
+      "school-track": 0.99,
+      "legacy": 0.855,
+      "political-crisis": 0.843,
+      "garden-plot": 0.805,
+      "retirement": 0.793,
+      "health-scare": 0.73,
+      "late-common-room": 0.725,
+      "festival": 0.71,
+      "last-window": 0.693,
+      "strike": 0.69
+    },
+    "rates": {
+      "child-window": 0.32,
+      "child-library": 0.27,
+      "friend-accusation": 0.57,
+      "home-repair": 0.263,
+      "school-track": 0.99,
+      "first-pay": 0.185,
+      "signal": 0.178,
+      "microcrack": 0.195,
+      "clinic": 0.125,
+      "seed-vault": 0.08,
+      "council": 0.288,
+      "relationship": 0.405,
+      "parent-illness": 0.263,
+      "water-shortage": 0.525,
+      "festival": 0.71,
+      "strike": 0.69,
+      "lost-district": 0.043,
+      "midlife": 0.358,
+      "apprentice": 0.248,
+      "political-crisis": 0.843,
+      "old-friend": 0.375,
+      "retirement": 0.793,
+      "legacy": 0.855,
+      "neighbor-medical": 0.52,
+      "mentor": 0.313,
+      "nursery-day": 0.42,
+      "night-fear": 0.45,
+      "lost-corridor": 0.44,
+      "school-play": 0.2,
+      "curfew-night": 0.09,
+      "annual-exam": 0.04,
+      "promotion": 0.46,
+      "deck-lottery": 0.13,
+      "health-scare": 0.73,
+      "garden-plot": 0.805,
+      "last-window": 0.693,
+      "crack-report-hearing": 0.148,
+      "crack-inspector-offer": 0.068,
+      "crack-recurrence": 0.023,
+      "crack-secret-hero": 0.023,
+      "crack-student-return": 0,
+      "crack-failed-leak": 0.003,
+      "crack-worsened": 0,
+      "crack-silent-accident": 0.023,
+      "crack-confessed-after": 0.003,
+      "crack-denied-after": 0.008,
+      "crack-blamed-after": 0.013,
+      "friend-return-stood": 0.25,
+      "friend-return-quiet": 0.09,
+      "friend-return-abandoned": 0.23,
+      "friend-crisis-close": 0.303,
+      "friend-crisis-distant": 0.058,
+      "signal-result": 0.078,
+      "signal-public-debate": 0.06,
+      "signal-report": 0.055,
+      "signal-archive-opened": 0.005,
+      "signal-secret-visitor": 0.013,
+      "signal-rumor-circle": 0.023,
+      "signal-circle-joined": 0.008,
+      "signal-circle-warned": 0.01,
+      "signal-ignored-echo": 0.078,
+      "parent-illness-followup": 0.09,
+      "parent-keepsake": 0.04,
+      "parent-regret": 0.023,
+      "parent-treatment": 0.035,
+      "parent-letter": 0.098,
+      "parent-last-call": 0.053,
+      "neighbor-followup": 0.19,
+      "neighbor-kid-moved": 0.153,
+      "neighbor-kid-passed": 0.018,
+      "neighbor-kid-stayed": 0.018,
+      "neighbor-weekend": 0.1,
+      "neighbor-cold-leak": 0.228,
+      "neighbor-reconcile": 0.015,
+      "relationship-followup": 0.193,
+      "love-home-offer": 0.133,
+      "love-apart-return": 0.005,
+      "love-drift": 0.025,
+      "love-parted-meeting": 0.035,
+      "love-friends-union": 0.08,
+      "love-missed": 0.133,
+      "census-extra": 0.515,
+      "census-sealed-cabin": 0.223,
+      "census-someone-answers": 0.123,
+      "census-new-citizens": 0.095,
+      "census-keeper-night": 0.023,
+      "census-exposed": 0.025,
+      "census-correspondence": 0.07,
+      "census-petition-answer": 0.003,
+      "census-watched": 0.03,
+      "census-hidden-garden": 0.01,
+      "census-registry-answer": 0.095,
+      "census-recording": 0.063,
+      "census-quota-letter": 0.005,
+      "census-echo": 0.26,
+      "census-counting-voice": 0,
+      "adult-shift-error": 0.218,
+      "adult-parent-care": 0.358,
+      "adult-sector-repair": 0.293,
+      "adult-family-choice": 0.328,
+      "adult-sector-move": 0.328,
+      "adult-family-return": 0.163,
+      "tin-whistle": 0.32,
+      "family-a-life-ahead": 0.123,
+      "family-crossing-decks": 0.263,
+      "family-child-question": 0.09,
+      "family-parent-last-days": 0.318,
+      "family-home-in-bio": 0.113,
+      "family-life-ahead-again": 0.025,
+      "late-friend-bench": 0.465,
+      "late-adult-child-route": 0.05,
+      "late-tech-handbook": 0.203,
+      "late-medic-routine": 0.15,
+      "late-crack-record": 0.073,
+      "late-signal-record": 0.048,
+      "late-neighbor-night": 0.073,
+      "late-common-room": 0.725,
+      "youth-shared-notes": 0.08,
+      "youth-window-shift": 0.093,
+      "youth-first-duty": 0.068,
+      "youth-family-table": 0.118,
+      "youth-garden-label": 0.1,
+      "youth-voice-message": 0.073,
+      "youth-lunch-line": 0.09,
+      "youth-map-corner": 0.09,
+      "youth-swap-evening": 0.19,
+      "youth-quiet-corner": 0.123
+    }
+  },
+  "lateLife": {
+    "windows": {
+      "65-74": {
+        "livesReached": 94,
+        "sharePct": 94,
+        "yearsLived": 883,
+        "decisionsPer10Years": 3.171,
+        "livesWithDecisionPct": 97.9
+      },
+      "75-84": {
+        "livesReached": 78,
+        "sharePct": 78,
+        "yearsLived": 623,
+        "decisionsPer10Years": 2.36,
+        "livesWithDecisionPct": 91
+      },
+      "80-95": {
+        "livesReached": 67,
+        "sharePct": 67,
+        "yearsLived": 495,
+        "decisionsPer10Years": 1.313,
+        "livesWithDecisionPct": 62.7
+      },
+      "85-95": {
+        "livesReached": 43,
+        "sharePct": 43,
+        "yearsLived": 231,
+        "decisionsPer10Years": 0.39,
+        "livesWithDecisionPct": 16.3
+      }
+    },
+    "livesReaching65": 94,
+    "lateDecisionsPerLife65": 4.64,
+    "livesWithRetrospectivePct": 17,
+    "retrospectiveShareOfLateDecisionsPct": 4.4,
+    "gapBetweenLateDecisions": {
+      "mean": 3.19,
+      "eqMinGapPct": 26.2
+    },
+    "longestRunOfMinGapDecisions": {
+      "mean": 1.26,
+      "max": 4
+    },
+    "yearsAfterLastDecision65": {
+      "mean": 6.01,
+      "over10Pct": 17,
+      "over5Pct": 36.2
+    },
+    "meanAge": 81.78,
+    "lateStoryletsSeenPct": {
+      "late-friend-bench": 47.9,
+      "late-adult-child-route": 0,
+      "late-tech-handbook": 20.2,
+      "late-medic-routine": 23.4,
+      "late-crack-record": 6.4,
+      "late-signal-record": 4.3,
+      "late-neighbor-night": 4.3,
+      "late-common-room": 80.9
+    },
+    "lateStoryletsAnyPct": 91.5,
+    "lateMomentsSeenPct": {
+      "m-late-cup": 54.3,
+      "m-late-light": 60.6,
+      "m-late-plant": 57.4,
+      "m-late-music": 59.6,
+      "m-late-recipe": 55.3,
+      "m-late-friend": 41.5,
+      "m-late-quiet": 68.1
+    },
+    "momentsPerYear65": 0.915,
+    "lateMomentsPerLife": 3.97,
+    "rates": {
+      "water-shortage": 0.539,
+      "festival": 0.72,
+      "strike": 0.702,
+      "lost-district": 0.044,
+      "apprentice": 0.254,
+      "political-crisis": 0.863,
+      "old-friend": 0.383,
+      "retirement": 0.816,
+      "legacy": 0.886,
+      "garden-plot": 0.821,
+      "last-window": 0.718,
+      "crack-report-hearing": 0.15,
+      "crack-inspector-offer": 0.07,
+      "crack-recurrence": 0.023,
+      "crack-secret-hero": 0.023,
+      "crack-student-return": 0,
+      "crack-failed-leak": 0.003,
+      "crack-worsened": 0,
+      "crack-silent-accident": 0.023,
+      "crack-confessed-after": 0.003,
+      "crack-denied-after": 0.008,
+      "crack-blamed-after": 0.013,
+      "friend-return-stood": 0.249,
+      "friend-return-quiet": 0.088,
+      "friend-return-abandoned": 0.236,
+      "friend-crisis-close": 0.301,
+      "friend-crisis-distant": 0.054,
+      "signal-result": 0.08,
+      "signal-public-debate": 0.062,
+      "signal-report": 0.057,
+      "signal-archive-opened": 0.005,
+      "signal-secret-visitor": 0.013,
+      "signal-rumor-circle": 0.021,
+      "signal-circle-joined": 0.005,
+      "signal-circle-warned": 0.01,
+      "signal-ignored-echo": 0.08,
+      "parent-illness-followup": 0.091,
+      "parent-keepsake": 0.041,
+      "parent-regret": 0.023,
+      "parent-treatment": 0.031,
+      "parent-letter": 0.101,
+      "parent-last-call": 0.054,
+      "neighbor-followup": 0.194,
+      "neighbor-kid-moved": 0.155,
+      "neighbor-kid-passed": 0.018,
+      "neighbor-kid-stayed": 0.018,
+      "neighbor-weekend": 0.101,
+      "neighbor-cold-leak": 0.233,
+      "neighbor-reconcile": 0.016,
+      "relationship-followup": 0.194,
+      "love-home-offer": 0.132,
+      "love-apart-return": 0.003,
+      "love-drift": 0.026,
+      "love-parted-meeting": 0.036,
+      "love-friends-union": 0.083,
+      "love-missed": 0.132,
+      "census-sealed-cabin": 0.22,
+      "census-someone-answers": 0.119,
+      "census-new-citizens": 0.093,
+      "census-keeper-night": 0.021,
+      "census-exposed": 0.026,
+      "census-correspondence": 0.07,
+      "census-petition-answer": 0.003,
+      "census-watched": 0.031,
+      "census-hidden-garden": 0.01,
+      "census-registry-answer": 0.091,
+      "census-recording": 0.062,
+      "census-quota-letter": 0.003,
+      "census-echo": 0.267,
+      "census-counting-voice": 0,
+      "family-child-question": 0.088,
+      "family-parent-last-days": 0.319,
+      "family-home-in-bio": 0.114,
+      "late-friend-bench": 0.482,
+      "late-adult-child-route": 0.052,
+      "late-tech-handbook": 0.21,
+      "late-medic-routine": 0.155,
+      "late-crack-record": 0.075,
+      "late-signal-record": 0.049,
+      "late-neighbor-night": 0.075,
+      "late-common-room": 0.751
+    }
+  },
+  "lateLifeByStrategy": {
+    "first": {
+      "windows": {
+        "65-74": {
+          "livesReached": 97,
+          "sharePct": 97,
+          "yearsLived": 907,
+          "decisionsPer10Years": 3.175,
+          "livesWithDecisionPct": 99
+        },
+        "75-84": {
+          "livesReached": 82,
+          "sharePct": 82,
+          "yearsLived": 676,
+          "decisionsPer10Years": 3.003,
+          "livesWithDecisionPct": 93.9
+        },
+        "80-95": {
+          "livesReached": 72,
+          "sharePct": 72,
+          "yearsLived": 558,
+          "decisionsPer10Years": 2.079,
+          "livesWithDecisionPct": 83.3
+        },
+        "85-95": {
+          "livesReached": 49,
+          "sharePct": 49,
+          "yearsLived": 261,
+          "decisionsPer10Years": 1.188,
+          "livesWithDecisionPct": 42.9
+        }
+      },
+      "livesReaching65": 97,
+      "lateDecisionsPerLife65": 5.38,
+      "livesWithRetrospectivePct": 46.4,
+      "retrospectiveShareOfLateDecisionsPct": 13.2,
+      "gapBetweenLateDecisions": {
+        "mean": 3.14,
+        "eqMinGapPct": 26.1
+      },
+      "longestRunOfMinGapDecisions": {
+        "mean": 1.27,
+        "max": 5
+      },
+      "yearsAfterLastDecision65": {
+        "mean": 4.25,
+        "over10Pct": 8.2,
+        "over5Pct": 19.6
+      },
+      "meanAge": 82.8,
+      "lateStoryletsSeenPct": {
+        "late-friend-bench": 53.6,
+        "late-adult-child-route": 18.6,
+        "late-tech-handbook": 46.4,
+        "late-medic-routine": 18.6,
+        "late-crack-record": 20.6,
+        "late-signal-record": 13.4,
+        "late-neighbor-night": 17.5,
+        "late-common-room": 66
+      },
+      "lateStoryletsAnyPct": 92.8,
+      "lateMomentsSeenPct": {
+        "m-late-cup": 54.6,
+        "m-late-light": 58.8,
+        "m-late-plant": 54.6,
+        "m-late-music": 58.8,
+        "m-late-recipe": 61.9,
+        "m-late-friend": 45.4,
+        "m-late-quiet": 57.7
+      },
+      "momentsPerYear65": 0.911,
+      "lateMomentsPerLife": 3.92
+    },
+    "last": {
+      "windows": {
+        "65-74": {
+          "livesReached": 99,
+          "sharePct": 99,
+          "yearsLived": 892,
+          "decisionsPer10Years": 3.139,
+          "livesWithDecisionPct": 92.9
+        },
+        "75-84": {
+          "livesReached": 81,
+          "sharePct": 81,
+          "yearsLived": 640,
+          "decisionsPer10Years": 1.391,
+          "livesWithDecisionPct": 79
+        },
+        "80-95": {
+          "livesReached": 69,
+          "sharePct": 69,
+          "yearsLived": 472,
+          "decisionsPer10Years": 0.275,
+          "livesWithDecisionPct": 15.9
+        },
+        "85-95": {
+          "livesReached": 44,
+          "sharePct": 44,
+          "yearsLived": 205,
+          "decisionsPer10Years": 0,
+          "livesWithDecisionPct": 0
+        }
+      },
+      "livesReaching65": 99,
+      "lateDecisionsPerLife65": 3.73,
+      "livesWithRetrospectivePct": 0,
+      "retrospectiveShareOfLateDecisionsPct": 0,
+      "gapBetweenLateDecisions": {
+        "mean": 3.18,
+        "eqMinGapPct": 27.1
+      },
+      "longestRunOfMinGapDecisions": {
+        "mean": 1.26,
+        "max": 4
+      },
+      "yearsAfterLastDecision65": {
+        "mean": 8.06,
+        "over10Pct": 32.3,
+        "over5Pct": 49.5
+      },
+      "meanAge": 81.9,
+      "lateStoryletsSeenPct": {
+        "late-friend-bench": 34.3,
+        "late-adult-child-route": 0,
+        "late-tech-handbook": 0,
+        "late-medic-routine": 0,
+        "late-crack-record": 0,
+        "late-signal-record": 0,
+        "late-neighbor-night": 0,
+        "late-common-room": 81.8
+      },
+      "lateStoryletsAnyPct": 84.8,
+      "lateMomentsSeenPct": {
+        "m-late-cup": 60.6,
+        "m-late-light": 60.6,
+        "m-late-plant": 65.7,
+        "m-late-music": 46.5,
+        "m-late-recipe": 55.6,
+        "m-late-friend": 17.2,
+        "m-late-quiet": 57.6
+      },
+      "momentsPerYear65": 0.907,
+      "lateMomentsPerLife": 3.64
+    },
+    "cycling": {
+      "windows": {
+        "65-74": {
+          "livesReached": 96,
+          "sharePct": 96,
+          "yearsLived": 865,
+          "decisionsPer10Years": 3.133,
+          "livesWithDecisionPct": 95.8
+        },
+        "75-84": {
+          "livesReached": 78,
+          "sharePct": 78,
+          "yearsLived": 622,
+          "decisionsPer10Years": 2.556,
+          "livesWithDecisionPct": 89.7
+        },
+        "80-95": {
+          "livesReached": 63,
+          "sharePct": 63,
+          "yearsLived": 518,
+          "decisionsPer10Years": 1.236,
+          "livesWithDecisionPct": 63.5
+        },
+        "85-95": {
+          "livesReached": 42,
+          "sharePct": 42,
+          "yearsLived": 260,
+          "decisionsPer10Years": 0.269,
+          "livesWithDecisionPct": 14.3
+        }
+      },
+      "livesReaching65": 96,
+      "lateDecisionsPerLife65": 4.55,
+      "livesWithRetrospectivePct": 17.7,
+      "retrospectiveShareOfLateDecisionsPct": 4.6,
+      "gapBetweenLateDecisions": {
+        "mean": 3.07,
+        "eqMinGapPct": 31.3
+      },
+      "longestRunOfMinGapDecisions": {
+        "mean": 1.33,
+        "max": 4
+      },
+      "yearsAfterLastDecision65": {
+        "mean": 6.33,
+        "over10Pct": 20.8,
+        "over5Pct": 37.5
+      },
+      "meanAge": 82.09,
+      "lateStoryletsSeenPct": {
+        "late-friend-bench": 57.3,
+        "late-adult-child-route": 2.1,
+        "late-tech-handbook": 17.7,
+        "late-medic-routine": 20.8,
+        "late-crack-record": 3.1,
+        "late-signal-record": 2.1,
+        "late-neighbor-night": 8.3,
+        "late-common-room": 71.9
+      },
+      "lateStoryletsAnyPct": 87.5,
+      "lateMomentsSeenPct": {
+        "m-late-cup": 59.4,
+        "m-late-light": 57.3,
+        "m-late-plant": 59.4,
+        "m-late-music": 54.2,
+        "m-late-recipe": 63.5,
+        "m-late-friend": 41.7,
+        "m-late-quiet": 60.4
+      },
+      "momentsPerYear65": 0.918,
+      "lateMomentsPerLife": 3.96
+    },
+    "mixed": {
+      "windows": {
+        "65-74": {
+          "livesReached": 94,
+          "sharePct": 94,
+          "yearsLived": 883,
+          "decisionsPer10Years": 3.171,
+          "livesWithDecisionPct": 97.9
+        },
+        "75-84": {
+          "livesReached": 78,
+          "sharePct": 78,
+          "yearsLived": 623,
+          "decisionsPer10Years": 2.36,
+          "livesWithDecisionPct": 91
+        },
+        "80-95": {
+          "livesReached": 67,
+          "sharePct": 67,
+          "yearsLived": 495,
+          "decisionsPer10Years": 1.313,
+          "livesWithDecisionPct": 62.7
+        },
+        "85-95": {
+          "livesReached": 43,
+          "sharePct": 43,
+          "yearsLived": 231,
+          "decisionsPer10Years": 0.39,
+          "livesWithDecisionPct": 16.3
+        }
+      },
+      "livesReaching65": 94,
+      "lateDecisionsPerLife65": 4.64,
+      "livesWithRetrospectivePct": 17,
+      "retrospectiveShareOfLateDecisionsPct": 4.4,
+      "gapBetweenLateDecisions": {
+        "mean": 3.19,
+        "eqMinGapPct": 26.2
+      },
+      "longestRunOfMinGapDecisions": {
+        "mean": 1.26,
+        "max": 4
+      },
+      "yearsAfterLastDecision65": {
+        "mean": 6.01,
+        "over10Pct": 17,
+        "over5Pct": 36.2
+      },
+      "meanAge": 81.78,
+      "lateStoryletsSeenPct": {
+        "late-friend-bench": 47.9,
+        "late-adult-child-route": 0,
+        "late-tech-handbook": 20.2,
+        "late-medic-routine": 23.4,
+        "late-crack-record": 6.4,
+        "late-signal-record": 4.3,
+        "late-neighbor-night": 4.3,
+        "late-common-room": 80.9
+      },
+      "lateStoryletsAnyPct": 91.5,
+      "lateMomentsSeenPct": {
+        "m-late-cup": 54.3,
+        "m-late-light": 60.6,
+        "m-late-plant": 57.4,
+        "m-late-music": 59.6,
+        "m-late-recipe": 55.3,
+        "m-late-friend": 41.5,
+        "m-late-quiet": 68.1
+      },
+      "momentsPerYear65": 0.915,
+      "lateMomentsPerLife": 3.97
+    }
+  },
+  "professions": {
+    "lives": {
+      "Координатор": 25,
+      "Агроном": 21,
+      "Медик": 29,
+      "Техник": 24
+    },
+    "decisionsPerLife": {
+      "Координатор": 25.8,
+      "Агроном": 24.8,
+      "Медик": 25.4,
+      "Техник": 26.3
+    },
+    "storyletsGatedByJob": 7,
+    "momentsGatedByJob": 4,
+    "meanRateDistanceBetweenJobs": 0.0884
+  },
+  "economy": {
+    "methodology": {
+      "ageCheckpoints": "Только наблюдавшиеся живыми в указанном возрасте; отсутствующие наблюдения не заменяются нулём.",
+      "tariffEquivalent": "Баланс делится на базовый годовой тариф текущей профессии и разряда без надбавок и нагрузки.",
+      "protectedNeedsDeficit": "Год с aid > 0 означает, что баланс и доход не покрыли защищённый минимум.",
+      "voluntaryObligationShortfall": "Год с понижением жилья или отменой услуги из-за нехватки остатка после минимума.",
+      "pensionCoverage": "Пенсия сравнивается с фактическими записанными обязательствами данного пенсионного года.",
+      "mechanicalStrategies": "Стратегии выбора механические и не являются моделью поведения людей.",
+      "purchases": "Покупки не реализованы и не симулируются; частота покупок и их доступность не оцениваются.",
+      "observation": "Экономика только считывается после штатного tick(); дополнительный RNG не расходуется."
+    },
+    "byStrategy": {
+      "first": {
+        "lives": 100,
+        "adultsObserved": 99,
+        "checkpointByAge": {
+          "20": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 2970,
+              "p50": 3420,
+              "p90": 4070,
+              "mean": 3476.16
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 2.68,
+              "p50": 2.9,
+              "p90": 3.7,
+              "mean": 3.01
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 8.49,
+              "p50": 9.77,
+              "p90": 11.63,
+              "mean": 9.93
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1100,
+              "p50": 1100,
+              "p90": 1350,
+              "mean": 1162.12
+            }
+          },
+          "40": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 19580,
+              "p50": 22582,
+              "p90": 23853.6,
+              "mean": 22151.1
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 15.06,
+              "p50": 16.94,
+              "p90": 18.06,
+              "mean": 16.8
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 42.92,
+              "p50": 64.44,
+              "p90": 68.09,
+              "mean": 60.04
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1300,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1321.21
+            }
+          },
+          "60": {
+            "livesObserved": 98,
+            "balanceKr": {
+              "observations": 98,
+              "p10": 38494.6,
+              "p50": 42998,
+              "p90": 45355,
+              "mean": 42374.31
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 98,
+              "p10": 29.61,
+              "p50": 31.97,
+              "p90": 33.6,
+              "mean": 31.69
+            },
+            "reserveYears": {
+              "observations": 98,
+              "p10": 103.71,
+              "p50": 122.46,
+              "p90": 129.59,
+              "mean": 118.57
+            },
+            "tariffIncomeKr": {
+              "observations": 98,
+              "p10": 1300,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1336.22
+            }
+          },
+          "80": {
+            "livesObserved": 72,
+            "balanceKr": {
+              "observations": 72,
+              "p10": 48453.6,
+              "p50": 55121.5,
+              "p90": 62230.6,
+              "mean": 55675.78
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 72,
+              "p10": 36.6,
+              "p50": 41.27,
+              "p90": 46.9,
+              "mean": 41.68
+            },
+            "reserveYears": {
+              "observations": 72,
+              "p10": 138.44,
+              "p50": 157.49,
+              "p90": 177.8,
+              "mean": 159.07
+            },
+            "tariffIncomeKr": {
+              "observations": 72,
+              "p10": 1300,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1335.42
+            }
+          }
+        },
+        "gradeDistributionAtAgeByProfession": {
+          "40": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 72,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 72,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 72,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 27,
+                "grades": {
+                  "1": {
+                    "count": 6,
+                    "pct": 22.2
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 77.8
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 27,
+                  "p10": 1050,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1244.44
+                }
+              },
+              "Агроном": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Координатор": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "60": {
+            "livesObserved": 98,
+            "byProfession": {
+              "Техник": {
+                "observations": 71,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 71,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 71,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 27,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 27,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 27,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1300
+                }
+              },
+              "Агроном": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Координатор": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "annualIncomeByProfession": {
+          "Техник": {
+            "observations": 3841,
+            "wageKr": {
+              "observations": 3841,
+              "p10": 1100,
+              "p50": 1350,
+              "p90": 1485,
+              "mean": 1354.52
+            },
+            "tariffIncomeKr": {
+              "observations": 3841,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1327.61
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 3841,
+                "wageKr": {
+                  "observations": 3841,
+                  "p10": 1100,
+                  "p50": 1350,
+                  "p90": 1485,
+                  "mean": 1354.52
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Медик": {
+            "observations": 1145,
+            "wageKr": {
+              "observations": 1145,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1430,
+              "mean": 1261.87
+            },
+            "tariffIncomeKr": {
+              "observations": 1145,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1253.71
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1118,
+                "wageKr": {
+                  "observations": 1118,
+                  "p10": 1050,
+                  "p50": 1300,
+                  "p90": 1430,
+                  "mean": 1277.13
+                }
+              },
+              "trainee": {
+                "observations": 27,
+                "wageKr": {
+                  "observations": 27,
+                  "p10": 630,
+                  "p50": 630,
+                  "p90": 630,
+                  "mean": 630
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Агроном": {
+            "observations": 0,
+            "wageKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "tariffIncomeKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Координатор": {
+            "observations": 0,
+            "wageKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "tariffIncomeKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "pension": {
+          "retireesObserved": 93,
+          "retiredYearsObserved": 1609,
+          "firstAnnualPensionPerRetireeKr": {
+            "observations": 93,
+            "p10": 702,
+            "p50": 758,
+            "p90": 878,
+            "mean": 785.32
+          },
+          "annualPensionPerRetiredYearKr": {
+            "observations": 1609,
+            "p10": 676,
+            "p50": 757,
+            "p90": 878,
+            "mean": 763.66
+          },
+          "pensionToObligationsRatio": {
+            "observations": 1609,
+            "p10": 1.93,
+            "p50": 2.16,
+            "p90": 2.51,
+            "mean": 2.18
+          },
+          "retiredYearsWithPensionCoveringBillsPct": 100,
+          "retireesWithDecliningSavings": {
+            "count": 0,
+            "pct": 0
+          },
+          "retireesWithExhaustedReserve": {
+            "count": 0,
+            "pct": 0
+          }
+        },
+        "scarcity": {
+          "economicYearsObserved": 8280,
+          "tightYears": 0,
+          "tightYearsPctOfEconomicYears": 0,
+          "livesWithAnyTightYear": {
+            "count": 0,
+            "pct": 0
+          },
+          "tightYearsPerAdultLife": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "protectedNeedsDeficit": {
+            "livesWithAid": {
+              "count": 0,
+              "pct": 0
+            },
+            "yearsWithAid": 0,
+            "aidPerLifeKr": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "aidYearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "totalAidKr": 0,
+            "meanAidPerUseYearKr": null
+          },
+          "voluntaryObligationShortfall": {
+            "years": 0,
+            "yearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "housingDowngradeYears": 0,
+            "serviceCancellationYears": 0,
+            "cancelledServices": 0
+          },
+          "serviceClosure": {
+            "adultYearsObserved": 6793,
+            "closedYears": 366,
+            "pctOfAdultYears": 5.4
+          }
+        },
+        "invariants": {
+          "checks": 8280,
+          "violations": 0,
+          "livesWithViolations": 0,
+          "byMessage": {}
+        }
+      },
+      "last": {
+        "lives": 100,
+        "adultsObserved": 99,
+        "checkpointByAge": {
+          "20": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 3120,
+              "p50": 3520,
+              "p90": 4220,
+              "mean": 3598.28
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 2.71,
+              "p50": 3.06,
+              "p90": 3.67,
+              "mean": 3.11
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 8.91,
+              "p50": 10.06,
+              "p90": 12.06,
+              "mean": 10.28
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1150,
+              "p50": 1150,
+              "p90": 1150,
+              "mean": 1157.58
+            }
+          },
+          "40": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 23570,
+              "p50": 24020,
+              "p90": 24720,
+              "mean": 24062.93
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 16.84,
+              "p50": 17.16,
+              "p90": 17.66,
+              "mean": 17.19
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 67.34,
+              "p50": 68.63,
+              "p90": 70.63,
+              "mean": 68.75
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1400
+            }
+          },
+          "60": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 44570,
+              "p50": 45020,
+              "p90": 45720,
+              "mean": 45062.93
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 31.84,
+              "p50": 32.16,
+              "p90": 32.66,
+              "mean": 32.19
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 127.34,
+              "p50": 128.63,
+              "p90": 130.63,
+              "mean": 128.75
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1400
+            }
+          },
+          "80": {
+            "livesObserved": 69,
+            "balanceKr": {
+              "observations": 69,
+              "p10": 63660,
+              "p50": 64110,
+              "p90": 64760,
+              "mean": 64154.2
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 69,
+              "p10": 45.47,
+              "p50": 45.79,
+              "p90": 46.26,
+              "mean": 45.82
+            },
+            "reserveYears": {
+              "observations": 69,
+              "p10": 181.89,
+              "p50": 183.17,
+              "p90": 185.03,
+              "mean": 183.3
+            },
+            "tariffIncomeKr": {
+              "observations": 69,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1400
+            }
+          }
+        },
+        "gradeDistributionAtAgeByProfession": {
+          "40": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Медик": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Агроном": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Координатор": {
+                "observations": 99,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 99,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 99,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          },
+          "60": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Медик": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Агроном": {
+                "observations": 0,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "Координатор": {
+                "observations": 99,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 99,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 99,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          }
+        },
+        "annualIncomeByProfession": {
+          "Техник": {
+            "observations": 0,
+            "wageKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "tariffIncomeKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Медик": {
+            "observations": 0,
+            "wageKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "tariffIncomeKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Агроном": {
+            "observations": 0,
+            "wageKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "tariffIncomeKr": {
+              "observations": 0,
+              "p10": null,
+              "p50": null,
+              "p90": null,
+              "mean": null
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Координатор": {
+            "observations": 5724,
+            "wageKr": {
+              "observations": 5724,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1377.81
+            },
+            "tariffIncomeKr": {
+              "observations": 5724,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1382.14
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 5724,
+                "wageKr": {
+                  "observations": 5724,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1377.81
+                }
+              },
+              "trainee": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "pension": {
+          "retireesObserved": 78,
+          "retiredYearsObserved": 781,
+          "firstAnnualPensionPerRetireeKr": {
+            "observations": 78,
+            "p10": 910,
+            "p50": 910,
+            "p90": 910,
+            "mean": 910
+          },
+          "annualPensionPerRetiredYearKr": {
+            "observations": 781,
+            "p10": 910,
+            "p50": 910,
+            "p90": 910,
+            "mean": 910
+          },
+          "pensionToObligationsRatio": {
+            "observations": 781,
+            "p10": 2.6,
+            "p50": 2.6,
+            "p90": 2.6,
+            "mean": 2.6
+          },
+          "retiredYearsWithPensionCoveringBillsPct": 100,
+          "retireesWithDecliningSavings": {
+            "count": 0,
+            "pct": 0
+          },
+          "retireesWithExhaustedReserve": {
+            "count": 0,
+            "pct": 0
+          }
+        },
+        "scarcity": {
+          "economicYearsObserved": 8190,
+          "tightYears": 0,
+          "tightYearsPctOfEconomicYears": 0,
+          "livesWithAnyTightYear": {
+            "count": 0,
+            "pct": 0
+          },
+          "tightYearsPerAdultLife": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "protectedNeedsDeficit": {
+            "livesWithAid": {
+              "count": 0,
+              "pct": 0
+            },
+            "yearsWithAid": 0,
+            "aidPerLifeKr": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "aidYearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "totalAidKr": 0,
+            "meanAidPerUseYearKr": null
+          },
+          "voluntaryObligationShortfall": {
+            "years": 0,
+            "yearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "housingDowngradeYears": 0,
+            "serviceCancellationYears": 0,
+            "cancelledServices": 0
+          },
+          "serviceClosure": {
+            "adultYearsObserved": 6703,
+            "closedYears": 354,
+            "pctOfAdultYears": 5.3
+          }
+        },
+        "invariants": {
+          "checks": 8190,
+          "violations": 0,
+          "livesWithViolations": 0,
+          "byMessage": {}
+        }
+      },
+      "cycling": {
+        "lives": 100,
+        "adultsObserved": 99,
+        "checkpointByAge": {
+          "20": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 2900,
+              "p50": 3370,
+              "p90": 3820,
+              "mean": 3365.15
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 2.7,
+              "p50": 3.06,
+              "p90": 3.68,
+              "mean": 3.15
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 8.63,
+              "p50": 10.06,
+              "p90": 11.72,
+              "mean": 10.12
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 950,
+              "p50": 1050,
+              "p90": 1150,
+              "mean": 1074.75
+            }
+          },
+          "40": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 20600,
+              "p50": 22020,
+              "p90": 24234.4,
+              "mean": 22215.04
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 16.5,
+              "p50": 17.06,
+              "p90": 17.71,
+              "mean": 17.11
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 61.46,
+              "p50": 66.77,
+              "p90": 71.9,
+              "mean": 66.27
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1200,
+              "p50": 1300,
+              "p90": 1400,
+              "mean": 1300
+            }
+          },
+          "60": {
+            "livesObserved": 98,
+            "balanceKr": {
+              "observations": 98,
+              "p10": 38800,
+              "p50": 41853,
+              "p90": 45285,
+              "mean": 42095.56
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 98,
+              "p10": 31.03,
+              "p50": 32.14,
+              "p90": 33.51,
+              "mean": 32.18
+            },
+            "reserveYears": {
+              "observations": 98,
+              "p10": 115.77,
+              "p50": 127.13,
+              "p90": 134.91,
+              "mean": 126.21
+            },
+            "tariffIncomeKr": {
+              "observations": 98,
+              "p10": 1200,
+              "p50": 1300,
+              "p90": 1400,
+              "mean": 1308.67
+            }
+          },
+          "80": {
+            "livesObserved": 63,
+            "balanceKr": {
+              "observations": 63,
+              "p10": 51849.6,
+              "p50": 58600,
+              "p90": 64596.6,
+              "mean": 58099.75
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 63,
+              "p10": 40.2,
+              "p50": 44.68,
+              "p90": 47.74,
+              "mean": 44.22
+            },
+            "reserveYears": {
+              "observations": 63,
+              "p10": 150.89,
+              "p50": 174.86,
+              "p90": 192.28,
+              "mean": 173.1
+            },
+            "tariffIncomeKr": {
+              "observations": 63,
+              "p10": 1200,
+              "p50": 1350,
+              "p90": 1400,
+              "mean": 1314.29
+            }
+          }
+        },
+        "gradeDistributionAtAgeByProfession": {
+          "40": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 2,
+                    "pct": 9.5
+                  },
+                  "2": {
+                    "count": 19,
+                    "pct": 90.5
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1326.19
+                }
+              },
+              "Медик": {
+                "observations": 29,
+                "grades": {
+                  "1": {
+                    "count": 1,
+                    "pct": 3.4
+                  },
+                  "2": {
+                    "count": 28,
+                    "pct": 96.6
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 29,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1291.38
+                }
+              },
+              "Агроном": {
+                "observations": 26,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 26,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 26,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 23,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 23,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 23,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          },
+          "60": {
+            "livesObserved": 98,
+            "byProfession": {
+              "Техник": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 29,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 29,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 29,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1300
+                }
+              },
+              "Агроном": {
+                "observations": 25,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 25,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 25,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 23,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 23,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 23,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          }
+        },
+        "annualIncomeByProfession": {
+          "Техник": {
+            "observations": 1116,
+            "wageKr": {
+              "observations": 1116,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1485,
+              "mean": 1343.91
+            },
+            "tariffIncomeKr": {
+              "observations": 1116,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1330.29
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1114,
+                "wageKr": {
+                  "observations": 1114,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1485,
+                  "mean": 1345.13
+                }
+              },
+              "trainee": {
+                "observations": 2,
+                "wageKr": {
+                  "observations": 2,
+                  "p10": 660,
+                  "p50": 660,
+                  "p90": 660,
+                  "mean": 660
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Медик": {
+            "observations": 1486,
+            "wageKr": {
+              "observations": 1486,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1283.95
+            },
+            "tariffIncomeKr": {
+              "observations": 1486,
+              "p10": 1300,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1276.62
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1484,
+                "wageKr": {
+                  "observations": 1484,
+                  "p10": 1050,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1284.83
+                }
+              },
+              "trainee": {
+                "observations": 2,
+                "wageKr": {
+                  "observations": 2,
+                  "p10": 630,
+                  "p50": 630,
+                  "p90": 630,
+                  "mean": 630
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Агроном": {
+            "observations": 1329,
+            "wageKr": {
+              "observations": 1329,
+              "p10": 950,
+              "p50": 1200,
+              "p90": 1320,
+              "mean": 1187.86
+            },
+            "tariffIncomeKr": {
+              "observations": 1329,
+              "p10": 1200,
+              "p50": 1200,
+              "p90": 1200,
+              "mean": 1175.55
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1326,
+                "wageKr": {
+                  "observations": 1326,
+                  "p10": 950,
+                  "p50": 1200,
+                  "p90": 1320,
+                  "mean": 1189.25
+                }
+              },
+              "trainee": {
+                "observations": 3,
+                "wageKr": {
+                  "observations": 3,
+                  "p10": 570,
+                  "p50": 570,
+                  "p90": 570,
+                  "mean": 570
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Координатор": {
+            "observations": 1225,
+            "wageKr": {
+              "observations": 1225,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1540,
+              "mean": 1390.67
+            },
+            "tariffIncomeKr": {
+              "observations": 1225,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1380.41
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1223,
+                "wageKr": {
+                  "observations": 1223,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1540,
+                  "mean": 1391.82
+                }
+              },
+              "trainee": {
+                "observations": 2,
+                "wageKr": {
+                  "observations": 2,
+                  "p10": 690,
+                  "p50": 690,
+                  "p90": 690,
+                  "mean": 690
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "pension": {
+          "retireesObserved": 88,
+          "retiredYearsObserved": 1368,
+          "firstAnnualPensionPerRetireeKr": {
+            "observations": 88,
+            "p10": 649,
+            "p50": 786,
+            "p90": 910,
+            "mean": 787.52
+          },
+          "annualPensionPerRetiredYearKr": {
+            "observations": 1368,
+            "p10": 649,
+            "p50": 758,
+            "p90": 878,
+            "mean": 762.48
+          },
+          "pensionToObligationsRatio": {
+            "observations": 1368,
+            "p10": 1.93,
+            "p50": 2.25,
+            "p90": 2.6,
+            "mean": 2.28
+          },
+          "retiredYearsWithPensionCoveringBillsPct": 100,
+          "retireesWithDecliningSavings": {
+            "count": 0,
+            "pct": 0
+          },
+          "retireesWithExhaustedReserve": {
+            "count": 0,
+            "pct": 0
+          }
+        },
+        "scarcity": {
+          "economicYearsObserved": 8209,
+          "tightYears": 0,
+          "tightYearsPctOfEconomicYears": 0,
+          "livesWithAnyTightYear": {
+            "count": 0,
+            "pct": 0
+          },
+          "tightYearsPerAdultLife": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "protectedNeedsDeficit": {
+            "livesWithAid": {
+              "count": 0,
+              "pct": 0
+            },
+            "yearsWithAid": 0,
+            "aidPerLifeKr": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "aidYearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "totalAidKr": 0,
+            "meanAidPerUseYearKr": null
+          },
+          "voluntaryObligationShortfall": {
+            "years": 0,
+            "yearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "housingDowngradeYears": 0,
+            "serviceCancellationYears": 0,
+            "cancelledServices": 0
+          },
+          "serviceClosure": {
+            "adultYearsObserved": 6722,
+            "closedYears": 376,
+            "pctOfAdultYears": 5.6
+          }
+        },
+        "invariants": {
+          "checks": 8209,
+          "violations": 0,
+          "livesWithViolations": 0,
+          "byMessage": {}
+        }
+      },
+      "mixed": {
+        "lives": 100,
+        "adultsObserved": 99,
+        "checkpointByAge": {
+          "20": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 2900,
+              "p50": 3400,
+              "p90": 3920,
+              "mean": 3397.78
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 2.7,
+              "p50": 3.06,
+              "p90": 3.67,
+              "mean": 3.11
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 8.63,
+              "p50": 10.06,
+              "p90": 11.72,
+              "mean": 10.06
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 950,
+              "p50": 1100,
+              "p90": 1190,
+              "mean": 1097.47
+            }
+          },
+          "40": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 20390,
+              "p50": 22020,
+              "p90": 24530,
+              "mean": 22326.19
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 16.12,
+              "p50": 17.01,
+              "p90": 17.7,
+              "mean": 17.04
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 60.76,
+              "p50": 66.27,
+              "p90": 71.76,
+              "mean": 65.77
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1200,
+              "p50": 1300,
+              "p90": 1400,
+              "mean": 1311.11
+            }
+          },
+          "60": {
+            "livesObserved": 96,
+            "balanceKr": {
+              "observations": 96,
+              "p10": 38666,
+              "p50": 41420,
+              "p90": 45795,
+              "mean": 42164.79
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 96,
+              "p10": 30.98,
+              "p50": 32.02,
+              "p90": 32.9,
+              "mean": 32.01
+            },
+            "reserveYears": {
+              "observations": 96,
+              "p10": 115.77,
+              "p50": 124.91,
+              "p90": 135.52,
+              "mean": 125.49
+            },
+            "tariffIncomeKr": {
+              "observations": 96,
+              "p10": 1200,
+              "p50": 1350,
+              "p90": 1400,
+              "mean": 1316.67
+            }
+          },
+          "80": {
+            "livesObserved": 67,
+            "balanceKr": {
+              "observations": 67,
+              "p10": 51916.4,
+              "p50": 57914,
+              "p90": 64650,
+              "mean": 58168.24
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 67,
+              "p10": 40.05,
+              "p50": 44.58,
+              "p90": 46.65,
+              "mean": 44.06
+            },
+            "reserveYears": {
+              "observations": 67,
+              "p10": 153.75,
+              "p50": 175.62,
+              "p90": 191.86,
+              "mean": 172.73
+            },
+            "tariffIncomeKr": {
+              "observations": 67,
+              "p10": 1200,
+              "p50": 1350,
+              "p90": 1400,
+              "mean": 1319.4
+            }
+          }
+        },
+        "gradeDistributionAtAgeByProfession": {
+          "40": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 24,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 24,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 24,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 29,
+                "grades": {
+                  "1": {
+                    "count": 2,
+                    "pct": 6.9
+                  },
+                  "2": {
+                    "count": 27,
+                    "pct": 93.1
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 29,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1282.76
+                }
+              },
+              "Агроном": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 25,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 25,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 25,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          },
+          "60": {
+            "livesObserved": 96,
+            "byProfession": {
+              "Техник": {
+                "observations": 24,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 24,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 24,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 26,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 26,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 26,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1300
+                }
+              },
+              "Агроном": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 25,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 25,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 25,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          }
+        },
+        "annualIncomeByProfession": {
+          "Техник": {
+            "observations": 1333,
+            "wageKr": {
+              "observations": 1333,
+              "p10": 1232,
+              "p50": 1350,
+              "p90": 1485,
+              "mean": 1338.5
+            },
+            "tariffIncomeKr": {
+              "observations": 1333,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1328.99
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1329,
+                "wageKr": {
+                  "observations": 1329,
+                  "p10": 1232,
+                  "p50": 1350,
+                  "p90": 1485,
+                  "mean": 1340.54
+                }
+              },
+              "trainee": {
+                "observations": 4,
+                "wageKr": {
+                  "observations": 4,
+                  "p10": 660,
+                  "p50": 660,
+                  "p90": 660,
+                  "mean": 660
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Медик": {
+            "observations": 1417,
+            "wageKr": {
+              "observations": 1417,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1266.76
+            },
+            "tariffIncomeKr": {
+              "observations": 1417,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1273.54
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1412,
+                "wageKr": {
+                  "observations": 1412,
+                  "p10": 1050,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1269.02
+                }
+              },
+              "trainee": {
+                "observations": 5,
+                "wageKr": {
+                  "observations": 5,
+                  "p10": 630,
+                  "p50": 630,
+                  "p90": 630,
+                  "mean": 630
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Агроном": {
+            "observations": 1056,
+            "wageKr": {
+              "observations": 1056,
+              "p10": 950,
+              "p50": 1200,
+              "p90": 1200,
+              "mean": 1176.78
+            },
+            "tariffIncomeKr": {
+              "observations": 1056,
+              "p10": 1200,
+              "p50": 1200,
+              "p90": 1200,
+              "mean": 1176.56
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1054,
+                "wageKr": {
+                  "observations": 1054,
+                  "p10": 950,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1177.93
+                }
+              },
+              "trainee": {
+                "observations": 2,
+                "wageKr": {
+                  "observations": 2,
+                  "p10": 570,
+                  "p50": 570,
+                  "p90": 570,
+                  "mean": 570
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Координатор": {
+            "observations": 1383,
+            "wageKr": {
+              "observations": 1383,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1540,
+              "mean": 1395.54
+            },
+            "tariffIncomeKr": {
+              "observations": 1383,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1382.28
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1382,
+                "wageKr": {
+                  "observations": 1382,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1540,
+                  "mean": 1396.05
+                }
+              },
+              "trainee": {
+                "observations": 1,
+                "wageKr": {
+                  "observations": 1,
+                  "p10": 690,
+                  "p50": 690,
+                  "p90": 690,
+                  "mean": 690
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "pension": {
+          "retireesObserved": 85,
+          "retiredYearsObserved": 1304,
+          "firstAnnualPensionPerRetireeKr": {
+            "observations": 85,
+            "p10": 659,
+            "p50": 838,
+            "p90": 910,
+            "mean": 795.09
+          },
+          "annualPensionPerRetiredYearKr": {
+            "observations": 1304,
+            "p10": 631.5,
+            "p50": 757,
+            "p90": 910,
+            "mean": 769.53
+          },
+          "pensionToObligationsRatio": {
+            "observations": 1304,
+            "p10": 1.93,
+            "p50": 2.24,
+            "p90": 2.6,
+            "mean": 2.29
+          },
+          "retiredYearsWithPensionCoveringBillsPct": 100,
+          "retireesWithDecliningSavings": {
+            "count": 0,
+            "pct": 0
+          },
+          "retireesWithExhaustedReserve": {
+            "count": 0,
+            "pct": 0
+          }
+        },
+        "scarcity": {
+          "economicYearsObserved": 8178,
+          "tightYears": 0,
+          "tightYearsPctOfEconomicYears": 0,
+          "livesWithAnyTightYear": {
+            "count": 0,
+            "pct": 0
+          },
+          "tightYearsPerAdultLife": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "protectedNeedsDeficit": {
+            "livesWithAid": {
+              "count": 0,
+              "pct": 0
+            },
+            "yearsWithAid": 0,
+            "aidPerLifeKr": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "aidYearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "totalAidKr": 0,
+            "meanAidPerUseYearKr": null
+          },
+          "voluntaryObligationShortfall": {
+            "years": 0,
+            "yearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "housingDowngradeYears": 0,
+            "serviceCancellationYears": 0,
+            "cancelledServices": 0
+          },
+          "serviceClosure": {
+            "adultYearsObserved": 6691,
+            "closedYears": 391,
+            "pctOfAdultYears": 5.8
+          }
+        },
+        "invariants": {
+          "checks": 8178,
+          "violations": 0,
+          "livesWithViolations": 0,
+          "byMessage": {}
+        }
+      },
+      "mixed+acceptMoments": {
+        "lives": 100,
+        "adultsObserved": 99,
+        "checkpointByAge": {
+          "20": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 2900,
+              "p50": 3400,
+              "p90": 3920,
+              "mean": 3410.4
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 2.48,
+              "p50": 3.01,
+              "p90": 3.6,
+              "mean": 3
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 8.63,
+              "p50": 10.06,
+              "p90": 11.72,
+              "mean": 10.1
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 950,
+              "p50": 1100,
+              "p90": 1400,
+              "mean": 1150.51
+            }
+          },
+          "40": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 20600,
+              "p50": 22470,
+              "p90": 24600,
+              "mean": 22573.32
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 16.44,
+              "p50": 17.17,
+              "p90": 17.91,
+              "mean": 17.21
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 61.49,
+              "p50": 67.49,
+              "p90": 71.9,
+              "mean": 66.68
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1200,
+              "p50": 1350,
+              "p90": 1400,
+              "mean": 1312.12
+            }
+          },
+          "60": {
+            "livesObserved": 99,
+            "balanceKr": {
+              "observations": 99,
+              "p10": 38840,
+              "p50": 42192,
+              "p90": 45730,
+              "mean": 42320.49
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 99,
+              "p10": 31,
+              "p50": 32.17,
+              "p90": 32.96,
+              "mean": 32.12
+            },
+            "reserveYears": {
+              "observations": 99,
+              "p10": 115.63,
+              "p50": 126.81,
+              "p90": 134.66,
+              "mean": 125.47
+            },
+            "tariffIncomeKr": {
+              "observations": 99,
+              "p10": 1200,
+              "p50": 1350,
+              "p90": 1400,
+              "mean": 1317.17
+            }
+          },
+          "80": {
+            "livesObserved": 72,
+            "balanceKr": {
+              "observations": 72,
+              "p10": 51635.8,
+              "p50": 58025,
+              "p90": 64749.6,
+              "mean": 57981.46
+            },
+            "balanceInAnnualTariffs": {
+              "observations": 72,
+              "p10": 40.27,
+              "p50": 44.77,
+              "p90": 46.52,
+              "mean": 44.07
+            },
+            "reserveYears": {
+              "observations": 72,
+              "p10": 155.95,
+              "p50": 171.72,
+              "p90": 188.82,
+              "mean": 172.64
+            },
+            "tariffIncomeKr": {
+              "observations": 72,
+              "p10": 1200,
+              "p50": 1300,
+              "p90": 1400,
+              "mean": 1315.28
+            }
+          }
+        },
+        "gradeDistributionAtAgeByProfession": {
+          "40": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 24,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 24,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 24,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 28,
+                "grades": {
+                  "1": {
+                    "count": 2,
+                    "pct": 7.1
+                  },
+                  "2": {
+                    "count": 26,
+                    "pct": 92.9
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 28,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1282.14
+                }
+              },
+              "Агроном": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 26,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 26,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 26,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          },
+          "60": {
+            "livesObserved": 99,
+            "byProfession": {
+              "Техник": {
+                "observations": 24,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 24,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 24,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1350,
+                  "mean": 1350
+                }
+              },
+              "Медик": {
+                "observations": 28,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 28,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 28,
+                  "p10": 1300,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1300
+                }
+              },
+              "Агроном": {
+                "observations": 21,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 21,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 21,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1200
+                }
+              },
+              "Координатор": {
+                "observations": 26,
+                "grades": {
+                  "1": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "2": {
+                    "count": 26,
+                    "pct": 100
+                  },
+                  "3": {
+                    "count": 0,
+                    "pct": 0
+                  },
+                  "4": {
+                    "count": 0,
+                    "pct": 0
+                  }
+                },
+                "tariffIncomeKr": {
+                  "observations": 26,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1400
+                }
+              }
+            }
+          }
+        },
+        "annualIncomeByProfession": {
+          "Техник": {
+            "observations": 1261,
+            "wageKr": {
+              "observations": 1261,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1485,
+              "mean": 1348.99
+            },
+            "tariffIncomeKr": {
+              "observations": 1261,
+              "p10": 1350,
+              "p50": 1350,
+              "p90": 1350,
+              "mean": 1333.94
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1258,
+                "wageKr": {
+                  "observations": 1258,
+                  "p10": 1350,
+                  "p50": 1350,
+                  "p90": 1485,
+                  "mean": 1350.63
+                }
+              },
+              "trainee": {
+                "observations": 3,
+                "wageKr": {
+                  "observations": 3,
+                  "p10": 660,
+                  "p50": 660,
+                  "p90": 660,
+                  "mean": 660
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Медик": {
+            "observations": 1476,
+            "wageKr": {
+              "observations": 1476,
+              "p10": 1050,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1274.09
+            },
+            "tariffIncomeKr": {
+              "observations": 1476,
+              "p10": 1300,
+              "p50": 1300,
+              "p90": 1300,
+              "mean": 1279
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1472,
+                "wageKr": {
+                  "observations": 1472,
+                  "p10": 1050,
+                  "p50": 1300,
+                  "p90": 1300,
+                  "mean": 1275.84
+                }
+              },
+              "trainee": {
+                "observations": 4,
+                "wageKr": {
+                  "observations": 4,
+                  "p10": 630,
+                  "p50": 630,
+                  "p90": 630,
+                  "mean": 630
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Агроном": {
+            "observations": 1093,
+            "wageKr": {
+              "observations": 1093,
+              "p10": 1200,
+              "p50": 1200,
+              "p90": 1200,
+              "mean": 1177.91
+            },
+            "tariffIncomeKr": {
+              "observations": 1093,
+              "p10": 1200,
+              "p50": 1200,
+              "p90": 1200,
+              "mean": 1180.56
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1091,
+                "wageKr": {
+                  "observations": 1091,
+                  "p10": 1200,
+                  "p50": 1200,
+                  "p90": 1200,
+                  "mean": 1179.03
+                }
+              },
+              "trainee": {
+                "observations": 2,
+                "wageKr": {
+                  "observations": 2,
+                  "p10": 570,
+                  "p50": 570,
+                  "p90": 570,
+                  "mean": 570
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          },
+          "Координатор": {
+            "observations": 1386,
+            "wageKr": {
+              "observations": 1386,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1387.18
+            },
+            "tariffIncomeKr": {
+              "observations": 1386,
+              "p10": 1400,
+              "p50": 1400,
+              "p90": 1400,
+              "mean": 1385.57
+            },
+            "byWorkState": {
+              "working": {
+                "observations": 1385,
+                "wageKr": {
+                  "observations": 1385,
+                  "p10": 1400,
+                  "p50": 1400,
+                  "p90": 1400,
+                  "mean": 1387.68
+                }
+              },
+              "trainee": {
+                "observations": 1,
+                "wageKr": {
+                  "observations": 1,
+                  "p10": 690,
+                  "p50": 690,
+                  "p90": 690,
+                  "mean": 690
+                }
+              },
+              "between": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              },
+              "sick": {
+                "observations": 0,
+                "wageKr": {
+                  "observations": 0,
+                  "p10": null,
+                  "p50": null,
+                  "p90": null,
+                  "mean": null
+                }
+              }
+            }
+          }
+        },
+        "pension": {
+          "retireesObserved": 86,
+          "retiredYearsObserved": 1532,
+          "firstAnnualPensionPerRetireeKr": {
+            "observations": 86,
+            "p10": 687.5,
+            "p50": 786,
+            "p90": 910,
+            "mean": 796.29
+          },
+          "annualPensionPerRetiredYearKr": {
+            "observations": 1532,
+            "p10": 676,
+            "p50": 780,
+            "p90": 878,
+            "mean": 779.04
+          },
+          "pensionToObligationsRatio": {
+            "observations": 1532,
+            "p10": 2.01,
+            "p50": 2.41,
+            "p90": 2.69,
+            "mean": 2.33
+          },
+          "retiredYearsWithPensionCoveringBillsPct": 100,
+          "retireesWithDecliningSavings": {
+            "count": 0,
+            "pct": 0
+          },
+          "retireesWithExhaustedReserve": {
+            "count": 0,
+            "pct": 0
+          }
+        },
+        "scarcity": {
+          "economicYearsObserved": 8433,
+          "tightYears": 0,
+          "tightYearsPctOfEconomicYears": 0,
+          "livesWithAnyTightYear": {
+            "count": 0,
+            "pct": 0
+          },
+          "tightYearsPerAdultLife": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "protectedNeedsDeficit": {
+            "livesWithAid": {
+              "count": 0,
+              "pct": 0
+            },
+            "yearsWithAid": 0,
+            "aidPerLifeKr": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "aidYearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "totalAidKr": 0,
+            "meanAidPerUseYearKr": null
+          },
+          "voluntaryObligationShortfall": {
+            "years": 0,
+            "yearsPerAdultLife": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "housingDowngradeYears": 0,
+            "serviceCancellationYears": 0,
+            "cancelledServices": 0
+          },
+          "serviceClosure": {
+            "adultYearsObserved": 6946,
+            "closedYears": 334,
+            "pctOfAdultYears": 4.8
+          }
+        },
+        "invariants": {
+          "checks": 8433,
+          "violations": 0,
+          "livesWithViolations": 0,
+          "byMessage": {}
+        }
+      }
+    },
+    "pooledChoiceStrategies": {
+      "lives": 400,
+      "adultsObserved": 396,
+      "checkpointByAge": {
+        "20": {
+          "livesObserved": 396,
+          "balanceKr": {
+            "observations": 396,
+            "p10": 2970,
+            "p50": 3410,
+            "p90": 3995,
+            "mean": 3459.34
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 396,
+            "p10": 2.7,
+            "p50": 3.06,
+            "p90": 3.67,
+            "mean": 3.1
+          },
+          "reserveYears": {
+            "observations": 396,
+            "p10": 8.63,
+            "p50": 10.06,
+            "p90": 11.72,
+            "mean": 10.1
+          },
+          "tariffIncomeKr": {
+            "observations": 396,
+            "p10": 950,
+            "p50": 1100,
+            "p90": 1350,
+            "mean": 1122.98
+          }
+        },
+        "40": {
+          "livesObserved": 396,
+          "balanceKr": {
+            "observations": 396,
+            "p10": 20585,
+            "p50": 23052,
+            "p90": 24351,
+            "mean": 22688.82
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 396,
+            "p10": 16.07,
+            "p50": 17.09,
+            "p90": 17.7,
+            "mean": 17.03
+          },
+          "reserveYears": {
+            "observations": 396,
+            "p10": 58.86,
+            "p50": 67.34,
+            "p90": 70.99,
+            "mean": 65.21
+          },
+          "tariffIncomeKr": {
+            "observations": 396,
+            "p10": 1200,
+            "p50": 1350,
+            "p90": 1400,
+            "mean": 1333.08
+          }
+        },
+        "60": {
+          "livesObserved": 391,
+          "balanceKr": {
+            "observations": 391,
+            "p10": 38882,
+            "p50": 43618,
+            "p90": 45570,
+            "mean": 42933.75
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 391,
+            "p10": 30.65,
+            "p50": 32.13,
+            "p90": 33.2,
+            "mean": 32.02
+          },
+          "reserveYears": {
+            "observations": 391,
+            "p10": 115.06,
+            "p50": 127.49,
+            "p90": 133.79,
+            "mean": 124.76
+          },
+          "tariffIncomeKr": {
+            "observations": 391,
+            "p10": 1200,
+            "p50": 1350,
+            "p90": 1400,
+            "mean": 1340.66
+          }
+        },
+        "80": {
+          "livesObserved": 271,
+          "balanceKr": {
+            "observations": 271,
+            "p10": 51550,
+            "p50": 60494,
+            "p90": 64760,
+            "mean": 59014.21
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 271,
+            "p10": 38.36,
+            "p50": 45.29,
+            "p90": 46.52,
+            "mean": 43.91
+          },
+          "reserveYears": {
+            "observations": 271,
+            "p10": 149.21,
+            "p50": 176.48,
+            "p90": 186.21,
+            "mean": 171.88
+          },
+          "tariffIncomeKr": {
+            "observations": 271,
+            "p10": 1200,
+            "p50": 1350,
+            "p90": 1400,
+            "mean": 1342.99
+          }
+        }
+      },
+      "gradeDistributionAtAgeByProfession": {
+        "40": {
+          "livesObserved": 396,
+          "byProfession": {
+            "Техник": {
+              "observations": 117,
+              "grades": {
+                "1": {
+                  "count": 2,
+                  "pct": 1.7
+                },
+                "2": {
+                  "count": 115,
+                  "pct": 98.3
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 117,
+                "p10": 1350,
+                "p50": 1350,
+                "p90": 1350,
+                "mean": 1345.73
+              }
+            },
+            "Медик": {
+              "observations": 85,
+              "grades": {
+                "1": {
+                  "count": 9,
+                  "pct": 10.6
+                },
+                "2": {
+                  "count": 76,
+                  "pct": 89.4
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 85,
+                "p10": 1150,
+                "p50": 1300,
+                "p90": 1300,
+                "mean": 1273.53
+              }
+            },
+            "Агроном": {
+              "observations": 47,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 47,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 47,
+                "p10": 1200,
+                "p50": 1200,
+                "p90": 1200,
+                "mean": 1200
+              }
+            },
+            "Координатор": {
+              "observations": 147,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 147,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 147,
+                "p10": 1400,
+                "p50": 1400,
+                "p90": 1400,
+                "mean": 1400
+              }
+            }
+          }
+        },
+        "60": {
+          "livesObserved": 391,
+          "byProfession": {
+            "Техник": {
+              "observations": 116,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 116,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 116,
+                "p10": 1350,
+                "p50": 1350,
+                "p90": 1350,
+                "mean": 1350
+              }
+            },
+            "Медик": {
+              "observations": 82,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 82,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 82,
+                "p10": 1300,
+                "p50": 1300,
+                "p90": 1300,
+                "mean": 1300
+              }
+            },
+            "Агроном": {
+              "observations": 46,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 46,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 46,
+                "p10": 1200,
+                "p50": 1200,
+                "p90": 1200,
+                "mean": 1200
+              }
+            },
+            "Координатор": {
+              "observations": 147,
+              "grades": {
+                "1": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "2": {
+                  "count": 147,
+                  "pct": 100
+                },
+                "3": {
+                  "count": 0,
+                  "pct": 0
+                },
+                "4": {
+                  "count": 0,
+                  "pct": 0
+                }
+              },
+              "tariffIncomeKr": {
+                "observations": 147,
+                "p10": 1400,
+                "p50": 1400,
+                "p90": 1400,
+                "mean": 1400
+              }
+            }
+          }
+        }
+      },
+      "annualIncomeByProfession": {
+        "Техник": {
+          "observations": 6290,
+          "wageKr": {
+            "observations": 6290,
+            "p10": 1100,
+            "p50": 1350,
+            "p90": 1485,
+            "mean": 1349.24
+          },
+          "tariffIncomeKr": {
+            "observations": 6290,
+            "p10": 1350,
+            "p50": 1350,
+            "p90": 1350,
+            "mean": 1328.38
+          },
+          "byWorkState": {
+            "working": {
+              "observations": 6284,
+              "wageKr": {
+                "observations": 6284,
+                "p10": 1100,
+                "p50": 1350,
+                "p90": 1485,
+                "mean": 1349.9
+              }
+            },
+            "trainee": {
+              "observations": 6,
+              "wageKr": {
+                "observations": 6,
+                "p10": 660,
+                "p50": 660,
+                "p90": 660,
+                "mean": 660
+              }
+            },
+            "between": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            },
+            "sick": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            }
+          }
+        },
+        "Медик": {
+          "observations": 4048,
+          "wageKr": {
+            "observations": 4048,
+            "p10": 1050,
+            "p50": 1300,
+            "p90": 1300,
+            "mean": 1271.69
+          },
+          "tariffIncomeKr": {
+            "observations": 4048,
+            "p10": 1050,
+            "p50": 1300,
+            "p90": 1300,
+            "mean": 1269.06
+          },
+          "byWorkState": {
+            "working": {
+              "observations": 4014,
+              "wageKr": {
+                "observations": 4014,
+                "p10": 1050,
+                "p50": 1300,
+                "p90": 1300,
+                "mean": 1277.12
+              }
+            },
+            "trainee": {
+              "observations": 34,
+              "wageKr": {
+                "observations": 34,
+                "p10": 630,
+                "p50": 630,
+                "p90": 630,
+                "mean": 630
+              }
+            },
+            "between": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            },
+            "sick": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            }
+          }
+        },
+        "Агроном": {
+          "observations": 2385,
+          "wageKr": {
+            "observations": 2385,
+            "p10": 950,
+            "p50": 1200,
+            "p90": 1320,
+            "mean": 1182.95
+          },
+          "tariffIncomeKr": {
+            "observations": 2385,
+            "p10": 1200,
+            "p50": 1200,
+            "p90": 1200,
+            "mean": 1176
+          },
+          "byWorkState": {
+            "working": {
+              "observations": 2380,
+              "wageKr": {
+                "observations": 2380,
+                "p10": 950,
+                "p50": 1200,
+                "p90": 1320,
+                "mean": 1184.24
+              }
+            },
+            "trainee": {
+              "observations": 5,
+              "wageKr": {
+                "observations": 5,
+                "p10": 570,
+                "p50": 570,
+                "p90": 570,
+                "mean": 570
+              }
+            },
+            "between": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            },
+            "sick": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            }
+          }
+        },
+        "Координатор": {
+          "observations": 8332,
+          "wageKr": {
+            "observations": 8332,
+            "p10": 1400,
+            "p50": 1400,
+            "p90": 1400,
+            "mean": 1382.65
+          },
+          "tariffIncomeKr": {
+            "observations": 8332,
+            "p10": 1400,
+            "p50": 1400,
+            "p90": 1400,
+            "mean": 1381.91
+          },
+          "byWorkState": {
+            "working": {
+              "observations": 8329,
+              "wageKr": {
+                "observations": 8329,
+                "p10": 1400,
+                "p50": 1400,
+                "p90": 1400,
+                "mean": 1382.89
+              }
+            },
+            "trainee": {
+              "observations": 3,
+              "wageKr": {
+                "observations": 3,
+                "p10": 690,
+                "p50": 690,
+                "p90": 690,
+                "mean": 690
+              }
+            },
+            "between": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            },
+            "sick": {
+              "observations": 0,
+              "wageKr": {
+                "observations": 0,
+                "p10": null,
+                "p50": null,
+                "p90": null,
+                "mean": null
+              }
+            }
+          }
+        }
+      },
+      "pension": {
+        "retireesObserved": 344,
+        "retiredYearsObserved": 5062,
+        "firstAnnualPensionPerRetireeKr": {
+          "observations": 344,
+          "p10": 676,
+          "p50": 845,
+          "p90": 910,
+          "mean": 816.57
+        },
+        "annualPensionPerRetiredYearKr": {
+          "observations": 5062,
+          "p10": 676,
+          "p50": 780,
+          "p90": 910,
+          "mean": 787.43
+        },
+        "pensionToObligationsRatio": {
+          "observations": 5062,
+          "p10": 1.93,
+          "p50": 2.32,
+          "p90": 2.6,
+          "mean": 2.3
+        },
+        "retiredYearsWithPensionCoveringBillsPct": 100,
+        "retireesWithDecliningSavings": {
+          "count": 0,
+          "pct": 0
+        },
+        "retireesWithExhaustedReserve": {
+          "count": 0,
+          "pct": 0
+        }
+      },
+      "scarcity": {
+        "economicYearsObserved": 32857,
+        "tightYears": 0,
+        "tightYearsPctOfEconomicYears": 0,
+        "livesWithAnyTightYear": {
+          "count": 0,
+          "pct": 0
+        },
+        "tightYearsPerAdultLife": {
+          "observations": 396,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "protectedNeedsDeficit": {
+          "livesWithAid": {
+            "count": 0,
+            "pct": 0
+          },
+          "yearsWithAid": 0,
+          "aidPerLifeKr": {
+            "observations": 400,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "aidYearsPerAdultLife": {
+            "observations": 396,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "totalAidKr": 0,
+          "meanAidPerUseYearKr": null
+        },
+        "voluntaryObligationShortfall": {
+          "years": 0,
+          "yearsPerAdultLife": {
+            "observations": 396,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "housingDowngradeYears": 0,
+          "serviceCancellationYears": 0,
+          "cancelledServices": 0
+        },
+        "serviceClosure": {
+          "adultYearsObserved": 26909,
+          "closedYears": 1487,
+          "pctOfAdultYears": 5.5
+        }
+      },
+      "invariants": {
+        "checks": 32857,
+        "violations": 0,
+        "livesWithViolations": 0,
+        "byMessage": {}
+      }
+    }
+  },
+  "focus": {
+    "relationships": {
+      "decisionsPerLife": 25.3,
+      "memoriesPerLife": 17.4,
+      "meanAge": 81.7,
+      "knowledgeAt40": 39.8,
+      "stressAt40": 2.4,
+      "bondsAt40": 89.9,
+      "sameDecisionSequenceAsStudy": 86,
+      "rateDistanceFromStudy": 0.0045
+    },
+    "rest": {
+      "decisionsPerLife": 25.3,
+      "memoriesPerLife": 17.5,
+      "meanAge": 82.8,
+      "knowledgeAt40": 39.8,
+      "stressAt40": 1.5,
+      "bondsAt40": 38.5,
+      "sameDecisionSequenceAsStudy": 83,
+      "rateDistanceFromStudy": 0.0048
+    },
+    "work": {
+      "decisionsPerLife": 25.2,
+      "memoriesPerLife": 16.8,
+      "meanAge": 80.6,
+      "knowledgeAt40": 39.8,
+      "stressAt40": 72.1,
+      "bondsAt40": 38.5,
+      "sameDecisionSequenceAsStudy": 20,
+      "rateDistanceFromStudy": 0.0161
+    },
+    "civic": {
+      "decisionsPerLife": 25.4,
+      "memoriesPerLife": 17.1,
+      "meanAge": 82.3,
+      "knowledgeAt40": 62.9,
+      "stressAt40": 22.2,
+      "bondsAt40": 59.3,
+      "sameDecisionSequenceAsStudy": 22,
+      "rateDistanceFromStudy": 0.0157
+    }
+  },
+  "pace": {
+    "22s": {
+      "0.5x": {
+        "secondsPerYear": 44,
+        "minutesPerLife": 63.1,
+        "nominalSecondsPerYear": 44,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.237,
+        "momentsOpenedPerYear": 0.951
+      },
+      "1x": {
+        "secondsPerYear": 22.03,
+        "minutesPerLife": 31.6,
+        "nominalSecondsPerYear": 22,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "2x": {
+        "secondsPerYear": 11.03,
+        "minutesPerLife": 15.8,
+        "nominalSecondsPerYear": 11,
+        "effectiveSpeedup": 1.99,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "4x": {
+        "secondsPerYear": 6.58,
+        "minutesPerLife": 9.4,
+        "nominalSecondsPerYear": 5.5,
+        "effectiveSpeedup": 3.34,
+        "shareOfTimeWithMomentOpen": 0.361,
+        "momentsOpenedPerYear": 0.951
+      },
+      "8x": {
+        "secondsPerYear": 4.49,
+        "minutesPerLife": 6.4,
+        "nominalSecondsPerYear": 2.75,
+        "effectiveSpeedup": 4.9,
+        "shareOfTimeWithMomentOpen": 0.529,
+        "momentsOpenedPerYear": 0.951
+      },
+      "16x": {
+        "secondsPerYear": 3.44,
+        "minutesPerLife": 4.9,
+        "nominalSecondsPerYear": 1.38,
+        "effectiveSpeedup": 6.39,
+        "shareOfTimeWithMomentOpen": 0.69,
+        "momentsOpenedPerYear": 0.951
+      }
+    },
+    "49s": {
+      "0.5x": {
+        "secondsPerYear": 98,
+        "minutesPerLife": 140.5,
+        "nominalSecondsPerYear": 98,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "1x": {
+        "secondsPerYear": 49,
+        "minutesPerLife": 70.2,
+        "nominalSecondsPerYear": 49,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.237,
+        "momentsOpenedPerYear": 0.951
+      },
+      "2x": {
+        "secondsPerYear": 24.5,
+        "minutesPerLife": 35.1,
+        "nominalSecondsPerYear": 24.5,
+        "effectiveSpeedup": 2,
+        "shareOfTimeWithMomentOpen": 0.237,
+        "momentsOpenedPerYear": 0.951
+      },
+      "4x": {
+        "secondsPerYear": 12.28,
+        "minutesPerLife": 17.6,
+        "nominalSecondsPerYear": 12.25,
+        "effectiveSpeedup": 3.99,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "8x": {
+        "secondsPerYear": 7.06,
+        "minutesPerLife": 10.1,
+        "nominalSecondsPerYear": 6.13,
+        "effectiveSpeedup": 6.94,
+        "shareOfTimeWithMomentOpen": 0.336,
+        "momentsOpenedPerYear": 0.951
+      },
+      "16x": {
+        "secondsPerYear": 4.72,
+        "minutesPerLife": 6.8,
+        "nominalSecondsPerYear": 3.06,
+        "effectiveSpeedup": 10.37,
+        "shareOfTimeWithMomentOpen": 0.503,
+        "momentsOpenedPerYear": 0.951
+      }
+    },
+    "73s": {
+      "0.5x": {
+        "secondsPerYear": 146,
+        "minutesPerLife": 209.3,
+        "nominalSecondsPerYear": 146,
+        "effectiveSpeedup": 0.5,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "1x": {
+        "secondsPerYear": 73,
+        "minutesPerLife": 104.6,
+        "nominalSecondsPerYear": 73,
+        "effectiveSpeedup": 1,
+        "shareOfTimeWithMomentOpen": 0.237,
+        "momentsOpenedPerYear": 0.951
+      },
+      "2x": {
+        "secondsPerYear": 36.53,
+        "minutesPerLife": 52.4,
+        "nominalSecondsPerYear": 36.5,
+        "effectiveSpeedup": 2,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "4x": {
+        "secondsPerYear": 18.28,
+        "minutesPerLife": 26.2,
+        "nominalSecondsPerYear": 18.25,
+        "effectiveSpeedup": 3.99,
+        "shareOfTimeWithMomentOpen": 0.238,
+        "momentsOpenedPerYear": 0.951
+      },
+      "8x": {
+        "secondsPerYear": 9.35,
+        "minutesPerLife": 13.4,
+        "nominalSecondsPerYear": 9.13,
+        "effectiveSpeedup": 7.81,
+        "shareOfTimeWithMomentOpen": 0.254,
+        "momentsOpenedPerYear": 0.951
+      },
+      "16x": {
+        "secondsPerYear": 5.87,
+        "minutesPerLife": 8.4,
+        "nominalSecondsPerYear": 4.56,
+        "effectiveSpeedup": 12.43,
+        "shareOfTimeWithMomentOpen": 0.405,
+        "momentsOpenedPerYear": 0.951
+      }
+    }
+  }
+}

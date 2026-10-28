@@ -1,4 +1,4 @@
-import { initEconomy, projectYear, recordEconomicTransaction, settleYear, closeEstate } from './economy'
+import { changeProfession, initEconomy, projectYear, recordEconomicTransaction, settleYear, closeEstate } from './economy'
 import type { Atmosphere, ChoiceDef, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
 import { gYearPlaceholder, storylets } from './storylets'
@@ -151,10 +151,8 @@ function applyEffects(g: GameState, effects: Effects) {
       Ученик: 'Техник', Техник: 'Медик', Медик: 'Агроном',
       Агроном: 'Координатор', Координатор: 'Техник', 'Без специальности': 'Техник'
     }
-    g.protagonist.job = next[g.protagonist.job]
-    const skills: Partial<Record<Job, Skill>> = { Техник: 'engineering', Медик: 'medicine', Агроном: 'ecology', Координатор: 'social' }
-    const skill = skills[g.protagonist.job]
-    if (skill) g.skills[skill] = clamp(g.skills[skill] + 9)
+    // Старый сюжетный путь: бесплатен и выбирает специальность по кругу. Та же общая смена, что у покупки `retrain`.
+    changeProfession(g, next[g.protagonist.job])
   } else if (effects.job) g.protagonist.job = effects.job
   if (effects.memory) {
     const memory = resolveText(g, effects.memory)
@@ -341,6 +339,24 @@ export function purchase(state: GameState, offerId: string, target?: PurchaseTar
   return g
 }
 
+const yearsWord = (n: number) => n % 10 === 1 && n % 100 !== 11 ? 'год' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'года' : 'лет'
+
+/** Хроника переобучения: что герой оставляет и куда приходит. Механика не обещает событий сверх года стажировки. */
+const RETRAIN_LEAVE: Partial<Record<Job, string>> = {
+  Техник: 'Ты сдаёшь инструмент в мастерской, где тебя узнавали по шагам на лестнице, и прощаешься со сменой.',
+  Медик: 'Ты передаёшь дежурства в клиническом блоке: чужие ночи, знакомые голоса, запах антисептика остаются за дверью.',
+  Агроном: 'Ты в последний раз проходишь между грядками биокупола. Делянки, которые ты помнил{{hero:|а}} по сезонам, достаются другим рукам.',
+  Координатор: 'Ты передаёшь дела в администрации: протоколы, незаконченные споры и ключ от кабинета, к которому привык{{hero:|ла}}.'
+}
+const RETRAIN_ARRIVE: Partial<Record<Job, string>> = {
+  Техник: 'Впереди год стажировки в техническом корпусе: схемы, которые здесь знают наизусть люди вдвое моложе, и смены, где ты снова учени{{hero:к|ца}}.',
+  Медик: 'Впереди год стажировки в клиническом блоке: чужие дежурства, первые самостоятельные назначения и наставник, который, возможно, моложе тебя.',
+  Агроном: 'Впереди год стажировки в биокуполе: почва, свет и сроки посевов — всё придётся узнавать заново.',
+  Координатор: 'Впереди год стажировки в администрации: протоколы, переговоры и люди, которые пока не знают твоего имени.'
+}
+const JOB_GENITIVE_PLURAL: Partial<Record<Job, string>> = { Техник: 'техников', Медик: 'медиков', Агроном: 'агрономов', Координатор: 'координаторов' }
+const JOB_PLURAL: Partial<Record<Job, string>> = { Техник: 'техники', Медик: 'медики', Агроном: 'агрономы', Координатор: 'координаторы' }
+
 /** Флаг-возраст последней семейной поездки с этим человеком: `familyTripFriend`, `familyTripParent2`… */
 export const familyTripFlag = (personId: string) => `familyTrip${personId.charAt(0).toUpperCase()}${personId.slice(1)}`
 
@@ -358,6 +374,7 @@ function applyPurchase(g: GameState, offer: OfferDefinition, availability: Purch
   }
 
   const previouslyOwned = offer.effects.recordOwnership && e.owned[offer.id] !== undefined
+  const previousJob = g.protagonist.job
   e.balance -= availability.oneTimeCost
   e.totals.spent += availability.oneTimeCost
   recordEconomicTransaction(e, g.age, 'purchase', availability.oneTimeCost, offer.id, story ? `${offer.title} · сюжет «${story}»` : offer.title)
@@ -390,8 +407,19 @@ function applyPurchase(g: GameState, offer: OfferDefinition, availability: Purch
     logTitle = 'Неделя на обзорной палубе'
     logText = resolveText(g, `Ты провёл{{hero:|а}} неделю вместе с ${guests}.`)
   }
+  if (offer.effects.profession && target?.job) {
+    logTitle = 'Переобучение'
+    logText = resolveText(g, `${RETRAIN_LEAVE[previousJob] ?? 'Ты оставляешь прежнюю работу.'} ${RETRAIN_ARRIVE[target.job] ?? ''}`.trim())
+    applyEffects(g, { memory: `В ${g.age} ${yearsWord(g.age)} сменил{{hero:|а}} профессию: из ${JOB_GENITIVE_PLURAL[previousJob] ?? 'прежней службы'} — в ${JOB_PLURAL[target.job] ?? target.job.toLowerCase()}.` })
+  }
   if (offer.attention > 0) g.attention -= offer.attention
   e.lastBought[offer.id] = g.age
+  // Цель накопления достигнута покупкой: снимается молча, без записи в хронику (§6.4).
+  if (e.goal === offer.id) e.goal = null
+  // Покупка могла снять условие открытого момента (профессиональный момент после переобучения):
+  // он истекает без последствий, как на отметке года.
+  const moment = getMomentDef(g.moment)
+  if (moment?.available && !moment.available(g)) expireMoment(g)
   // An expired H1 right no longer applies after paying the ordinary entry fee.
   if (e.housingRight?.tier === 1 && e.housingRight.until < g.age) e.housingRight = null
   addLog(g, 'life', logTitle, logText)
@@ -473,6 +501,17 @@ export function setLoad(state: GameState, nextLoad: number): GameState {
     ? 'Рабочая нагрузка сокращена до 0,6 ставки.'
     : 'Рабочая нагрузка возвращена на полную ставку.')
   return g
+}
+
+/**
+ * Цель накопления (§6.4): только информационная отметка позиции каталога. Бесплатна, ничего не резервирует,
+ * не пишет хронику, не меняет RNG, показатели и сюжеты. `null` снимает цель.
+ */
+export function setGoal(state: GameState, offerId: string | null): GameState {
+  if (state.stopped || state.economy.estate !== null) return state
+  if (offerId !== null && !getOffer(offerId)) return state
+  if (state.economy.goal === offerId) return state
+  return { ...state, economy: { ...state.economy, goal: offerId } }
 }
 
 /** Cancels a recurring service; previously paid years and their effects are not refunded. */

@@ -1,0 +1,5191 @@
+{
+  "schemaVersion": 1,
+  "task": "T5 career audit (diagnostic, no rebalancing)",
+  "baseRevision": "e47e9a869b3fa149b6baef4643c4c530f0a8f500",
+  "samplesPerGroup": 100,
+  "inputSeeds": {
+    "first": 102,
+    "last": 201
+  },
+  "methodology": {
+    "runner": "T8a playLife/financialDecisions unchanged; the only addition is PilotOptions.retrainAt. Decisions: hash32(economy-t8a, seed, storylet, age) as in T8a; no simulation RNG is consumed by policies.",
+    "switcher": "From age 35, before other purchases of the year, attempt canBuy/purchase('retrain') to hash32('economy-t5', seed, 'retrain-target') % 3 among the three other professions. On refusal retry every year up to age 39.",
+    "groups": "Switcher = Careerist policy (work focus, course whenever available) + retraining. SwitcherSaver = Saver policy (study focus, no purchases) + retraining. Controls use identical seeds and policies without retraining.",
+    "attribution": "Paired differences isolate the retraining policy for the same seed, but downstream stories, checks and mortality may diverge after the switch. Joint-survivor checkpoints and joint-age wage sums are reported separately from lifetime totals.",
+    "narrative": "Profession-gated storylets: microcrack/late-tech-handbook (Техник), clinic/late-medic-routine (Медик), seed-vault (Агроном), council (Координатор); moments m-job-*. Moments are offered via beat even when bots let them expire.",
+    "limitations": [
+      "Bots are not players: the retraining target is a hash, not a preference for a profession.",
+      "Story mentor retraining (free, cyclic) still happens in some control and switcher lives; counted separately.",
+      "No rebalancing was performed; ECONOMY_TUNING and catalogue prices are unchanged.",
+      "Lifetime means include early deaths; switched-only statistics condition on reaching the switch."
+    ]
+  },
+  "groups": {
+    "Careerist": {
+      "lives": 100,
+      "completed": 100,
+      "deathAge": {
+        "observations": 100,
+        "p10": 67,
+        "p50": 82,
+        "p90": 92,
+        "mean": 80.14
+      },
+      "checkpoints": {
+        "20": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 2966.8,
+            "p50": 3516,
+            "p90": 4016,
+            "mean": 3472.6666666666665
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 8.789714285714286,
+            "p50": 10.24,
+            "p90": 12.154285714285715,
+            "mean": 10.376074040901631
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 2.3015384615384615,
+            "p50": 2.6325925925925926,
+            "p90": 3.081538461538462,
+            "mean": 2.646465653687877
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 99,
+              "pct": 100
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 83,
+              "p50": 87,
+              "p90": 87.8,
+              "mean": 85.58181818181818
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 59.579467844750305,
+              "p50": 60.0920954413598,
+              "p90": 61.971605485759184,
+              "mean": 60.39889940487285
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 19.98,
+              "p50": 23.405478466796875,
+              "p90": 27.50985727216797,
+              "mean": 23.586918729240143
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 51.399895465331994,
+              "p50": 55.06937465136714,
+              "p90": 58.88970281994624,
+              "mean": 54.992914669224554
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 42,
+              "p50": 48,
+              "p90": 53.2,
+              "mean": 48.10580808080808
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 243,
+            "p50": 297,
+            "p90": 316.2,
+            "mean": 285.57575757575756
+          },
+          "service": {
+            "observations": 99,
+            "p10": 3,
+            "p50": 3,
+            "p90": 3,
+            "mean": 3
+          }
+        },
+        "40": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 25458,
+            "p50": 27949,
+            "p90": 30906.4,
+            "mean": 27975.62626262626
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 76.53714285714285,
+            "p50": 82.81142857142858,
+            "p90": 90.30857142857143,
+            "mean": 82.67404249390454
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 14.369684210526316,
+            "p50": 15.107567567567568,
+            "p90": 15.670556438791733,
+            "mean": 15.119138932583809
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 3,
+              "pct": 3.0303030303030303
+            },
+            "3": {
+              "count": 3,
+              "pct": 3.0303030303030303
+            },
+            "4": {
+              "count": 93,
+              "pct": 93.93939393939394
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 79.83130288056101,
+              "p50": 84.26000000000002,
+              "p90": 86.03400000000003,
+              "mean": 83.43726102864458
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 52.390984451523366,
+              "p50": 55.429208890366574,
+              "p90": 59.37021419102316,
+              "mean": 55.42652201284018
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 64.84395,
+              "p50": 70.2475,
+              "p90": 80.89311363476563,
+              "mean": 71.38036097770208
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 29.20706564454885,
+              "p50": 38.210416279296766,
+              "p90": 48.290238791437886,
+              "mean": 38.455806320683735
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 33.8,
+              "p50": 39,
+              "p90": 47,
+              "mean": 39.772474747474746
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 242,
+            "p50": 300,
+            "p90": 334,
+            "mean": 292.6868686868687
+          },
+          "service": {
+            "observations": 99,
+            "p10": 23,
+            "p50": 23,
+            "p90": 23,
+            "mean": 22.939393939393938
+          }
+        },
+        "60": {
+          "observations": 98,
+          "survivingPct": 98,
+          "balance": {
+            "observations": 98,
+            "p10": 54777.2,
+            "p50": 60015,
+            "p90": 66638,
+            "mean": 60378.183673469386
+          },
+          "reserveYears": {
+            "observations": 98,
+            "p10": 168.71371428571427,
+            "p50": 175.56,
+            "p90": 191.82285714285715,
+            "mean": 178.8875107158851
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 98,
+            "p10": 31.093684210526316,
+            "p50": 32.29882352941176,
+            "p90": 33.284,
+            "mean": 32.1120145315872
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 0,
+              "pct": 0
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 98,
+              "pct": 100
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 98,
+              "p10": 59.482332682994766,
+              "p50": 64.20331885937517,
+              "p90": 68.71827590000014,
+              "mean": 64.20134790658386
+            },
+            "morale": {
+              "observations": 98,
+              "p10": 44.63938989217873,
+              "p50": 51.07626229828821,
+              "p90": 57.0844005514721,
+              "mean": 50.7309327768301
+            },
+            "stress": {
+              "observations": 98,
+              "p10": 99,
+              "p50": 99,
+              "p90": 99,
+              "mean": 98.81958970374284
+            },
+            "bonds": {
+              "observations": 98,
+              "p10": 10.046473587426666,
+              "p50": 19.592834446843746,
+              "p90": 32.9047825326442,
+              "mean": 20.305249076208096
+            },
+            "knowledge": {
+              "observations": 98,
+              "p10": 24,
+              "p50": 31.5,
+              "p90": 40,
+              "mean": 31.698724489795918
+            }
+          },
+          "personBonds": {
+            "observations": 98,
+            "p10": 130.4,
+            "p50": 204,
+            "p90": 293.6,
+            "mean": 207.19387755102042
+          },
+          "service": {
+            "observations": 98,
+            "p10": 43,
+            "p50": 43,
+            "p90": 43,
+            "mean": 42.93877551020408
+          }
+        },
+        "80": {
+          "observations": 57,
+          "survivingPct": 57,
+          "balance": {
+            "observations": 57,
+            "p10": 77838.4,
+            "p50": 89574,
+            "p90": 97687.2,
+            "mean": 87740.59649122808
+          },
+          "reserveYears": {
+            "observations": 57,
+            "p10": 230.91735960591132,
+            "p50": 259.33714285714285,
+            "p90": 286.5655172413793,
+            "mean": 260.65593293578775
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 0,
+              "pct": 0
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 57,
+              "pct": 100
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 57,
+              "p10": 9.022514985375095,
+              "p50": 19.344637750000082,
+              "p90": 31.65332262500006,
+              "mean": 19.69133115171475
+            },
+            "morale": {
+              "observations": 57,
+              "p10": 47.01141482897515,
+              "p50": 52.61373353010416,
+              "p90": 59.65513055448397,
+              "mean": 52.555957593878446
+            },
+            "stress": {
+              "observations": 57,
+              "p10": 99,
+              "p50": 99,
+              "p90": 99,
+              "mean": 98.71929824561404
+            },
+            "bonds": {
+              "observations": 57,
+              "p10": 0,
+              "p50": 4.752115326918823,
+              "p90": 19.341476743817154,
+              "mean": 7.5206798642804
+            },
+            "knowledge": {
+              "observations": 57,
+              "p10": 15,
+              "p50": 23,
+              "p90": 33.309999999999995,
+              "mean": 23.46842105263158
+            }
+          },
+          "personBonds": {
+            "observations": 57,
+            "p10": 35.800000000000004,
+            "p50": 85,
+            "p90": 159.8,
+            "mean": 91.24561403508773
+          },
+          "service": {
+            "observations": 57,
+            "p10": 45,
+            "p50": 58,
+            "p90": 59,
+            "mean": 54.05263157894737
+          }
+        }
+      },
+      "purchases": {
+        "perLife": {
+          "observations": 100,
+          "p10": 10,
+          "p50": 11,
+          "p90": 11,
+          "mean": 10.78
+        },
+        "categoriesPerLife": {
+          "observations": 100,
+          "p10": 1,
+          "p50": 1,
+          "p90": 1,
+          "mean": 0.99
+        },
+        "noPurchasesPct": 1,
+        "firstAge": {
+          "observations": 99,
+          "p10": 18,
+          "p50": 18,
+          "p90": 18,
+          "mean": 18
+        },
+        "byType": {
+          "course-pro": {
+            "count": 1078,
+            "lives": 99,
+            "perLife": {
+              "observations": 100,
+              "p10": 10,
+              "p50": 11,
+              "p90": 11,
+              "mean": 10.78
+            },
+            "entryCost": 377300,
+            "recurringCost": 0,
+            "totalCost": 377300,
+            "voluntarySpendingSharePct": 100,
+            "participantBondDelta": 0
+          },
+          "retrain": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "own-cabin": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "dome-pass": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "sector-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "family-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          }
+        },
+        "totalVoluntarySpending": 377300,
+        "voluntarySpendingPerLife": {
+          "observations": 100,
+          "p10": 3500,
+          "p50": 3850,
+          "p90": 3850,
+          "mean": 3773
+        },
+        "purchaseOnlySpending": 377300,
+        "annualSpending": 2140060,
+        "totalSpending": 2527060,
+        "restorations": 0,
+        "attempts": {
+          "actual": 1078,
+          "resourceRefusals": 0,
+          "failurePct": 0,
+          "policyReserveDeferrals": 0,
+          "byReason": {},
+          "technicalTargetErrors": 0
+        },
+        "livesWithImmediateMeasuredEffectPct": 99
+      },
+      "career": {
+        "grade3FirstAge": {
+          "observations": 99,
+          "p10": 27,
+          "p50": 28,
+          "p90": 29,
+          "mean": 28.19191919191919
+        },
+        "grade4FirstAge": {
+          "observations": 99,
+          "p10": 35,
+          "p50": 36,
+          "p90": 37,
+          "mean": 36.707070707070706
+        },
+        "reached3Pct": 99,
+        "reached4Pct": 99,
+        "wagePerLife": {
+          "observations": 100,
+          "p10": 82922.5,
+          "p50": 101096,
+          "p90": 115389,
+          "mean": 100029.12
+        },
+        "service": {
+          "observations": 100,
+          "p10": 45,
+          "p50": 55,
+          "p90": 59,
+          "mean": 52.88
+        },
+        "retirees": 76,
+        "pensionPerLife": {
+          "observations": 76,
+          "p10": 3510,
+          "p50": 15996,
+          "p90": 26776,
+          "mean": 15565.947368421053
+        },
+        "firstAnnualPension": {
+          "observations": 76,
+          "p10": 975,
+          "p50": 1203,
+          "p90": 1333,
+          "mean": 1158.157894736842
+        },
+        "pensionCoverage": {
+          "observations": 1035,
+          "p10": 3.045714285714286,
+          "p50": 3.4371428571428573,
+          "p90": 3.8085714285714287,
+          "mean": 3.3917574546060116
+        }
+      },
+      "wellbeing": {
+        "memories": {
+          "observations": 100,
+          "p10": 12,
+          "p50": 17,
+          "p90": 21.10000000000001,
+          "mean": 16.47
+        },
+        "followupOutcomes": {
+          "observations": 100,
+          "p10": 1.9000000000000004,
+          "p50": 4,
+          "p90": 6,
+          "mean": 4
+        },
+        "momentsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        }
+      },
+      "hardship": {
+        "economicYears": 6527,
+        "aidYears": 0,
+        "aidTotal": 0,
+        "tightYears": 0,
+        "livesWithTightYearsPct": 0,
+        "maxTightStreak": 0,
+        "longestStreakPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "livesWith5ConsecutiveTightYearsPct": 0,
+        "housingLosses": 0,
+        "serviceCancellations": 0,
+        "exhaustedOnPension": {
+          "count": 0,
+          "retirees": 76,
+          "pct": 0
+        }
+      },
+      "dome": {
+        "subscribedYears": 0,
+        "usedYears": 0,
+        "paidYears": 0,
+        "freeUsedYears": 0,
+        "closedSubscribedYears": 0,
+        "automaticCancellations": 0,
+        "voluntaryCancellations": 0
+      },
+      "load": {
+        "livesUsedPct": 0,
+        "reducedWorkingYears": 0,
+        "workingYears": 5288,
+        "reducedWorkingYearsPct": 0,
+        "firstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "balanceBefore": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "requiredReserve": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "forecastBills": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualIncomeForgone": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualGap": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "returnsToFull": 0,
+        "reducedYearsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "availabilityByObligations": {}
+      },
+      "choice": {
+        "adultYears": 6230,
+        "atLeastTwoEligiblePct": 100,
+        "atLeastTwoAvailablePct": 100,
+        "contestedYears": 0,
+        "contestedPct": 0,
+        "moneyConflictPct": 0,
+        "attentionConflictPct": 0,
+        "canBuyAllPct": 100,
+        "noEligibleOffersPct": 0,
+        "noneAffordablePct": 0,
+        "attentionAtWindow": {
+          "observations": 6230,
+          "p10": 3,
+          "p50": 3,
+          "p90": 3,
+          "mean": 2.998876404494382
+        },
+        "byAgeBand": {
+          "18-29": {
+            "years": 1188,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "30-39": {
+            "years": 990,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "40-59": {
+            "years": 1980,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "60-120": {
+            "years": 2072,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          }
+        }
+      },
+      "invariants": {
+        "checks": 35842,
+        "violations": 0,
+        "firstReproduction": null
+      },
+      "accountingErrors": [],
+      "examples": [
+        {
+          "seed": 102,
+          "deathAge": 84,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3692,
+              "reserveYears": 10.548571428571428,
+              "tariffYears": 2.84,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 87,
+                "morale": 59.72451470535438,
+                "stress": 23,
+                "knowledge": 45,
+                "bonds": 56.309374651367136,
+                "reputation": 49.400000000000034
+              },
+              "personBonds": 318,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 28854,
+              "reserveYears": 82.44,
+              "tariffYears": 15.186315789473683,
+              "grade": 4,
+              "job": "Медик",
+              "stats": {
+                "health": 85.16000000000003,
+                "morale": 58.48890126442224,
+                "stress": 67.5,
+                "knowledge": 35,
+                "bonds": 44.298437186230366,
+                "reputation": 77.7868807406682
+              },
+              "personBonds": 338,
+              "service": 23
+            },
+            {
+              "age": 60,
+              "balance": 61144,
+              "reserveYears": 174.69714285714286,
+              "tariffYears": 32.18105263157895,
+              "grade": 4,
+              "job": "Медик",
+              "stats": {
+                "health": 67.06900000000012,
+                "morale": 45.15732460426565,
+                "stress": 99,
+                "knowledge": 25,
+                "bonds": 30.298437186230323,
+                "reputation": 83.84265441468857
+              },
+              "personBonds": 193,
+              "service": 43
+            },
+            {
+              "age": 80,
+              "balance": 91916,
+              "reserveYears": 262.6171428571429,
+              "tariffYears": null,
+              "grade": 4,
+              "job": "Медик",
+              "stats": {
+                "health": 13.50500000000007,
+                "morale": 59.68740120635096,
+                "stress": 99,
+                "knowledge": 15,
+                "bonds": 13.298437186230338,
+                "reputation": 87.69585893575069
+              },
+              "personBonds": 161,
+              "service": 59
+            }
+          ],
+          "purchases": [
+            {
+              "age": 18,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 22,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 26,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 30,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 34,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 38,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 42,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 46,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 50,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 54,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 58,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        },
+        {
+          "seed": 103,
+          "deathAge": 75,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3822,
+              "reserveYears": 10.92,
+              "tariffYears": 2.94,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 89,
+                "morale": 60.643088613152784,
+                "stress": 20.5,
+                "knowledge": 42,
+                "bonds": 52.21041627929682,
+                "reputation": 52.50000000000004
+              },
+              "personBonds": 307,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 27688,
+              "reserveYears": 79.10857142857142,
+              "tariffYears": 14.572631578947368,
+              "grade": 4,
+              "job": "Медик",
+              "stats": {
+                "health": 87.23124062500003,
+                "morale": 59.55447984885529,
+                "stress": 65.0421875,
+                "knowledge": 32,
+                "bonds": 39.210416279296766,
+                "reputation": 75.85220605903302
+              },
+              "personBonds": 327,
+              "service": 23
+            },
+            {
+              "age": 60,
+              "balance": 59978,
+              "reserveYears": 171.3657142857143,
+              "tariffYears": 31.56736842105263,
+              "grade": 4,
+              "job": "Медик",
+              "stats": {
+                "health": 65.85557187500014,
+                "morale": 48.296117295237835,
+                "stress": 99,
+                "knowledge": 22,
+                "bonds": 15.210416279296759,
+                "reputation": 85.71325035041211
+              },
+              "personBonds": 264,
+              "service": 43
+            }
+          ],
+          "purchases": [
+            {
+              "age": 18,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 22,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 26,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 30,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 34,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 38,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 42,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 46,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 50,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 54,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 58,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        }
+      ]
+    },
+    "Switcher": {
+      "lives": 100,
+      "completed": 100,
+      "deathAge": {
+        "observations": 100,
+        "p10": 68.8,
+        "p50": 81.5,
+        "p90": 91,
+        "mean": 80.36
+      },
+      "checkpoints": {
+        "20": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 2966.8,
+            "p50": 3516,
+            "p90": 4016,
+            "mean": 3472.6666666666665
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 8.789714285714286,
+            "p50": 10.24,
+            "p90": 12.154285714285715,
+            "mean": 10.376074040901631
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 2.3015384615384615,
+            "p50": 2.6325925925925926,
+            "p90": 3.081538461538462,
+            "mean": 2.646465653687877
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 99,
+              "pct": 100
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 83,
+              "p50": 87,
+              "p90": 87.8,
+              "mean": 85.58181818181818
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 59.579467844750305,
+              "p50": 60.0920954413598,
+              "p90": 61.971605485759184,
+              "mean": 60.39889940487285
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 19.98,
+              "p50": 23.405478466796875,
+              "p90": 27.50985727216797,
+              "mean": 23.586918729240143
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 51.399895465331994,
+              "p50": 55.06937465136714,
+              "p90": 58.88970281994624,
+              "mean": 54.992914669224554
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 42,
+              "p50": 48,
+              "p90": 53.2,
+              "mean": 48.10580808080808
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 243,
+            "p50": 297,
+            "p90": 316.2,
+            "mean": 285.57575757575756
+          },
+          "service": {
+            "observations": 99,
+            "p10": 3,
+            "p50": 3,
+            "p90": 3,
+            "mean": 3
+          }
+        },
+        "40": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 22402.4,
+            "p50": 24268,
+            "p90": 27146.4,
+            "mean": 24430.49494949495
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 63.33371428571429,
+            "p50": 71.59428571428572,
+            "p90": 87.12413793103448,
+            "mean": 74.07841890467596
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 16.236338235294117,
+            "p50": 17.74962962962963,
+            "p90": 20.4405,
+            "mean": 17.997581974324138
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 76,
+              "pct": 76.76767676767676
+            },
+            "3": {
+              "count": 23,
+              "pct": 23.232323232323232
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 79.83130288056101,
+              "p50": 84.26000000000002,
+              "p90": 86.05650000000003,
+              "mean": 83.43424027206557
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 52.390984451523366,
+              "p50": 55.450015843656836,
+              "p90": 59.50957804048476,
+              "mean": 55.51937182915444
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 63.7513039375,
+              "p50": 70.2475,
+              "p90": 80.90350000000001,
+              "mean": 71.45106804840916
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 29.210416279296776,
+              "p50": 38.210416279296766,
+              "p90": 47.564414365756136,
+              "mean": 38.42550329038071
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 33.8,
+              "p50": 39,
+              "p90": 47,
+              "mean": 39.762373737373736
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 241.2,
+            "p50": 300,
+            "p90": 334,
+            "mean": 292.5656565656566
+          },
+          "service": {
+            "observations": 99,
+            "p10": 22,
+            "p50": 22,
+            "p90": 22,
+            "mean": 21.939393939393938
+          }
+        },
+        "60": {
+          "observations": 98,
+          "survivingPct": 98,
+          "balance": {
+            "observations": 98,
+            "p10": 45659,
+            "p50": 48626,
+            "p90": 55266.5,
+            "mean": 49514.78571428572
+          },
+          "reserveYears": {
+            "observations": 98,
+            "p10": 133.48285714285714,
+            "p50": 149.8157142857143,
+            "p90": 167.5551724137931,
+            "mean": 150.10880074394288
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 98,
+            "p10": 24.431971758664954,
+            "p50": 26.40195548489666,
+            "p90": 29.50934984520124,
+            "mean": 26.73051431848456
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 0,
+              "pct": 0
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 98,
+              "pct": 100
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 98,
+              "p10": 58.77557826329705,
+              "p50": 64.12472602284389,
+              "p90": 68.69919555309387,
+              "mean": 63.69240257589749
+            },
+            "morale": {
+              "observations": 98,
+              "p10": 43.943482628086635,
+              "p50": 50.17576441201709,
+              "p90": 57.14318287350555,
+              "mean": 50.40928481760639
+            },
+            "stress": {
+              "observations": 98,
+              "p10": 99,
+              "p50": 99,
+              "p90": 99,
+              "mean": 98.84402359693878
+            },
+            "bonds": {
+              "observations": 98,
+              "p10": 11.683577750219653,
+              "p50": 20.674635058349494,
+              "p90": 32.79009683732392,
+              "mean": 20.978718463963197
+            },
+            "knowledge": {
+              "observations": 98,
+              "p10": 24,
+              "p50": 31,
+              "p90": 39,
+              "mean": 31.147704081632654
+            }
+          },
+          "personBonds": {
+            "observations": 98,
+            "p10": 123.4,
+            "p50": 194,
+            "p90": 287.9,
+            "mean": 200.6326530612245
+          },
+          "service": {
+            "observations": 98,
+            "p10": 42,
+            "p50": 42,
+            "p90": 42,
+            "mean": 41.93877551020408
+          }
+        },
+        "80": {
+          "observations": 54,
+          "survivingPct": 54,
+          "balance": {
+            "observations": 54,
+            "p10": 63221.7,
+            "p50": 76637,
+            "p90": 84515.8,
+            "mean": 75729.42592592593
+          },
+          "reserveYears": {
+            "observations": 54,
+            "p10": 188.69742857142856,
+            "p50": 227.71571428571428,
+            "p90": 257.9703448275862,
+            "mean": 227.56223499361425
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 0,
+              "pct": 0
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 54,
+              "pct": 100
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 54,
+              "p10": 8.383742165238393,
+              "p50": 22.46969251018278,
+              "p90": 29.78964375000008,
+              "mean": 20.464996360685653
+            },
+            "morale": {
+              "observations": 54,
+              "p10": 45.78746739730282,
+              "p50": 51.796250123580336,
+              "p90": 58.235985772866755,
+              "mean": 52.20752732489191
+            },
+            "stress": {
+              "observations": 54,
+              "p10": 99,
+              "p50": 99,
+              "p90": 99,
+              "mean": 98.77777777777777
+            },
+            "bonds": {
+              "observations": 54,
+              "p10": 0,
+              "p50": 7.699895465331952,
+              "p90": 16.69395816186524,
+              "mean": 8.265151632870163
+            },
+            "knowledge": {
+              "observations": 54,
+              "p10": 14,
+              "p50": 22,
+              "p90": 30,
+              "mean": 22.401851851851852
+            }
+          },
+          "personBonds": {
+            "observations": 54,
+            "p10": 26.900000000000002,
+            "p50": 81.5,
+            "p90": 155.10000000000002,
+            "mean": 90.11111111111111
+          },
+          "service": {
+            "observations": 54,
+            "p10": 44,
+            "p50": 56,
+            "p90": 58,
+            "mean": 52
+          }
+        }
+      },
+      "purchases": {
+        "perLife": {
+          "observations": 100,
+          "p10": 11,
+          "p50": 12,
+          "p90": 12,
+          "mean": 11.75
+        },
+        "categoriesPerLife": {
+          "observations": 100,
+          "p10": 2,
+          "p50": 2,
+          "p90": 2,
+          "mean": 1.98
+        },
+        "noPurchasesPct": 1,
+        "firstAge": {
+          "observations": 99,
+          "p10": 18,
+          "p50": 18,
+          "p90": 18,
+          "mean": 18
+        },
+        "byType": {
+          "course-pro": {
+            "count": 1076,
+            "lives": 99,
+            "perLife": {
+              "observations": 100,
+              "p10": 10,
+              "p50": 11,
+              "p90": 11,
+              "mean": 10.76
+            },
+            "entryCost": 376600,
+            "recurringCost": 0,
+            "totalCost": 376600,
+            "voluntarySpendingSharePct": 88.38300868340765,
+            "participantBondDelta": 0
+          },
+          "retrain": {
+            "count": 99,
+            "lives": 99,
+            "perLife": {
+              "observations": 100,
+              "p10": 1,
+              "p50": 1,
+              "p90": 1,
+              "mean": 0.99
+            },
+            "entryCost": 49500,
+            "recurringCost": 0,
+            "totalCost": 49500,
+            "voluntarySpendingSharePct": 11.61699131659235,
+            "participantBondDelta": 0
+          },
+          "own-cabin": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "dome-pass": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "sector-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "family-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          }
+        },
+        "totalVoluntarySpending": 426100,
+        "voluntarySpendingPerLife": {
+          "observations": 100,
+          "p10": 4000,
+          "p50": 4350,
+          "p90": 4350,
+          "mean": 4261
+        },
+        "purchaseOnlySpending": 426100,
+        "annualSpending": 2121930,
+        "totalSpending": 2557530,
+        "restorations": 0,
+        "attempts": {
+          "actual": 1076,
+          "resourceRefusals": 0,
+          "failurePct": 0,
+          "policyReserveDeferrals": 0,
+          "byReason": {},
+          "technicalTargetErrors": 0
+        },
+        "livesWithImmediateMeasuredEffectPct": 99
+      },
+      "career": {
+        "grade3FirstAge": {
+          "observations": 99,
+          "p10": 27,
+          "p50": 28,
+          "p90": 29,
+          "mean": 28.292929292929294
+        },
+        "grade4FirstAge": {
+          "observations": 99,
+          "p10": 35,
+          "p50": 57,
+          "p90": 57,
+          "mean": 51.505050505050505
+        },
+        "reached3Pct": 99,
+        "reached4Pct": 99,
+        "wagePerLife": {
+          "observations": 100,
+          "p10": 69273.3,
+          "p50": 89055,
+          "p90": 104068.2,
+          "mean": 87375.44
+        },
+        "service": {
+          "observations": 100,
+          "p10": 42.9,
+          "p50": 52,
+          "p90": 58,
+          "mean": 50.8
+        },
+        "retirees": 83,
+        "pensionPerLife": {
+          "observations": 83,
+          "p10": 4524.000000000001,
+          "p50": 14365,
+          "p90": 25974,
+          "mean": 15281.253012048193
+        },
+        "firstAnnualPension": {
+          "observations": 83,
+          "p10": 955,
+          "p50": 1105,
+          "p90": 1333,
+          "mean": 1118.3614457831325
+        },
+        "pensionCoverage": {
+          "observations": 1166,
+          "p10": 2.822857142857143,
+          "p50": 3.2742857142857145,
+          "p90": 3.810344827586207,
+          "mean": 3.2755928651699335
+        }
+      },
+      "wellbeing": {
+        "memories": {
+          "observations": 100,
+          "p10": 13,
+          "p50": 18,
+          "p90": 22,
+          "mean": 17.6
+        },
+        "followupOutcomes": {
+          "observations": 100,
+          "p10": 2,
+          "p50": 4,
+          "p90": 6,
+          "mean": 4.06
+        },
+        "momentsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        }
+      },
+      "hardship": {
+        "economicYears": 6549,
+        "aidYears": 0,
+        "aidTotal": 0,
+        "tightYears": 0,
+        "livesWithTightYearsPct": 0,
+        "maxTightStreak": 0,
+        "longestStreakPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "livesWith5ConsecutiveTightYearsPct": 0,
+        "housingLosses": 0,
+        "serviceCancellations": 0,
+        "exhaustedOnPension": {
+          "count": 0,
+          "retirees": 83,
+          "pct": 0
+        }
+      },
+      "dome": {
+        "subscribedYears": 0,
+        "usedYears": 0,
+        "paidYears": 0,
+        "freeUsedYears": 0,
+        "closedSubscribedYears": 0,
+        "automaticCancellations": 0,
+        "voluntaryCancellations": 0
+      },
+      "load": {
+        "livesUsedPct": 0,
+        "reducedWorkingYears": 0,
+        "workingYears": 5080,
+        "reducedWorkingYearsPct": 0,
+        "firstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "balanceBefore": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "requiredReserve": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "forecastBills": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualIncomeForgone": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualGap": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "returnsToFull": 0,
+        "reducedYearsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "availabilityByObligations": {}
+      },
+      "choice": {
+        "adultYears": 6252,
+        "atLeastTwoEligiblePct": 100,
+        "atLeastTwoAvailablePct": 100,
+        "contestedYears": 0,
+        "contestedPct": 0,
+        "moneyConflictPct": 0,
+        "attentionConflictPct": 0,
+        "canBuyAllPct": 100,
+        "noEligibleOffersPct": 0,
+        "noneAffordablePct": 0,
+        "attentionAtWindow": {
+          "observations": 6252,
+          "p10": 3,
+          "p50": 3,
+          "p90": 3,
+          "mean": 2.998560460652591
+        },
+        "byAgeBand": {
+          "18-29": {
+            "years": 1188,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "30-39": {
+            "years": 990,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "40-59": {
+            "years": 1980,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "60-120": {
+            "years": 2094,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          }
+        }
+      },
+      "invariants": {
+        "checks": 36036,
+        "violations": 0,
+        "firstReproduction": null
+      },
+      "accountingErrors": [],
+      "examples": [
+        {
+          "seed": 102,
+          "deathAge": 84,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3692,
+              "reserveYears": 10.548571428571428,
+              "tariffYears": 2.84,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 87,
+                "morale": 59.72451470535438,
+                "stress": 23,
+                "knowledge": 45,
+                "bonds": 56.309374651367136,
+                "reputation": 49.400000000000034
+              },
+              "personBonds": 318,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 25966,
+              "reserveYears": 74.18857142857142,
+              "tariffYears": 16.22875,
+              "grade": 3,
+              "job": "Техник",
+              "stats": {
+                "health": 85.16000000000003,
+                "morale": 58.48890126442224,
+                "stress": 67.5,
+                "knowledge": 35,
+                "bonds": 44.298437186230366,
+                "reputation": 77.7868807406682
+              },
+              "personBonds": 338,
+              "service": 22
+            },
+            {
+              "age": 60,
+              "balance": 53126,
+              "reserveYears": 151.78857142857143,
+              "tariffYears": 28.716756756756755,
+              "grade": 4,
+              "job": "Техник",
+              "stats": {
+                "health": 66.35800000000015,
+                "morale": 45.062928870496314,
+                "stress": 99,
+                "knowledge": 27,
+                "bonds": 27.298437186230338,
+                "reputation": 84.2632827544244
+              },
+              "personBonds": 192,
+              "service": 42
+            },
+            {
+              "age": 80,
+              "balance": 83146,
+              "reserveYears": 237.56,
+              "tariffYears": null,
+              "grade": 4,
+              "job": "Техник",
+              "stats": {
+                "health": 17.776000000000092,
+                "morale": 58.813931377297486,
+                "stress": 99,
+                "knowledge": 17,
+                "bonds": 8.298437186230348,
+                "reputation": 87.30195354903144
+              },
+              "personBonds": 165,
+              "service": 58
+            }
+          ],
+          "purchases": [
+            {
+              "age": 18,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 22,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 26,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 30,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 34,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 35,
+              "id": "retrain",
+              "action": "purchase",
+              "cost": 500,
+              "attention": 1,
+              "target": {
+                "job": "Техник"
+              },
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 38,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 42,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 46,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 50,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 54,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 58,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        },
+        {
+          "seed": 103,
+          "deathAge": 79,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3822,
+              "reserveYears": 10.92,
+              "tariffYears": 2.94,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 89,
+                "morale": 60.643088613152784,
+                "stress": 20.5,
+                "knowledge": 42,
+                "bonds": 52.21041627929682,
+                "reputation": 52.50000000000004
+              },
+              "personBonds": 307,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 24218,
+              "reserveYears": 69.19428571428571,
+              "tariffYears": 17.93925925925926,
+              "grade": 2,
+              "job": "Техник",
+              "stats": {
+                "health": 87.23124062500003,
+                "morale": 59.55447984885529,
+                "stress": 65.0421875,
+                "knowledge": 32,
+                "bonds": 39.210416279296766,
+                "reputation": 75.85220605903302
+              },
+              "personBonds": 327,
+              "service": 22
+            },
+            {
+              "age": 60,
+              "balance": 49488,
+              "reserveYears": 141.3942857142857,
+              "tariffYears": 26.75027027027027,
+              "grade": 4,
+              "job": "Техник",
+              "stats": {
+                "health": 64.49364687500017,
+                "morale": 44.540070014495655,
+                "stress": 99,
+                "knowledge": 22,
+                "bonds": 15.210416279296759,
+                "reputation": 80.62540521210197
+              },
+              "personBonds": 159,
+              "service": 42
+            }
+          ],
+          "purchases": [
+            {
+              "age": 18,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 22,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 26,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 30,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 34,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 35,
+              "id": "retrain",
+              "action": "purchase",
+              "cost": 500,
+              "attention": 1,
+              "target": {
+                "job": "Техник"
+              },
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 38,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 42,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 46,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 50,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 54,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            },
+            {
+              "age": 58,
+              "id": "course-pro",
+              "action": "purchase",
+              "cost": 350,
+              "attention": 1,
+              "immediateEffect": false,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        }
+      ]
+    },
+    "Saver": {
+      "lives": 100,
+      "completed": 100,
+      "deathAge": {
+        "observations": 100,
+        "p10": 70.8,
+        "p50": 86,
+        "p90": 94.10000000000001,
+        "mean": 83.24
+      },
+      "checkpoints": {
+        "20": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 2900,
+            "p50": 3370,
+            "p90": 3920,
+            "mean": 3389.3939393939395
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 8.628571428571428,
+            "p50": 10.057142857142857,
+            "p90": 11.628571428571428,
+            "mean": 10.128228093745328
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 2.6857142857142855,
+            "p50": 3.0636363636363635,
+            "p90": 3.7,
+            "mean": 3.1162193922543406
+          },
+          "grades": {
+            "1": {
+              "count": 86,
+              "pct": 86.86868686868686
+            },
+            "2": {
+              "count": 13,
+              "pct": 13.131313131313131
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 83,
+              "p50": 87,
+              "p90": 87.8,
+              "mean": 85.58181818181818
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 59.579467844750305,
+              "p50": 60.0920954413598,
+              "p90": 61.971605485759184,
+              "mean": 60.39889940487285
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 7.98,
+              "p50": 11.405478466796875,
+              "p90": 15.50985727216797,
+              "mean": 11.624340219352439
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 51.399895465331994,
+              "p50": 55.06937465136714,
+              "p90": 58.88970281994624,
+              "mean": 54.992914669224554
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 62.48625,
+              "p50": 67.18042265625,
+              "p90": 70.71607130839844,
+              "mean": 67.09934107516142
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 243,
+            "p50": 297,
+            "p90": 316.2,
+            "mean": 285.57575757575756
+          },
+          "service": {
+            "observations": 99,
+            "p10": 3,
+            "p50": 3,
+            "p90": 3,
+            "mean": 3
+          }
+        },
+        "40": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 20566,
+            "p50": 22020,
+            "p90": 24270,
+            "mean": 22294.59595959596
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 60.57142857142857,
+            "p50": 67.13428571428571,
+            "p90": 71.35487684729064,
+            "mean": 65.91747225954119
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 16.23846153846154,
+            "p50": 17.056296296296296,
+            "p90": 17.7205291005291,
+            "mean": 16.952861532406985
+          },
+          "grades": {
+            "1": {
+              "count": 1,
+              "pct": 1.0101010101010102
+            },
+            "2": {
+              "count": 97,
+              "pct": 97.97979797979798
+            },
+            "3": {
+              "count": 1,
+              "pct": 1.0101010101010102
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 79.25000000000003,
+              "p50": 84.50000000000003,
+              "p90": 86.05000000000003,
+              "mean": 83.70111111111113
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 52.272755151825784,
+              "p50": 55.291733736264284,
+              "p90": 59.37021419102316,
+              "mean": 55.34279220118726
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 14.748738875,
+              "p50": 20.44743278242798,
+              "p90": 29.743364488256837,
+              "mean": 21.498834391031878
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 28.72410379091788,
+              "p50": 37.985702819946184,
+              "p90": 48.290238791437886,
+              "mean": 38.21338207825949
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 88.4701216814788,
+              "p50": 89.30356285360888,
+              "p90": 90.37100396937825,
+              "mean": 89.35682807282336
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 242,
+            "p50": 299,
+            "p90": 332.2,
+            "mean": 291.6161616161616
+          },
+          "service": {
+            "observations": 99,
+            "p10": 23,
+            "p50": 23,
+            "p90": 23,
+            "mean": 22.939393939393938
+          }
+        },
+        "60": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 38800,
+            "p50": 43032,
+            "p90": 46707.4,
+            "mean": 42878.333333333336
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 115.2,
+            "p50": 126.77142857142857,
+            "p90": 141.05714285714285,
+            "mean": 127.0781147796822
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 29.309814323607426,
+            "p50": 31.8,
+            "p90": 33.28,
+            "mean": 31.473687250236697
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 81,
+              "pct": 81.81818181818181
+            },
+            "3": {
+              "count": 18,
+              "pct": 18.181818181818183
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 69.70000000000012,
+              "p50": 75.4312500000001,
+              "p90": 77.37200000000011,
+              "mean": 74.20243804545463
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 44.79168869591168,
+              "p50": 50.034310056926074,
+              "p90": 57.01415539201023,
+              "mean": 50.297675574545416
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 25.730764855780688,
+              "p50": 39.25512226658056,
+              "p90": 51.40651386325683,
+              "mean": 39.277938780105636
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 9.686207953710854,
+              "p50": 20.210416279296766,
+              "p90": 32.22912200564447,
+              "mean": 20.486109350986766
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 95.13836391190496,
+              "p50": 95.83818815555401,
+              "p90": 96.56173413017684,
+              "mean": 95.85860650910023
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 138.2,
+            "p50": 206,
+            "p90": 287.6,
+            "mean": 205.44444444444446
+          },
+          "service": {
+            "observations": 99,
+            "p10": 43,
+            "p50": 43,
+            "p90": 43,
+            "mean": 42.93939393939394
+          }
+        },
+        "80": {
+          "observations": 69,
+          "survivingPct": 69,
+          "balance": {
+            "observations": 69,
+            "p10": 52612,
+            "p50": 58600,
+            "p90": 67480,
+            "mean": 59421.92753623189
+          },
+          "reserveYears": {
+            "observations": 69,
+            "p10": 158.09371428571427,
+            "p50": 175.16,
+            "p90": 202.1,
+            "mean": 176.72000713928745
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 56,
+              "pct": 81.15942028985508
+            },
+            "3": {
+              "count": 13,
+              "pct": 18.840579710144926
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 69,
+              "p10": 28.97943009610945,
+              "p50": 41.81145654663725,
+              "p90": 53.403000000000056,
+              "mean": 41.701535966347635
+            },
+            "morale": {
+              "observations": 69,
+              "p10": 46.22611482384558,
+              "p50": 52.81828592408111,
+              "p90": 58.312372091465384,
+              "mean": 52.83675694485248
+            },
+            "stress": {
+              "observations": 69,
+              "p10": 37.19374550301602,
+              "p50": 58.2356375,
+              "p90": 82.41784690624999,
+              "mean": 59.19843371997861
+            },
+            "bonds": {
+              "observations": 69,
+              "p10": 0,
+              "p50": 3.8,
+              "p90": 18.14501273847522,
+              "mean": 6.691693280695121
+            },
+            "knowledge": {
+              "observations": 69,
+              "p10": 100,
+              "p50": 100,
+              "p90": 100,
+              "mean": 100
+            }
+          },
+          "personBonds": {
+            "observations": 69,
+            "p10": 34,
+            "p50": 98,
+            "p90": 161,
+            "mean": 97.6086956521739
+          },
+          "service": {
+            "observations": 69,
+            "p10": 44,
+            "p50": 56,
+            "p90": 59,
+            "mean": 53.05797101449275
+          }
+        }
+      },
+      "purchases": {
+        "perLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "categoriesPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "noPurchasesPct": 100,
+        "firstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "byType": {
+          "course-pro": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          },
+          "retrain": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          },
+          "own-cabin": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          },
+          "dome-pass": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          },
+          "sector-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          },
+          "family-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": null,
+            "participantBondDelta": 0
+          }
+        },
+        "totalVoluntarySpending": 0,
+        "voluntarySpendingPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "purchaseOnlySpending": 0,
+        "annualSpending": 2246430,
+        "totalSpending": 2259830,
+        "restorations": 0,
+        "attempts": {
+          "actual": 0,
+          "resourceRefusals": 0,
+          "failurePct": null,
+          "policyReserveDeferrals": 0,
+          "byReason": {},
+          "technicalTargetErrors": 0
+        },
+        "livesWithImmediateMeasuredEffectPct": 0
+      },
+      "career": {
+        "grade3FirstAge": {
+          "observations": 19,
+          "p10": 42.6,
+          "p50": 46,
+          "p90": 47,
+          "mean": 45.73684210526316
+        },
+        "grade4FirstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "reached3Pct": 19,
+        "reached4Pct": 0,
+        "wagePerLife": {
+          "observations": 100,
+          "p10": 59489.8,
+          "p50": 70545,
+          "p90": 82570,
+          "mean": 70953.39
+        },
+        "service": {
+          "observations": 100,
+          "p10": 44,
+          "p50": 53,
+          "p90": 59,
+          "mean": 51.99
+        },
+        "retirees": 89,
+        "pensionPerLife": {
+          "observations": 89,
+          "p10": 3022.8,
+          "p50": 12740,
+          "p90": 21950.6,
+          "mean": 13114
+        },
+        "firstAnnualPension": {
+          "observations": 89,
+          "p10": 701.4,
+          "p50": 845,
+          "p90": 921.0000000000001,
+          "mean": 829.876404494382
+        },
+        "pensionCoverage": {
+          "observations": 1434,
+          "p10": 2.0085714285714285,
+          "p50": 2.414285714285714,
+          "p90": 2.9714285714285715,
+          "mean": 2.4272212489093112
+        }
+      },
+      "wellbeing": {
+        "memories": {
+          "observations": 100,
+          "p10": 12,
+          "p50": 17,
+          "p90": 21.10000000000001,
+          "mean": 16.82
+        },
+        "followupOutcomes": {
+          "observations": 100,
+          "p10": 2,
+          "p50": 4,
+          "p90": 7,
+          "mean": 4.08
+        },
+        "momentsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        }
+      },
+      "hardship": {
+        "economicYears": 6837,
+        "aidYears": 0,
+        "aidTotal": 0,
+        "tightYears": 0,
+        "livesWithTightYearsPct": 0,
+        "maxTightStreak": 0,
+        "longestStreakPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "livesWith5ConsecutiveTightYearsPct": 0,
+        "housingLosses": 0,
+        "serviceCancellations": 0,
+        "exhaustedOnPension": {
+          "count": 0,
+          "retirees": 89,
+          "pct": 0
+        }
+      },
+      "dome": {
+        "subscribedYears": 0,
+        "usedYears": 0,
+        "paidYears": 0,
+        "freeUsedYears": 0,
+        "closedSubscribedYears": 0,
+        "automaticCancellations": 0,
+        "voluntaryCancellations": 0
+      },
+      "load": {
+        "livesUsedPct": 0,
+        "reducedWorkingYears": 0,
+        "workingYears": 5199,
+        "reducedWorkingYearsPct": 0,
+        "firstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "balanceBefore": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "requiredReserve": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "forecastBills": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualIncomeForgone": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualGap": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "returnsToFull": 0,
+        "reducedYearsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "availabilityByObligations": {}
+      },
+      "choice": {
+        "adultYears": 6540,
+        "atLeastTwoEligiblePct": 100,
+        "atLeastTwoAvailablePct": 100,
+        "contestedYears": 0,
+        "contestedPct": 0,
+        "moneyConflictPct": 0,
+        "attentionConflictPct": 0,
+        "canBuyAllPct": 100,
+        "noEligibleOffersPct": 0,
+        "noneAffordablePct": 0,
+        "attentionAtWindow": {
+          "observations": 6540,
+          "p10": 3,
+          "p50": 3,
+          "p90": 3,
+          "mean": 2.9970948012232417
+        },
+        "byAgeBand": {
+          "18-29": {
+            "years": 1188,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "30-39": {
+            "years": 990,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "40-59": {
+            "years": 1980,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "60-120": {
+            "years": 2382,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          }
+        }
+      },
+      "invariants": {
+        "checks": 35928,
+        "violations": 0,
+        "firstReproduction": null
+      },
+      "accountingErrors": [],
+      "examples": [
+        {
+          "seed": 102,
+          "deathAge": 88,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3520,
+              "reserveYears": 10.057142857142857,
+              "tariffYears": 3.3523809523809525,
+              "grade": 1,
+              "job": "Медик",
+              "stats": {
+                "health": 87,
+                "morale": 59.72451470535438,
+                "stress": 11.000000000000002,
+                "knowledge": 64.92478125,
+                "bonds": 56.309374651367136,
+                "reputation": 39.20000000000002
+              },
+              "personBonds": 318,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 22020,
+              "reserveYears": 62.91428571428571,
+              "tariffYears": 16.93846153846154,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 85.25000000000003,
+                "morale": 58.48890126442224,
+                "stress": 15.850000000000001,
+                "knowledge": 88.67524874907635,
+                "bonds": 44.298437186230366,
+                "reputation": 42.40000000000006
+              },
+              "personBonds": 338,
+              "service": 23
+            },
+            {
+              "age": 60,
+              "balance": 41020,
+              "reserveYears": 117.2,
+              "tariffYears": 31.553846153846155,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 75.70000000000012,
+                "morale": 45.15732460426565,
+                "stress": 30.422081250000005,
+                "knowledge": 95.23818815555401,
+                "bonds": 30.298437186230323,
+                "reputation": 37.70000000000009
+              },
+              "personBonds": 193,
+              "service": 43
+            },
+            {
+              "age": 80,
+              "balance": 58200,
+              "reserveYears": 166.28571428571428,
+              "tariffYears": null,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 34.70000000000006,
+                "morale": 58.47469120366296,
+                "stress": 60.150977187500004,
+                "knowledge": 100,
+                "bonds": 13.298437186230338,
+                "reputation": 39.70000000000012
+              },
+              "personBonds": 161,
+              "service": 59
+            }
+          ],
+          "purchases": [],
+          "loadChanges": [],
+          "contestedYears": []
+        },
+        {
+          "seed": 103,
+          "deathAge": 89,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3920,
+              "reserveYears": 11.2,
+              "tariffYears": 3.7333333333333334,
+              "grade": 1,
+              "job": "Медик",
+              "stats": {
+                "health": 89,
+                "morale": 60.643088613152784,
+                "stress": 8.5,
+                "knowledge": 62.48625,
+                "bonds": 52.21041627929682,
+                "reputation": 40.50000000000004
+              },
+              "personBonds": 307,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 22170,
+              "reserveYears": 63.34285714285714,
+              "tariffYears": 17.053846153846155,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 87.25000000000003,
+                "morale": 59.55447984885529,
+                "stress": 14.3,
+                "knowledge": 88.16243108008254,
+                "bonds": 39.210416279296766,
+                "reputation": 39.90000000000005
+              },
+              "personBonds": 327,
+              "service": 23
+            },
+            {
+              "age": 60,
+              "balance": 41170,
+              "reserveYears": 117.62857142857143,
+              "tariffYears": 31.66923076923077,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 73.70000000000012,
+                "morale": 48.296117295237835,
+                "stress": 24.932250000000003,
+                "knowledge": 94.93818815555402,
+                "bonds": 15.210416279296759,
+                "reputation": 42.5000000000001
+              },
+              "personBonds": 264,
+              "service": 43
+            },
+            {
+              "age": 80,
+              "balance": 58350,
+              "reserveYears": 166.71428571428572,
+              "tariffYears": null,
+              "grade": 2,
+              "job": "Медик",
+              "stats": {
+                "health": 37.70000000000006,
+                "morale": 50.551720410723604,
+                "stress": 58.2356375,
+                "knowledge": 100,
+                "bonds": 0,
+                "reputation": 39.800000000000125
+              },
+              "personBonds": 119,
+              "service": 59
+            }
+          ],
+          "purchases": [],
+          "loadChanges": [],
+          "contestedYears": []
+        }
+      ]
+    },
+    "SwitcherSaver": {
+      "lives": 100,
+      "completed": 100,
+      "deathAge": {
+        "observations": 100,
+        "p10": 71,
+        "p50": 84.5,
+        "p90": 98,
+        "mean": 83.83
+      },
+      "checkpoints": {
+        "20": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 2900,
+            "p50": 3370,
+            "p90": 3920,
+            "mean": 3389.3939393939395
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 8.628571428571428,
+            "p50": 10.057142857142857,
+            "p90": 11.628571428571428,
+            "mean": 10.128228093745328
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 2.6857142857142855,
+            "p50": 3.0636363636363635,
+            "p90": 3.7,
+            "mean": 3.1162193922543406
+          },
+          "grades": {
+            "1": {
+              "count": 86,
+              "pct": 86.86868686868686
+            },
+            "2": {
+              "count": 13,
+              "pct": 13.131313131313131
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 83,
+              "p50": 87,
+              "p90": 87.8,
+              "mean": 85.58181818181818
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 59.579467844750305,
+              "p50": 60.0920954413598,
+              "p90": 61.971605485759184,
+              "mean": 60.39889940487285
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 7.98,
+              "p50": 11.405478466796875,
+              "p90": 15.50985727216797,
+              "mean": 11.624340219352439
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 51.399895465331994,
+              "p50": 55.06937465136714,
+              "p90": 58.88970281994624,
+              "mean": 54.992914669224554
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 62.48625,
+              "p50": 67.18042265625,
+              "p90": 70.71607130839844,
+              "mean": 67.09934107516142
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 243,
+            "p50": 297,
+            "p90": 316.2,
+            "mean": 285.57575757575756
+          },
+          "service": {
+            "observations": 99,
+            "p10": 3,
+            "p50": 3,
+            "p90": 3,
+            "mean": 3
+          }
+        },
+        "40": {
+          "observations": 99,
+          "survivingPct": 99,
+          "balance": {
+            "observations": 99,
+            "p10": 18638,
+            "p50": 20080,
+            "p90": 21692,
+            "mean": 20094.848484848484
+          },
+          "reserveYears": {
+            "observations": 99,
+            "p10": 53.21714285714285,
+            "p50": 58.94857142857143,
+            "p90": 72.37931034482759,
+            "mean": 60.927693414213735
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 99,
+            "p10": 16.53636363636364,
+            "p50": 18.714782608695653,
+            "p90": 22.094736842105263,
+            "mean": 18.960524974588377
+          },
+          "grades": {
+            "1": {
+              "count": 91,
+              "pct": 91.91919191919192
+            },
+            "2": {
+              "count": 8,
+              "pct": 8.080808080808081
+            },
+            "3": {
+              "count": 0,
+              "pct": 0
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 99,
+              "p10": 79.25000000000003,
+              "p50": 84.50000000000003,
+              "p90": 86.05000000000003,
+              "mean": 83.7054797979798
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 52.272755151825784,
+              "p50": 55.42396262774916,
+              "p90": 59.50957804048476,
+              "mean": 55.4070197952793
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 14.710138875000002,
+              "p50": 20.405478466796875,
+              "p90": 30.379315225195317,
+              "mean": 21.366127874408548
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 29.034909577512114,
+              "p50": 38.210416279296766,
+              "p90": 47.564414365756136,
+              "mean": 38.092169957047375
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 88.4701216814788,
+              "p50": 89.30356285360888,
+              "p90": 90.36968666828815,
+              "mean": 89.34830693501334
+            }
+          },
+          "personBonds": {
+            "observations": 99,
+            "p10": 238,
+            "p50": 299,
+            "p90": 332.2,
+            "mean": 291.5656565656566
+          },
+          "service": {
+            "observations": 99,
+            "p10": 22,
+            "p50": 22,
+            "p90": 22,
+            "mean": 21.939393939393938
+          }
+        },
+        "60": {
+          "observations": 98,
+          "survivingPct": 98,
+          "balance": {
+            "observations": 98,
+            "p10": 36461.4,
+            "p50": 38661,
+            "p90": 41410,
+            "mean": 38872.57142857143
+          },
+          "reserveYears": {
+            "observations": 98,
+            "p10": 107.12571428571428,
+            "p50": 115.15714285714286,
+            "p90": 132.3793103448276,
+            "mean": 117.82252196642202
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 98,
+            "p10": 27.758333333333333,
+            "p50": 29.807692307692307,
+            "p90": 31.991666666666667,
+            "mean": 29.8269483404494
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 97,
+              "pct": 98.9795918367347
+            },
+            "3": {
+              "count": 1,
+              "pct": 1.0204081632653061
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 98,
+              "p10": 69.70000000000012,
+              "p50": 74.09812500000011,
+              "p90": 77.52875000000012,
+              "mean": 73.8522766989797
+            },
+            "morale": {
+              "observations": 98,
+              "p10": 44.332774395267734,
+              "p50": 49.212699555685546,
+              "p90": 56.5182440845933,
+              "mean": 49.566361606375956
+            },
+            "stress": {
+              "observations": 98,
+              "p10": 25.437322431804663,
+              "p50": 39.738991126629486,
+              "p90": 53.770423944794004,
+              "mean": 40.06365312998602
+            },
+            "bonds": {
+              "observations": 98,
+              "p10": 8.62042150603019,
+              "p50": 19.259895465331905,
+              "p90": 32.28273004906736,
+              "mean": 19.941878548201682
+            },
+            "knowledge": {
+              "observations": 98,
+              "p10": 95.13810326638888,
+              "p50": 95.83818815555401,
+              "p90": 96.63894860319778,
+              "mean": 95.86883591928193
+            }
+          },
+          "personBonds": {
+            "observations": 98,
+            "p10": 117.5,
+            "p50": 199.5,
+            "p90": 287.9,
+            "mean": 200.6734693877551
+          },
+          "service": {
+            "observations": 98,
+            "p10": 42,
+            "p50": 42,
+            "p90": 42,
+            "mean": 41.93877551020408
+          }
+        },
+        "80": {
+          "observations": 65,
+          "survivingPct": 65,
+          "balance": {
+            "observations": 65,
+            "p10": 48178.8,
+            "p50": 55031,
+            "p90": 59807.2,
+            "mean": 54684.35384615385
+          },
+          "reserveYears": {
+            "observations": 65,
+            "p10": 147.52057142857143,
+            "p50": 163.3257142857143,
+            "p90": 185.21793103448277,
+            "mean": 163.79549981053435
+          },
+          "balanceInAnnualTariffs": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          },
+          "grades": {
+            "1": {
+              "count": 0,
+              "pct": 0
+            },
+            "2": {
+              "count": 60,
+              "pct": 92.3076923076923
+            },
+            "3": {
+              "count": 5,
+              "pct": 7.6923076923076925
+            },
+            "4": {
+              "count": 0,
+              "pct": 0
+            }
+          },
+          "stats": {
+            "health": {
+              "observations": 65,
+              "p10": 27.981101540000076,
+              "p50": 41.70000000000006,
+              "p90": 52.82687500000005,
+              "mean": 41.7521367543486
+            },
+            "morale": {
+              "observations": 65,
+              "p10": 46.03212697353562,
+              "p50": 53.07500505476753,
+              "p90": 58.15149372450518,
+              "mean": 52.62349236653533
+            },
+            "stress": {
+              "observations": 65,
+              "p10": 34.740023076875,
+              "p50": 60.899750000000004,
+              "p90": 84.31801484202683,
+              "mean": 60.43338875916659
+            },
+            "bonds": {
+              "observations": 65,
+              "p10": 0,
+              "p50": 4.210416279296758,
+              "p90": 15.810416279296756,
+              "mean": 5.998799072682079
+            },
+            "knowledge": {
+              "observations": 65,
+              "p10": 100,
+              "p50": 100,
+              "p90": 100,
+              "mean": 100
+            }
+          },
+          "personBonds": {
+            "observations": 65,
+            "p10": 36.400000000000006,
+            "p50": 95,
+            "p90": 156.60000000000002,
+            "mean": 95.06153846153846
+          },
+          "service": {
+            "observations": 65,
+            "p10": 44,
+            "p50": 55,
+            "p90": 58,
+            "mean": 51.815384615384616
+          }
+        }
+      },
+      "purchases": {
+        "perLife": {
+          "observations": 100,
+          "p10": 1,
+          "p50": 1,
+          "p90": 1,
+          "mean": 0.99
+        },
+        "categoriesPerLife": {
+          "observations": 100,
+          "p10": 1,
+          "p50": 1,
+          "p90": 1,
+          "mean": 0.99
+        },
+        "noPurchasesPct": 1,
+        "firstAge": {
+          "observations": 99,
+          "p10": 35,
+          "p50": 35,
+          "p90": 35,
+          "mean": 35
+        },
+        "byType": {
+          "course-pro": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "retrain": {
+            "count": 99,
+            "lives": 99,
+            "perLife": {
+              "observations": 100,
+              "p10": 1,
+              "p50": 1,
+              "p90": 1,
+              "mean": 0.99
+            },
+            "entryCost": 49500,
+            "recurringCost": 0,
+            "totalCost": 49500,
+            "voluntarySpendingSharePct": 100,
+            "participantBondDelta": 0
+          },
+          "own-cabin": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "dome-pass": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "sector-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          },
+          "family-trip": {
+            "count": 0,
+            "lives": 0,
+            "perLife": {
+              "observations": 100,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "entryCost": 0,
+            "recurringCost": 0,
+            "totalCost": 0,
+            "voluntarySpendingSharePct": 0,
+            "participantBondDelta": 0
+          }
+        },
+        "totalVoluntarySpending": 49500,
+        "voluntarySpendingPerLife": {
+          "observations": 100,
+          "p10": 500,
+          "p50": 500,
+          "p90": 500,
+          "mean": 495
+        },
+        "purchaseOnlySpending": 49500,
+        "annualSpending": 2234770,
+        "totalSpending": 2298570,
+        "restorations": 0,
+        "attempts": {
+          "actual": 0,
+          "resourceRefusals": 0,
+          "failurePct": null,
+          "policyReserveDeferrals": 0,
+          "byReason": {},
+          "technicalTargetErrors": 0
+        },
+        "livesWithImmediateMeasuredEffectPct": 99
+      },
+      "career": {
+        "grade3FirstAge": {
+          "observations": 9,
+          "p10": 60.8,
+          "p50": 68,
+          "p90": 68,
+          "mean": 66
+        },
+        "grade4FirstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "reached3Pct": 9,
+        "reached4Pct": 0,
+        "wagePerLife": {
+          "observations": 100,
+          "p10": 55228,
+          "p50": 69315,
+          "p90": 77860,
+          "mean": 66789.16
+        },
+        "service": {
+          "observations": 100,
+          "p10": 42,
+          "p50": 53,
+          "p90": 58,
+          "mean": 50.91
+        },
+        "retirees": 86,
+        "pensionPerLife": {
+          "observations": 86,
+          "p10": 3642,
+          "p50": 12610,
+          "p90": 24587.5,
+          "mean": 13430.093023255815
+        },
+        "firstAnnualPension": {
+          "observations": 86,
+          "p10": 674,
+          "p50": 786,
+          "p90": 910,
+          "mean": 802.3372093023256
+        },
+        "pensionCoverage": {
+          "observations": 1502,
+          "p10": 2.005714285714286,
+          "p50": 2.3241379310344827,
+          "p90": 2.6,
+          "mean": 2.331541524273054
+        }
+      },
+      "wellbeing": {
+        "memories": {
+          "observations": 100,
+          "p10": 13.9,
+          "p50": 18,
+          "p90": 22,
+          "mean": 17.92
+        },
+        "followupOutcomes": {
+          "observations": 100,
+          "p10": 2,
+          "p50": 4,
+          "p90": 7,
+          "mean": 4.07
+        },
+        "momentsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        }
+      },
+      "hardship": {
+        "economicYears": 6896,
+        "aidYears": 0,
+        "aidTotal": 0,
+        "tightYears": 0,
+        "livesWithTightYearsPct": 0,
+        "maxTightStreak": 0,
+        "longestStreakPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "livesWith5ConsecutiveTightYearsPct": 0,
+        "housingLosses": 0,
+        "serviceCancellations": 0,
+        "exhaustedOnPension": {
+          "count": 0,
+          "retirees": 86,
+          "pct": 0
+        }
+      },
+      "dome": {
+        "subscribedYears": 0,
+        "usedYears": 0,
+        "paidYears": 0,
+        "freeUsedYears": 0,
+        "closedSubscribedYears": 0,
+        "automaticCancellations": 0,
+        "voluntaryCancellations": 0
+      },
+      "load": {
+        "livesUsedPct": 0,
+        "reducedWorkingYears": 0,
+        "workingYears": 5091,
+        "reducedWorkingYearsPct": 0,
+        "firstAge": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "balanceBefore": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "requiredReserve": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "forecastBills": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualIncomeForgone": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "annualGap": {
+          "observations": 0,
+          "p10": null,
+          "p50": null,
+          "p90": null,
+          "mean": null
+        },
+        "returnsToFull": 0,
+        "reducedYearsPerLife": {
+          "observations": 100,
+          "p10": 0,
+          "p50": 0,
+          "p90": 0,
+          "mean": 0
+        },
+        "availabilityByObligations": {}
+      },
+      "choice": {
+        "adultYears": 6599,
+        "atLeastTwoEligiblePct": 100,
+        "atLeastTwoAvailablePct": 100,
+        "contestedYears": 0,
+        "contestedPct": 0,
+        "moneyConflictPct": 0,
+        "attentionConflictPct": 0,
+        "canBuyAllPct": 100,
+        "noEligibleOffersPct": 0,
+        "noneAffordablePct": 0,
+        "attentionAtWindow": {
+          "observations": 6599,
+          "p10": 3,
+          "p50": 3,
+          "p90": 3,
+          "mean": 2.9966661615396273
+        },
+        "byAgeBand": {
+          "18-29": {
+            "years": 1188,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "30-39": {
+            "years": 990,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "40-59": {
+            "years": 1980,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          },
+          "60-120": {
+            "years": 2441,
+            "contestedPct": 0,
+            "canBuyAllPct": 100
+          }
+        }
+      },
+      "invariants": {
+        "checks": 36279,
+        "violations": 0,
+        "firstReproduction": null
+      },
+      "accountingErrors": [],
+      "examples": [
+        {
+          "seed": 102,
+          "deathAge": 88,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3520,
+              "reserveYears": 10.057142857142857,
+              "tariffYears": 3.3523809523809525,
+              "grade": 1,
+              "job": "Медик",
+              "stats": {
+                "health": 87,
+                "morale": 59.72451470535438,
+                "stress": 11.000000000000002,
+                "knowledge": 64.92478125,
+                "bonds": 56.309374651367136,
+                "reputation": 39.20000000000002
+              },
+              "personBonds": 318,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 20080,
+              "reserveYears": 57.371428571428574,
+              "tariffYears": 18.254545454545454,
+              "grade": 1,
+              "job": "Техник",
+              "stats": {
+                "health": 85.25000000000003,
+                "morale": 58.48890126442224,
+                "stress": 15.850000000000001,
+                "knowledge": 88.67524874907635,
+                "bonds": 44.298437186230366,
+                "reputation": 42.40000000000006
+              },
+              "personBonds": 338,
+              "service": 22
+            },
+            {
+              "age": 60,
+              "balance": 39080,
+              "reserveYears": 111.65714285714286,
+              "tariffYears": 28.94814814814815,
+              "grade": 2,
+              "job": "Техник",
+              "stats": {
+                "health": 75.70000000000012,
+                "morale": 42.42660277769632,
+                "stress": 36.357125,
+                "knowledge": 95.43627874777631,
+                "bonds": 22.29843718623034,
+                "reputation": 41.30000000000008
+              },
+              "personBonds": 192,
+              "service": 42
+            },
+            {
+              "age": 80,
+              "balance": 56410,
+              "reserveYears": 161.17142857142858,
+              "tariffYears": null,
+              "grade": 2,
+              "job": "Техник",
+              "stats": {
+                "health": 41.70000000000006,
+                "morale": 60.91614369595002,
+                "stress": 48.573196875,
+                "knowledge": 100,
+                "bonds": 3.8,
+                "reputation": 36.8000000000001
+              },
+              "personBonds": 165,
+              "service": 56
+            }
+          ],
+          "purchases": [
+            {
+              "age": 35,
+              "id": "retrain",
+              "action": "purchase",
+              "cost": 500,
+              "attention": 1,
+              "target": {
+                "job": "Техник"
+              },
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        },
+        {
+          "seed": 103,
+          "deathAge": 79,
+          "checkpoints": [
+            {
+              "age": 20,
+              "balance": 3920,
+              "reserveYears": 11.2,
+              "tariffYears": 3.7333333333333334,
+              "grade": 1,
+              "job": "Медик",
+              "stats": {
+                "health": 89,
+                "morale": 60.643088613152784,
+                "stress": 8.5,
+                "knowledge": 62.48625,
+                "bonds": 52.21041627929682,
+                "reputation": 40.50000000000004
+              },
+              "personBonds": 307,
+              "service": 3
+            },
+            {
+              "age": 40,
+              "balance": 20230,
+              "reserveYears": 57.8,
+              "tariffYears": 18.39090909090909,
+              "grade": 1,
+              "job": "Техник",
+              "stats": {
+                "health": 87.25000000000003,
+                "morale": 59.55447984885529,
+                "stress": 14.3,
+                "knowledge": 88.16243108008254,
+                "bonds": 39.210416279296766,
+                "reputation": 39.90000000000005
+              },
+              "personBonds": 327,
+              "service": 22
+            },
+            {
+              "age": 60,
+              "balance": 39480,
+              "reserveYears": 112.8,
+              "tariffYears": 29.244444444444444,
+              "grade": 2,
+              "job": "Техник",
+              "stats": {
+                "health": 73.70000000000012,
+                "morale": 44.540070014495655,
+                "stress": 36.950675000000004,
+                "knowledge": 94.93818815555402,
+                "bonds": 15.210416279296759,
+                "reputation": 32.90000000000005
+              },
+              "personBonds": 159,
+              "service": 42
+            }
+          ],
+          "purchases": [
+            {
+              "age": 35,
+              "id": "retrain",
+              "action": "purchase",
+              "cost": 500,
+              "attention": 1,
+              "target": {
+                "job": "Техник"
+              },
+              "immediateEffect": true,
+              "participantBondDelta": 0
+            }
+          ],
+          "loadChanges": [],
+          "contestedYears": []
+        }
+      ]
+    }
+  },
+  "retraining": {
+    "Switcher": {
+      "lives": 100,
+      "reachedFirstAttempt": 99,
+      "switchedLives": 99,
+      "switchedPctOfAttempting": 100,
+      "switchedAtFirstAttemptPct": 100,
+      "switchAge": {
+        "observations": 99,
+        "p10": 35,
+        "p50": 35,
+        "p90": 35,
+        "mean": 35
+      },
+      "attempts": {
+        "total": 99,
+        "refused": 0,
+        "refusedPct": 0,
+        "byReason": {}
+      },
+      "retrainCostTotal": 49500,
+      "balanceAtSwitch": {
+        "observations": 99,
+        "p10": 18504,
+        "p50": 20394,
+        "p90": 22138,
+        "mean": 20270.252525252527
+      },
+      "feeShareOfBalancePct": {
+        "observations": 99,
+        "p10": 2.2585599421808653,
+        "p50": 2.4517014808276945,
+        "p90": 2.7021298918160177,
+        "mean": 2.479089308186132
+      },
+      "forecastInternshipLoss": {
+        "observations": 99,
+        "p10": 756,
+        "p50": 948,
+        "p90": 1254,
+        "mean": 980.6060606060606
+      },
+      "actualInternshipWage": {
+        "observations": 99,
+        "p10": 720,
+        "p50": 810,
+        "p90": 960,
+        "mean": 813.3333333333334
+      },
+      "internshipYearKinds": {
+        "trainee": 99
+      },
+      "ownRecoveryYears": {
+        "observations": 96,
+        "p10": 10,
+        "p50": 15,
+        "p90": 23,
+        "mean": 16.229166666666668
+      },
+      "neverRecoveredOwnWage": 3,
+      "targetJobs": {
+        "Техник": 25,
+        "Медик": 20,
+        "Агроном": 32,
+        "Координатор": 22
+      },
+      "narrative": {
+        "newProfessionStorySeenPct": 60.60606060606061,
+        "oldProfessionStorySeenAfterSwitch": 0,
+        "newProfessionMomentOfferedPct": 85.85858585858585,
+        "storyMentorRetrainLives": 6
+      }
+    },
+    "SwitcherSaver": {
+      "lives": 100,
+      "reachedFirstAttempt": 99,
+      "switchedLives": 99,
+      "switchedPctOfAttempting": 100,
+      "switchedAtFirstAttemptPct": 100,
+      "switchAge": {
+        "observations": 99,
+        "p10": 35,
+        "p50": 35,
+        "p90": 35,
+        "mean": 35
+      },
+      "attempts": {
+        "total": 99,
+        "refused": 0,
+        "refusedPct": 0,
+        "byReason": {}
+      },
+      "retrainCostTotal": 49500,
+      "balanceAtSwitch": {
+        "observations": 99,
+        "p10": 15922,
+        "p50": 17270,
+        "p90": 19150,
+        "mean": 17437.121212121212
+      },
+      "feeShareOfBalancePct": {
+        "observations": 99,
+        "p10": 2.610991568831383,
+        "p50": 2.895193977996526,
+        "p90": 3.140325115080606,
+        "mean": 2.882458864360582
+      },
+      "forecastInternshipLoss": {
+        "observations": 99,
+        "p10": 540,
+        "p50": 660,
+        "p90": 830,
+        "mean": 683.3838383838383
+      },
+      "actualInternshipWage": {
+        "observations": 99,
+        "p10": 570,
+        "p50": 630,
+        "p90": 690,
+        "mean": 631.5151515151515
+      },
+      "internshipYearKinds": {
+        "trainee": 99
+      },
+      "ownRecoveryYears": {
+        "observations": 55,
+        "p10": 6,
+        "p50": 10,
+        "p90": 10,
+        "mean": 10.090909090909092
+      },
+      "neverRecoveredOwnWage": 44,
+      "targetJobs": {
+        "Техник": 25,
+        "Медик": 20,
+        "Агроном": 32,
+        "Координатор": 22
+      },
+      "narrative": {
+        "newProfessionStorySeenPct": 68.68686868686869,
+        "oldProfessionStorySeenAfterSwitch": 0,
+        "newProfessionMomentOfferedPct": 88.88888888888889,
+        "storyMentorRetrainLives": 6
+      }
+    },
+    "controlsStoryRetrain": {
+      "Careerist": 6,
+      "Saver": 6
+    }
+  },
+  "comparisons": {
+    "switcherVsCareerist": {
+      "pairs": 100,
+      "wageDelta": {
+        "observations": 100,
+        "p10": -32489.4,
+        "p50": -11906,
+        "p90": 7479.9000000000015,
+        "mean": -12653.68
+      },
+      "pensionDelta": {
+        "observations": 100,
+        "p10": -11515.7,
+        "p50": 0,
+        "p90": 10464.400000000005,
+        "mean": 853.32
+      },
+      "purchaseCostDelta": {
+        "observations": 100,
+        "p10": 500,
+        "p50": 500,
+        "p90": 500,
+        "mean": 488
+      },
+      "netWorkIncomeAfterPurchaseDelta": {
+        "observations": 100,
+        "p10": -32989.4,
+        "p50": -12406,
+        "p90": 6979.9000000000015,
+        "mean": -13141.68
+      },
+      "atLeastOneCommonCheckpointChangedPct": 99,
+      "checkpoints": {
+        "20": {
+          "pairs": 99,
+          "balanceDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "gradeDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "serviceDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            }
+          },
+          "personBondsDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          }
+        },
+        "40": {
+          "pairs": 99,
+          "balanceDelta": {
+            "observations": 99,
+            "p10": -4269.2,
+            "p50": -3554,
+            "p90": -2552,
+            "mean": -3545.131313131313
+          },
+          "gradeDelta": {
+            "observations": 99,
+            "p10": -2,
+            "p50": -2,
+            "p90": -1,
+            "mean": -1.6767676767676767
+          },
+          "serviceDelta": {
+            "observations": 99,
+            "p10": -1,
+            "p50": -1,
+            "p90": -1,
+            "mean": -1
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 99,
+              "p10": -0.0014597224804674576,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.0030207565790281343
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.09284981631425723
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.0707070707070707
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.030303030303030304
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.010101010101010102
+            }
+          },
+          "personBondsDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": -0.12121212121212122
+          }
+        },
+        "60": {
+          "pairs": 98,
+          "balanceDelta": {
+            "observations": 98,
+            "p10": -16124,
+            "p50": -11178,
+            "p90": -5223.8,
+            "mean": -10863.397959183674
+          },
+          "gradeDelta": {
+            "observations": 98,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "serviceDelta": {
+            "observations": 98,
+            "p10": -1,
+            "p50": -1,
+            "p90": -1,
+            "mean": -1
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 98,
+              "p10": -3.604049662019689,
+              "p50": 0,
+              "p90": 1.08424049999998,
+              "mean": -0.5089453306864146
+            },
+            "morale": {
+              "observations": 98,
+              "p10": -6.237175409806238,
+              "p50": 0,
+              "p90": 4.941849209825393,
+              "mean": -0.3216479592237285
+            },
+            "stress": {
+              "observations": 98,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.024433893195950185
+            },
+            "bonds": {
+              "observations": 98,
+              "p10": -5,
+              "p50": 0,
+              "p90": 5.299999999999988,
+              "mean": 0.673469387755101
+            },
+            "knowledge": {
+              "observations": 98,
+              "p10": -3.899999999999997,
+              "p50": 0,
+              "p90": 2,
+              "mean": -0.5510204081632653
+            }
+          },
+          "personBondsDelta": {
+            "observations": 98,
+            "p10": -54.79999999999998,
+            "p50": 0,
+            "p90": 23.599999999999994,
+            "mean": -6.561224489795919
+          }
+        },
+        "80": {
+          "pairs": 43,
+          "balanceDelta": {
+            "observations": 43,
+            "p10": -25520,
+            "p50": -11434,
+            "p90": -2365.999999999998,
+            "mean": -12218.883720930233
+          },
+          "gradeDelta": {
+            "observations": 43,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "serviceDelta": {
+            "observations": 43,
+            "p10": -12.8,
+            "p50": -1,
+            "p90": 9.800000000000004,
+            "mean": -1.7906976744186047
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 43,
+              "p10": -12.798290760431236,
+              "p50": 0,
+              "p90": 10.06378399999997,
+              "mean": 0.8533009632550185
+            },
+            "morale": {
+              "observations": 43,
+              "p10": -4.198562546606754,
+              "p50": 0,
+              "p90": 5.0037386643016974,
+              "mean": 0.20243868157651046
+            },
+            "stress": {
+              "observations": 43,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.18604651162790697
+            },
+            "bonds": {
+              "observations": 43,
+              "p10": -4.799999999999991,
+              "p50": 0,
+              "p90": 6.600000000000003,
+              "mean": 0.7999255299813235
+            },
+            "knowledge": {
+              "observations": 43,
+              "p10": -5.8,
+              "p50": 0,
+              "p90": 2.8000000000000043,
+              "mean": -0.6511627906976745
+            }
+          },
+          "personBondsDelta": {
+            "observations": 43,
+            "p10": -11,
+            "p50": 0,
+            "p90": 48.800000000000026,
+            "mean": 5.162790697674419
+          }
+        }
+      },
+      "retraining": {
+        "pairs": 100,
+        "switchedPairs": 99,
+        "lifetimeWageDeltaAll": {
+          "observations": 100,
+          "p10": -32489.4,
+          "p50": -11906,
+          "p90": 7479.9000000000015,
+          "mean": -12653.68
+        },
+        "lifetimeWageDeltaSwitched": {
+          "observations": 99,
+          "p10": -32602.8,
+          "p50": -12053,
+          "p90": 7492.8,
+          "mean": -12781.494949494949
+        },
+        "lifetimeWageDeltaSwitchedPct": {
+          "observations": 99,
+          "p10": -28.545900200394165,
+          "p50": -12.362030905077262,
+          "p90": 7.479315512799398,
+          "mean": -11.805645628765541
+        },
+        "jointPostSwitchWageDelta": {
+          "observations": 99,
+          "p10": -32602.8,
+          "p50": -12388,
+          "p90": 3910.000000000002,
+          "mean": -13354.878787878788
+        },
+        "jointPostSwitchWageDeltaPct": {
+          "observations": 99,
+          "p10": -38.419461766332546,
+          "p50": -18.416005805214326,
+          "p90": 6.176407504310993,
+          "mean": -17.11436238065277
+        },
+        "internshipYearWageDelta": {
+          "observations": 99,
+          "p10": -1254,
+          "p50": -948,
+          "p90": -756,
+          "mean": -980.6060606060606
+        },
+        "pairedParityAge": {
+          "observations": 39,
+          "p10": 49,
+          "p50": 58,
+          "p90": 58,
+          "mean": 56.43589743589744
+        },
+        "neverParity": 60,
+        "pensionLifetimeDeltaSwitched": {
+          "observations": 99,
+          "p10": -11521.4,
+          "p50": 0,
+          "p90": 10523.800000000001,
+          "mean": 861.939393939394
+        },
+        "firstPensionDeltaSwitched": {
+          "observations": 72,
+          "p10": -274.8,
+          "p50": -32,
+          "p90": 130,
+          "mean": -42.625
+        },
+        "finalServiceDeltaSwitched": {
+          "observations": 99,
+          "p10": -13,
+          "p50": -1,
+          "p90": 8.200000000000003,
+          "mean": -2.101010101010101
+        },
+        "checkpoints": {
+          "40": {
+            "jointSurvivors": 99,
+            "balanceDelta": {
+              "observations": 99,
+              "p10": -4269.2,
+              "p50": -3554,
+              "p90": -2552,
+              "mean": -3545.131313131313
+            },
+            "gradeTreatment": {
+              "1": 0,
+              "2": 76,
+              "3": 23,
+              "4": 0
+            },
+            "gradeControl": {
+              "1": 0,
+              "2": 3,
+              "3": 3,
+              "4": 93
+            },
+            "gradeDelta": {
+              "observations": 99,
+              "p10": -2,
+              "p50": -2,
+              "p90": -1,
+              "mean": -1.6767676767676767
+            }
+          },
+          "60": {
+            "jointSurvivors": 98,
+            "balanceDelta": {
+              "observations": 98,
+              "p10": -16124,
+              "p50": -11178,
+              "p90": -5223.8,
+              "mean": -10863.397959183674
+            },
+            "gradeTreatment": {
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 98
+            },
+            "gradeControl": {
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 98
+            },
+            "gradeDelta": {
+              "observations": 98,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            }
+          },
+          "80": {
+            "jointSurvivors": 43,
+            "balanceDelta": {
+              "observations": 43,
+              "p10": -25520,
+              "p50": -11434,
+              "p90": -2365.999999999998,
+              "mean": -12218.883720930233
+            },
+            "gradeTreatment": {
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 43
+            },
+            "gradeControl": {
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 43
+            },
+            "gradeDelta": {
+              "observations": 43,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            }
+          }
+        },
+        "reached4": {
+          "treatmentPct": 100,
+          "controlPct": 100,
+          "treatmentAge": {
+            "observations": 99,
+            "p10": 35,
+            "p50": 57,
+            "p90": 57,
+            "mean": 51.505050505050505
+          },
+          "controlAge": {
+            "observations": 99,
+            "p10": 35,
+            "p50": 36,
+            "p90": 37,
+            "mean": 36.707070707070706
+          }
+        }
+      }
+    },
+    "switcherSaverVsSaver": {
+      "pairs": 100,
+      "wageDelta": {
+        "observations": 100,
+        "p10": -17429.2,
+        "p50": -4621,
+        "p90": 8332.00000000001,
+        "mean": -4164.23
+      },
+      "pensionDelta": {
+        "observations": 100,
+        "p10": -10869.3,
+        "p50": 0,
+        "p90": 11629.800000000005,
+        "mean": -121.58
+      },
+      "purchaseCostDelta": {
+        "observations": 100,
+        "p10": 500,
+        "p50": 500,
+        "p90": 500,
+        "mean": 495
+      },
+      "netWorkIncomeAfterPurchaseDelta": {
+        "observations": 100,
+        "p10": -17929.2,
+        "p50": -5121,
+        "p90": 7832.000000000009,
+        "mean": -4659.23
+      },
+      "atLeastOneCommonCheckpointChangedPct": 99,
+      "checkpoints": {
+        "20": {
+          "pairs": 99,
+          "balanceDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "gradeDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "serviceDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "stress": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            }
+          },
+          "personBondsDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": 0
+          }
+        },
+        "40": {
+          "pairs": 99,
+          "balanceDelta": {
+            "observations": 99,
+            "p10": -2830,
+            "p50": -2330,
+            "p90": -1510,
+            "mean": -2199.747474747475
+          },
+          "gradeDelta": {
+            "observations": 99,
+            "p10": -1,
+            "p50": -1,
+            "p90": -1,
+            "mean": -0.9191919191919192
+          },
+          "serviceDelta": {
+            "observations": 99,
+            "p10": -1,
+            "p50": -1,
+            "p90": -1,
+            "mean": -1
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.004368686868686915
+            },
+            "morale": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0.06422759409203498
+            },
+            "stress": {
+              "observations": 99,
+              "p10": -1.1604157773437498,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.13270651662332908
+            },
+            "bonds": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.12121212121212117
+            },
+            "knowledge": {
+              "observations": 99,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.00852113781001213
+            }
+          },
+          "personBondsDelta": {
+            "observations": 99,
+            "p10": 0,
+            "p50": 0,
+            "p90": 0,
+            "mean": -0.050505050505050504
+          }
+        },
+        "60": {
+          "pairs": 98,
+          "balanceDelta": {
+            "observations": 98,
+            "p10": -7456.0999999999985,
+            "p50": -4145,
+            "p90": -655.4000000000005,
+            "mean": -4006.622448979592
+          },
+          "gradeDelta": {
+            "observations": 98,
+            "p10": -1,
+            "p50": 0,
+            "p90": 0,
+            "mean": -0.17346938775510204
+          },
+          "serviceDelta": {
+            "observations": 98,
+            "p10": -1,
+            "p50": -1,
+            "p90": -1,
+            "mean": -1
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 98,
+              "p10": -3.017374999999998,
+              "p50": 0,
+              "p90": 0.7306249999999914,
+              "mean": -0.37569642857142777
+            },
+            "morale": {
+              "observations": 98,
+              "p10": -7.811600592400602,
+              "p50": 0,
+              "p90": 3.7149707704177652,
+              "mean": -0.7606611862369187
+            },
+            "stress": {
+              "observations": 98,
+              "p10": -8.777902508515771,
+              "p50": 0,
+              "p90": 12.396243036683689,
+              "mean": 0.8418059049051793
+            },
+            "bonds": {
+              "observations": 98,
+              "p10": -7.000000000000003,
+              "p50": 0,
+              "p90": 4.299999999999993,
+              "mean": -0.6899011402513126
+            },
+            "knowledge": {
+              "observations": 98,
+              "p10": -0.23000000000000104,
+              "p50": 0,
+              "p90": 0.29999999999999716,
+              "mean": 0.01613376673849799
+            }
+          },
+          "personBondsDelta": {
+            "observations": 98,
+            "p10": -59.3,
+            "p50": 0,
+            "p90": 43.89999999999999,
+            "mean": -5.214285714285714
+          }
+        },
+        "80": {
+          "pairs": 55,
+          "balanceDelta": {
+            "observations": 55,
+            "p10": -14184.4,
+            "p50": -4790,
+            "p90": 3210.8000000000025,
+            "mean": -4867.636363636364
+          },
+          "gradeDelta": {
+            "observations": 55,
+            "p10": -1,
+            "p50": 0,
+            "p90": 0,
+            "mean": -0.14545454545454545
+          },
+          "serviceDelta": {
+            "observations": 55,
+            "p10": -11,
+            "p50": -1,
+            "p90": 9.800000000000004,
+            "mean": -1.6181818181818182
+          },
+          "statsDelta": {
+            "health": {
+              "observations": 55,
+              "p10": -14.244771420000006,
+              "p50": 0,
+              "p90": 9.664865840000004,
+              "mean": 0.40267235993975675
+            },
+            "morale": {
+              "observations": 55,
+              "p10": -4.330549080154775,
+              "p50": 0,
+              "p90": 5.234968956363364,
+              "mean": -0.14617622103268324
+            },
+            "stress": {
+              "observations": 55,
+              "p10": -14.498825624999998,
+              "p50": 0,
+              "p90": 18.062748749999997,
+              "mean": 0.8919754822116063
+            },
+            "bonds": {
+              "observations": 55,
+              "p10": -4.684166511718711,
+              "p50": 0,
+              "p90": 4.5914216919677235,
+              "mean": 0.1713204025624667
+            },
+            "knowledge": {
+              "observations": 55,
+              "p10": 0,
+              "p50": 0,
+              "p90": 0,
+              "mean": 0
+            }
+          },
+          "personBondsDelta": {
+            "observations": 55,
+            "p10": -29.6,
+            "p50": 0,
+            "p90": 22.6,
+            "mean": -0.8909090909090909
+          }
+        }
+      },
+      "retraining": {
+        "pairs": 100,
+        "switchedPairs": 99,
+        "lifetimeWageDeltaAll": {
+          "observations": 100,
+          "p10": -17429.2,
+          "p50": -4621,
+          "p90": 8332.00000000001,
+          "mean": -4164.23
+        },
+        "lifetimeWageDeltaSwitched": {
+          "observations": 99,
+          "p10": -17464.4,
+          "p50": -4900,
+          "p90": 8444.000000000004,
+          "mean": -4206.292929292929
+        },
+        "lifetimeWageDeltaSwitchedPct": {
+          "observations": 99,
+          "p10": -21.54989726643221,
+          "p50": -6.567454666286908,
+          "p90": 12.600671620278696,
+          "mean": -4.863367868391846
+        },
+        "jointPostSwitchWageDelta": {
+          "observations": 99,
+          "p10": -16382.8,
+          "p50": -5044,
+          "p90": 7481.200000000005,
+          "mean": -4507.343434343435
+        },
+        "jointPostSwitchWageDeltaPct": {
+          "observations": 99,
+          "p10": -30.460101303393987,
+          "p50": -9.386673093143752,
+          "p90": 19.77561210719106,
+          "mean": -7.556543341779976
+        },
+        "internshipYearWageDelta": {
+          "observations": 99,
+          "p10": -830,
+          "p50": -660,
+          "p90": -540,
+          "mean": -683.3838383838383
+        },
+        "pairedParityAge": {
+          "observations": 40,
+          "p10": 42,
+          "p50": 45,
+          "p90": 57,
+          "mean": 46.95
+        },
+        "neverParity": 59,
+        "pensionLifetimeDeltaSwitched": {
+          "observations": 99,
+          "p10": -11026.599999999999,
+          "p50": 0,
+          "p90": 11689.600000000002,
+          "mean": -122.8080808080808
+        },
+        "firstPensionDeltaSwitched": {
+          "observations": 83,
+          "p10": -207.2,
+          "p50": -27,
+          "p90": 127.39999999999996,
+          "mean": -29.240963855421686
+        },
+        "finalServiceDeltaSwitched": {
+          "observations": 99,
+          "p10": -11,
+          "p50": -1,
+          "p90": 11,
+          "mean": -1.0909090909090908
+        },
+        "checkpoints": {
+          "40": {
+            "jointSurvivors": 99,
+            "balanceDelta": {
+              "observations": 99,
+              "p10": -2830,
+              "p50": -2330,
+              "p90": -1510,
+              "mean": -2199.747474747475
+            },
+            "gradeTreatment": {
+              "1": 91,
+              "2": 8,
+              "3": 0,
+              "4": 0
+            },
+            "gradeControl": {
+              "1": 1,
+              "2": 97,
+              "3": 1,
+              "4": 0
+            },
+            "gradeDelta": {
+              "observations": 99,
+              "p10": -1,
+              "p50": -1,
+              "p90": -1,
+              "mean": -0.9191919191919192
+            }
+          },
+          "60": {
+            "jointSurvivors": 98,
+            "balanceDelta": {
+              "observations": 98,
+              "p10": -7456.0999999999985,
+              "p50": -4145,
+              "p90": -655.4000000000005,
+              "mean": -4006.622448979592
+            },
+            "gradeTreatment": {
+              "1": 0,
+              "2": 97,
+              "3": 1,
+              "4": 0
+            },
+            "gradeControl": {
+              "1": 0,
+              "2": 80,
+              "3": 18,
+              "4": 0
+            },
+            "gradeDelta": {
+              "observations": 98,
+              "p10": -1,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.17346938775510204
+            }
+          },
+          "80": {
+            "jointSurvivors": 55,
+            "balanceDelta": {
+              "observations": 55,
+              "p10": -14184.4,
+              "p50": -4790,
+              "p90": 3210.8000000000025,
+              "mean": -4867.636363636364
+            },
+            "gradeTreatment": {
+              "1": 0,
+              "2": 51,
+              "3": 4,
+              "4": 0
+            },
+            "gradeControl": {
+              "1": 0,
+              "2": 43,
+              "3": 12,
+              "4": 0
+            },
+            "gradeDelta": {
+              "observations": 55,
+              "p10": -1,
+              "p50": 0,
+              "p90": 0,
+              "mean": -0.14545454545454545
+            }
+          }
+        },
+        "reached4": {
+          "treatmentPct": 0,
+          "controlPct": 0,
+          "treatmentAge": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          },
+          "controlAge": {
+            "observations": 0,
+            "p10": null,
+            "p50": null,
+            "p90": null,
+            "mean": null
+          }
+        }
+      }
+    }
+  },
+  "integrity": {
+    "invariantChecks": 144085,
+    "violationCount": 0,
+    "accountingErrors": [],
+    "firstReproduction": null
+  }
+}

@@ -1,4 +1,5 @@
 import { projectYear } from './economy'
+import { canBuy, getOffer } from './offers'
 import type { Grade, WorkKind, YearRow } from './economy'
 import type { GameState, Job } from './types'
 
@@ -57,6 +58,8 @@ export interface WorkFinanceView {
   rows: WorkFinanceRow[]
   /** С 16 лет, пока жизнь идёт: в панели показывается кнопка «Траты и карьера». */
   spendOffered: boolean
+  /** Цель накопления одной строкой: «Цель: Своя каюта — 62%». */
+  goal: string | null
 }
 
 const PROFESSIONS: readonly Job[] = ['Техник', 'Медик', 'Агроном', 'Координатор']
@@ -160,7 +163,7 @@ export function workFinanceView(g: GameState): WorkFinanceView {
   const lines: string[] = []
   const view: WorkFinanceView = {
     stage, aside: ASIDE[stage], title: '', lines, family: null, savings: null, income: null, obligations: null,
-    forecast: null, runway: null, notice: null, rows: [], spendOffered: false
+    forecast: null, runway: null, notice: null, rows: [], spendOffered: false, goal: null
   }
 
   if (stage === 'child') {
@@ -204,7 +207,8 @@ export function workFinanceView(g: GameState): WorkFinanceView {
     case 'retraining':
       view.title = `${jobName} · переобучение`
       lines.push(profession ? gradeLine(grade) : 'Без разряда')
-      lines.push(`Допуск к работе ${inYears(w.kind === 'trainee' && w.until !== null ? Math.max(1, w.until - g.age) : 1)}`)
+      // Оформленный переход: стажировкой станет ближайший расчёт, обычная работа — следующий за ним.
+      lines.push(`Допуск к работе ${inYears(w.kind === 'trainee' && w.until !== null ? Math.max(1, w.until - g.age) : w.job !== job && hasProfession(w.job) ? 2 : 1)}`)
       break
     case 'between':
       view.title = `${jobName} · между назначениями`
@@ -234,6 +238,7 @@ export function workFinanceView(g: GameState): WorkFinanceView {
 
   view.spendOffered = true
   view.savings = { amount: whole(e.balance), text: formatCredits(e.balance), label: 'Накоплено' }
+  view.goal = goalLine(g)
 
   const row = projection.economy.years.at(-1)
   if (projection.projectedAge === null || !row || row.age !== projection.projectedAge) return view
@@ -289,6 +294,15 @@ export function workFinanceView(g: GameState): WorkFinanceView {
 
   view.notice = noticeOf(g, projection.economy.services, projection.economy.housing, row)
   return view
+}
+
+/** Только показ: цель ничего не резервирует. Без разового взноса процент не считается. */
+function goalLine(g: GameState): string | null {
+  const offer = g.economy.goal ? getOffer(g.economy.goal) : undefined
+  if (!offer) return null
+  const cost = canBuy(g, offer.id).oneTimeCost
+  if (cost <= 0) return `Цель: ${offer.title} — без разового взноса`
+  return `Цель: ${offer.title} — ${Math.min(100, Math.floor(g.economy.balance * 100 / cost))}%`
 }
 
 function noticeOf(g: GameState, services: Record<string, number>, housing: number, row: YearRow): WorkFinanceView['notice'] {

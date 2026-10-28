@@ -1,12 +1,12 @@
 /** T8a diagnostic runner. Never writes to the engine state except through domain actions. */
 import { beat, canChoose, canSetLoad, createGame, decide, purchase, setFocus, setLoad, takeMoment, tick } from '../src/domain/engine'
 import { ECONOMY_TUNING, obligationsOf, projectYear, wageOf } from '../src/domain/economy'
-import { availableSectorOptions, canBuy, familyTripParticipants, isClosedByShipState, OFFERS } from '../src/domain/offers'
+import { availableSectorOptions, canBuy, familyTripParticipants, isClosedByShipState, OFFERS, retrainOptions } from '../src/domain/offers'
 import type { OfferId, PurchaseAvailability, PurchaseTarget } from '../src/domain/offers'
 import { findInconsistencies } from '../src/domain/invariants'
 import { hash32 } from '../src/domain/random'
 import { storylets } from '../src/domain/storylets'
-import type { Focus, GameState, Stat } from '../src/domain/types'
+import type { Focus, GameState, Job, Stat } from '../src/domain/types'
 import { describe } from './audit-stats'
 
 export const STRATEGIES = ['Saver', 'Moderate', 'Careerist', 'Family', 'Explorer', 'Spender'] as const
@@ -46,6 +46,15 @@ export interface LoadRecord {
 export interface PilotOptions {
   acceptMoments?: boolean; noCourses?: boolean; noReducedLoad?: boolean; courseOnly?: boolean
   noPurchases?: boolean
+  /** T5 Switcher: платное переобучение с этого возраста; при отказе — повтор ежегодно ещё четыре года. */
+  retrainAt?: number
+}
+/** T5: попытки и итог платного переобучения в одной жизни. */
+export interface RetrainRecord {
+  attempts: { age: number; result: string }[]
+  age: number | null; from: Job | null; to: Job | null
+  /** Прогноз оплаты ближайшего года до и после покупки (projectYear, без случайных событий). */
+  forecastWageBefore: number | null; forecastWageAfter: number | null
 }
 export interface Life {
   seed: number; strategy: Strategy; deathAge: number; completed: boolean; checkpoints: Checkpoint[]
@@ -58,6 +67,16 @@ export interface Life {
   storySpent: number
   invariantChecks: number; violations: { action: string; messages: string[]; trace: string[] }[]
   trace: string[]; accountingErrors: string[]; decisions: Record<string, number>
+  /** T5: платное переобучение (пустые попытки, если политика его не предусматривает). */
+  retrain: RetrainRecord
+  /** T5: последний возраст, когда момент предлагался; профессия к концу жизни. */
+  momentLog: Record<string, number>; finalJob: Job
+}
+
+/** T5: целевая специальность Switcher — чистый хэш seed, без RNG симуляции; всегда одна из трёх других. */
+export function retrainTargetFor(g: GameState): Job {
+  const options = retrainOptions(g)
+  return options[hash32('economy-t5', g.seed, 'retrain-target') % options.length]!
 }
 
 /** Same event at the same age always gets the same answer, even after trajectories diverge. */
@@ -160,7 +179,26 @@ export function financialDecisions(state: GameState, strategy: Strategy, opts: P
   const purchases: BuyRecord[] = [], attempts: Life['attempts'] = [], loadChanges: LoadRecord[] = []
   const loadChecks: Life['loadChecks'] = []
   const states: { action: string; game: GameState }[] = []
-  if (g.stopped || g.pending || g.economy.estate !== null) return { game: g, purchases, attempts, loadChanges, loadChecks, states }
+  const retrainAttempts: RetrainRecord['attempts'] = []
+  let retrainBuy: Omit<RetrainRecord, 'attempts'> | null = null
+  if (g.stopped || g.pending || g.economy.estate !== null) return { game: g, purchases, attempts, loadChanges, loadChecks, states, retrainAttempts, retrainBuy }
+  // T5 Switcher: переобучение рассматривается первым, до остальных трат года.
+  if (opts.retrainAt !== undefined && g.economy.lastBought.retrain === undefined && g.age >= opts.retrainAt && g.age < opts.retrainAt + 5) {
+    const target = { job: retrainTargetFor(g) }
+    const c = canBuy(g, 'retrain', target)
+    if (!c.available) retrainAttempts.push({ age: g.age, result: c.reason! })
+    else {
+      const next = purchase(g, 'retrain', target)
+      if (next === g) throw Error('Available retraining refused')
+      retrainAttempts.push({ age: g.age, result: 'success' })
+      retrainBuy = { age: g.age, from: g.protagonist.job, to: target.job,
+        forecastWageBefore: projectYear(g).economy.years.at(-1)!.wage, forecastWageAfter: projectYear(next).economy.years.at(-1)!.wage }
+      purchases.push({ age: g.age, id: 'retrain', action: 'purchase', cost: g.economy.balance - next.economy.balance,
+        attention: g.attention - next.attention, target, immediateEffect: true, participantBondDelta: 0 })
+      g = next
+      states.push({ action: `purchase:retrain:${target.job}`, game: g })
+    }
+  }
   if (strategy === 'Family' && !opts.noReducedLoad && g.age >= 40 && g.economy.work.kind === 'working') {
     if (g.economy.work.load === 1) {
       const c = canSetLoad(g, .6)
@@ -214,7 +252,7 @@ export function financialDecisions(state: GameState, strategy: Strategy, opts: P
     states.push({ action: `${c.action}:${id}:${JSON.stringify(target ?? {})}`, game: g })
     if (strategy === 'Moderate') break
   }
-  return { game: g, purchases, attempts, loadChanges, loadChecks, states }
+  return { game: g, purchases, attempts, loadChanges, loadChecks, states, retrainAttempts, retrainBuy }
 }
 
 /** Records the actual tick settlement (including the year in which death occurs). */
@@ -240,7 +278,9 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
   const life: Life = { seed, strategy, deathAge: 0, completed: false, checkpoints: [], years: [], purchases: [],
     quality: [], loadChanges: [], loadChecks: [], attempts: [], moments: 0, memories: 0, followups: 0,
     grade3: null, grade4: null, wage: 0, pension: 0, finalService: 0, totalSpent: 0, annualSpent: 0,
-    purchaseSpent: 0, storySpent: 0, invariantChecks: 0, violations: [], trace: [], accountingErrors: [], decisions: {} }
+    purchaseSpent: 0, storySpent: 0, invariantChecks: 0, violations: [], trace: [], accountingErrors: [], decisions: {},
+    retrain: { attempts: [], age: null, from: null, to: null, forecastWageBefore: null, forecastWageAfter: null },
+    momentLog: {}, finalJob: g.protagonist.job }
   function check(action: string, state: GameState) {
     life.trace.push(`${state.age}:${action}`)
     life.invariantChecks++
@@ -277,6 +317,8 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
       for (const s of result.states) check(s.action, s.game)
       life.purchases.push(...result.purchases); life.attempts.push(...result.attempts)
       life.loadChanges.push(...result.loadChanges); life.loadChecks.push(...result.loadChecks)
+      life.retrain.attempts.push(...result.retrainAttempts)
+      if (result.retrainBuy) life.retrain = { ...life.retrain, ...result.retrainBuy }
       g = result.game
     }
     const before = g
@@ -295,6 +337,7 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
   }
   if (!g.stopped) throw Error(`Life did not finish: seed=${seed}, strategy=${strategy}`)
   life.completed = true; life.deathAge = g.age; life.memories = g.memories.length
+  life.momentLog = { ...g.momentLog }; life.finalJob = g.protagonist.job
   life.followups = sum(g.forks.map(f => f.outcomes.length))
   life.wage = sum(life.years.map(y => y.wage)); life.pension = sum(life.years.map(y => y.pension))
   life.finalService = g.economy.work.service; life.totalSpent = g.economy.totals.spent

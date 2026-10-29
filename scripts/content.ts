@@ -3,11 +3,13 @@ import { join, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { codeStorylets } from '../src/domain/storylets'
 import { codeMoments } from '../src/domain/moments'
-import { collectKnown, validateContent, type ContentFile, type Issue } from '../src/content/validate'
+import { collectKnown, validateContent, type ContentFile, type Issue, validateRegistrations } from '../src/content/validate'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const bundlePath = join(root, 'src/content/bundle.json')
 const check = process.argv.includes('--check')
+const lines = JSON.parse(readFileSync(join(root, 'content/lines.json'), 'utf8'))
+const categories = JSON.parse(readFileSync(join(root, 'content/categories.json'), 'utf8'))
 
 const files: ContentFile[] = []
 const issues: Issue[] = []
@@ -24,12 +26,14 @@ for (const kind of ['storylets', 'moments'] as const) {
   }
 }
 
-issues.push(...validateContent(files, collectKnown(codeStorylets, codeMoments)))
+const known = collectKnown(codeStorylets, codeMoments)
+issues.push(...validateRegistrations(lines, categories, files, known))
+issues.push(...validateContent(files, known))
 const errors = issues.filter(i => i.level === 'error')
 for (const i of issues) console.log(`${i.level === 'error' ? 'ОШИБКА' : 'внимание'}  ${i.where}\n          ${i.message}`)
 
 const pack = (kind: 'storylets' | 'moments') => files.filter(f => f.kind === kind).flatMap(f => f.data as unknown[])
-const bundle = JSON.stringify({ storylets: pack('storylets'), moments: pack('moments') }, null, 2) + '\n'
+const bundle = JSON.stringify({ lines, categories, storylets: pack('storylets'), moments: pack('moments') }, null, 2) + '\n'
 
 if (errors.length) {
   console.log(`\nОшибок: ${errors.length}. Бандл не обновлён.`)

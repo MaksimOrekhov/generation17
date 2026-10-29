@@ -1,3 +1,4 @@
+import { textSafe } from '../src/content/load'
 /**
  * Аудит разнообразия и готовности к масштабному контенту (Core Systems Audit).
  * Диагностика без изменения игры: все действия — настоящие доменные операции, политики не тратят RNG игры.
@@ -34,7 +35,7 @@ import type { GameState, Storylet } from '../src/domain/types'
 import { hash32 } from '../src/domain/random'
 import { chooseStory, focusFor, leanState, policyFor, targetForChoice } from './economy-t8-core'
 import type { Policy, PolicyName } from './economy-t8-core'
-import { financialDecisions } from './economy-pilot-core'
+import { financialDecisions, storyChoiceIndex } from './economy-pilot-core'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const args = process.argv.slice(2)
@@ -56,7 +57,6 @@ const bundle = JSON.parse(readFileSync(join(root, 'src/content/bundle.json'), 'u
 const jsonIds = new Set(bundle.storylets.map(s => s.id))
 const jsonById = new Map(bundle.storylets.map(s => [s.id, s]))
 const PEOPLE = ['parent', 'parent2', 'sibling', 'friend', 'neighbor', 'mentor', 'child']
-const ENGINE_GUARDED = ['friend', 'parent', 'neighbor', 'mentor', 'child']
 const mentions = (text: string, id: string) => text.includes(`{{${id}}}`) || text.includes(`{{${id}:`)
 const situation = (s: Storylet) => s.arc ? `линия:${s.arc}` : `кат:${s.category}`
 
@@ -152,7 +152,7 @@ function catalogReport() {
       withPurchase: choices.filter(c => c.purchase).length,
       withMemory: choices.filter(c => c.effects.memory).length,
       settingFlags: choices.filter(c => Object.keys(c.effects.flags ?? {}).length).length,
-      conditionalChoices: 'нет: у ChoiceDef нет условия показа'
+      conditionalChoices: bundle.storylets.flatMap(s => s.choices).filter(c => c.requires).length
     },
     byCategory,
     coverage: Object.fromEntries(bands.map(([a, b]) => [`${a}-${b}`, {
@@ -161,9 +161,9 @@ function catalogReport() {
       moments: moments.filter(m => m.min <= b && m.max >= a).length
     }])),
     textVariation: {
-      stateDependentText: 'нет: body и result не имеют условных фрагментов',
+      stateDependentText: bundle.storylets.filter(s => s.bodyVariants?.length || s.choices.some(c => c.resultVariants?.length)).length,
       storyletsWithGenderForms: storylets.filter(s => /\{\{\w+:/.test(s.body + s.choices.map(c => c.result).join(' '))).length,
-      note: 'body/result статичны: меняются только имена и формы рода; вариативность достигается отдельными сюжетами-вариантами'
+      note: 'Язык v2 поддерживает варианты body/result/text; здесь посчитано использование в производственном каталоге, без тестовых фикстур.'
     }
   }
 }
@@ -244,7 +244,7 @@ interface Life {
 function eligibleNow(g: GameState) {
   return storylets.filter(s => !g.seen.includes(s.id) && g.age >= s.min && g.age <= s.max && s.available(g)
     && (!s.weird || ATMOSPHERE_LEVEL[g.atmosphere] >= s.weird)
-    && ENGINE_GUARDED.every(p => !mentions(s.body, p) || isKnown(g, p)))
+    && textSafe(g, s.body, s.bodyVariants, s.historicalPeople))
 }
 
 function plannedIds(g: GameState, policy: Policy) {
@@ -259,7 +259,7 @@ function chooseWithSalt(g: GameState, policy: Policy, salt: string) {
     const target = targetForChoice(g, event, index)
     return { index, target, choice, a: canChoose(g, index, target) }
   }).filter(o => o.a.available && !(policy.strictSaver && (o.a.cost > 0 || o.choice.purchase)))
-  const index = hash32(salt, g.seed, event.id, g.age) % event.choices.length
+  const index = storyChoiceIndex(g.seed, event, g.age, salt)
   return options.find(o => o.index === index) ?? options[0]!
 }
 

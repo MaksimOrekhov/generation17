@@ -181,7 +181,7 @@ describe('T6 atomic decisions and financial records', () => {
   })
   it('preserves lifetime totals after the 40-entry financial journal truncates', () => {
     let g = moneyWorker(20000)
-    for (let i = 0; i < 45; i++) { g = { ...g, pending: story.id }; g = decide(g, 0) }
+    for (let i = 0; i < 45; i++) { story.id = `t6-ledger-${i}`; g = { ...g, pending: story.id }; g = decide(g, 0) }
     expect(g.economy.ledger).toHaveLength(40); expect(g.economy.totals.spent).toBe(18000)
     expect(repairSave(JSON.parse(JSON.stringify(g))).game.economy).toEqual(g.economy)
     expect(findInconsistencies(g)).toEqual([])

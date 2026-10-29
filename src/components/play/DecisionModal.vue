@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { canChoose, checkChance, resolveText } from '../../domain/engine'
+import { categoryTitle } from '../../content/registry'
+import { canChoose, checkChance, resolveText, storyBody } from '../../domain/engine'
 import { formatCredits } from '../../domain/economyView'
 import { useGameStore } from '../../stores/game'
 import { logKindLabels, skillLabels, years } from '../../ui/format'
@@ -11,7 +12,7 @@ const store = useGameStore()
 const g = computed(() => store.game)
 const event = computed(() => store.currentEvent)
 const availability = computed(() => event.value?.choices.map((_, i) => canChoose(g.value, i, store.storyTarget(i))) ?? [])
-const tripIndex = computed(() => event.value?.choices.findIndex(c => c.purchase?.offer === 'family-trip') ?? -1)
+const tripIndex = computed(() => store.visibleChoices.find(i => event.value?.choices[i]?.purchase?.offer === 'family-trip') ?? -1)
 const tripOptions = computed(() => tripIndex.value < 0 ? [] : availability.value[tripIndex.value]?.purchase?.familyParticipants ?? [])
 const moneyText = (index: number) => {
   const choice = event.value?.choices[index]
@@ -41,18 +42,18 @@ const odds = (index: number) => {
 <template>
   <!-- решение -->
   <ModalShell v-if="event && !store.result" :label="event.title" tone="amber">
-    <div class="dec__top"><span>Решение · {{ event.category }}</span><span>{{ years(g.age) }} · время остановлено</span></div>
+    <div class="dec__top"><span>Решение · {{ categoryTitle(event.category) }}</span><span>{{ years(g.age) }} · время остановлено</span></div>
     <div class="dec__body">
       <h2 class="dec__title">{{ event.title }}</h2>
-      <p class="dec__text">{{ resolveText(g, event.body) }}</p>
-      <p v-if="!store.hintsSeen.decision" class="dec__hint">Решения останавливают время. Выберите вариант кнопкой или клавишей 1–{{ event.choices.length }}. Последствия могут проявиться через годы.</p>
+      <p class="dec__text">{{ resolveText(g, storyBody(g, event)) }}</p>
+      <p v-if="!store.hintsSeen.decision" class="dec__hint">Решения останавливают время. Выберите вариант кнопкой или клавишей 1–{{ store.visibleChoices.length }}. Последствия могут проявиться через годы.</p>
       <div class="dec__choices">
-        <template v-for="(choice, i) in event.choices" :key="i">
+        <template v-for="(i, visibleIndex) in store.visibleChoices" :key="event.choices[i]?.id ?? i">
           <button class="choice" :disabled="!availability[i]?.available" @click="store.choose(i)">
-            <kbd>{{ i + 1 }}</kbd>
+            <kbd>{{ visibleIndex + 1 }}</kbd>
             <span class="choice__main">
-              <strong>{{ resolveText(g, choice.text) }}</strong>
-              <small>{{ resolveText(g, choice.hint) }}</small>
+              <strong>{{ resolveText(g, event.choices[i]!.text) }}</strong>
+              <small>{{ resolveText(g, event.choices[i]!.hint) }}</small>
               <small v-if="moneyText(i)" class="choice__money">{{ moneyText(i) }}</small>
               <small v-if="availability[i]?.reason" class="choice__reason">{{ availability[i]?.reason }}</small>
             </span>

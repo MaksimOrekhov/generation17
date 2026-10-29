@@ -1,3 +1,4 @@
+import catalogV1 from './fixtures/catalog-v1.json'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import baseline from './economy-t6-baseline.json'
 import { advanceYear, beat, canChoose, canTakeMoment, createGame, decide, eligibleMoments, purchase, setGoal, setLoad, skipMoment, takeMoment, tick } from '../engine'
@@ -580,7 +581,7 @@ describe('T9: жизни без покупок — те же эталоны T6 �
   // (пенсия): там работает «свободный вечер». Новые моменты T9 исключены: они меняют пул.
   const savedStorylets = [...storylets], savedMoments = [...moments]
   beforeAll(() => {
-    storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)))
+    storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)).sort((a, b) => catalogV1.indexOf(a.id) - catalogV1.indexOf(b.id)))
     moments.splice(0, moments.length, ...savedMoments.filter(m => !T7_MOMENT_IDS.has(m.id) && !T9_MOMENT_IDS.has(m.id)))
   })
   afterAll(() => {

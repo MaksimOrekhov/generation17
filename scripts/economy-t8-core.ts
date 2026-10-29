@@ -9,7 +9,7 @@ import { moments } from '../src/domain/moments'
 import { storylets } from '../src/domain/storylets'
 import { hash32 } from '../src/domain/random'
 import type { Focus, GameState, Job, Stat, Storylet } from '../src/domain/types'
-import { annualObservation, choiceQuality, financialDecisions, retrainTargetFor, sequencePossible, storyChoice, targetFor } from './economy-pilot-core'
+import { annualObservation, choiceQuality, financialDecisions, retrainTargetFor, sequencePossible, storyChoiceIndex, targetFor } from './economy-pilot-core'
 import type { Annual, BuyRecord, Candidate, Checkpoint, Life, Strategy } from './economy-pilot-core'
 import t7Stories from '../content/storylets/economy-t7.json'
 import t7Moments from '../content/moments/economy-t7.json'
@@ -66,7 +66,7 @@ export function chooseStory(g: GameState, policy: Policy) {
   })
   const allowed = options.filter(o => o.a.available && !(policy.strictSaver && (o.a.cost > 0 || o.choice.purchase)))
   if (!allowed.length) throw Error(`No available answer seed=${g.seed} age=${g.age} event=${event.id}`)
-  let index = storyChoice(g.seed, event.id, g.age, event.choices.length)
+  let index = storyChoiceIndex(g.seed, event, g.age)
   if (event.id === 'retirement' && policy.retirement) {
     index = event.choices.findIndex(c => c.effects.flags?.retirementPath === policy.retirement)
   } else if (policy.helper && /^family-need-cell-(small|medium|large)$/.test(event.id)) {

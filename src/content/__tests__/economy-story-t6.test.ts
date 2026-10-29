@@ -6,7 +6,11 @@ import { codeMoments } from '../../domain/moments'
 import type { JsonMoment, JsonStorylet } from '../types'
 
 const known = collectKnown(codeStorylets, codeMoments)
-const story = () => ({ ...structuredClone(bundle.storylets.find(s => s.id === 'tin-whistle')!), id: 't6-money-fixture', requires: undefined }) as JsonStorylet
+const story = () => {
+  const s = { ...structuredClone(bundle.storylets.find(s => s.id === 'tin-whistle')!), id: 't6-money-fixture', requires: undefined } as JsonStorylet
+  s.choices.forEach((c, i) => { c.id = `answer-${i}` })
+  return s
+}
 const moment = () => ({ ...structuredClone(bundle.moments.find(m => !m.needs?.includes('child'))!), id: 'm-t6-money-fixture', requires: undefined }) as JsonMoment
 const errors = (value: unknown, kind: 'storylets' | 'moments' = 'storylets') => validateContent([{ path: 'fixture.json', kind, data: [value] }], known).filter(i => i.level === 'error')
 
@@ -52,6 +56,7 @@ describe('T6 content contract', () => {
     }
     expect(errors(s).some(e => e.message.includes('без обязательного денежного расхода'))).toBe(true)
     s.choices[1]!.effects.money = 0
+    s.choices[1]!.check = undefined // the guaranteed exit also has no contingent reward overflow
     expect(errors(s)).toEqual([])
   })
   it.each(['success', 'failure'] as const)('rejects negative skill-check %s', branch => {

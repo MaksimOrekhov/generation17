@@ -1,4 +1,5 @@
-import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat } from '../domain/types'
+import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat, Skill, ShipStat } from '../domain/types'
+import type { Tone } from '../domain/director'
 import type { WorkKind } from '../domain/economy'
 import type { TimeRegime } from '../domain/personalTime'
 
@@ -6,6 +7,19 @@ type FlagValue = string | number | boolean
 
 /** Декларативное условие показа. Все заданные поля должны выполняться одновременно. */
 export interface Requires {
+  any?: Requires[]
+  seen?: string[]
+  notSeen?: string[]
+  chose?: Record<string, string[]>
+  decisionYears?: Record<string, NumberRange>
+  bond?: Record<string, NumberRange>
+  skill?: Partial<Record<Skill, NumberRange>>
+  ship?: Partial<Record<ShipStat, NumberRange>>
+  birthWealth?: NumberRange
+  trait?: string[]
+  dead?: string[]
+  absent?: string[]
+  exists?: string[]
   money?: { min?: number; max?: number }
   work?: WorkKind[]
   /**
@@ -50,13 +64,25 @@ export interface Requires {
   stat?: Partial<Record<Stat, { min?: number; max?: number }>>
 }
 
-export type JsonChoice = ChoiceDef
+export interface NumberRange { min?: number; max?: number }
+export interface JsonTextVariant { requires: Requires; text: string }
+export type JsonChoice = Omit<ChoiceDef, 'available' | 'historicalPeople' | 'resultVariants' | 'check'> & {
+  requires?: Requires
+  resultVariants?: JsonTextVariant[]
+  check?: Omit<NonNullable<ChoiceDef['check']>, 'successVariants' | 'failureVariants'> & {
+    successVariants?: JsonTextVariant[]; failureVariants?: JsonTextVariant[]
+  }
+}
 
 export interface JsonStorylet {
   id: string
   category: string
   title: string
   body: string
+  bodyVariants?: JsonTextVariant[]
+  tone?: Tone
+  tags?: string[]
+  group?: string
   min: number
   max: number
   weight: number
@@ -74,6 +100,7 @@ export interface JsonMoment {
   spot: SpotId
   title: string
   text: string
+  textVariants?: JsonTextVariant[]
   min: number
   max: number
   weight: number
@@ -82,11 +109,16 @@ export interface JsonMoment {
   weird?: 1 | 2
   needs?: string[]
   requires?: Requires
-  accept: { label: string; result: string; effects: Effects }
+  accept: { label: string; result: string; resultVariants?: JsonTextVariant[]; effects: Effects }
   skip: { label: string; effects?: Effects }
 }
 
 export interface ContentBundle {
+  lines?: LineRegistration[]
+  categories?: CategoryRegistration[]
   storylets: JsonStorylet[]
   moments: JsonMoment[]
 }
+
+export interface LineRegistration { id: string; title: string; start: string }
+export interface CategoryRegistration { id: string; title: string }

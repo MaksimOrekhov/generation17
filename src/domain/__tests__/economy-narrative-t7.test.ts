@@ -270,7 +270,7 @@ describe('T7 validator contract for story purchases', () => {
   const base = (choices: unknown[]) => [{
     id: 't7-probe', category: 'Профессия', title: 'Проверка покупки', min: 20, max: 40, weight: 2,
     body: 'Проверочный сюжет: здесь проверяется, как валидатор относится к настоящей покупке из сюжета.',
-    choices
+    choices: choices.map((c, i) => ({ ...(c as object), id: `answer-${i}` }))
   }]
   const free = { text: 'Отказаться', hint: 'Без трат', result: 'Ничего не происходит, жизнь идёт своим чередом.', effects: {} }
   const buy = (purchase: unknown, extra: Record<string, unknown> = {}) => ({ text: 'Купить курс', hint: 'Навык ↑', result: 'Курс оплачен, занятия начинаются со следующей смены.', purchase, effects: {}, ...extra })

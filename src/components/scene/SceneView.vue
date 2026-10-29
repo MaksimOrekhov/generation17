@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { variantText } from '../../content/load'
 import { computed } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
@@ -54,7 +55,7 @@ const timeTitle = computed(() => `Личное время: ${time.value.left} и
         v-if="moment && !store.blocked"
         :key="moment.id + g.age + g.phase"
         :title="moment.title"
-        :text="resolveText(g, moment.text)"
+        :text="resolveText(g, variantText(g, moment.text, moment.textVariants))"
         :where="spotLabels[moment.spot]"
         :accept-label="resolveText(g, moment.accept.label)"
         :skip-label="resolveText(g, moment.skip.label)"

@@ -1,0 +1,21 @@
+<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Content v2 — UI verification</title></head><body><div id="app"></div><script type="module">
+import '../src/main.ts'
+import { useGameStore } from '../src/stores/game.ts'
+import { storylets } from '../src/domain/storylets.ts'
+import { compileStorylet } from '../src/content/load.ts'
+import biography from '../src/content/__tests__/fixtures/biography.json'
+import { startPersonalTimeYear } from '../src/domain/personalTime.ts'
+import { moneyWorker } from '../src/domain/__tests__/t6-fixtures.ts'
+const mode = new URL(location.href).searchParams.get('past') ?? 'refuse'
+storylets.push(...biography.map(compileStorylet))
+const store = useGameStore()
+store.game = moneyWorker(1000,45)
+store.game.shipYear = 235
+for (const p of store.game.people) p.age += 45
+startPersonalTimeYear(store.game)
+store.game.pending = 'archive-return'
+store.game.decisions = mode === 'unseen' ? [] : [{id:'archive-help',choice:mode,age:20}]
+store.started = true
+store.playing = false
+if (new URL(location.href).searchParams.has('paid')) storylets.find(s=>s.id==='archive-return').choices[0].effects.money=-1001
+</script></body></html>

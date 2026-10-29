@@ -1,5 +1,6 @@
+import { repairDecisions } from './decisionMemory'
 import { repairEconomy } from './economy'
-import { dropMissingPending } from './engine'
+import { dropMissingPending, dropUnanswerablePending } from './engine'
 import { cohabitationOk } from './invariants'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
@@ -20,7 +21,9 @@ export interface Repaired {
 export function repairSave(state: GameState): Repaired {
   const notes: string[] = []
   const economyWasMigrated = !state.economy || state.economy.v !== 1
-  let g = { ...state, economy: repairEconomy(state) }
+  const decisions = repairDecisions(state.decisions, state.age)
+  if (JSON.stringify(decisions) !== JSON.stringify(state.decisions)) notes.push('Журнал решений: отсутствующие или повреждённые записи удалены; прошлые решения не восстанавливались.')
+  let g = { ...state, decisions, economy: repairEconomy(state) }
   if (economyWasMigrated) notes.push('Личные средства: выполнен расчёт по прошлым годам; история расходов до введения учёта недоступна.')
   // Цель накопления ссылается только на позицию каталога: неизвестный id молча снимается (§6.4).
   if (g.economy.goal !== null && !getOffer(g.economy.goal)) {
@@ -40,6 +43,9 @@ export function repairSave(state: GameState): Repaired {
   const time = repairPersonalTime(g)
   if (time.note) notes.push(time.note)
   g = time.game
+  const answerable = dropUnanswerablePending(g)
+  if (answerable !== g) notes.push(`решение «${g.pending}» не имеет доступного выхода и снято`)
+  g = answerable
   if (!cohabitationOk(g)) {
     notes.push('совместная жизнь не сходилась с состоянием отношений и снята')
     g = { ...g, flags: { ...g.flags, livingTogether: false } }

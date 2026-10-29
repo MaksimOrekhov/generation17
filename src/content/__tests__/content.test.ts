@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import bundle from '../bundle.json'
+import lines from '../../../content/lines.json'
+import categories from '../../../content/categories.json'
 import { compileRequires, compileStorylet } from '../load'
 import { collectKnown, validateContent, type ContentFile } from '../validate'
 import { codeMoments, contentMoments } from '../../domain/moments'
@@ -32,7 +34,7 @@ describe('content/', () => {
 
   it('bundle.json совпадает с файлами (npm run content)', () => {
     const pack = (kind: string) => files.filter(f => f.kind === kind).flatMap(f => f.data as unknown[])
-    expect(bundle).toEqual({ storylets: pack('storylets'), moments: pack('moments') })
+    expect(bundle).toEqual({ lines, categories, storylets: pack('storylets'), moments: pack('moments') })
   })
 
   it('попадает в каталоги игры', () => {

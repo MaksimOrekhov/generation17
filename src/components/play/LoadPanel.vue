@@ -21,6 +21,7 @@ defineEmits<{ change: [next: 1 | 0.6] }>()
     </table>
     <p v-if="load.compare" class="load__cap">Оценка на следующий год без случайных событий.</p>
 
+    <p v-if="load.timeNote" class="load__time" role="note" data-test="load-time">{{ load.timeNote }}</p>
     <p v-if="load.reserve" class="load__reserve" data-test="load-reserve">{{ load.reserve }}</p>
     <p v-if="load.retirementNote" class="load__warn" role="note">⚠ {{ load.retirementNote }}</p>
     <p v-if="load.action.reason" class="load__reason" data-test="load-reason">{{ load.action.reason }}</p>
@@ -41,6 +42,7 @@ defineEmits<{ change: [next: 1 | 0.6] }>()
 .load__table tbody th { text-align: left; font-weight: 500; color: var(--muted); width: 32%; }
 .load__table td { font-family: var(--font-mono); color: var(--text); font-variant-numeric: tabular-nums; }
 .load__cap { font-size: 11.5px; color: var(--faint); }
+.load__time { padding: 5px 8px; font-size: 12.5px; line-height: 1.45; color: var(--cool); border-left: 2px solid #2c4658; background: var(--panel); overflow-wrap: anywhere; }
 .load__reserve { font-size: 13px; line-height: 1.5; color: var(--text-soft); overflow-wrap: anywhere; }
 .load__warn { padding: 5px 8px; font-size: 12.5px; line-height: 1.45; color: var(--amber); border-left: 2px solid var(--amber-2); background: var(--panel); }
 .load__reason { font-size: 13px; line-height: 1.45; color: var(--bad); overflow-wrap: anywhere; }

@@ -5,6 +5,8 @@ import { formatCredits, formatSigned, groupDigits, hasProfession } from './econo
 import { canSetLoad, purchase } from './engine'
 import { OFFERS, RETRAIN_GAP, availableSectorOptions, canBuy, familyTripParticipants, getOffer, isClosedByShipState, retrainOptions } from './offers'
 import type { FamilyParticipantOption, OfferId, PurchaseTarget, SectorOption } from './offers'
+import { PERSONAL_TIME, personalTimeView, timeRegimeOf, timeUnits } from './personalTime'
+import type { PersonalTimeView } from './personalTime'
 import type { GameState, Job, SectorId, Skill } from './types'
 import { skillLabels, years } from '../ui/format'
 
@@ -55,7 +57,7 @@ export interface RetrainForecast {
   from: Job
   to: Job
   rows: CompareRow[]
-  /** Немедленная цена: взнос и внимание. */
+  /** Немедленная цена: взнос и личное время. */
   costText: string
   /** Когда начинается и заканчивается стажировка. */
   timeline: string[]
@@ -64,7 +66,7 @@ export interface RetrainForecast {
   /** Путь к следующему разряду уже на новой специальности. */
   pathText: string | null
   notes: string[]
-  /** Средств или внимания пока не хватает: прогноз показан так, будто взнос оплачен. */
+  /** Средств или личного времени пока не хватает: прогноз показан так, будто взнос оплачен. */
   hypothetical: boolean
   caption: string
 }
@@ -161,6 +163,8 @@ export interface LoadView {
   current: 1 | 0.6
   title: string
   explanation: string
+  /** Новая нагрузка выбрана, но начнёт действовать с ближайшего расчёта: что будет с личным временем. */
+  timeNote: string | null
   compare: LoadCompareRow[] | null
   reserve: string | null
   retirementNote: string | null
@@ -169,7 +173,10 @@ export interface LoadView {
 
 export interface SpendView {
   balanceText: string
+  /** Остаток личного времени года (внутреннее поле `attention`). */
   attention: number
+  /** Счётчик «Личное время: 2/4», основание лимита и лимит следующего года. */
+  time: PersonalTimeView
   /** Выбор после отсева устаревших или недопустимых значений. */
   selection: Selection
   offers: OfferView[]
@@ -266,7 +273,7 @@ function offerView(g: GameState, id: OfferId, sel: Selection): OfferView {
   if (kind !== 'plain') {
     const complete = kind === 'family' ? sel.participantIds.length >= 2 : !!target
     if (complete) {
-      // Выбор специальности очищается от недопустимых значений, поэтому у переобучения «неверный выбор» — только нехватка денег или внимания.
+      // Выбор специальности очищается от недопустимых значений, поэтому у переобучения «неверный выбор» — только нехватка денег или личного времени.
       stage = a.available ? 'ready' : kind === 'profession' && !a.reason?.startsWith('Не хватает ') ? 'unavailable' : 'invalid'
     } else {
       // Цель не выбрана: пробная цель только выясняет, доступно ли предложение «в принципе»; она не показывается и не выбирается.
@@ -277,7 +284,7 @@ function offerView(g: GameState, id: OfferId, sel: Selection): OfferView {
       const probe = canBuy(g, id, probeTarget)
       a = probe
       target = undefined
-      // Переобучение — решение, к которому копят: при нехватке только денег или внимания выбор и прогноз всё равно открыты.
+      // Переобучение — решение, к которому копят: при нехватке только денег или личного времени выбор и прогноз всё равно открыты.
       const resourceOnly = kind === 'profession' && !!probe.reason?.startsWith('Не хватает ')
       if (probe.available || resourceOnly) {
         stage = 'needs-choice'
@@ -299,7 +306,7 @@ function offerView(g: GameState, id: OfferId, sel: Selection): OfferView {
     oneTimeText: a.oneTimeCost > 0 ? `${formatCredits(a.oneTimeCost)} разово` : a.action === 'restore' ? 'Без взноса (право возврата)' : null,
     annualText: a.annualCost > 0 ? `${formatCredits(a.annualCost)} в год`
       : free ? `${formatCredits(0)} в год · бесплатно для профессии «${def.freeFor!.toLowerCase()}»` : null,
-    attentionText: a.attention > 0 ? `Внимание: ${a.attention}` : null,
+    attentionText: a.attention > 0 ? `Личное время: ${timeUnits(a.attention)}` : null,
     resultText: kind === 'sector' ? `Результат: до +${effects.stats?.knowledge ?? 0} к знаниям, память о месте`
       : kind === 'family' ? `Результат: до +${effects.familyTripBond ?? 0} к связи каждого участника, память и запись в хронике` : null,
     opens: a.opens.map(line => line.replace(' при выполнении условий earnedGrade().', ' при выполнении условий.').replace('; флаг familyTrip для будущих отсылок.', '.')), available: stage === 'ready', active, stage,
@@ -313,7 +320,7 @@ function offerView(g: GameState, id: OfferId, sel: Selection): OfferView {
     cost: a.oneTimeCost, isGoal: g.economy.goal === id,
     consequences: kind === 'profession' ? retrainConsequences(g) : [],
     jobOptions: kind === 'profession' && stage !== 'unavailable' ? jobs.map(job => professionOption(g, job)) : [],
-    // Прогноз нужен и когда пока не хватает только денег или внимания: игрок видит, на что копить.
+    // Прогноз нужен и когда пока не хватает только денег или личного времени: игрок видит, на что копить.
     retrain: kind === 'profession' && sel.job && stage !== 'unavailable' ? retrainForecast(g, sel.job) : null
   }
 }
@@ -358,7 +365,7 @@ function professionOption(g: GameState, job: Job): ProfessionOption {
 
 /**
  * Сравнение «сейчас / после перехода». Ничего не считает вручную: переход выполняет настоящий purchase()
- * на копии игры, а годы — projectYears(). Если не хватает только денег или внимания, копия получает
+ * на копии игры, а годы — projectYears(). Если не хватает только денег или личного времени, копия получает
  * недостающее, чтобы показать последствия до того, как игрок накопит; это отмечено в `hypothetical`.
  */
 export function retrainForecast(g: GameState, job: Job): RetrainForecast | null {
@@ -398,7 +405,7 @@ export function retrainForecast(g: GameState, job: Job): RetrainForecast | null 
   if (internship.row.aid > 0) notes.push(`В год стажировки фонд покроет ≈ ${credits(internship.row.aid)} базовых нужд.`)
   return {
     from: g.protagonist.job, to: job, rows,
-    costText: `Сразу: −${credits(a.oneTimeCost)} и ${a.attention} внимание года.`,
+    costText: `Сразу: −${credits(a.oneTimeCost)} и ${timeUnits(a.attention)} личного времени.`,
     timeline,
     payGapText: gap < 0 ? `Год стажировки принесёт на ${credits(-gap)} меньше нынешнего прогноза.` : gap > 0 ? `Год стажировки принесёт на ${credits(gap)} больше нынешнего прогноза.` : 'Оплата ближайшего года не изменится.',
     pathText: progress.next && progress.requirements.length
@@ -500,7 +507,7 @@ export function careerView(g: GameState): CareerView {
     profession: profession ? job : 'Без специальности',
     gradeTitle: profession ? gradeTitle(cw.grade) : null,
     facts, next, status, post, transition,
-    // Кнопка ведёт к выбору, а не покупает: он открыт и тогда, когда пока не хватает только денег или внимания.
+    // Кнопка ведёт к выбору, а не покупает: он открыт и тогда, когда пока не хватает только денег или личного времени.
     retrainAvailable: retrain.available || resourceOnly,
     retrainText
   }
@@ -533,12 +540,16 @@ export function retirementView(g: GameState): RetirementView | null {
     }
     if (bonus > 0) rows.push({ label: 'Надбавка за отсрочку', value: `+${bonus}%` })
     rows.push({ label: 'Стаж', value: decimal(w.service) })
+    rows.push({ label: 'Личное время', value: `${timeUnits(PERSONAL_TIME.allowance[timeRegimeOf(w, g.age)])} в год` })
     return { title: PATH_TITLE[w.path ?? 'left'], rows, notes }
   }
   const decided = path === 'left' || path === 'mentor'
   rows.push({ label: 'Пенсия по нынешним тарифу и стажу', value: `${credits(pensionOf(w))} в год` })
   if (bonus > 0) rows.push({ label: 'Надбавка за отсрочку', value: `+${bonus}%` })
-  if (decided) notes.push(`Решение принято (${PATH_TITLE[path].toLowerCase()}): пенсия начнётся с ближайшего годового расчёта.`)
+  const retiredTime = PERSONAL_TIME.allowance[path === 'mentor' ? 'mentor' : 'retired']
+  const workTime = PERSONAL_TIME.allowance[timeRegimeOf(w, g.age)]
+  if (decided) notes.push(`Решение принято (${PATH_TITLE[path].toLowerCase()}): пенсия начнётся с ближайшего годового расчёта, личного времени будет ${timeUnits(retiredTime)} в год.`)
+  else if (retiredTime !== workTime) notes.push(`На пенсии смены больше нет: личного времени — ${timeUnits(retiredTime)} в год вместо нынешних ${timeUnits(workTime)}. Чем его занять, решаешь ты.`)
   else {
     if (path === 'continue') notes.push('Выбран путь: продолжать работу до 77 лет, затем пенсия.')
     else notes.push(g.age < 60 ? 'Решение о пенсии — с 60 лет: уйти на пенсию, стать наставником или продолжить работу.' : 'Если решение не принято, работа продолжается до 77 лет.')
@@ -583,7 +594,11 @@ export function goalView(g: GameState, offers: OfferView[]): GoalView | null {
   }
 }
 
-const LOAD_EXPLANATION = 'Ты будешь получать меньше кредитов и медленнее накапливать стаж, зато работа станет менее напряжённой и появится больше времени для близких.'
+/** Пояснение к выбору ставки: числа личного времени — из общей таблицы PERSONAL_TIME. */
+function loadExplanation() {
+  const { full, reduced } = PERSONAL_TIME.allowance
+  return `Ты будешь получать меньше кредитов и медленнее накапливать стаж, зато смена станет легче, а личного времени — больше: ${timeUnits(reduced)} в год вместо ${full}. Его можно отдать близким, делу или себе.`
+}
 const NEUTRAL_BALANCE = Number.MAX_SAFE_INTEGER - 10_000
 
 function withLoad(g: GameState, load: 1 | 0.6): GameState {
@@ -631,6 +646,7 @@ function loadView(g: GameState): LoadView {
       { label: 'Обязательства', full: `${groupDigits(full.bills)} кр`, reduced: `${groupDigits(reduced.bills)} кр` },
       { label: 'Баланс за год', full: `${formatSigned(full.delta)} кр`, reduced: `${formatSigned(reduced.delta)} кр` },
       { label: 'Прирост стажа', full: signedText(full.service), reduced: signedText(reduced.service) },
+      { label: 'Личное время за год', full: timeUnits(PERSONAL_TIME.allowance[timeRegimeOf(withLoad(g, 1).economy.work, g.age)]), reduced: timeUnits(PERSONAL_TIME.allowance[timeRegimeOf(withLoad(g, 0.6).economy.work, g.age)]) },
       { label: 'Эффекты нагрузки', full: loadEffectsText(g, 1), reduced: loadEffectsText(g, 0.6) }
     ]
   }
@@ -643,10 +659,21 @@ function loadView(g: GameState): LoadView {
       : 'При сокращённой ставке дефицита не ожидается: резерв не нужен.'
   }
 
+  // Лимит этого года зафиксирован в его начале: новая ставка меняет личное время только со следующего расчёта.
+  const time = personalTimeView(g)
+  const yearLoad: 1 | 0.6 | null = time.basis === 'reduced' ? 0.6 : time.basis === 'full' ? 1 : null
+  let timeNote: string | null = null
+  if (g.economy.work.kind === 'working' && yearLoad !== null && yearLoad !== current) {
+    const nextLimit = PERSONAL_TIME.allowance[current === 0.6 ? 'reduced' : 'full']
+    timeNote = current === 0.6
+      ? `Сокращённая ставка начнёт действовать со следующего игрового года — тогда же личного времени станет ${timeUnits(nextLimit)} в год. В этом году остаётся ${time.left} из ${time.limit}.`
+      : `Полная ставка вернётся со следующего игрового года: личного времени будет ${timeUnits(nextLimit)} в год. Нынешний остаток (${time.left} из ${time.limit}) сохраняется до конца года.`
+  }
   return {
     current,
     title: current === 1 ? 'Полная ставка' : '0,6 ставки',
-    explanation: LOAD_EXPLANATION,
+    explanation: loadExplanation(),
+    timeNote,
     compare, reserve,
     retirementNote: retirementNow
       ? 'Следующий расчёт — пенсионный переход: зарплата за этот год не начисляется, поэтому немедленной пользы от смены нагрузки может не быть.'
@@ -684,6 +711,7 @@ export function spendView(g: GameState, selection: SpendSelection = {}): SpendVi
   return {
     balanceText: formatCredits(e.balance),
     attention: g.attention,
+    time: personalTimeView(g),
     selection: sel,
     offers,
     goal: goalView(g, offers),

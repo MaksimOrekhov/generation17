@@ -118,7 +118,7 @@ const baseStorylets: Storylet[] = [
   },
   {
     id: 'relationship', arc: 'love', fork: true, category: 'Отношения', min: 18, max: 42, weight: 3,
-    title: 'Неожиданная близость', body: 'После общего праздника {{friend}} остаётся с тобой на пустой смотровой палубе. Вы много лет знакомы, но сегодня разговор кажется совсем другим.', available: g => g.people.some(p => p.id === 'friend' && p.bond >= 35) && g.flags.friendState !== 'estranged' && !g.flags.relationshipTalk,
+    title: 'Неожиданная близость', body: 'После общего праздника {{friend}} остаётся с тобой на пустой смотровой палубе. Вы много лет знакомы, но сегодня разговор кажется совсем другим.', available: g => !g.relationships && g.people.some(p => p.id === 'friend' && p.bond >= 35) && g.flags.friendState !== 'estranged' && !g.flags.relationshipTalk,
     choices: [
       { text: 'Признаться в своих чувствах', hint: 'Шанс на близость · Уязвимость', result: 'Ты говоришь то, что давно не решал{{hero:ся|ась}}. Ответ не приходит мгновенно, но между вами возникает новая честность.', effects: { stats: { bonds: 7, morale: 4 }, bonds: { friend: 10 }, flags: { relationshipTalk: true, closeRelationship: true, lovePath: 'confessed', loveAge: gYearPlaceholder }, memory: 'Признал{{hero:ся|ась}} близкому человеку в чувствах.' } },
       { text: 'Остаться просто друзьями', hint: 'Дружба ↑', result: 'Вы ещё долго наблюдаете, как за стеклом проплывают холодные звёзды.', effects: { stats: { bonds: 3 }, bonds: { friend: 4 }, flags: { relationshipTalk: true, lovePath: 'friends', loveAge: gYearPlaceholder }, memory: 'Пров{{hero:ёл|ела}} незабываемую ночь у обзорного купола.' } },

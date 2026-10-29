@@ -7,6 +7,7 @@ import type { Effects, MomentDef, Storylet } from '../domain/types'
 import { getOffer } from '../domain/offers'
 import { TIME_REGIMES } from '../domain/personalTime'
 import { STORY_MONEY_LIMIT, validStoryMoney } from '../domain/storyMoney'
+import { STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from '../domain/people'
 
 export interface Issue { level: 'error' | 'warn'; where: string; message: string }
 
@@ -130,9 +131,23 @@ class Ctx {
     else if (v < range[0] || v > range[1]) this.err(where, `${v} вне диапазона ${range[0]}–${range[1]}`)
   }
 
+  personStates(value: unknown, where: string) {
+    if (!isObj(value) || !Object.keys(value).length) { this.err(where, 'нужна карта людей и их состояний'); return }
+    for (const [ref, state] of Object.entries(value)) {
+      if (!['friend', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) this.err(`${where}.${ref}`, 'неизвестная ссылка на человека')
+      if (!isObj(state) || !Object.keys(state).length) { this.err(`${where}.${ref}`, 'нужен непустой объект состояния'); continue }
+      this.keys(state, ['sectorId', 'job', 'availability', 'familyStatus'], `${where}.${ref}`)
+      if (state.sectorId !== undefined && !SECTORS.includes(state.sectorId as string)) this.err(`${where}.${ref}.sectorId`, 'неизвестный сектор')
+      if (state.job !== undefined && !JOBS.includes(state.job as string)) this.err(`${where}.${ref}.job`, 'неизвестная профессия')
+      if (state.availability !== undefined && !['available', 'distant'].includes(state.availability as string)) this.err(`${where}.${ref}.availability`, 'неизвестная доступность')
+      if (state.familyStatus !== undefined && !['unknown', 'single', 'family'].includes(state.familyStatus as string)) this.err(`${where}.${ref}.familyStatus`, 'неизвестное семейное положение')
+    }
+  }
+
   effects(e: unknown, where: string, allowExpense = true) {
     if (!isObj(e)) { this.err(where, 'effects должен быть объектом (может быть пустым {})'); return }
-    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory', 'addPerson', 'moveTo', 'money'], where)
+    this.keys(e, ['stats', 'ship', 'skills', 'bonds', 'flags', 'job', 'memory', 'addPerson', 'moveTo', 'money', 'person', 'relationship', 'cohabit'], where)
+    if (e.cohabit !== undefined && !['hero', 'partner', 'apart'].includes(e.cohabit as string)) this.err(`${where}.cohabit`, 'неизвестный вариант совместной жизни')
     if (e.money !== undefined) {
       if (!validStoryMoney(e.money)) this.err(`${where}.money`, `нужно безопасное целое число в пределах ±${LIMITS.money}`)
       else if (!allowExpense && e.money < 0) this.err(`${where}.money`, 'отрицательные деньги здесь запрещены')
@@ -163,8 +178,22 @@ class Ctx {
       }
     }
     if (e.job !== undefined && !(e.job === 'Переобучение' || JOBS.includes(e.job as string))) this.err(`${where}.job`, 'неизвестная профессия')
-    if (e.addPerson !== undefined && !NEW_PEOPLE.includes(e.addPerson as string)) this.err(`${where}.addPerson`, `можно добавить только: ${NEW_PEOPLE.join(', ')}`)
-    if (e.moveTo !== undefined && !SECTORS.includes(e.moveTo as string)) this.err(`${where}.moveTo`, `сектор из: ${SECTORS.join(', ')}`)
+    if (e.addPerson !== undefined && e.addPerson !== 'child') {
+      if (!isObj(e.addPerson)) this.err(`${where}.addPerson`, 'нужен объявленный слот')
+      else {
+        this.keys(e.addPerson, ['slot', 'role'], `${where}.addPerson`)
+        if (!STORY_PERSON_SLOTS.includes(e.addPerson.slot as string) || !isStr(e.addPerson.role) || !Object.hasOwn(STORY_PERSON_ROLES, e.addPerson.role)) this.err(`${where}.addPerson`, 'недопустимый слот или роль')
+      }
+    }
+    if (e.person !== undefined) this.personStates(e.person, `${where}.person`)
+    if (e.relationship !== undefined) {
+      if (!isObj(e.relationship)) this.err(`${where}.relationship`, 'нужен объект действия')
+      else {
+        this.keys(e.relationship, ['action', 'person'], `${where}.relationship`)
+        if (e.relationship.action === 'start' ? !['friend', ...STORY_PERSON_SLOTS].includes(e.relationship.person as string) : e.relationship.action !== 'end' || e.relationship.person !== undefined) this.err(`${where}.relationship`, 'недопустимое действие отношений')
+      }
+    }
+    if (e.moveTo !== undefined && ![...SECTORS, 'partner'].includes(e.moveTo as string)) this.err(`${where}.moveTo`, `сектор из: ${SECTORS.join(', ')} или partner`)
     if (e.memory !== undefined) this.text(e.memory, `${where}.memory`, LIMITS.memory)
   }
 
@@ -172,7 +201,10 @@ class Ctx {
     if (depth > MAX_REQUIRES_DEPTH) { this.err(where, 'глубина requires больше 8'); return }
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen', 'regime', 'any', 'seen', 'notSeen', 'chose', 'decisionYears', 'bond', 'skill', 'ship', 'birthWealth', 'trait', 'dead', 'absent', 'exists'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'person', 'childStage', 'focus', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen', 'regime', 'any', 'seen', 'notSeen', 'chose', 'decisionYears', 'bond', 'skill', 'ship', 'birthWealth', 'trait', 'dead', 'absent', 'exists'], where)
+    if (r.focus !== undefined && (!Array.isArray(r.focus) || !r.focus.length || !r.focus.every(x => ['study', 'relationships', 'work', 'rest', 'civic'].includes(x as string)))) this.err(`${where}.focus`, 'неизвестный жизненный фокус')
+    if (r.person !== undefined) this.personStates(r.person, `${where}.person`)
+    if (r.childStage !== undefined && (!Array.isArray(r.childStage) || !r.childStage.length || !r.childStage.every(x => ['early-childhood', 'school-age', 'youth', 'adult'].includes(x as string)))) this.err(`${where}.childStage`, 'неизвестная стадия ребёнка')
     if (r.any !== undefined) {
       if (!Array.isArray(r.any) || !r.any.length || r.any.length > 32) this.err(`${where}.any`, 'нужен непустой массив из 1–32 условий')
       else r.any.forEach((child, i) => this.requires(child, `${where}.any[${i}]`, flagsSetHere, depth + 1))
@@ -341,6 +373,13 @@ function guardedPeople(r: unknown, depth = 0): string[] {
   return [...new Set([...own, ...(branches.length ? branches[0]!.filter(id => branches.every(b => b.includes(id))) : [])])]
 }
 
+function createdPeople(effects: unknown): string[] {
+  if (!isObj(effects)) return []
+  if (effects.addPerson === 'child') return ['child']
+  if (isObj(effects.addPerson) && isStr(effects.addPerson.slot) && STORY_PERSON_SLOTS.includes(effects.addPerson.slot)) return [effects.addPerson.slot]
+  return []
+}
+
 function checkStorylet(c: Ctx, s: unknown, where: string, flags: Set<string>) {
   if (!isObj(s)) { c.err(where, 'сюжет должен быть объектом'); return }
   c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'priority', 'arc', 'fork', 'weird', 'requires', 'choices', 'bodyVariants', 'tone', 'tags', 'group'], where)
@@ -392,9 +431,9 @@ function checkStorylet(c: Ctx, s: unknown, where: string, flags: Set<string>) {
     if (ch.purchase !== undefined) c.purchase(ch, w)
     if (c.text(ch.text, `${w}.text`, LIMITS.label)) c.personGuard(ch.text, choiceGuard, `${w}.text`)
     if (c.text(ch.hint, `${w}.hint`, LIMITS.hint)) c.personGuard(ch.hint, choiceGuard, `${w}.hint`)
-    if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, [...choiceGuard, ...(isObj(ch.effects) && ch.effects.addPerson === 'child' ? ['child'] : [])], `${w}.result`)
+    if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, [...choiceGuard, ...createdPeople(ch.effects)], `${w}.result`)
     c.effects(ch.effects, `${w}.effects`)
-    if (isObj(ch.effects) && isStr(ch.effects.memory)) c.personGuard(ch.effects.memory, [...choiceGuard, ...(ch.effects.addPerson === 'child' ? ['child'] : [])], `${w}.effects.memory`)
+    if (isObj(ch.effects) && isStr(ch.effects.memory)) c.personGuard(ch.effects.memory, [...choiceGuard, ...createdPeople(ch.effects)], `${w}.effects.memory`)
     if (ch.check === undefined) return
     const k = ch.check
     if (!isObj(k)) { c.err(`${w}.check`, 'check должен быть объектом'); return }
@@ -457,7 +496,7 @@ function checkMoment(c: Ctx, m: unknown, where: string, flags: Set<string>) {
   else {
     c.keys(accept, ['label', 'result', 'effects', 'resultVariants'], `${where}.accept`)
     c.text(accept.label, `${where}.accept.label`, LIMITS.label)
-    if (c.text(accept.result, `${where}.accept.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(accept.result, needs, `${where}.accept.result`)
+    if (c.text(accept.result, `${where}.accept.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(accept.result, [...needs, ...createdPeople(accept.effects)], `${where}.accept.result`)
     c.variants(accept.resultVariants, `${where}.accept.resultVariants`, LIMITS.result, needs, flags)
     c.effects(accept.effects, `${where}.accept.effects`, false)
   }

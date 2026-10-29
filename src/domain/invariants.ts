@@ -1,10 +1,11 @@
 import { repairDecisions } from './decisionMemory'
 import { canChoose, visibleChoiceIndices } from './engine'
-import { isKnown, sectors } from './birth'
+import { isKnown, residenceOf, sectors } from './birth'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
 import { PERSONAL_TIME, TIME_REGIMES } from './personalTime'
 import { storylets } from './storylets'
+import { currentPartner } from './people'
 import type { GameState } from './types'
 
 /** Стадии линии «Любовь», при которых герой и близкий человек живут в одной каюте. */
@@ -12,7 +13,7 @@ export const COHABITING_STAGES = ['together', 'moved-together', 'held', 'reunite
 
 /** Флаг совместной жизни согласован: близкий человек жив и отношения этого не отменили. */
 export const cohabitationOk = (g: GameState) =>
-  g.flags.livingTogether !== true || (isKnown(g, 'friend') && COHABITING_STAGES.includes(String(g.flags.loveStage)))
+  g.flags.livingTogether !== true || (g.relationships ? !!currentPartner(g) && currentPartner(g)?.state?.availability !== 'distant' : isKnown(g, 'friend') && COHABITING_STAGES.includes(String(g.flags.loveStage)))
 
 /**
  * Невозможные состояния мира. Пустой список — состояние допустимо.
@@ -131,8 +132,7 @@ export function findInconsistencies(g: GameState): string[] {
   }
 
   if (g.flags.livingTogether === true) {
-    if (!isKnown(g, 'friend')) bad('герой «живёт вместе» с тем, кого нет в живых или кто ещё не появился')
-    else if (!COHABITING_STAGES.includes(String(g.flags.loveStage))) bad(`совместная жизнь при стадии отношений «${String(g.flags.loveStage)}»`)
+    if (!cohabitationOk(g)) bad('совместная жизнь не согласована с действующим партнёром')
   }
   if (g.flags.loveStage === 'moved-together' && g.residence === undefined) bad('переезд к близкому человеку не изменил место жительства')
 
@@ -140,6 +140,23 @@ export function findInconsistencies(g: GameState): string[] {
   if (g.flags.familyChild === 'born' && !child) bad('ребёнок «родился», но его нет среди людей')
   if (child && g.flags.familyChild !== 'born') bad(`есть ребёнок, а флаг рождения «${String(g.flags.familyChild)}»`)
   if (child?.alive && child.age !== g.age - child.since) bad(`возраст ребёнка ${child.age} не сходится с годом рождения`)
-  for (const p of g.people) if (!p.alive && p.age < 0) bad(`у «${p.id}» отрицательный возраст`)
+  const personIds = new Set<string>()
+  for (const p of g.people) {
+    if (personIds.has(p.id)) bad(`повторяется идентификатор человека «${p.id}»`)
+    personIds.add(p.id)
+    if (!Number.isInteger(p.age) || p.age < 0) bad(`у «${p.id}» недопустимый возраст`)
+    if (p.state?.sectorId && !sectors.some(s => s.id === p.state!.sectorId)) bad(`у «${p.id}» неизвестный сектор`)
+    if (p.state?.availability && !['available', 'distant'].includes(p.state.availability)) bad(`у «${p.id}» неизвестная доступность`)
+    if (p.state?.familyStatus && (!['unknown', 'single', 'family'].includes(p.state.familyStatus) || p.state.familyStatus === 'family' && p.age < 18)) bad(`у «${p.id}» недопустимое семейное положение`)
+    if (p.state?.job && (!['Ученик', 'Техник', 'Медик', 'Агроном', 'Координатор', 'Без специальности'].includes(p.state.job) || p.age < 16)) bad(`у «${p.id}» недопустимая профессия`)
+  }
+  if (g.relationships) {
+    const { partnerId, formerPartnerIds } = g.relationships
+    if (partnerId && !currentPartner(g)) bad('ссылка на недоступного партнёра')
+    if (new Set(formerPartnerIds).size !== formerPartnerIds.length || partnerId && formerPartnerIds.includes(partnerId)) bad('повторяющиеся отношения с партнёром')
+    for (const id of formerPartnerIds) if (!personIds.has(id)) bad(`бывший партнёр «${id}» отсутствует`)
+    const partner = currentPartner(g)
+    if (g.flags.livingTogether === true && partner?.state?.sectorId && partner.state.sectorId !== residenceOf(g)) bad('совместная жизнь в разных секторах')
+  }
   return problems
 }

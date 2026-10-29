@@ -56,6 +56,9 @@ describe('Сосед: frozen pre-v2 behaviour and JSON equivalence', () => {
     }
   })
   it('replays 200 seeds × 4 strategies against the immutable pre-edit digest', async () => {
+    // Replay the historical catalog used to capture the digest. New, unrelated
+    // storylets deliberately alter full-life scheduling and RNG consumption.
+    storylets.splice(0, storylets.length, ...storylets.filter(s => !s.id.startsWith('people-')))
     let comparisons = 0, comparedOutcomes = 0
     const report = await neighborReplay((g, old) => {
       if (migrated.get(old.id)!.available(g) !== old.available(g)) throw Error(`eligibility ${old.id} at ${g.age}`)

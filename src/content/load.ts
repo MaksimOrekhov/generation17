@@ -3,6 +3,7 @@ import { gYearPlaceholder } from '../domain/constants'
 import { reserveYearsOf } from '../domain/economy'
 import { isClosedByShipState } from '../domain/offers'
 import { safePeople } from '../domain/contentPeople'
+import { childLifeStage, personByRef, STORY_PERSON_SLOTS } from '../domain/people'
 import type { ChoiceDef, Effects, GameState, MomentDef, Storylet, TextVariant } from '../domain/types'
 import type { ContentBundle, JsonChoice, JsonMoment, JsonStorylet, JsonTextVariant, Requires } from './types'
 
@@ -31,6 +32,15 @@ export function compileRequires(r?: Requires, depth = 0): (g: GameState) => bool
   }
   const decisions = new Set([...Object.keys(r.chose ?? {}), ...Object.keys(r.decisionYears ?? {})])
   return g => {
+    if (r.focus && !r.focus.includes(g.focus)) return false
+    for (const [ref, state] of Object.entries(r.person ?? {})) {
+      const person = personByRef(g, ref)
+      if (!person || !person.alive || person.since > g.age || Object.entries(state).some(([key, value]) => person.state?.[key as keyof typeof person.state] !== value)) return false
+    }
+    if (r.childStage) {
+      const child = personByRef(g, 'child')
+      if (!child || !child.alive || !r.childStage.includes(childLifeStage(child.age))) return false
+    }
     if (alternatives && !alternatives.some(test => test(g))) return false
     if (r.seen?.some(id => !g.seen.includes(id))) return false
     if (r.notSeen?.some(id => g.seen.includes(id))) return false
@@ -39,12 +49,12 @@ export function compileRequires(r?: Requires, depth = 0): (g: GameState) => bool
         && (!r.chose?.[id] || !d.legacy && r.chose[id]!.includes(d.choice))
         && (!r.decisionYears?.[id] || inRange(g.age - d.age, r.decisionYears[id]!)))) return false
     }
-    for (const id of r.dead ?? []) if (!g.people.some(p => p.id === id && !p.alive && p.since <= g.age)) return false
-    for (const id of r.exists ?? []) if (!g.people.some(p => p.id === id && p.since <= g.age)) return false
+    for (const id of r.dead ?? []) { const p = personByRef(g, id); if (!p || p.alive || p.since > g.age) return false }
+    for (const id of r.exists ?? []) { const p = personByRef(g, id); if (!p || p.since > g.age) return false }
     if (r.absent?.some(id => isKnown(g, id))) return false
     for (const [id, range] of fields.bond) {
-      const person = g.people.find(p => p.id === id && p.since <= g.age)
-      if (!person || !inRange(person.bond, range)) return false
+      const person = personByRef(g, id)
+      if (!person || person.since > g.age || !inRange(person.bond, range)) return false
     }
     for (const [id, range] of fields.skill) if (!inRange(g.skills[id as keyof GameState['skills']], range)) return false
     for (const [id, range] of fields.ship) if (!inRange(g.ship[id as keyof GameState['ship']], range)) return false
@@ -67,7 +77,7 @@ export function compileRequires(r?: Requires, depth = 0): (g: GameState) => bool
       if (typeof at !== 'number' || g.age > at + years) return false
     }
     for (const [id, range] of fields.personAge) {
-      const person = g.people.find(p => p.id === id)
+      const person = personByRef(g, id)
       if (!person) return false
       if (range.min !== undefined && person.age < range.min) return false
       if (range.max !== undefined && person.age > range.max) return false
@@ -76,7 +86,7 @@ export function compileRequires(r?: Requires, depth = 0): (g: GameState) => bool
     const home = residenceOf(g)
     if (r.sector && !r.sector.includes(home)) return false
     if (r.sectorNot?.includes(home)) return false
-    for (const id of r.alive ?? []) if (!g.people.find(p => p.id === id)?.alive) return false
+    for (const id of r.alive ?? []) if (!personByRef(g, id)?.alive) return false
     for (const id of r.present ?? []) if (!isKnown(g, id)) return false
     for (const [stat, range] of fields.stat) {
       const value = g.stats[stat as keyof GameState['stats']]
@@ -138,8 +148,9 @@ function compileChoice(c: JsonChoice, inherited: string[] = []): ChoiceDef {
   const historical = [...inherited, ...historicalPeople(requires)]
   const condition = compileRequires(requires)
   const compiledResult = compileVariants(resultVariants, historical)
-  // A newly added child's name is rendered after addPerson, but branch selection remains pre-effect.
-  const resultBase = c.effects.addPerson === 'child' ? c.result.replace(/\{\{child(?::[^{}]*)?\}\}/g, '') : c.result
+  // The created person's name is rendered after addPerson; variant selection remains pre-effect.
+  const added = c.effects.addPerson === 'child' ? 'child' : typeof c.effects.addPerson === 'object' && STORY_PERSON_SLOTS.includes(c.effects.addPerson.slot) ? c.effects.addPerson.slot : undefined
+  const resultBase = added ? c.result.replace(new RegExp(`\\{\\{${added}(?::[^{}]*)?\\}\\}`, 'g'), '') : c.result
   const references = [c.text, c.hint, c.epilogue ?? '']
   return {
     ...rest,

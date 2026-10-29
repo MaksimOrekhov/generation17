@@ -210,7 +210,7 @@ export function availableSectorOptions(g: GameState): SectorOption[] {
 
 export function familyTripParticipants(g: GameState): FamilyParticipantOption[] {
   return g.people
-    .filter(person => isKnown(g, person.id) && person.bond >= 50)
+    .filter(person => isKnown(g, person.id) && person.state?.availability !== 'distant' && person.bond >= 50)
     .map(({ id, name, role, bond }) => ({ id, name, role, bond }))
 }
 
@@ -335,6 +335,7 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, s
           const person = g.people.find(candidate => candidate.id === id)
           if (!person) { reason = `Человек «${id}» не известен герою.`; break }
           if (!isKnown(g, id)) { reason = `${person.name} не жив или ещё не знаком герою.`; break }
+          if (person.state?.availability === 'distant') { reason = `${person.name} сейчас недоступен для поездки.`; break }
           if (person.bond < 50) { reason = `${person.name} пока не считается близким человеком.`; break }
         }
       }

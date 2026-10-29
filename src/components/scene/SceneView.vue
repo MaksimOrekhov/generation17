@@ -3,6 +3,7 @@ import { variantText } from '../../content/load'
 import { computed } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
+import { currentPartner } from '../../domain/people'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
@@ -15,7 +16,7 @@ const g = computed(() => store.game)
 
 const model = computed<SceneModel>(() => {
   const parent = g.value.people.find(p => p.id === 'parent')
-  const partner = g.value.flags.livingTogether === true ? g.value.people.find(p => p.id === 'friend') : undefined
+  const partner = g.value.flags.livingTogether === true ? currentPartner(g.value) ?? (!g.value.relationships ? g.value.people.find(p => p.id === 'friend') : undefined) : undefined
   const companion = g.value.age <= 18 && parent?.alive
     ? { name: parent.name, age: parent.age, kind: 'parent' as const }
     : g.value.age >= 20 && partner?.alive

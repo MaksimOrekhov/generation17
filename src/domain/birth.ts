@@ -2,6 +2,7 @@ import type { Birth, Gender, Job, Peer, Person, SectorId, Wealth } from './types
 import { hash32, pick, random, weighted } from './random'
 import type { Rng } from './random'
 import { infantRiskFor } from './mortality'
+import { personByRef, STORY_PERSON_SLOTS } from './people'
 
 export interface SectorDef {
   id: SectorId
@@ -87,9 +88,9 @@ export const genderOfName = (name: string): Gender => (femaleNames.has(name.spli
 export const residenceOf = (g: { residence?: SectorId; birth: Birth }) => g.residence ?? g.birth.sectorId
 
 /** Человек жив и уже появился в жизни героя (друг — с детского сада, наставник — с 16 лет). */
-export const isKnown = (g: { people: Person[]; age: number }, id: string) => {
-  const p = g.people.find(x => x.id === id)
-  return !!p && p.alive && g.age >= p.since
+export const isKnown = (g: { people: Person[]; age: number; flags?: Record<string, string | number | boolean>; relationships?: import('./types').Relationships }, id: string) => {
+  const p = id === 'partner' || id === 'formerPartner' ? (g.flags ? personByRef(g as import('./types').GameState, id) : undefined) : g.people.find(x => x.id === (STORY_PERSON_SLOTS.includes(id) ? `story-${id}` : id))
+  return !!p && p.alive && p.state?.availability !== 'distant' && g.age >= p.since
 }
 
 /** Сектор, где живёт близкий человек: зависит от seed, не расходует RNG и всегда отличается от нынешнего дома героя. */

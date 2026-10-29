@@ -14,6 +14,7 @@
     "audit": "tsx scripts/audit.ts",
     "audit:economy": "tsx scripts/economy-t8.ts",
     "audit:time": "tsx scripts/personal-time-t9.ts",
+    "audit:variety": "tsx scripts/variety-audit.ts",
     "content": "tsx scripts/content.ts",
     "content:check": "tsx scripts/content.ts --check"
   },

@@ -11,8 +11,8 @@ import { afterDecision, cool, initialDirector, pickStorylet } from './director'
 import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality'
 import { applyOfferChanges, canBuy, getOffer, type OfferDefinition, type PurchaseAvailability, type PurchaseTarget } from './offers'
 import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
+import { PERSONAL_TIME, canSpendPersonalTime, endPersonalTime, freeTimeChance, spendPersonalTime, startPersonalTimeYear } from './personalTime'
 
-export const ATTENTION_PER_YEAR = 3
 const HISTORY_LIMIT = 1500
 const MOMENT_CHANCE = .3
 const focusNames: Record<Focus, string> = { study: 'Саморазвитие', relationships: 'Близкие люди', work: 'Работа', rest: 'Отдых', civic: 'Общество' }
@@ -39,7 +39,8 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
     age: 0,
     shipYear: 190,
     phase: 0,
-    attention: ATTENTION_PER_YEAR,
+    attention: 0,
+    timeYear: { limit: 0, basis: 'childhood' },
     moment: null,
     momentLog: {},
     moodByAge: [],
@@ -84,6 +85,7 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
     }
   })
   applyEffects(g, { stats: traitEffect[roll.trait] })
+  startPersonalTimeYear(g)
   addLog(g, 'memory', 'Рождение', `${g.protagonist.name} рождается на корабле «Пилигрим», ${g.protagonist.origin}. За внешней обшивкой — 190-й год путешествия.`)
   return g
 }
@@ -314,13 +316,20 @@ function expireMoment(g: GameState) {
   g.moment = null
 }
 
+/** Можно ли сейчас принять активный момент: та же проверка, что внутри `takeMoment()`. */
+export function canTakeMoment(state: GameState): boolean {
+  const def = getMoment(state)
+  return !!def && !state.stopped && !state.pending && canSpendPersonalTime(state, PERSONAL_TIME.moment).available
+    && !storyMoneyReason(state, [def.accept.effects.money], false)
+}
+
+/** Принять момент: стоит единицу личного времени. Истечение и отказ (`skipMoment`) бесплатны. */
 export function takeMoment(state: GameState): GameState {
   const def = getMoment(state)
-  if (!def || state.stopped || state.pending || state.attention < 1) return state
-  if (storyMoneyReason(state, [def.accept.effects.money], false)) return state
+  if (!def || !canTakeMoment(state)) return state
   const g = structuredClone(state)
   applyStoryMoney(g, def.accept.effects.money, def)
-  g.attention -= 1
+  spendPersonalTime(g, PERSONAL_TIME.moment)
   g.moment = null
   applyEffects(g, def.accept.effects)
   addLog(g, 'moment', def.title, resolveText(g, def.accept.result))
@@ -412,7 +421,7 @@ function applyPurchase(g: GameState, offer: OfferDefinition, availability: Purch
     logText = resolveText(g, `${RETRAIN_LEAVE[previousJob] ?? 'Ты оставляешь прежнюю работу.'} ${RETRAIN_ARRIVE[target.job] ?? ''}`.trim())
     applyEffects(g, { memory: `В ${g.age} ${yearsWord(g.age)} сменил{{hero:|а}} профессию: из ${JOB_GENITIVE_PLURAL[previousJob] ?? 'прежней службы'} — в ${JOB_PLURAL[target.job] ?? target.job.toLowerCase()}.` })
   }
-  if (offer.attention > 0) g.attention -= offer.attention
+  spendPersonalTime(g, availability.attention)
   e.lastBought[offer.id] = g.age
   // Цель накопления достигнута покупкой: снимается молча, без записи в хронику (§6.4).
   if (e.goal === offer.id) e.goal = null
@@ -492,7 +501,10 @@ export function canSetLoad(state: GameState, nextLoad: number): LoadAvailability
   }
 }
 
-/** Changes only the next annual settlement's workload; it neither pays nor consumes attention/RNG. */
+/**
+ * Changes only the next annual settlement's workload; it neither pays nor consumes personal time/RNG.
+ * The personal-time limit of the current year is fixed: the new load grants its allowance from the next year.
+ */
 export function setLoad(state: GameState, nextLoad: number): GameState {
   if (!canSetLoad(state, nextLoad).available) return state
   const g = structuredClone(state)
@@ -550,7 +562,7 @@ export function beat(state: GameState): GameState {
   const line = ambientLine(g, g.phase)
   addLog(g, 'ambient', line.title, resolveText(g, line.text))
   // после тяжёлого события тихие моменты приходят чаще
-  if (g.attention > 0 && chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0))) {
+  if (g.attention > 0 && (chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0)) || freeTimeRoll(g))) {
     const pool = eligibleMoments(g)
     if (pool.length) {
       const next = weighted(g, pool.map(m => [m, m.weight] as const))
@@ -559,6 +571,15 @@ export function beat(state: GameState): GameState {
     }
   }
   return g
+}
+
+/**
+ * «Свободный вечер» (T9): второй шанс момента только у героя, чей режим этого года даёт личное время
+ * сверх полной ставки (0,6 ставки, пенсия). Для остальных RNG не тратится — их годы идут как прежде.
+ */
+function freeTimeRoll(g: GameState) {
+  const p = freeTimeChance(g)
+  return p > 0 && chance(g, p)
 }
 
 /** Проживает остаток текущего года (моменты пропускаются) и начинает следующий. */
@@ -689,7 +710,6 @@ export function tick(state: GameState): GameState {
   g.age += 1
   g.shipYear += 1
   g.phase = 0
-  g.attention = ATTENTION_PER_YEAR
   g.director = cool(g.director)
   if (!canFocus(g.age, g.focus) && g.age >= FOCUS_FROM_AGE) g.focus = 'study'
   worldTick(g)
@@ -699,9 +719,12 @@ export function tick(state: GameState): GameState {
   const economyResult = settleYear(g)
   applyEffects(g, { stats: economyResult.stats })
   for (const message of economyResult.logs) addLog(g, 'notice', 'Личные средства', message)
+  // Личное время выдаётся по режиму, который начал действовать с этого расчёта (ставка, стажировка, пенсия).
+  startPersonalTimeYear(g)
   introScene(g)
   deathTick(g)
   if (g.stopped) {
+    endPersonalTime(g)
     g.moodByAge[g.age] = Math.round(g.stats.morale)
     return g
   }

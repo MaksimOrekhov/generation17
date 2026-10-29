@@ -107,7 +107,7 @@ describe('T5: покупка переобучения — цена и досту
     expect(canBuy(poor, 'retrain', { job: 'Медик' }).reason).toBe('Не хватает 1 кр.')
     expect(retrain(poor, 'Медик')).toBe(poor)
     const tired = worker(); tired.attention = 0
-    expect(canBuy(tired, 'retrain', { job: 'Медик' }).reason).toMatch(/внимания/)
+    expect(canBuy(tired, 'retrain', { job: 'Медик' }).reason).toMatch(/личного времени/)
     expect(retrain(tired, 'Медик')).toBe(tired)
   })
 

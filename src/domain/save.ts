@@ -3,6 +3,7 @@ import { dropMissingPending } from './engine'
 import { cohabitationOk } from './invariants'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
+import { repairPersonalTime } from './personalTime'
 import type { GameState } from './types'
 
 export interface Repaired {
@@ -35,6 +36,10 @@ export function repairSave(state: GameState): Repaired {
     notes.push(`момент «${g.moment}» удалён из каталога и снят`)
     g = { ...g, moment: null }
   }
+  // Личное время после экономики: лимит нового года зависит от уже восстановленного рабочего режима.
+  const time = repairPersonalTime(g)
+  if (time.note) notes.push(time.note)
+  g = time.game
   if (!cohabitationOk(g)) {
     notes.push('совместная жизнь не сходилась с состоянием отношений и снята')
     g = { ...g, flags: { ...g.flags, livingTogether: false } }

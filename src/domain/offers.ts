@@ -1,5 +1,6 @@
 import { ECONOMY_TUNING, PROFESSIONS, changeProfession, isProfession, projectYear, type Housing } from './economy'
 import { isKnown, residenceOf, sectors } from './birth'
+import { canSpendPersonalTime } from './personalTime'
 import type { GameState, Job, SectorId, Skill, Stat } from './types'
 
 export type OfferType = 'repeatable' | 'unique' | 'regular'
@@ -29,6 +30,7 @@ export interface OfferDefinition {
   discount?: { job: Job; percent: number }
   minAge: number
   maxAge?: number
+  /** Стоимость в личном времени года (T9); 0 — не отнимает времени. Сюжетная покупка стоит столько же. */
   attention: number
   type: OfferType
   opens: string[]
@@ -57,7 +59,8 @@ export const OFFERS = {
     id: 'course-pro', title: 'Профессиональный курс',
     description: 'Развивает профильный навык и учитывается при последующем росте разряда.',
     category: 'career', oneTimeCost: 350, annualCost: 0,
-    minAge: 18, maxAge: 58, attention: 1, type: 'repeatable',
+    // Серьёзное занятие сверх смены: две единицы личного времени (T9).
+    minAge: 18, maxAge: 58, attention: 2, type: 'repeatable',
     opens: ['Следующее повышение разряда при выполнении условий earnedGrade().'],
     effects: { professionalSkill: { byJob: professionSkills, amount: 3, cap: 60 }, courses: 1 },
     requirements: (g: GameState) => {
@@ -76,6 +79,7 @@ export const OFFERS = {
     id: 'retrain', title: 'Переобучение',
     description: 'Переход в другую службу корабля: год стажировки, затем работа и разряды уже по новой специальности.',
     category: 'career', oneTimeCost: 500, annualCost: 0,
+    // Время уже оплачено годом стажировки и потерей разряда: личное время — одна единица, без двойного наказания.
     minAge: 22, maxAge: 55, attention: 1, type: 'repeatable',
     opens: ['Другая профессия: её сюжеты, особенности и собственный путь по тарифным разрядам.'],
     effects: { profession: true },
@@ -157,6 +161,7 @@ export interface PurchaseAvailability {
   available: boolean
   oneTimeCost: number
   annualCost: number
+  /** Сколько личного времени стоит позиция. */
   attention: number
   reason: string | null
   warnings: string[]
@@ -336,7 +341,7 @@ export function canBuy(g: GameState, offerId: string, target?: PurchaseTarget, s
     }
   }
 
-  if (!reason && g.attention < offer.attention) reason = `Не хватает ${offer.attention - g.attention} единицы внимания.`
+  if (!reason) reason = canSpendPersonalTime(g, offer.attention).reason
   if (!reason && g.economy.balance < oneTimeCost) reason = `Не хватает ${oneTimeCost - g.economy.balance} кр.`
 
   return {

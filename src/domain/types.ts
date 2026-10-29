@@ -35,6 +35,8 @@ export interface PersonState {
 export interface Relationships {
   partnerId: string | null
   formerPartnerIds: string[]
+  /** Явный разрыв завершил старую открытую линию, не меняя её исторические флаги. */
+  friendLoveClosed?: boolean
 }
 
 export interface Person {

@@ -31,6 +31,7 @@ export function repairSave(state: GameState): Repaired {
     if (!person || !person.alive) {
       notes.push(person ? 'отношения с умершим человеком сохранены в истории' : `партнёр «${id}» отсутствует в сохранении`)
       g = { ...g, flags: { ...g.flags, livingTogether: false }, relationships: {
+        ...g.relationships,
         partnerId: null,
         formerPartnerIds: person ? [...new Set([...g.relationships.formerPartnerIds, id])] : g.relationships.formerPartnerIds
       } }

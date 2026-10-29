@@ -36,6 +36,26 @@ export function currentPartner(g: GameState): Person | undefined {
   return id ? g.people.find(p => p.id === id && p.alive && p.since <= g.age) : undefined
 }
 
+/** Незавершённая старая линия не резервирует отношения после смерти или разрыва. */
+export function friendRomancePending(g: GameState): boolean {
+  const friend = g.people.find(p => p.id === 'friend' && p.alive && p.since <= g.age)
+  return !!friend && g.flags.lovePath === 'confessed' && (!g.flags.loveStage
+    || g.flags.loveStage === 'open' && !g.relationships?.friendLoveClosed)
+}
+
+/** Различаем активное продолжение, неопределённую романтику и историческую встречу. */
+export function friendLoveCompatible(g: GameState, eventId: string): boolean {
+  const partnerId = relationshipState(g).partnerId
+  if (['relationship', 'relationship-followup', 'love-home-offer', 'love-apart-return', 'love-drift', 'love-missed', 'love-friends-union'].includes(eventId)
+      && !g.people.some(p => p.id === 'friend' && p.alive && p.state?.availability !== 'distant' && p.since <= g.age)) return false
+  if (eventId === 'relationship') return !partnerId
+  if (eventId === 'love-home-offer' || eventId === 'love-apart-return') return !g.relationships || partnerId === 'friend'
+  if (eventId === 'relationship-followup' || eventId === 'love-missed') return !partnerId
+  if (eventId === 'love-drift') return (!partnerId || partnerId === 'friend') && !g.relationships?.friendLoveClosed
+  if (eventId === 'love-friends-union') return partnerId !== 'friend'
+  return true
+}
+
 /** Контент использует имена слотов, а состояние хранит ID конкретного человека. */
 export function personByRef(g: Pick<GameState, 'people' | 'age' | 'flags' | 'relationships'>, ref: string): Person | undefined {
   if (ref === 'partner') return currentPartner(g as GameState)
@@ -69,8 +89,8 @@ export function createStoryPerson(g: GameState, slot: string, role: string): Per
 export function beginRelationship(g: GameState, id: string): boolean {
   const person = g.people.find(p => p.id === id && p.alive && p.since <= g.age)
   const previous = relationshipState(g)
-  if (!person || person.state?.availability === 'distant' || g.age < 18 || person.age < 18 || previous.partnerId && previous.partnerId !== id) return false
-  g.relationships = { partnerId: id, formerPartnerIds: previous.formerPartnerIds.filter(old => old !== id) }
+  if (!person || person.state?.availability === 'distant' || g.age < 18 || person.age < 18 || previous.partnerId && previous.partnerId !== id || id !== 'friend' && friendRomancePending(g)) return false
+  g.relationships = { ...previous, partnerId: id, formerPartnerIds: previous.formerPartnerIds.filter(old => old !== id) }
   return true
 }
 
@@ -78,7 +98,8 @@ export function beginRelationship(g: GameState, id: string): boolean {
 export function endRelationship(g: GameState): boolean {
   const previous = relationshipState(g)
   if (!previous.partnerId) return false
-  g.relationships = { partnerId: null, formerPartnerIds: [...new Set([...previous.formerPartnerIds, previous.partnerId])] }
+  g.relationships = { ...previous, partnerId: null, formerPartnerIds: [...new Set([...previous.formerPartnerIds, previous.partnerId])],
+    ...(previous.partnerId === 'friend' && g.flags.lovePath === 'confessed' && g.flags.loveStage === 'open' ? { friendLoveClosed: true } : {}) }
   g.flags.livingTogether = false
   return true
 }

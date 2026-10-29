@@ -152,6 +152,7 @@ export function findInconsistencies(g: GameState): string[] {
   }
   if (g.relationships) {
     const { partnerId, formerPartnerIds } = g.relationships
+    if (g.relationships.friendLoveClosed !== undefined && typeof g.relationships.friendLoveClosed !== 'boolean') bad('некорректный маркер завершения линии друга')
     if (partnerId && !currentPartner(g)) bad('ссылка на недоступного партнёра')
     if (new Set(formerPartnerIds).size !== formerPartnerIds.length || partnerId && formerPartnerIds.includes(partnerId)) bad('повторяющиеся отношения с партнёром')
     for (const id of formerPartnerIds) if (!personIds.has(id)) bad(`бывший партнёр «${id}» отсутствует`)

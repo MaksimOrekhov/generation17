@@ -1,3 +1,8 @@
+import { CONTENT_PEOPLE, mentionedPeople } from '../domain/contentPeople'
+import registrations from '../../content/lines.json'
+import categoryRegistrations from '../../content/categories.json'
+import compatibility from '../../content/compatibility.json'
+import { MAX_REQUIRES_DEPTH } from './load'
 import type { Effects, MomentDef, Storylet } from '../domain/types'
 import { getOffer } from '../domain/offers'
 import { TIME_REGIMES } from '../domain/personalTime'
@@ -10,14 +15,14 @@ export const SHIP_STATS = ['air', 'food', 'cohesion', 'hull']
 export const SKILLS = ['engineering', 'medicine', 'ecology', 'social']
 export const JOBS = ['Ученик', 'Техник', 'Медик', 'Агроном', 'Координатор', 'Без специальности']
 export const SPOTS = ['window', 'door', 'terminal', 'parent', 'table', 'plant']
-export const PEOPLE = ['parent', 'parent2', 'sibling', 'friend', 'neighbor', 'mentor', 'child']
+export const PEOPLE: readonly string[] = CONTENT_PEOPLE
 export const SECTORS = ['atrium', 'bio', 'engineering', 'clinic', 'lower']
 /** Люди, которых эффект `addPerson` может добавить в жизнь героя. */
 export const NEW_PEOPLE = ['child']
 /** Подстановки {{...}}, которые понимает resolveText. */
-export const PLACEHOLDERS = ['name', 'job', 'parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
+export const PLACEHOLDERS: readonly string[] = ['name', 'job', ...CONTENT_PEOPLE]
 /** Подстановки-люди: должны быть гарантированы заголовком (body у сюжета, needs у момента). */
-const PERSON_PLACEHOLDERS = ['parent', 'friend', 'neighbor', 'mentor', 'sibling', 'child']
+const PERSON_PLACEHOLDERS: readonly string[] = CONTENT_PEOPLE
 /** Кого можно указывать в формах по роду: `{{hero:ся|ась}}`. */
 export const GENDER_SUBJECTS = ['hero', ...PERSON_PLACEHOLDERS]
 /** Сюжетный выбор может по-настоящему купить только эти позиции каталога (T7). */
@@ -39,11 +44,12 @@ export interface Known {
   flags: Set<string>
   arcs: Set<string>
   categories: Set<string>
+  choices?: Map<string, Set<string>>
 }
 
 type EffectHolder = { effects?: Effects; check?: { success: Effects; failure: Effects } }
 
-export function collectKnown(storylets: Storylet[], moments: MomentDef[]): Known {
+export function collectKnown(storylets: Storylet[], moments: MomentDef[], lines: unknown = registrations, categories: unknown = categoryRegistrations): Known {
   const flags = new Set<string>(ENGINE_FLAGS)
   const add = (e?: Effects) => Object.keys(e?.flags ?? {}).forEach(k => flags.add(k))
   const addHolder = (c: EffectHolder) => { add(c.effects); add(c.check?.success); add(c.check?.failure) }
@@ -53,8 +59,9 @@ export function collectKnown(storylets: Storylet[], moments: MomentDef[]): Known
     storyletIds: new Set(storylets.map(s => s.id)),
     momentIds: new Set(moments.map(m => m.id)),
     flags,
-    arcs: new Set(storylets.map(s => s.arc).filter((a): a is string => !!a)),
-    categories: new Set(storylets.map(s => s.category))
+    arcs: new Set([...storylets.map(s => s.arc).filter((a): a is string => !!a), ...(Array.isArray(lines) ? lines.flatMap(r => isObj(r) && isStr(r.id) ? [r.id] : []) : [])]),
+    categories: new Set([...storylets.map(s => s.category), ...(Array.isArray(categories) ? categories.flatMap(r => isObj(r) && isStr(r.id) ? [r.id] : []) : [])]),
+    choices: new Map(storylets.map(s => [s.id, new Set(s.choices.flatMap(c => c.id ? [c.id] : []))]))
   }
 }
 
@@ -97,6 +104,27 @@ class Ctx {
     return true
   }
 
+  numberRange(value: unknown, where: string, min: number, max: number) {
+    if (!isObj(value)) { this.err(where, 'нужен объект {min?, max?}'); return }
+    this.keys(value, ['min', 'max'], where)
+    if (value.min === undefined && value.max === undefined) this.err(where, 'нужна хотя бы одна граница')
+    for (const bound of ['min', 'max']) if (value[bound] !== undefined) this.int(value[bound], `${where}.${bound}`, [min, max])
+    if (isNum(value.min) && isNum(value.max) && value.min > value.max) this.err(where, 'min больше max')
+  }
+
+  variants(value: unknown, where: string, range: Range, guaranteed: string[], flags: Set<string>, warnAt?: number) {
+    if (value === undefined) return
+    if (!Array.isArray(value) || !value.length || value.length > 32) { this.err(where, 'нужно 1–32 вариантов текста'); return }
+    value.forEach((v, i) => {
+      const w = `${where}[${i}]`
+      if (!isObj(v)) { this.err(w, 'нужен объект {requires, text}'); return }
+      this.keys(v, ['requires', 'text'], w)
+      if (!isObj(v.requires)) this.err(`${w}.requires`, 'условие варианта обязательно')
+      this.requires(v.requires, `${w}.requires`, flags)
+      if (this.text(v.text, `${w}.text`, range, warnAt)) this.personGuard(v.text, [...guaranteed, ...guardedPeople(v.requires)], `${w}.text`)
+    })
+  }
+
   int(v: unknown, where: string, range: Range) {
     if (!isNum(v) || !Number.isInteger(v)) this.err(where, 'должно быть целое число')
     else if (v < range[0] || v > range[1]) this.err(where, `${v} вне диапазона ${range[0]}–${range[1]}`)
@@ -109,7 +137,7 @@ class Ctx {
       if (!validStoryMoney(e.money)) this.err(`${where}.money`, `нужно безопасное целое число в пределах ±${LIMITS.money}`)
       else if (!allowExpense && e.money < 0) this.err(`${where}.money`, 'отрицательные деньги здесь запрещены')
     }
-    const nums = (key: string, names: string[], limit: number, warnAt?: number) => {
+    const nums = (key: string, names: readonly string[], limit: number, warnAt?: number) => {
       const o = e[key]
       if (o === undefined) return
       if (!isObj(o)) { this.err(`${where}.${key}`, 'должен быть объектом'); return }
@@ -140,10 +168,41 @@ class Ctx {
     if (e.memory !== undefined) this.text(e.memory, `${where}.memory`, LIMITS.memory)
   }
 
-  requires(r: unknown, where: string, flagsSetHere: Set<string>) {
+  requires(r: unknown, where: string, flagsSetHere: Set<string>, depth = 0) {
+    if (depth > MAX_REQUIRES_DEPTH) { this.err(where, 'глубина requires больше 8'); return }
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen', 'regime'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen', 'regime', 'any', 'seen', 'notSeen', 'chose', 'decisionYears', 'bond', 'skill', 'ship', 'birthWealth', 'trait', 'dead', 'absent', 'exists'], where)
+    if (r.any !== undefined) {
+      if (!Array.isArray(r.any) || !r.any.length || r.any.length > 32) this.err(`${where}.any`, 'нужен непустой массив из 1–32 условий')
+      else r.any.forEach((child, i) => this.requires(child, `${where}.any[${i}]`, flagsSetHere, depth + 1))
+    }
+    for (const key of ['seen', 'notSeen', 'dead', 'absent', 'exists', 'trait']) {
+      const v = r[key]
+      if (v === undefined) continue
+      if (!Array.isArray(v) || !v.length || !v.every(isStr)) { this.err(`${where}.${key}`, 'нужен непустой массив строк'); continue }
+      const names = key === 'seen' || key === 'notSeen' ? this.known.storyletIds
+        : key === 'trait' ? new Set(['Наблюдательный', 'Осторожный', 'Любознательный', 'Упрямый', 'Добросердечный']) : new Set(PEOPLE)
+      for (const id of v) if (!names.has(id)) this.err(`${where}.${key}`, `неизвестный ID «${id}»`)
+    }
+    if (r.chose !== undefined) {
+      if (!isObj(r.chose) || !Object.keys(r.chose).length) this.err(`${where}.chose`, 'нужна карта сюжет → непустой массив ID ответов')
+      else for (const [id, choices] of Object.entries(r.chose)) {
+        if (!this.known.storyletIds.has(id)) this.err(`${where}.chose`, `неизвестный сюжет «${id}»`)
+        if (!Array.isArray(choices) || !choices.length || !choices.every(isStr)) this.err(`${where}.chose.${id}`, 'нужен непустой массив стабильных ID')
+        else for (const choice of choices) if (!this.known.choices?.get(id)?.has(choice)) this.err(`${where}.chose.${id}`, `неизвестный стабильный ID ответа «${choice}»`)
+      }
+    }
+    for (const key of ['bond', 'skill', 'ship', 'decisionYears']) {
+      if (r[key] === undefined) continue
+      if (!isObj(r[key])) { this.err(`${where}.${key}`, 'нужна карта ID → диапазон'); continue }
+      const names = key === 'bond' ? new Set(PEOPLE) : key === 'skill' ? new Set(SKILLS) : key === 'ship' ? new Set(SHIP_STATS) : this.known.storyletIds
+      for (const [id, value] of Object.entries(r[key])) {
+        if (!names.has(id)) this.err(`${where}.${key}.${id}`, 'неизвестный ID')
+        this.numberRange(value, `${where}.${key}.${id}`, 0, key === 'decisionYears' ? 120 : 100)
+      }
+    }
+    if (r.birthWealth !== undefined) this.numberRange(r.birthWealth, `${where}.birthWealth`, 1, 5)
     const range = (key: string, min: number, max: number, step = 1) => {
       const value = r[key], w = `${where}.${key}`
       if (value === undefined) return
@@ -262,63 +321,101 @@ class Ctx {
 
 function flagsSet(items: unknown): Set<string> {
   const out = new Set<string>()
-  const walk = (v: unknown) => {
-    if (Array.isArray(v)) v.forEach(walk)
+  const walk = (v: unknown, depth = 0) => {
+    if (depth > 64) return // malformed deeply nested input is rejected by requires(), never followed indefinitely
+    if (Array.isArray(v)) v.forEach(child => walk(child, depth + 1))
     else if (isObj(v)) {
       if (isObj(v.flags)) Object.keys(v.flags).forEach(k => out.add(k))
-      Object.values(v).forEach(walk)
+      Object.values(v).forEach(child => walk(child, depth + 1))
     }
   }
   walk(items)
   return out
 }
 
-function checkStorylet(c: Ctx, s: unknown, where: string) {
+/** Only facts guaranteed by every branch of OR can guard a reference. */
+function guardedPeople(r: unknown, depth = 0): string[] {
+  if (depth > MAX_REQUIRES_DEPTH || !isObj(r)) return []
+  const own = ['present', 'dead', 'exists'].flatMap(k => Array.isArray(r[k]) ? r[k].filter(isStr) : [])
+  const branches = Array.isArray(r.any) ? r.any.map(child => guardedPeople(child, depth + 1)) : []
+  return [...new Set([...own, ...(branches.length ? branches[0]!.filter(id => branches.every(b => b.includes(id))) : [])])]
+}
+
+function checkStorylet(c: Ctx, s: unknown, where: string, flags: Set<string>) {
   if (!isObj(s)) { c.err(where, 'сюжет должен быть объектом'); return }
-  c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'priority', 'arc', 'fork', 'weird', 'requires', 'choices'], where)
+  c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'priority', 'arc', 'fork', 'weird', 'requires', 'choices', 'bodyVariants', 'tone', 'tags', 'group'], where)
   c.text(s.title, `${where}.title`, LIMITS.title)
   c.text(s.body, `${where}.body`, LIMITS.body, LIMITS.bodyWarn)
   if (!isStr(s.category) || !c.known.categories.has(s.category)) c.err(`${where}.category`, `«${String(s.category)}» — категория из списка: ${[...c.known.categories].join(', ')}`)
   c.int(s.min, `${where}.min`, LIMITS.age)
   c.int(s.max, `${where}.max`, LIMITS.age)
   if (isNum(s.min) && isNum(s.max) && s.min > s.max) c.err(where, 'min больше max')
-  c.int(s.weight, `${where}.weight`, LIMITS.weight)
+  const legacyWeight = (compatibility.legacyWeights as Record<string, number>)[String(s.id)]
+  c.int(s.weight, `${where}.weight`, legacyWeight === s.weight ? [legacyWeight, legacyWeight] : LIMITS.weight)
+  if (s.tone !== undefined && !['calm', 'warm', 'tense', 'crisis'].includes(s.tone as string)) c.err(`${where}.tone`, 'неизвестный тон')
+  const identifier = (v: unknown) => isStr(v) && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(v)
+  if (s.group !== undefined && !identifier(s.group)) c.err(`${where}.group`, 'нужен kebab-case ID')
+  if (s.tags !== undefined && (!Array.isArray(s.tags) || !s.tags.every(identifier) || new Set(s.tags).size !== s.tags.length)) c.err(`${where}.tags`, 'нужен массив уникальных kebab-case ID')
   if (s.weird !== undefined && s.weird !== 1 && s.weird !== 2) c.err(`${where}.weird`, 'только 1 (тайна) или 2 (тревога), либо без поля')
   if (s.priority !== undefined) {
     if (s.priority !== 'followup' && s.priority !== 'critical') c.err(`${where}.priority`, 'followup, critical или без поля')
-    else if (!isObj(s.requires) || !['flag', 'flagIs', 'since', 'until'].some(k => (s.requires as Record<string, unknown>)[k] !== undefined)) {
+    else if (!isObj(s.requires) || !['flag', 'flagIs', 'since', 'until', 'chose', 'seen', 'decisionYears'].some(k => (s.requires as Record<string, unknown>)[k] !== undefined)) {
       c.err(`${where}.priority`, `${s.priority} — это продолжение: нужен requires с flag, flagIs, since или until, иначе сюжет будет идти раньше всех остальных всегда`)
     }
   }
-  if (s.arc !== undefined && (!isStr(s.arc) || !c.known.arcs.has(s.arc))) c.err(`${where}.arc`, `линия из списка: ${[...c.known.arcs].join(', ')} (новые линии согласуйте с Claude)`)
+  if (s.arc !== undefined && (!isStr(s.arc) || !c.known.arcs.has(s.arc))) c.err(`${where}.arc`, `линия из списка: ${[...c.known.arcs].join(', ')} (зарегистрируйте новую линию в content/lines.json)`)
   if (s.fork !== undefined && (typeof s.fork !== 'boolean' || !s.arc)) c.err(`${where}.fork`, 'fork: true только вместе с arc')
   if (!Array.isArray(s.choices) || s.choices.length < LIMITS.choices[0] || s.choices.length > LIMITS.choices[1]) {
     c.err(`${where}.choices`, `нужно ${LIMITS.choices[0]}–${LIMITS.choices[1]} выбора`)
     return
   }
   const body = isStr(s.body) ? s.body : ''
-  const guaranteed = PERSON_PLACEHOLDERS.filter(p => body.includes(`{{${p}}}`) || body.includes(`{{${p}:`))
+  const implicit = mentionedPeople(body).filter(id => !Array.isArray(s.bodyVariants) || s.bodyVariants.every(v =>
+    isObj(v) && (isStr(v.text) && mentionedPeople(v.text).includes(id) || guardedPeople(v.requires).includes(id))))
+  const guaranteed = [...implicit, ...guardedPeople(s.requires)]
+  c.variants(s.bodyVariants, `${where}.bodyVariants`, LIMITS.body, guardedPeople(s.requires), flags, LIMITS.bodyWarn)
+  const choiceIds = new Set<string>()
   s.choices.forEach((ch: unknown, i: number) => {
     const w = `${where}.choices[${i}]`
     if (!isObj(ch)) { c.err(w, 'выбор должен быть объектом'); return }
-    c.keys(ch, ['text', 'hint', 'result', 'effects', 'check', 'purchase'], w)
+    c.keys(ch, ['id', 'text', 'hint', 'result', 'effects', 'check', 'purchase', 'requires', 'resultVariants', 'epilogue'], w)
+    if (ch.id === undefined && !compatibility.legacyChoiceIds.includes(String(s.id))) c.err(`${w}.id`, 'новому JSON нужен стабильный ID ответа')
+    if (ch.id !== undefined) {
+      if (!isStr(ch.id) || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(ch.id)) c.err(`${w}.id`, 'нужен kebab-case ID')
+      else if (choiceIds.has(ch.id)) c.err(`${w}.id`, 'повторяющийся ID ответа')
+      else choiceIds.add(ch.id)
+    }
+    c.requires(ch.requires, `${w}.requires`, flags)
+    const choiceGuard = [...guaranteed, ...guardedPeople(ch.requires)]
+    c.variants(ch.resultVariants, `${w}.resultVariants`, LIMITS.result, choiceGuard, flags, LIMITS.resultWarn)
+    if (ch.epilogue !== undefined && c.text(ch.epilogue, `${w}.epilogue`, LIMITS.memory)) c.personGuard(ch.epilogue, choiceGuard, `${w}.epilogue`)
     if (ch.purchase !== undefined) c.purchase(ch, w)
-    if (c.text(ch.text, `${w}.text`, LIMITS.label)) c.personGuard(ch.text, guaranteed, `${w}.text`)
-    c.text(ch.hint, `${w}.hint`, LIMITS.hint)
-    if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, guaranteed, `${w}.result`)
+    if (c.text(ch.text, `${w}.text`, LIMITS.label)) c.personGuard(ch.text, choiceGuard, `${w}.text`)
+    if (c.text(ch.hint, `${w}.hint`, LIMITS.hint)) c.personGuard(ch.hint, choiceGuard, `${w}.hint`)
+    if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, [...choiceGuard, ...(isObj(ch.effects) && ch.effects.addPerson === 'child' ? ['child'] : [])], `${w}.result`)
     c.effects(ch.effects, `${w}.effects`)
+    if (isObj(ch.effects) && isStr(ch.effects.memory)) c.personGuard(ch.effects.memory, [...choiceGuard, ...(ch.effects.addPerson === 'child' ? ['child'] : [])], `${w}.effects.memory`)
     if (ch.check === undefined) return
     const k = ch.check
     if (!isObj(k)) { c.err(`${w}.check`, 'check должен быть объектом'); return }
-    c.keys(k, ['skill', 'difficulty', 'successText', 'failureText', 'success', 'failure'], `${w}.check`)
+    c.keys(k, ['skill', 'difficulty', 'successText', 'failureText', 'success', 'failure', 'successVariants', 'failureVariants'], `${w}.check`)
     if (!SKILLS.includes(k.skill as string)) c.err(`${w}.check.skill`, `навык из: ${SKILLS.join(', ')}`)
     c.int(k.difficulty, `${w}.check.difficulty`, [5, 35])
     for (const f of ['successText', 'failureText']) {
-      if (c.text(k[f], `${w}.check.${f}`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(k[f] as string, guaranteed, `${w}.check.${f}`)
+      if (c.text(k[f], `${w}.check.${f}`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(k[f] as string, choiceGuard, `${w}.check.${f}`)
     }
+    for (const field of ['successVariants', 'failureVariants']) c.variants(k[field], `${w}.check.${field}`, LIMITS.result, choiceGuard, flags)
     c.effects(k.success, `${w}.check.success`, false)
     c.effects(k.failure, `${w}.check.failure`, false)
   })
+  if (!s.choices.some(ch => isObj(ch) && ch.requires === undefined && ch.purchase === undefined
+    && isObj(ch.effects) && (ch.effects.money === undefined || ch.effects.money === 0)
+    && (ch.check === undefined || isObj(ch.check) && ['success', 'failure'].every(key => {
+      const effect = (ch.check as Obj)[key]
+      return isObj(effect) && (effect.money === undefined || effect.money === 0)
+    })))) {
+    c.err(`${where}.choices`, 'нужен безусловный бесплатный вариант ответа')
+  }
   if (s.choices.some(ch => isObj(ch) && (ch.purchase !== undefined || isObj(ch.effects) && isNum(ch.effects.money) && ch.effects.money < 0))) {
     const free = s.choices.some(ch => isObj(ch) && isObj(ch.effects) && ch.purchase === undefined
       && (ch.effects.money === undefined || validStoryMoney(ch.effects.money) && ch.effects.money >= 0)
@@ -330,9 +427,9 @@ function checkStorylet(c: Ctx, s: unknown, where: string) {
   }
 }
 
-function checkMoment(c: Ctx, m: unknown, where: string) {
+function checkMoment(c: Ctx, m: unknown, where: string, flags: Set<string>) {
   if (!isObj(m)) { c.err(where, 'момент должен быть объектом'); return }
-  c.keys(m, ['id', 'spot', 'title', 'text', 'min', 'max', 'weight', 'cooldown', 'weird', 'needs', 'requires', 'accept', 'skip'], where)
+  c.keys(m, ['id', 'spot', 'title', 'text', 'min', 'max', 'weight', 'cooldown', 'weird', 'needs', 'requires', 'accept', 'skip', 'textVariants'], where)
   if (isStr(m.id) && !m.id.startsWith('m-')) c.err(`${where}.id`, 'id момента начинается с «m-»')
   c.text(m.title, `${where}.title`, LIMITS.title)
   if (!SPOTS.includes(m.spot as string)) c.err(`${where}.spot`, `объект сцены из: ${SPOTS.join(', ')}`)
@@ -352,13 +449,16 @@ function checkMoment(c: Ctx, m: unknown, where: string) {
     const age = isObj(m.requires) && isObj(m.requires.personAge) ? m.requires.personAge.child : undefined
     if (!isObj(age) || !isNum(age.max)) c.err(`${where}.requires.personAge.child`, 'момент с ребёнком (needs: child) должен ограничить возраст ребёнка через personAge.child.max')
   }
+  needs = [...needs, ...guardedPeople(m.requires)]
+  c.variants(m.textVariants, `${where}.textVariants`, LIMITS.momentText, guardedPeople(m.requires), flags)
   if (c.text(m.text, `${where}.text`, LIMITS.momentText, LIMITS.momentTextWarn)) c.personGuard(m.text, needs, `${where}.text`)
   const { accept, skip } = m
   if (!isObj(accept)) c.err(`${where}.accept`, 'нужен объект')
   else {
-    c.keys(accept, ['label', 'result', 'effects'], `${where}.accept`)
+    c.keys(accept, ['label', 'result', 'effects', 'resultVariants'], `${where}.accept`)
     c.text(accept.label, `${where}.accept.label`, LIMITS.label)
     if (c.text(accept.result, `${where}.accept.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(accept.result, needs, `${where}.accept.result`)
+    c.variants(accept.resultVariants, `${where}.accept.resultVariants`, LIMITS.result, needs, flags)
     c.effects(accept.effects, `${where}.accept.effects`, false)
   }
   if (!isObj(skip)) c.err(`${where}.skip`, 'нужен объект')
@@ -371,8 +471,39 @@ function checkMoment(c: Ctx, m: unknown, where: string) {
 
 export interface ContentFile { path: string; kind: 'storylets' | 'moments'; data: unknown }
 
-export function validateContent(files: ContentFile[], known: Known): Issue[] {
+export function validateRegistrations(lines: unknown, categories: unknown, files: ContentFile[], known: Known): Issue[] {
   const c = new Ctx(known)
+  const stories = files.filter(f => f.kind === 'storylets' && Array.isArray(f.data)).flatMap(f => f.data as unknown[]).filter(isObj)
+  for (const [name, entries] of [['lines', lines], ['categories', categories]] as const) {
+    if (!Array.isArray(entries)) { c.err(`content/${name}.json`, 'нужен массив регистраций'); continue }
+    const ids = new Set<string>()
+    for (const entry of entries) {
+      const where = `content/${name}.json`
+      if (!isObj(entry)) { c.err(where, 'нужен объект регистрации'); continue }
+      c.keys(entry, name === 'lines' ? ['id', 'title', 'start'] : ['id', 'title'], where)
+      if (!isStr(entry.id) || !entry.id.trim() || name === 'lines' && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(entry.id)) c.err(where, 'неверный ID регистрации')
+      else if (ids.has(entry.id)) c.err(where, `повтор регистрации «${entry.id}»`)
+      else ids.add(entry.id)
+      c.text(entry.title, `${where}.title`, LIMITS.title)
+      if (name === 'lines') {
+        const start = stories.find(s => s.id === entry.start)
+        if (!isStr(entry.start) || !start || start.arc !== entry.id || start.fork !== true) c.err(where, `начало «${String(entry.start)}» должно существовать с тем же arc и fork: true`)
+        if (stories.filter(s => s.arc === entry.id && s.fork === true).length !== 1) c.err(where, `линии «${String(entry.id)}» нужно ровно одно начало`)
+      }
+    }
+  }
+  return c.issues
+}
+
+export function validateContent(files: ContentFile[], known: Known): Issue[] {
+  const catalogue = { ...known, storyletIds: new Set(known.storyletIds), choices: new Map(known.choices) }
+  for (const f of files) if (f.kind === 'storylets' && Array.isArray(f.data)) for (const item of f.data) {
+    if (isObj(item) && isStr(item.id)) {
+      catalogue.storyletIds.add(item.id)
+      catalogue.choices.set(item.id, new Set(Array.isArray(item.choices) ? item.choices.flatMap(ch => isObj(ch) && isStr(ch.id) ? [ch.id] : []) : []))
+    }
+  }
+  const c = new Ctx(catalogue)
   const seen = new Map<string, string>()
   const setHere = flagsSet(files.map(f => f.data))
   for (const f of files) {
@@ -387,8 +518,8 @@ export function validateContent(files: ContentFile[], known: Known): Issue[] {
         seen.set(item.id, f.path)
       }
       if (isObj(item)) c.requires(item.requires, `${where}.requires`, setHere)
-      if (f.kind === 'storylets') checkStorylet(c, item, where)
-      else checkMoment(c, item, where)
+      if (f.kind === 'storylets') checkStorylet(c, item, where, setHere)
+      else checkMoment(c, item, where, setHere)
     })
   }
   return c.issues

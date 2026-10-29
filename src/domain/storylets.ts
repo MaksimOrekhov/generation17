@@ -224,15 +224,7 @@ const baseStorylets: Storylet[] = [
       { text: 'Признаться, что не знаешь ответа', hint: 'Честность', result: 'Получается очень короткая запись. Почему-то именно она нравится архивариусу.', effects: { stats: { morale: 5, stress: -4 }, flags: { legacyRecorded: 'uncertain' }, memory: 'Признал{{hero:|а}}, что не наш{{hero:ёл|ла}} единственного смысла прожитой жизни.' } }
     ]
   },
-  {
-    id: 'neighbor-medical', arc: 'neighbor', fork: true, category: 'Отношения', min: 18, max: 55, weight: 2,
-    title: 'Просьба соседа', body: '{{neighbor}} просит присмотреть за детьми во время ночной смены. Это неудобно: завтра у тебя тоже ранний подъём. Сосед уверяет, что больше обратиться не к кому.', available: g => !g.flags.neighborFavor,
-    choices: [
-      { text: 'Остаться и помочь', hint: 'Доверие ↑ · Стресс ↑', result: 'День получается очень длинным, но {{neighbor}} благодарит тебя так, будто ты совершил{{hero:|а}} что-то великое.', effects: { stats: { bonds: 4, stress: 4 }, bonds: { neighbor: 18 }, flags: { neighborFavor: true, neighborHelped: true, neighborPath: 'helped', neighborAge: gYearPlaceholder }, memory: 'Помог{{hero:|ла}} соседу в трудный момент, пожертвовав собственным отдыхом.' } },
-      { text: 'Предложить другую помощь', hint: 'Коммуникация ↑', result: 'Вы находите дежурного в соседнем блоке. Обошлось без жертв для твоего расписания.', effects: { skills: { social: 2 }, bonds: { neighbor: 5 }, flags: { neighborFavor: true, neighborPath: 'alt', neighborAge: gYearPlaceholder } } },
-      { text: 'Вежливо отказаться', hint: 'Отдых ↑ · Доверие ↓', result: 'Сосед находит решение самостоятельно, но некоторое время почти не здоровается.', effects: { stats: { stress: -2 }, bonds: { neighbor: -8 }, flags: { neighborFavor: true, neighborPath: 'refused', neighborAge: gYearPlaceholder } } }
-    ]
-  },
+
   {
     id: 'mentor', category: 'Профессия', min: 18, max: 34, weight: 3,
     title: 'Разговор после смены', body: '{{mentor}} замечает, что ты работаешь без прежнего энтузиазма. «Выбирать дело в шестнадцать и всю жизнь держаться за него — странная традиция», — говорит наставник.', // После купленного переобучения и во время любой незавершённой смены профессии разговор о «выборе в шестнадцать» не к месту:

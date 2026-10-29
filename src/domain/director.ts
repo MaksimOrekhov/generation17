@@ -58,7 +58,7 @@ const TONE_OVERRIDES: Record<string, Tone> = {
   midlife: 'calm', legacy: 'calm', retirement: 'calm', 'first-pay': 'calm', 'school-track': 'calm'
 }
 
-export const toneOf = (s: Storylet): Tone => TONE_OVERRIDES[s.id] ?? CATEGORY_TONE[s.category] ?? 'calm'
+export const toneOf = (s: Storylet): Tone => s.tone ?? TONE_OVERRIDES[s.id] ?? CATEGORY_TONE[s.category] ?? 'calm'
 
 export const initialDirector = (): Director => ({ lastAge: 0, tension: 0, lastCategory: null, lastTone: 'calm' })
 

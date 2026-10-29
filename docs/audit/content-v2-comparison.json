@@ -1,0 +1,193 @@
+{
+  "baseline": "docs/audit/core-systems-variety.json",
+  "after": "docs/audit/content-v2-after.json",
+  "method": {
+    "lives": 1200,
+    "perPolicy": 200,
+    "policies": [
+      "Careerist",
+      "Moderate",
+      "Family",
+      "TimeBuyer",
+      "Spender",
+      "Saver"
+    ],
+    "seeds": [
+      3001,
+      3200
+    ],
+    "answers": "хэш economy-t8a (как T8/T9)",
+    "moments": "planned (T9)",
+    "purchases": "financialDecisions T8a"
+  },
+  "metrics": [
+    {
+      "metric": "decisionsPerLife",
+      "before": 25,
+      "after": 25.1
+    },
+    {
+      "metric": "followupDeliveryPct",
+      "before": 99.7,
+      "after": 99.8
+    },
+    {
+      "metric": "neverObservedEvents",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "metric": "arcsWithoutOutcomeExcludingStandaloneCareer",
+      "before": 36,
+      "after": 38
+    },
+    {
+      "metric": "invariantViolations",
+      "before": 0,
+      "after": 0
+    },
+    {
+      "metric": "meanSaveKb",
+      "before": 97.2,
+      "after": 99.3
+    }
+  ],
+  "neighbor": {
+    "before": {
+      "started": 546,
+      "longLived": 531,
+      "noOutcome": 1,
+      "noOutcomePct": 0.2
+    },
+    "after": {
+      "started": 556,
+      "longLived": 537,
+      "noOutcome": 4,
+      "noOutcomePct": 0.7
+    },
+    "perStorylet": {
+      "neighbor-medical": {
+        "before": {
+          "priority": "normal",
+          "eligiblePct": 97,
+          "shownPct": 45.5,
+          "deliveryPct": 46.9
+        },
+        "after": {
+          "priority": "normal",
+          "eligiblePct": 97,
+          "shownPct": 46.3,
+          "deliveryPct": 47.8
+        }
+      },
+      "neighbor-followup": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 15.4,
+          "shownPct": 15.4,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 16.7,
+          "shownPct": 16.5,
+          "deliveryPct": 99
+        }
+      },
+      "neighbor-kid-moved": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 4.9,
+          "shownPct": 4.9,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 6,
+          "shownPct": 5.8,
+          "deliveryPct": 97.2
+        }
+      },
+      "neighbor-kid-passed": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 5.2,
+          "shownPct": 5.2,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 5.3,
+          "shownPct": 5.3,
+          "deliveryPct": 100
+        }
+      },
+      "neighbor-kid-stayed": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 5,
+          "shownPct": 5,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 4.6,
+          "shownPct": 4.6,
+          "deliveryPct": 100
+        }
+      },
+      "neighbor-weekend": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 17.6,
+          "shownPct": 17.6,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 13.6,
+          "shownPct": 13.6,
+          "deliveryPct": 100
+        }
+      },
+      "neighbor-cold-leak": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 12.4,
+          "shownPct": 12.4,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 15.8,
+          "shownPct": 15.8,
+          "deliveryPct": 100
+        }
+      },
+      "neighbor-reconcile": {
+        "before": {
+          "priority": "followup",
+          "eligiblePct": 3.3,
+          "shownPct": 3.3,
+          "deliveryPct": 100
+        },
+        "after": {
+          "priority": "followup",
+          "eligiblePct": 5.3,
+          "shownPct": 5.3,
+          "deliveryPct": 100
+        }
+      }
+    }
+  },
+  "neverObserved": {
+    "before": [
+      "census-counting-voice (условия ни разу не выполнились)"
+    ],
+    "after": [
+      "crack-worsened (условия ни разу не выполнились)",
+      "census-counting-voice (условия ни разу не выполнились)"
+    ]
+  },
+  "note": "Not observed is not a proof of unreachability. Catalogue movement changes full-life RNG ordering. Frozen-catalogue replay retains the original digest and rare crack-worsened delivery."
+}

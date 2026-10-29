@@ -1,0 +1,95 @@
+{
+  "legacyChoiceIds": [
+    "adult-shift-error",
+    "adult-parent-care",
+    "adult-sector-repair",
+    "adult-family-choice",
+    "adult-sector-move",
+    "adult-family-return",
+    "tin-whistle",
+    "family-need-cell-small",
+    "family-need-cell-medium",
+    "family-need-cell-large",
+    "family-need-key",
+    "family-need-apples",
+    "window-offer",
+    "window-last-call",
+    "cabin-closed-door",
+    "trip-memory-friend",
+    "lower-deck-stranger",
+    "family-a-life-ahead",
+    "family-crossing-decks",
+    "family-child-question",
+    "family-parent-last-days",
+    "family-home-in-bio",
+    "family-life-ahead-again",
+    "late-friend-bench",
+    "late-adult-child-route",
+    "late-tech-handbook",
+    "late-medic-routine",
+    "late-crack-record",
+    "late-signal-record",
+    "late-neighbor-night",
+    "late-common-room",
+    "youth-shared-notes",
+    "youth-window-shift",
+    "youth-first-duty",
+    "youth-family-table",
+    "youth-garden-label",
+    "youth-voice-message",
+    "youth-lunch-line",
+    "youth-map-corner",
+    "youth-swap-evening",
+    "youth-quiet-corner"
+  ],
+  "legacyWeights": {
+    "neighbor-followup": 12,
+    "neighbor-kid-moved": 14,
+    "neighbor-kid-passed": 14,
+    "neighbor-kid-stayed": 12,
+    "neighbor-weekend": 12,
+    "neighbor-cold-leak": 18,
+    "neighbor-reconcile": 14
+  },
+  "choiceOrder": {
+    "neighbor-medical": [
+      "help",
+      "find-substitute",
+      "refuse"
+    ],
+    "neighbor-followup": [
+      "move",
+      "pass-on",
+      "stay"
+    ],
+    "neighbor-kid-moved": [
+      "visit",
+      "teach",
+      "decline"
+    ],
+    "neighbor-kid-passed": [
+      "thank",
+      "leave-jam",
+      "ignore"
+    ],
+    "neighbor-kid-stayed": [
+      "invite",
+      "fix-alone",
+      "learn"
+    ],
+    "neighbor-weekend": [
+      "accept",
+      "rota",
+      "refuse"
+    ],
+    "neighbor-cold-leak": [
+      "help",
+      "call-service",
+      "ignore"
+    ],
+    "neighbor-reconcile": [
+      "thank",
+      "bake"
+    ]
+  }
+}

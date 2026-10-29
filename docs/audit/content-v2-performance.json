@@ -1,0 +1,38 @@
+{
+  "environment": {
+    "node": "v22.17.1",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "events": 1500,
+  "journalRecords": 101,
+  "compiledHeapDeltaMb": 17.88,
+  "memoryNote": "Heap delta includes normal allocation/GC noise; no per-state index or cache is retained.",
+  "results": [
+    {
+      "name": "compiled range/OR conditions",
+      "count": 100000,
+      "medianMs": 8.396,
+      "nsPerOperation": 84
+    },
+    {
+      "name": "chose + decisionYears, 101-record journal (worst end hit)",
+      "count": 100000,
+      "medianMs": 87.316,
+      "nsPerOperation": 873
+    },
+    {
+      "name": "first-matching body variants",
+      "count": 100000,
+      "medianMs": 149.709,
+      "nsPerOperation": 1497
+    },
+    {
+      "name": "1500 events: eligibility + body + result variants",
+      "count": 100,
+      "medianMs": 959.629,
+      "nsPerOperation": 9596288
+    }
+  ],
+  "deterministic": true
+}

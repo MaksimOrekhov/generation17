@@ -186,7 +186,7 @@ describe('T8a real full lives', () => {
     expect(spender.purchases.categoriesPerLife.mean!).toBeGreaterThan(saver.purchases.categoriesPerLife.mean!)
     for (const l of a.flat()) {
       expect(l.completed).toBe(true); expect(l.violations).toEqual([]); expect(l.accountingErrors).toEqual([])
-      expect(l.totalSpent).toBe(l.annualSpent + l.purchaseSpent)
+      expect(l.totalSpent).toBe(l.annualSpent + l.purchaseSpent + l.storySpent)
       expect(l.quality.every(y => y.attention >= 0 && y.attention <= 3)).toBe(true)
       const familyAges = l.purchases.filter(p => p.id === 'family-trip').map(p => p.age)
       expect(familyAges.every((age, i) => i === 0 || age - familyAges[i - 1]! >= 5)).toBe(true)

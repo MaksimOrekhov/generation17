@@ -55,6 +55,7 @@ describe('T8 protocol and real domain actions', () => {
   it('StoryHelper uses its declared context and does not invariably choose a paid answer', () => {
     const results = Array.from({ length: 12 }, (_, i) => {
       const g = moneyWorker(2000, 30, i + 1); g.pending = 'family-need-cell-small'
+      if (!g.people.some(p => p.id === 'sibling')) g.people.push({ id: 'sibling', name: 'Ян Тест', role: 'Брат', gender: 'm', age: 32, bond: 60, since: 0, alive: true })
       const before = structuredClone(g), r = chooseStory(g, policyFor('StoryHelper'))
       expect(g).toEqual(before)
       return r.selected.a.cost

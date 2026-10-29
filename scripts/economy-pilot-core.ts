@@ -1,3 +1,4 @@
+import compatibility from '../content/compatibility.json'
 /** T8a diagnostic runner. Never writes to the engine state except through domain actions. */
 import { beat, canChoose, canSetLoad, createGame, decide, purchase, setFocus, setLoad, takeMoment, tick } from '../src/domain/engine'
 import { ECONOMY_TUNING, obligationsOf, projectYear, wageOf } from '../src/domain/economy'
@@ -6,7 +7,7 @@ import type { OfferId, PurchaseAvailability, PurchaseTarget } from '../src/domai
 import { findInconsistencies } from '../src/domain/invariants'
 import { hash32 } from '../src/domain/random'
 import { storylets } from '../src/domain/storylets'
-import type { Focus, GameState, Job, Stat } from '../src/domain/types'
+import type { Focus, GameState, Job, Stat, Storylet } from '../src/domain/types'
 import { describe } from './audit-stats'
 
 export const STRATEGIES = ['Saver', 'Moderate', 'Careerist', 'Family', 'Explorer', 'Spender'] as const
@@ -82,6 +83,15 @@ export function retrainTargetFor(g: GameState): Job {
 /** Same event at the same age always gets the same answer, even after trajectories diverge. */
 export function storyChoice(seed: number, id: string, age: number, count: number) {
   return hash32('economy-t8a', seed, id, age) % count
+}
+
+/** Stable content uses semantic IDs; the frozen migration order preserves pre-v2 audit policies. */
+export function storyChoiceIndex(seed: number, event: Storylet, age: number, salt = 'economy-t8a') {
+  const position = hash32(salt, seed, event.id, age) % event.choices.length
+  if (!event.choices.every(c => c.id)) return position // explicitly positional legacy policy
+  const migrated = (compatibility.choiceOrder as Record<string, string[]>)[event.id]
+  const ids = migrated ?? event.choices.map(c => c.id!).sort()
+  return Math.max(0, event.choices.findIndex(c => c.id === ids[position]))
 }
 
 /** Targets are selected before affordability: a missing target is never a money refusal. */
@@ -293,7 +303,7 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
     while (g.pending && !g.stopped) {
       const event = storylets.find(s => s.id === g.pending)
       if (!event) throw Error(`Unknown pending ${g.pending}`)
-      const hashed = storyChoice(seed, event.id, g.age, event.choices.length)
+      const hashed = storyChoiceIndex(seed, event, g.age)
       // T7: a story purchase can be unavailable (money, attention, cooldown, trip participants); fall back to the first available answer.
       const index = canChoose(g, hashed).available ? hashed : event.choices.findIndex((_, i) => canChoose(g, i).available)
       life.decisions[`${g.age}:${event.id}`] = index

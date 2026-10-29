@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, cancelService, canChoose, createGame, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setGoal, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, canChoose, createGame, dropUnanswerablePending, visibleChoiceIndices, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setGoal, setLoad, skipMoment, takeMoment } from '../domain/engine'
 import type { PurchaseTarget } from '../domain/offers'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
@@ -84,6 +84,7 @@ export const useGameStore = defineStore('game', () => {
   const secondsPerYear = computed(() => secondsPerYearFor(preset.value))
   const hasDecision = computed(() => !!game.value.pending)
   const currentEvent = computed(() => getStorylet(game.value))
+  const visibleChoices = computed(() => visibleChoiceIndices(game.value))
   const currentMoment = computed(() => getMoment(game.value))
   /** Сколько осталось у момента, 1 → 0. Момент живёт до следующей отметки года. */
   const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.phase / 4) * 4)))
@@ -118,6 +119,7 @@ export const useGameStore = defineStore('game', () => {
 
   /** Вызывается каждый кадр. `dt` — секунды реального времени. */
   function frame(dt: number) {
+    game.value = dropUnanswerablePending(game.value)
     if (!started.value || !playing.value || blocked.value) return
     playedSeconds.value += Math.min(dt, .1)
     const r = runClock(game.value, progress.value, Math.min(dt, .1), speed.value, secondsPerYear.value)
@@ -155,6 +157,11 @@ export const useGameStore = defineStore('game', () => {
     if (!decisionKey.value) return
     const selected = storyParticipants.value
     storyPick.value = { decision: decisionKey.value, ids: selected.includes(id) ? selected.filter(x => x !== id) : selected.length >= 3 ? selected : [...selected, id] }
+  }
+
+  function chooseVisible(visibleIndex: number) {
+    const index = visibleChoices.value[visibleIndex]
+    if (index !== undefined) choose(index)
   }
 
   function choose(index: number) {
@@ -290,7 +297,7 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop,
-    secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
+    visibleChoices, chooseVisible, secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
     frame, step, runToDecision, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }

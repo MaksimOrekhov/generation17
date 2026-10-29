@@ -1,4 +1,12 @@
 {
+  "lines": [
+    {
+      "id": "neighbor",
+      "title": "Сосед",
+      "start": "neighbor-medical"
+    }
+  ],
+  "categories": [],
   "storylets": [
     {
       "id": "adult-shift-error",
@@ -2118,6 +2126,568 @@
           }
         }
       ]
+    },
+    {
+      "id": "neighbor-medical",
+      "arc": "neighbor",
+      "fork": true,
+      "category": "Отношения",
+      "min": 18,
+      "max": 55,
+      "weight": 2,
+      "title": "Просьба соседа",
+      "body": "{{neighbor}} просит присмотреть за детьми во время ночной смены. Это неудобно: завтра у тебя тоже ранний подъём. Сосед уверяет, что больше обратиться не к кому.",
+      "choices": [
+        {
+          "id": "help",
+          "text": "Остаться и помочь",
+          "hint": "Доверие ↑ · Стресс ↑",
+          "result": "День получается очень длинным, но {{neighbor}} благодарит тебя так, будто ты совершил{{hero:|а}} что-то великое.",
+          "effects": {
+            "stats": {
+              "bonds": 4,
+              "stress": 4
+            },
+            "bonds": {
+              "neighbor": 18
+            },
+            "flags": {
+              "neighborFavor": true,
+              "neighborHelped": true,
+              "neighborPath": "helped",
+              "neighborAge": "@age"
+            },
+            "memory": "Помог{{hero:|ла}} соседу в трудный момент, пожертвовав собственным отдыхом."
+          }
+        },
+        {
+          "id": "find-substitute",
+          "text": "Предложить другую помощь",
+          "hint": "Коммуникация ↑",
+          "result": "Вы находите дежурного в соседнем блоке. Обошлось без жертв для твоего расписания.",
+          "effects": {
+            "skills": {
+              "social": 2
+            },
+            "bonds": {
+              "neighbor": 5
+            },
+            "flags": {
+              "neighborFavor": true,
+              "neighborPath": "alt",
+              "neighborAge": "@age"
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": "Вежливо отказаться",
+          "hint": "Отдых ↑ · Доверие ↓",
+          "result": "Сосед находит решение самостоятельно, но некоторое время почти не здоровается.",
+          "effects": {
+            "stats": {
+              "stress": -2
+            },
+            "bonds": {
+              "neighbor": -8
+            },
+            "flags": {
+              "neighborFavor": true,
+              "neighborPath": "refused",
+              "neighborAge": "@age"
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagNot": [
+          "neighborFavor"
+        ]
+      }
+    },
+    {
+      "id": "neighbor-followup",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 28,
+      "max": 80,
+      "priority": "followup",
+      "weight": 12,
+      "title": "Соседняя дверь",
+      "body": "Спустя годы {{neighbor}} сообщает, что освободилась небольшая каюта с видом на биокупол. О таких предложениях обычно узнают только по знакомству.",
+      "choices": [
+        {
+          "id": "move",
+          "text": "Переехать поближе к саду",
+          "hint": "Самочувствие ↑ · Новые связи",
+          "result": "В новом коридоре пахнет влажной землёй. Иногда это почти напоминает воздух с исторических записей о Земле.",
+          "effects": {
+            "stats": {
+              "morale": 7,
+              "bonds": 3
+            },
+            "flags": {
+              "neighborStage": "moved",
+              "neighborStageAge": "@age"
+            },
+            "memory": "Переехал{{hero:|а}} в каюту у биокупола благодаря давней дружбе."
+          }
+        },
+        {
+          "id": "pass-on",
+          "text": "Передать предложение другой семье",
+          "hint": "Репутация ↑ · Отношения",
+          "result": "Каюта достаётся семье, которой она нужнее. {{neighbor}} понимающе кивает.",
+          "effects": {
+            "stats": {
+              "reputation": 5,
+              "morale": 3
+            },
+            "bonds": {
+              "neighbor": 3
+            },
+            "flags": {
+              "neighborStage": "passed",
+              "neighborStageAge": "@age"
+            }
+          }
+        },
+        {
+          "id": "stay",
+          "text": "Остаться дома",
+          "hint": "Стабильность",
+          "result": "Ты благодаришь соседа. Своя старая каюта тоже хранит много хороших воспоминаний.",
+          "effects": {
+            "stats": {
+              "morale": 2
+            },
+            "flags": {
+              "neighborStage": "stayed",
+              "neighborStageAge": "@age"
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborPath": "helped"
+        },
+        "since": {
+          "neighborAge": 8
+        },
+        "flagNot": [
+          "neighborStage"
+        ]
+      }
+    },
+    {
+      "id": "neighbor-kid-moved",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 34,
+      "max": 88,
+      "priority": "followup",
+      "weight": 14,
+      "title": "Ужин у биокупола",
+      "body": "Ребёнок, с которым ты когда-то сидел{{hero:|а}} по просьбе {{neighbor}}, давно вырос и работает в биокуполе. Этот человек приглашает тебя на ужин: «Вы мне тогда читали вслух. Я до сих пор помню слова».",
+      "choices": [
+        {
+          "id": "visit",
+          "text": "Прийти и рассказать истории",
+          "hint": "Тепло",
+          "result": "Стол накрыт под настоящими яблонями. Вы говорите допоздна, и ты впервые чувствуешь, что оставил{{hero:|а}} за собой не только дела, но и людей.",
+          "effects": {
+            "stats": {
+              "morale": 6,
+              "bonds": 4
+            },
+            "bonds": {
+              "neighbor": 5
+            },
+            "memory": "Ужин под яблонями с тем самым ребёнком из соседней каюты."
+          }
+        },
+        {
+          "id": "teach",
+          "text": "Взять ученика в садовую бригаду",
+          "hint": "Наследие",
+          "result": "Через месяц вы вдвоём на смене, и твои руки вспоминают всё, чему ты когда-то учил{{hero:ся|ась}}.",
+          "effects": {
+            "skills": {
+              "ecology": 3
+            },
+            "stats": {
+              "morale": 4,
+              "reputation": 2
+            }
+          }
+        },
+        {
+          "id": "decline",
+          "text": "Вежливо отказаться",
+          "hint": "Дистанция",
+          "result": "Ты ссылаешься на усталость. Он кивает, но в голосе слышна лёгкая обида.",
+          "effects": {
+            "stats": {
+              "stress": -1
+            },
+            "bonds": {
+              "neighbor": -2
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborStage": "moved"
+        },
+        "since": {
+          "neighborStageAge": 8
+        }
+      }
+    },
+    {
+      "id": "neighbor-kid-passed",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 34,
+      "max": 88,
+      "priority": "followup",
+      "weight": 14,
+      "title": "Ответная доброта",
+      "body": "Семья, которой ты когда-то уступил{{hero:|а}} каюту у биокупола, давно прижилась. В трудную неделю, когда ты слёг, у твоей двери появляется кастрюля с супом, а на ней записка: «От тех, кому вы помогли».",
+      "choices": [
+        {
+          "id": "thank",
+          "text": "Зайти поблагодарить лично",
+          "hint": "Дружба ↑",
+          "result": "За чаем выясняется, что у семьи уже есть традиция: раз в год они приносят суп тем, кто остался один. Тебя записывают в список.",
+          "effects": {
+            "stats": {
+              "morale": 5,
+              "bonds": 4,
+              "health": 2
+            },
+            "bonds": {
+              "neighbor": 3
+            },
+            "memory": "Суп под дверью от семьи, которой когда-то уступили каюту."
+          }
+        },
+        {
+          "id": "leave-jam",
+          "text": "Оставить банку варенья и записку",
+          "hint": "Скромность",
+          "result": "Ты не ищешь повода для разговора, но записка приходит ответом: «Спасибо, что не забыли».",
+          "effects": {
+            "stats": {
+              "morale": 3,
+              "bonds": 2
+            }
+          }
+        },
+        {
+          "id": "ignore",
+          "text": "Сделать вид, что не заметил{{hero:|а}}",
+          "hint": "Дистанция",
+          "result": "Кастрюля остаётся на полу до вечера. Потом ты забираешь её и возвращаешь вымытой, но молча.",
+          "effects": {
+            "stats": {
+              "stress": 1,
+              "morale": -1
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborStage": "passed"
+        },
+        "since": {
+          "neighborStageAge": 8
+        }
+      }
+    },
+    {
+      "id": "neighbor-kid-stayed",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 34,
+      "max": 88,
+      "priority": "followup",
+      "weight": 12,
+      "title": "Стук в старую дверь",
+      "body": "Ребёнок, которого ты когда-то нянчил{{hero:|а}}, вырос и стал техником. Он стучит в дверь с коробкой инструментов: «Мне сказали, у вас давно скрипит вентиляция. Позвольте, я посмотрю».",
+      "choices": [
+        {
+          "id": "invite",
+          "text": "Пригласить войти",
+          "hint": "Тепло",
+          "result": "Он чинит вентиляцию за полчаса, а потом остаётся на чай. Каюта впервые за годы кажется шумнее, но уютнее.",
+          "effects": {
+            "stats": {
+              "morale": 5,
+              "bonds": 3
+            },
+            "bonds": {
+              "neighbor": 4
+            }
+          }
+        },
+        {
+          "id": "fix-alone",
+          "text": "Сказать, что справишься сам{{hero:|а}}",
+          "hint": "Гордость",
+          "result": "Он пожимает плечами и уходит. Вентиляция скрипит ещё неделю, пока ты сам{{hero:|а}} не лезешь чинить.",
+          "effects": {
+            "stats": {
+              "stress": 2
+            },
+            "skills": {
+              "engineering": 1
+            }
+          }
+        },
+        {
+          "id": "learn",
+          "text": "Попросить научить тебя",
+          "hint": "Любопытство",
+          "result": "Он сначала растерян, потом вдохновлён. Вы проводите вечер над схемами, и ты вспоминаешь, как это бывает, когда учишься у того, кого сам{{hero:|а}} когда-то учил{{hero:|а}} читать.",
+          "effects": {
+            "stats": {
+              "knowledge": 3,
+              "morale": 4,
+              "bonds": 2
+            },
+            "skills": {
+              "engineering": 2
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborStage": "stayed"
+        },
+        "since": {
+          "neighborStageAge": 8
+        }
+      }
+    },
+    {
+      "id": "neighbor-weekend",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 26,
+      "max": 80,
+      "priority": "followup",
+      "weight": 12,
+      "title": "Просьба повторяется",
+      "body": "{{neighbor}} просит присмотреть за детьми на выходные: у семьи неотложные дела. С тех пор, как ты тогда наш{{hero:ёл|ла}} замену, просьба повторяется, и отказать теперь немного неловко.",
+      "choices": [
+        {
+          "id": "accept",
+          "text": "Согласиться",
+          "hint": "Доверие ↑ · Стресс ↑",
+          "result": "Двое суток проходят в играх, разлитом молоке и бесконечных вопросах. Ты устаёшь, но дети прощаются так, будто знали тебя всегда.",
+          "effects": {
+            "stats": {
+              "stress": 5,
+              "bonds": 3,
+              "morale": 2
+            },
+            "bonds": {
+              "neighbor": 10
+            },
+            "flags": {
+              "neighborStage": "carer",
+              "neighborStageAge": "@age"
+            }
+          }
+        },
+        {
+          "id": "rota",
+          "text": "Предложить сменный график",
+          "hint": "Компромисс",
+          "result": "Ты берёшь на себя один вечер в неделю. Выходит ровно, и просьбы появляются реже.",
+          "effects": {
+            "stats": {
+              "bonds": 2
+            },
+            "bonds": {
+              "neighbor": 5
+            },
+            "flags": {
+              "neighborStage": "rota",
+              "neighborStageAge": "@age"
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": "Вежливо отказать",
+          "hint": "Дистанция",
+          "result": "{{neighbor}} понимающе кивает, но просьб больше не поступает. Пространство между дверями становится чуть шире.",
+          "effects": {
+            "stats": {
+              "stress": -2
+            },
+            "bonds": {
+              "neighbor": -4
+            },
+            "flags": {
+              "neighborStage": "distanced",
+              "neighborStageAge": "@age"
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborPath": "alt"
+        },
+        "since": {
+          "neighborAge": 6
+        },
+        "flagNot": [
+          "neighborStage"
+        ]
+      }
+    },
+    {
+      "id": "neighbor-cold-leak",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 26,
+      "max": 85,
+      "priority": "followup",
+      "weight": 18,
+      "title": "Течь за стеной",
+      "body": "Ночью слышен плеск воды: у {{neighbor}} прорвало трубу, а хозяина нет дома: ночная смена. Вода уже подходит к твоей стене. Вы холодны друг с другом с тех пор, как ты отказал{{hero:ся|ась}} помочь.",
+      "choices": [
+        {
+          "id": "help",
+          "text": "Перекрыть воду и убрать как можно больше",
+          "hint": "Помощь вопреки обиде",
+          "result": "Ты работаешь до утра. {{neighbor}} возвращается и стоит в дверях, не находя слов. «Это значит для меня очень много», — говорит наконец {{neighbor}}.",
+          "effects": {
+            "stats": {
+              "stress": 4,
+              "reputation": 3,
+              "morale": 2
+            },
+            "bonds": {
+              "neighbor": 16
+            },
+            "flags": {
+              "neighborStage": "reconciled",
+              "neighborStageAge": "@age"
+            },
+            "memory": "Ночь, когда пришли на помощь соседу, с которым давно были в ссоре."
+          }
+        },
+        {
+          "id": "call-service",
+          "text": "Вызвать аварийную службу",
+          "hint": "Осторожность",
+          "result": "Бригада приезжает через полчаса и справляется. Ты не вмешивал{{hero:ся|ась}} напрямую, но и не остал{{hero:ся|ась}} равнодушн{{hero:ым|ой}}. {{neighbor}} благодарит коротко, без тепла.",
+          "effects": {
+            "stats": {
+              "stress": 1
+            },
+            "bonds": {
+              "neighbor": 3
+            },
+            "flags": {
+              "neighborStage": "formal",
+              "neighborStageAge": "@age"
+            }
+          }
+        },
+        {
+          "id": "ignore",
+          "text": "Не вмешиваться",
+          "hint": "Дистанция",
+          "result": "Ты закрываешь дверь и затыкаешь щель полотенцем. Утром {{neighbor}} молча выносит вёдра. Больше вы не заговариваете.",
+          "effects": {
+            "stats": {
+              "stress": 3,
+              "morale": -3,
+              "reputation": -2
+            },
+            "bonds": {
+              "neighbor": -10
+            },
+            "flags": {
+              "neighborStage": "estranged",
+              "neighborStageAge": "@age"
+            },
+            "memory": "Ночь, когда соседу так и не помогли с прорвавшейся трубой."
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborPath": "refused"
+        },
+        "since": {
+          "neighborAge": 5
+        },
+        "flagNot": [
+          "neighborStage"
+        ]
+      }
+    },
+    {
+      "id": "neighbor-reconcile",
+      "arc": "neighbor",
+      "category": "Последствие",
+      "min": 34,
+      "max": 88,
+      "priority": "followup",
+      "weight": 14,
+      "title": "Пирог через стену",
+      "body": "На твоём столе оказывается пирог. Записка короткая: «Просто так». Ты помнишь ту ночь с трубой, и {{neighbor}}, судя по всему, тоже.",
+      "choices": [
+        {
+          "id": "thank",
+          "text": "Пойти благодарить",
+          "hint": "Дружба ↑",
+          "result": "За чаем {{neighbor}} рассказывает, о чём молчал{{neighbor:|а}}: о долгах и тревогах. Ты слушаешь, и разговор растягивается на вечер.",
+          "effects": {
+            "stats": {
+              "bonds": 5,
+              "morale": 4
+            },
+            "bonds": {
+              "neighbor": 8
+            }
+          }
+        },
+        {
+          "id": "bake",
+          "text": "Ответить своим пирогом",
+          "hint": "Игра",
+          "result": "Через неделю обмен повторяется. Вы оба делаете вид, что это случайность, и оба знаете, что нет.",
+          "effects": {
+            "stats": {
+              "morale": 3,
+              "bonds": 2
+            },
+            "bonds": {
+              "neighbor": 4
+            }
+          }
+        }
+      ],
+      "requires": {
+        "flagIs": {
+          "neighborStage": "reconciled"
+        },
+        "since": {
+          "neighborStageAge": 6
+        }
+      }
     },
     {
       "id": "youth-shared-notes",

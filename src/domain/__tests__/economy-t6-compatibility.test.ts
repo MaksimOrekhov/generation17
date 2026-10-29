@@ -1,3 +1,4 @@
+import catalogV1 from './fixtures/catalog-v1.json'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import baseline from './economy-t6-baseline.json'
 import { beat, createGame, decide, takeMoment, tick } from '../engine'
@@ -15,7 +16,7 @@ import { applyTimeRules } from '../../../scripts/personal-time-rules'
 const savedStorylets = [...storylets], savedMoments = [...moments]
 let restoreTimeRules = () => {}
 beforeAll(() => {
-  storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)))
+  storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)).sort((a, b) => catalogV1.indexOf(a.id) - catalogV1.indexOf(b.id)))
   moments.splice(0, moments.length, ...savedMoments.filter(m => !T7_MOMENT_IDS.has(m.id) && !T9_MOMENT_IDS.has(m.id)))
   restoreTimeRules = applyTimeRules('T8')
 })

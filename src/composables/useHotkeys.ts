@@ -15,8 +15,9 @@ export function useHotkeys(enabled: () => boolean) {
     if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return
     const onButton = target?.tagName === 'BUTTON'
 
-    if (store.currentEvent && !store.result && /^[1-9]$/.test(e.key)) {
-      store.choose(Number(e.key) - 1)
+    if (store.currentEvent && !store.result && /^[1-4]$/.test(e.key)) {
+      e.preventDefault()
+      store.chooseVisible(Number(e.key) - 1)
       return
     }
     if (e.code === 'Space' && !onButton) {

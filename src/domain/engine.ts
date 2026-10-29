@@ -1,3 +1,5 @@
+import { textSafe, variantText } from '../content/load'
+import { CONTENT_PEOPLE, safePeople } from './contentPeople'
 import { changeProfession, initEconomy, projectYear, recordEconomicTransaction, settleYear, closeEstate } from './economy'
 import type { Atmosphere, ChoiceDef, Effects, Focus, Gender, GameState, Job, LogKind, NewPersonId, Phase, SectorId, ShipStat, Skill, Stat, Storylet } from './types'
 import { chance, clamp, pick, random, weighted } from './random'
@@ -57,6 +59,7 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
     flags: {},
     memories: [],
     seen: [],
+    decisions: [],
     pending: null,
     history: [],
     forks: [],
@@ -104,15 +107,11 @@ const GENDER_FORM = /\{\{(\w+):([^|{}]*)\|([^|{}]*)\}\}/g
 
 export function resolveText(g: GameState, value: string) {
   const who = (id: string, fallback: string) => g.people.find(p => p.id === id)?.name.split(' ')[0] ?? fallback
-  return value
+  let rendered = value
     .replace(GENDER_FORM, (_, subject: string, masculine: string, feminine: string) => (genderOf(g, subject) === 'f' ? feminine : masculine))
     .replaceAll('{{name}}', g.protagonist.name)
-    .replaceAll('{{friend}}', who('friend', 'друг'))
-    .replaceAll('{{parent}}', who('parent', 'родитель'))
-    .replaceAll('{{neighbor}}', who('neighbor', 'сосед'))
-    .replaceAll('{{mentor}}', who('mentor', 'наставник'))
-    .replaceAll('{{sibling}}', who('sibling', 'брат или сестра'))
-    .replaceAll('{{child}}', who('child', 'ребёнок'))
+  for (const id of CONTENT_PEOPLE) rendered = rendered.replaceAll(`{{${id}}}`, who(id, ({ parent: 'родитель', parent2: 'отец', friend: 'друг', neighbor: 'сосед', mentor: 'наставник', sibling: 'брат или сестра', child: 'ребёнок' })[id]))
+  return rendered
     .replaceAll('{{job}}', g.protagonist.job.toLowerCase())
 }
 
@@ -186,10 +185,10 @@ export function checkChance(g: GameState, check: { skill: Skill; difficulty: num
 }
 
 /** Запоминает выбор в «Развилках»: начало линии или её продолжение годы спустя. */
-function recordFork(g: GameState, event: Storylet, index: number) {
+function recordFork(g: GameState, event: Storylet, index: number, visible: number[]) {
   const chosen = resolveText(g, event.choices[index]!.text)
   if (event.fork) {
-    const others = event.choices.filter((_, i) => i !== index).map(c => resolveText(g, c.text))
+    const others = visible.filter(i => i !== index).map(i => resolveText(g, event.choices[i]!.text))
     g.forks.push({ arc: event.arc!, title: event.title, age: g.age, chosen, others, outcomes: [] })
   } else {
     g.forks.find(f => f.arc === event.arc)?.outcomes.push({ age: g.age, title: event.title, chosen })
@@ -221,13 +220,18 @@ export function storyPurchaseAvailability(state: GameState, choice: ChoiceDef, t
 
 /** One current-state affordability contract for UI, store, hotkeys and decide(). */
 export function canChoose(state: GameState, choiceIndex: number, target?: PurchaseTarget): ChoiceAvailability {
-  const event = storylets.find(e => e.id === state.pending)
+  return choiceAvailability(state, storylets.find(e => e.id === state.pending), choiceIndex, target)
+}
+
+function choiceAvailability(state: GameState, event: Storylet | undefined, choiceIndex: number, target?: PurchaseTarget): ChoiceAvailability {
   const choice = event?.choices[choiceIndex]
   const purchase = choice ? storyPurchaseAvailability(state, choice, target) : undefined
   const cost = Math.max(0, -(choice?.effects.money ?? 0)) + (purchase?.oneTimeCost ?? 0)
   let reason: string | null = null
   if (state.stopped || state.economy.estate !== null) reason = 'Персонаж умер.'
   else if (!event || !choice) reason = 'Нет доступного сюжетного варианта.'
+  else if (state.decisions?.some(record => record.id === event.id)) reason = 'Решение уже принято.'
+  else if (choice.available && !choice.available(state) || !safePeople(state, choice.text, choice.historicalPeople)) reason = 'Этот вариант недоступен в этой жизни.'
   else if (purchase && !purchase.available) reason = purchase.reason
   else {
     reason = storyMoneyReason(state, [choice.effects.money])
@@ -253,14 +257,20 @@ export function decide(state: GameState, choiceIndex: number, target?: PurchaseT
   const availability = canChoose(state, choiceIndex, target)
   if (!availability.available) return state
 
+  // Select alternatives from the pre-effect state, then render names at their established phase.
+  const resultText = variantText(state, choice.result, choice.resultVariants)
+  const successText = choice.check ? variantText(state, choice.check.successText, choice.check.successVariants) : ''
+  const failureText = choice.check ? variantText(state, choice.check.failureText, choice.check.failureVariants) : ''
+  const epilogue = choice.epilogue ? resolveText(state, choice.epilogue) : undefined
+  const visibleBefore = event.arc ? visibleChoiceIndices(state, event) : []
   const g = structuredClone(state)
   applyStoryMoney(g, choice.effects.money, event)
   applyEffects(g, choice.effects)
-  addLog(g, 'choice', `Решение: ${resolveText(g, choice.text)}`, resolveText(g, choice.result))
+  addLog(g, 'choice', `Решение: ${resolveText(g, choice.text)}`, resolveText(g, resultText))
   // Настоящая покупка каталога: одна операция, без RNG, с теми же последствиями, что из экрана трат.
   if (choice.purchase && availability.purchase) applyPurchase(g, getOffer(choice.purchase.offer)!, availability.purchase, target, event.title)
   if (event.arc) {
-    recordFork(g, event, choiceIndex)
+    recordFork(g, event, choiceIndex, visibleBefore)
     // каждое решение линии остаётся в памяти, даже если у варианта нет собственной записи
     if (!choice.effects.memory) {
       const note = `${event.title}: ${resolveText(g, choice.text)}`
@@ -273,14 +283,43 @@ export function decide(state: GameState, choiceIndex: number, target?: PurchaseT
     if (random(g) < checkChance(g, check)) {
       applyStoryMoney(g, check.success.money, event)
       applyEffects(g, check.success)
-      addLog(g, 'life', 'Получилось', resolveText(g, check.successText))
+      addLog(g, 'life', 'Получилось', resolveText(g, successText))
     } else {
       applyStoryMoney(g, check.failure.money, event)
       applyEffects(g, check.failure)
-      addLog(g, 'life', 'Неудача', resolveText(g, check.failureText))
+      addLog(g, 'life', 'Неудача', resolveText(g, failureText))
     }
   }
 
+  g.decisions ??= []
+  g.decisions.push({ id: event.id, choice: choice.id ?? `legacy-index:${choiceIndex}`, age: g.age,
+    ...(choice.id ? {} : { legacy: true as const }), ...(epilogue ? { epilogue } : {}) })
+  g.pending = null
+  return g
+}
+
+/** Semantic entry point for new callers; positional decide remains compatible with T1–T9. */
+export function decideById(state: GameState, choiceId: string, target?: PurchaseTarget): GameState {
+  const event = getStorylet(state)
+  const index = event?.choices.findIndex(c => c.id === choiceId) ?? -1
+  return index < 0 ? state : decide(state, index, target)
+}
+
+/** Original array indices, ordered exactly as displayed. Financially blocked choices stay visible. */
+export function visibleChoiceIndices(g: GameState, event = getStorylet(g)): number[] {
+  return event?.choices.flatMap((c, i) => (!c.available || c.available(g)) && safePeople(g, c.text, c.historicalPeople) ? [i] : []) ?? []
+}
+
+export const storyBody = (g: GameState, s: Storylet) => variantText(g, s.body, s.bodyVariants)
+
+/** Dynamic safety net for obsolete or invalid content; never invent a choice or charge an effect. */
+export function dropUnanswerablePending(state: GameState): GameState {
+  if (!state.pending) return state
+  const existing = dropMissingPending(state)
+  if (existing !== state) return existing
+  if (visibleChoiceIndices(state).some(i => canChoose(state, i).available)) return state
+  const g = structuredClone(state)
+  addLog(g, 'notice', 'Старая запись', 'Для этого события больше нет доступного ответа. Жизнь продолжается без решения.')
   g.pending = null
   return g
 }
@@ -288,9 +327,6 @@ export function decide(state: GameState, choiceIndex: number, target?: PurchaseT
 // ───────────────────────── моменты ─────────────────────────
 
 export const getMoment = (g: GameState) => getMomentDef(g.moment)
-
-/** Упоминает ли текст человека меткой {{id}} или формой {{id:м|ж}}. */
-const mentions = (text: string, id: string) => text.includes(`{{${id}}}`) || text.includes(`{{${id}:`)
 
 export { isKnown }
 
@@ -304,7 +340,7 @@ export function eligibleMoments(g: GameState) {
     const last = g.momentLog[m.id]
     if (!allowedHere(g, m.weird)) return false
     if (last !== undefined && g.age - last < m.cooldown) return false
-    return peopleAlive(g, m.needs) && (!m.available || m.available(g))
+    return peopleAlive(g, m.needs) && (!m.available || m.available(g)) && textSafe(g, m.text, m.textVariants, m.historicalPeople)
   })
 }
 
@@ -327,12 +363,13 @@ export function canTakeMoment(state: GameState): boolean {
 export function takeMoment(state: GameState): GameState {
   const def = getMoment(state)
   if (!def || !canTakeMoment(state)) return state
+  const momentResult = variantText(state, def.accept.result, def.accept.resultVariants)
   const g = structuredClone(state)
   applyStoryMoney(g, def.accept.effects.money, def)
   spendPersonalTime(g, PERSONAL_TIME.moment)
   g.moment = null
   applyEffects(g, def.accept.effects)
-  addLog(g, 'moment', def.title, resolveText(g, def.accept.result))
+  addLog(g, 'moment', def.title, resolveText(g, momentResult))
   return g
 }
 
@@ -555,6 +592,7 @@ export function skipMoment(state: GameState): GameState {
  * Прошлый неиспользованный момент считается пропущенным.
  */
 export function beat(state: GameState): GameState {
+  state = dropUnanswerablePending(state)
   if (state.stopped || state.pending || state.phase >= 3) return state
   const g = structuredClone(state)
   expireMoment(g)
@@ -706,6 +744,7 @@ function deathTick(g: GameState) {
 }
 
 export function tick(state: GameState): GameState {
+  state = dropUnanswerablePending(state)
   if (state.stopped || state.pending) return state
   const g = structuredClone(state)
   expireMoment(g)
@@ -740,11 +779,8 @@ export function tick(state: GameState): GameState {
     && g.age <= s.max
     && s.available(g)
     && allowedHere(g, s.weird)
-    && (!mentions(s.body, 'friend') || isKnown(g, 'friend'))
-    && (!mentions(s.body, 'parent') || isKnown(g, 'parent'))
-    && (!mentions(s.body, 'neighbor') || isKnown(g, 'neighbor'))
-    && (!mentions(s.body, 'mentor') || isKnown(g, 'mentor'))
-    && (!mentions(s.body, 'child') || isKnown(g, 'child'))
+    && textSafe(g, s.body, s.bodyVariants, s.historicalPeople)
+    && s.choices.some((_, i) => choiceAvailability(g, s, i).available)
   )
   const selected = pickStorylet(g, options)
   if (selected) {

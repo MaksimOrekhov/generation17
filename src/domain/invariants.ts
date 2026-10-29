@@ -1,3 +1,5 @@
+import { repairDecisions } from './decisionMemory'
+import { canChoose, visibleChoiceIndices } from './engine'
 import { isKnown, sectors } from './birth'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
@@ -20,6 +22,8 @@ export function findInconsistencies(g: GameState): string[] {
   const problems: string[] = []
   const bad = (text: string) => problems.push(`возраст ${g.age}: ${text}`)
 
+  if (JSON.stringify(repairDecisions(g.decisions, g.age)) !== JSON.stringify(g.decisions)) bad('некорректный журнал решений')
+  if (g.pending && !visibleChoiceIndices(g).some(i => canChoose(g, i).available)) bad('ожидающее решение не имеет доступного выхода')
   const economy = g.economy
   if (!economy || !Number.isSafeInteger(economy.balance) || economy.balance < 0) bad('недопустимый баланс экономики')
   if (economy) {

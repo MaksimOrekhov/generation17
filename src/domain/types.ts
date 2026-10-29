@@ -1,5 +1,5 @@
 import type { Economy } from './economy'
-import type { Director } from './director'
+import type { Director, Tone } from './director'
 import type { PersonalTimeYear } from './personalTime'
 
 export type Focus = 'study' | 'relationships' | 'work' | 'rest' | 'civic'
@@ -101,6 +101,12 @@ export interface StoryPurchase {
 }
 
 export interface ChoiceDef {
+  historicalPeople?: string[]
+  /** Stable semantic ID. Omitted only by legacy content. */
+  id?: string
+  available?: (g: GameState) => boolean
+  resultVariants?: TextVariant[]
+  epilogue?: string
   text: string
   hint: string
   result: string
@@ -111,6 +117,8 @@ export interface ChoiceDef {
     difficulty: number
     successText: string
     failureText: string
+    successVariants?: TextVariant[]
+    failureVariants?: TextVariant[]
     success: Effects
     failure: Effects
   }
@@ -125,7 +133,27 @@ export interface ChoiceDef {
  */
 export type Priority = 'normal' | 'followup' | 'critical'
 
+export interface TextVariant {
+  text: string
+  available: (g: GameState) => boolean
+}
+
+export interface DecisionRecord {
+  id: string
+  choice: string
+  age: number
+  /** Rendered snapshot at decision time, never regenerated from later NPC state. */
+  epilogue?: string
+  /** Explicitly positional compatibility record, forbidden as a chose reference. */
+  legacy?: true
+}
+
 export interface Storylet {
+  historicalPeople?: string[]
+  bodyVariants?: TextVariant[]
+  tone?: Tone
+  tags?: string[]
+  group?: string
   id: string
   /** Сюжетная линия: решения одной линии собираются в «развилку». */
   arc?: string
@@ -150,6 +178,8 @@ export interface Storylet {
 
 /** Небольшая возможность внутри года: не останавливает время, принять её стоит единицу личного времени. */
 export interface MomentDef {
+  historicalPeople?: string[]
+  textVariants?: TextVariant[]
   id: string
   spot: SpotId
   title: string
@@ -163,7 +193,7 @@ export interface MomentDef {
   /** id людей, которые должны быть живы. */
   needs?: string[]
   available?: (g: GameState) => boolean
-  accept: { label: string; result: string; effects: Effects }
+  accept: { label: string; result: string; resultVariants?: TextVariant[]; effects: Effects }
   skip: { label: string; effects?: Effects }
 }
 
@@ -213,6 +243,7 @@ export interface GameState {
   flags: Record<string, string | number | boolean>
   memories: string[]
   seen: string[]
+  decisions: DecisionRecord[]
   pending: string | null
   history: LogEntry[]
   forks: Fork[]

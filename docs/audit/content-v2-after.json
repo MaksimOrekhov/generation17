@@ -1,0 +1,1573 @@
+{
+  "generatedAt": "2026-10-29T18:58:35.065Z",
+  "method": {
+    "lives": 1200,
+    "perPolicy": 200,
+    "policies": [
+      "Careerist",
+      "Moderate",
+      "Family",
+      "TimeBuyer",
+      "Spender",
+      "Saver"
+    ],
+    "seeds": [
+      3001,
+      3200
+    ],
+    "answers": "хэш economy-t8a (как T8/T9)",
+    "moments": "planned (T9)",
+    "purchases": "financialDecisions T8a"
+  },
+  "catalog": {
+    "storylets": {
+      "total": 137,
+      "code": 88,
+      "json": 49
+    },
+    "moments": {
+      "total": 121,
+      "code": 65,
+      "json": 56,
+      "once": 69
+    },
+    "arcs": {
+      "friend": {
+        "stories": 6,
+        "forks": 1,
+        "followups": 5,
+        "json": 0
+      },
+      "career": {
+        "stories": 1,
+        "forks": 1,
+        "followups": 1,
+        "json": 0
+      },
+      "signal": {
+        "stories": 10,
+        "forks": 1,
+        "followups": 9,
+        "json": 0
+      },
+      "crack": {
+        "stories": 12,
+        "forks": 1,
+        "followups": 11,
+        "json": 0
+      },
+      "love": {
+        "stories": 8,
+        "forks": 1,
+        "followups": 7,
+        "json": 0
+      },
+      "parent": {
+        "stories": 7,
+        "forks": 1,
+        "followups": 6,
+        "json": 0
+      },
+      "census": {
+        "stories": 15,
+        "forks": 1,
+        "followups": 14,
+        "json": 0
+      },
+      "neighbor": {
+        "stories": 8,
+        "forks": 1,
+        "followups": 7,
+        "json": 8
+      }
+    },
+    "arcsInJson": 8,
+    "forks": 8,
+    "byPriority": {
+      "normal": 68,
+      "followup": 67,
+      "critical": 2
+    },
+    "jsonFollowups": 16,
+    "readsEarlierEventsWithWindow": 63,
+    "readsEarlierEvents": 71,
+    "professionGated": 9,
+    "professionGatedByJob": {
+      "Техник": 3,
+      "Медик": 3,
+      "Агроном": 2,
+      "Координатор": 2
+    },
+    "familyOrPeople": 52,
+    "childhood": 8,
+    "youth": 14,
+    "late": 11,
+    "shipDependent": 3,
+    "economyDependent": 8,
+    "momentsShipDependent": 2,
+    "momentsEconomyDependent": 13,
+    "choices": {
+      "total": 407,
+      "withSkillCheck": 11,
+      "withMoney": 7,
+      "withPurchase": 4,
+      "withMemory": 118,
+      "settingFlags": 309,
+      "conditionalChoices": 0
+    },
+    "byCategory": {
+      "Детство": 7,
+      "Отношения": 5,
+      "Семья": 15,
+      "Профессия": 11,
+      "Тайна": 10,
+      "Общество": 5,
+      "Корабль": 1,
+      "Повседневность": 2,
+      "Личное": 7,
+      "Наследие": 1,
+      "Юность": 12,
+      "Здоровье": 1,
+      "Поздняя жизнь": 10,
+      "Последствие": 50
+    },
+    "coverage": {
+      "0-5": {
+        "storylets": 3,
+        "normalStorylets": 3,
+        "moments": 13
+      },
+      "6-11": {
+        "storylets": 8,
+        "normalStorylets": 8,
+        "moments": 15
+      },
+      "12-15": {
+        "storylets": 15,
+        "normalStorylets": 15,
+        "moments": 19
+      },
+      "16-24": {
+        "storylets": 48,
+        "normalStorylets": 37,
+        "moments": 58
+      },
+      "25-34": {
+        "storylets": 96,
+        "normalStorylets": 32,
+        "moments": 85
+      },
+      "35-49": {
+        "storylets": 101,
+        "normalStorylets": 33,
+        "moments": 88
+      },
+      "50-64": {
+        "storylets": 93,
+        "normalStorylets": 26,
+        "moments": 93
+      },
+      "65-79": {
+        "storylets": 84,
+        "normalStorylets": 21,
+        "moments": 88
+      },
+      "80-95": {
+        "storylets": 55,
+        "normalStorylets": 13,
+        "moments": 54
+      }
+    },
+    "textVariation": {
+      "stateDependentText": 0,
+      "storyletsWithGenderForms": 42,
+      "note": "Язык v2 поддерживает варианты body/result/text; здесь посчитано использование в производственном каталоге, без тестовых фикстур."
+    }
+  },
+  "flags": {
+    "distinctFlags": 128,
+    "stringValuedFlags": 54,
+    "jsonComparisonsWithUnwrittenValue": []
+  },
+  "motifs": {
+    "items": 258,
+    "topStems": {
+      "говор": 64,
+      "запис": 60,
+      "вечер": 55,
+      "остаё": 39,
+      "котор": 38,
+      "разго": 34,
+      "недел": 34,
+      "сосед": 33,
+      "прихо": 33,
+      "двери": 32,
+      "смены": 32,
+      "долго": 31,
+      "секто": 31,
+      "больш": 31,
+      "закры": 29,
+      "кораб": 29,
+      "появл": 28,
+      "наход": 27,
+      "стекл": 26,
+      "возвр": 26,
+      "корид": 26,
+      "дверь": 26,
+      "обзор": 25,
+      "предл": 25,
+      "откры": 24,
+      "проси": 24,
+      "прохо": 24,
+      "челов": 24,
+      "стоит": 24,
+      "работ": 23,
+      "архив": 23,
+      "давно": 23,
+      "остал": 23,
+      "расск": 23,
+      "уходи": 23,
+      "друго": 22,
+      "остав": 22,
+      "следу": 21,
+      "время": 21,
+      "месяц": 21
+    },
+    "motifs": {
+      "чай/чашка/кружка": 38,
+      "свет/лампа": 29,
+      "окно/стекло/звёзды": 39,
+      "вентиляция/гул": 22,
+      "архив": 23,
+      "растение/рассада/грядка": 10,
+      "смена (рабочая)": 54,
+      "письмо/записка": 15,
+      "молча/тишина": 33
+    }
+  },
+  "repetition": {
+    "pairs": {
+      "storylets": {
+        "jaccard": 0.238,
+        "p10": 0.13,
+        "p90": 0.35,
+        "shareOfSecondAlreadySeen": 0.378
+      },
+      "situationTypes": {
+        "jaccard": 0.56,
+        "p10": 0.412,
+        "p90": 0.733,
+        "shareOfSecondAlreadySeen": 0.7
+      },
+      "momentsOffered": {
+        "jaccard": 0.501,
+        "p10": 0.397,
+        "p90": 0.627,
+        "shareOfSecondAlreadySeen": 0.683
+      },
+      "experienced": {
+        "jaccard": 0.391,
+        "p10": 0.305,
+        "p90": 0.495,
+        "shareOfSecondAlreadySeen": 0.58
+      },
+      "storyletsSamePolicyModerate": {
+        "jaccard": 0.234,
+        "p10": 0.128,
+        "p90": 0.343,
+        "shareOfSecondAlreadySeen": 0.373
+      }
+    },
+    "noveltyMixedPolicies": {
+      "storylets": {
+        "sequences": 20,
+        "newSharePct": {
+          "life1": 100,
+          "life2": 62,
+          "life3": 43.2,
+          "life4": 33.1,
+          "life5": 29.1,
+          "life6": 22.8,
+          "life7": 17.5,
+          "life8": 16.9,
+          "life9": 11.4,
+          "life10": 9
+        },
+        "newItems": {
+          "life1": 25.6,
+          "life2": 16.1,
+          "life3": 10.5,
+          "life4": 8.7,
+          "life5": 7.8,
+          "life6": 6,
+          "life7": 4.6,
+          "life8": 4.5,
+          "life9": 3,
+          "life10": 2.4
+        },
+        "cumulativeDistinct": {
+          "after1": 25.6,
+          "after2": 41.6,
+          "after3": 52.1,
+          "after4": 60.8,
+          "after5": 68.6,
+          "after6": 74.5,
+          "after7": 79.1,
+          "after8": 83.6,
+          "after9": 86.5,
+          "after10": 88.9
+        }
+      },
+      "moments": {
+        "sequences": 20,
+        "newSharePct": {
+          "life1": 100,
+          "life2": 38.8,
+          "life3": 16.5,
+          "life4": 8.9,
+          "life5": 9.7,
+          "life6": 3.9,
+          "life7": 4.3,
+          "life8": 4,
+          "life9": 2.6,
+          "life10": 3.4
+        },
+        "newItems": {
+          "life1": 44.3,
+          "life2": 16.5,
+          "life3": 7.5,
+          "life4": 4.5,
+          "life5": 4.7,
+          "life6": 1.9,
+          "life7": 2.1,
+          "life8": 2,
+          "life9": 1.3,
+          "life10": 1.6
+        },
+        "cumulativeDistinct": {
+          "after1": 44.3,
+          "after2": 60.8,
+          "after3": 68.2,
+          "after4": 72.7,
+          "after5": 77.4,
+          "after6": 79.3,
+          "after7": 81.3,
+          "after8": 83.3,
+          "after9": 84.6,
+          "after10": 86.2
+        }
+      },
+      "situationTypes": {
+        "sequences": 20,
+        "newSharePct": {
+          "life1": 100,
+          "life2": 27.4,
+          "life3": 10.2,
+          "life4": 5.5,
+          "life5": 3.6,
+          "life6": 2.7,
+          "life7": 2.5,
+          "life8": 1.8,
+          "life9": 0.4,
+          "life10": 0.4
+        },
+        "newItems": {
+          "life1": 13.7,
+          "life2": 4,
+          "life3": 1.4,
+          "life4": 0.8,
+          "life5": 0.5,
+          "life6": 0.4,
+          "life7": 0.4,
+          "life8": 0.3,
+          "life9": 0.1,
+          "life10": 0.1
+        },
+        "cumulativeDistinct": {
+          "after1": 13.7,
+          "after2": 17.7,
+          "after3": 19,
+          "after4": 19.8,
+          "after5": 20.3,
+          "after6": 20.6,
+          "after7": 21,
+          "after8": 21.2,
+          "after9": 21.3,
+          "after10": 21.3
+        }
+      }
+    },
+    "noveltySamePolicyModerate": {
+      "storylets": {
+        "sequences": 20,
+        "newSharePct": {
+          "life1": 100,
+          "life2": 61.6,
+          "life3": 42.1,
+          "life4": 32.4,
+          "life5": 28.2,
+          "life6": 21.1,
+          "life7": 19.5,
+          "life8": 15.3,
+          "life9": 12.4,
+          "life10": 7.6
+        },
+        "newItems": {
+          "life1": 25.6,
+          "life2": 16.3,
+          "life3": 10.6,
+          "life4": 8.5,
+          "life5": 7.6,
+          "life6": 5.7,
+          "life7": 5,
+          "life8": 4,
+          "life9": 3.2,
+          "life10": 2.1
+        },
+        "cumulativeDistinct": {
+          "after1": 25.6,
+          "after2": 41.9,
+          "after3": 52.5,
+          "after4": 61,
+          "after5": 68.5,
+          "after6": 74.2,
+          "after7": 79.1,
+          "after8": 83.1,
+          "after9": 86.2,
+          "after10": 88.3
+        }
+      }
+    },
+    "perLife": {
+      "storylets": 25.1,
+      "momentsOffered": 83.1,
+      "distinctMomentsOffered": 45.3,
+      "momentsAccepted": 81.4,
+      "withinLifeMomentRepeatSharePct": 45.5
+    }
+  },
+  "delivery": {
+    "byPriority": {
+      "normal": {
+        "stories": 68,
+        "eligibleLives": 62455,
+        "shown": 22826,
+        "deliveryPct": 36.5
+      },
+      "followup": {
+        "stories": 65,
+        "eligibleLives": 6145,
+        "shown": 6132,
+        "deliveryPct": 99.8
+      },
+      "critical": {
+        "stories": 2,
+        "eligibleLives": 1185,
+        "shown": 1185,
+        "deliveryPct": 100
+      }
+    },
+    "lostFollowups": [],
+    "crowdedNormals": [
+      "annual-exam: доступен в 97% жизней, показан в 3.6% из них",
+      "curfew-night: доступен в 97% жизней, показан в 4.6% из них",
+      "youth-quiet-corner: доступен в 97% жизней, показан в 6.2% из них",
+      "family-need-cell-small: доступен в 42.8% жизней, показан в 6.6% из них",
+      "youth-voice-message: доступен в 97% жизней, показан в 8.3% из них",
+      "youth-map-corner: доступен в 97% жизней, показан в 8.8% из них",
+      "youth-garden-label: доступен в 97% жизней, показан в 9.3% из них",
+      "youth-window-shift: доступен в 97% жизней, показан в 9.8% из них",
+      "youth-lunch-line: доступен в 97% жизней, показан в 10.3% из них",
+      "youth-shared-notes: доступен в 97% жизней, показан в 10.8% из них",
+      "youth-family-table: доступен в 97% жизней, показан в 13.2% из них",
+      "youth-first-duty: доступен в 97% жизней, показан в 14.2% из них",
+      "first-pay: доступен в 97% жизней, показан в 15% из них",
+      "youth-swap-evening: доступен в 97% жизней, показан в 16.8% из них",
+      "family-need-cell-medium: доступен в 64.7% жизней, показан в 17.7% из них"
+    ],
+    "never": [
+      "crack-worsened (условия ни разу не выполнились)",
+      "census-counting-voice (условия ни разу не выполнились)"
+    ],
+    "rareUnder2Pct": [
+      "crack-inspector-offer",
+      "crack-recurrence",
+      "crack-student-return",
+      "crack-failed-leak",
+      "crack-confessed-after",
+      "crack-blamed-after",
+      "signal-report",
+      "parent-keepsake",
+      "parent-last-call",
+      "love-apart-return",
+      "census-petition-answer",
+      "census-hidden-garden",
+      "family-need-apples"
+    ],
+    "seenOver50Pct": [
+      "friend-accusation 57%",
+      "school-track 97%",
+      "festival 55%",
+      "strike 61%",
+      "apprentice 60%",
+      "political-crisis 70%",
+      "old-friend 53%",
+      "retirement 66%",
+      "legacy 80%",
+      "health-scare 66%",
+      "garden-plot 70%",
+      "last-window 62%",
+      "late-common-room 68%"
+    ],
+    "arcsWithoutOutcome": {
+      "friend": {
+        "started": 690,
+        "longLived": 690,
+        "noOutcome": 0,
+        "noOutcomePct": 0
+      },
+      "career": {
+        "started": 1164,
+        "longLived": 1164,
+        "noOutcome": 1164,
+        "noOutcomePct": 100
+      },
+      "census": {
+        "started": 479,
+        "longLived": 466,
+        "noOutcome": 0,
+        "noOutcomePct": 0
+      },
+      "neighbor": {
+        "started": 556,
+        "longLived": 537,
+        "noOutcome": 4,
+        "noOutcomePct": 0.7
+      },
+      "signal": {
+        "started": 489,
+        "longLived": 474,
+        "noOutcome": 0,
+        "noOutcomePct": 0
+      },
+      "love": {
+        "started": 475,
+        "longLived": 475,
+        "noOutcome": 0,
+        "noOutcomePct": 0
+      },
+      "crack": {
+        "started": 184,
+        "longLived": 172,
+        "noOutcome": 0,
+        "noOutcomePct": 0
+      },
+      "parent": {
+        "started": 250,
+        "longLived": 234,
+        "noOutcome": 34,
+        "noOutcomePct": 14.5
+      }
+    },
+    "perStorylet": {
+      "child-window": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 31.5,
+        "deliveryPct": 32.5
+      },
+      "child-library": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 25,
+        "deliveryPct": 25.8
+      },
+      "friend-accusation": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 57.5,
+        "deliveryPct": 59.3
+      },
+      "home-repair": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 27,
+        "deliveryPct": 27.8
+      },
+      "school-track": {
+        "priority": "critical",
+        "eligiblePct": 97,
+        "shownPct": 97,
+        "deliveryPct": 100
+      },
+      "first-pay": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 14.6,
+        "deliveryPct": 15
+      },
+      "signal": {
+        "priority": "normal",
+        "eligiblePct": 90.5,
+        "shownPct": 40.8,
+        "deliveryPct": 45
+      },
+      "microcrack": {
+        "priority": "normal",
+        "eligiblePct": 27.1,
+        "shownPct": 15.3,
+        "deliveryPct": 56.6
+      },
+      "clinic": {
+        "priority": "normal",
+        "eligiblePct": 27.3,
+        "shownPct": 14.3,
+        "deliveryPct": 52.3
+      },
+      "seed-vault": {
+        "priority": "normal",
+        "eligiblePct": 23.2,
+        "shownPct": 11,
+        "deliveryPct": 47.5
+      },
+      "council": {
+        "priority": "normal",
+        "eligiblePct": 24.3,
+        "shownPct": 17.1,
+        "deliveryPct": 70.2
+      },
+      "relationship": {
+        "priority": "normal",
+        "eligiblePct": 96.4,
+        "shownPct": 39.6,
+        "deliveryPct": 41.1
+      },
+      "parent-illness": {
+        "priority": "normal",
+        "eligiblePct": 66.5,
+        "shownPct": 20.8,
+        "deliveryPct": 31.3
+      },
+      "water-shortage": {
+        "priority": "normal",
+        "eligiblePct": 71.1,
+        "shownPct": 41.1,
+        "deliveryPct": 57.8
+      },
+      "festival": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 55,
+        "deliveryPct": 56.7
+      },
+      "strike": {
+        "priority": "normal",
+        "eligiblePct": 96.1,
+        "shownPct": 60.8,
+        "deliveryPct": 63.3
+      },
+      "lost-district": {
+        "priority": "normal",
+        "eligiblePct": 55.8,
+        "shownPct": 19.1,
+        "deliveryPct": 34.2
+      },
+      "midlife": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 25.3,
+        "deliveryPct": 26
+      },
+      "apprentice": {
+        "priority": "normal",
+        "eligiblePct": 93.4,
+        "shownPct": 59.5,
+        "deliveryPct": 63.7
+      },
+      "political-crisis": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 69.6,
+        "deliveryPct": 71.7
+      },
+      "old-friend": {
+        "priority": "normal",
+        "eligiblePct": 79.9,
+        "shownPct": 53.4,
+        "deliveryPct": 66.8
+      },
+      "retirement": {
+        "priority": "normal",
+        "eligiblePct": 96.6,
+        "shownPct": 66.4,
+        "deliveryPct": 68.8
+      },
+      "legacy": {
+        "priority": "normal",
+        "eligiblePct": 94,
+        "shownPct": 80.3,
+        "deliveryPct": 85.5
+      },
+      "mentor": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 25.2,
+        "deliveryPct": 25.9
+      },
+      "nursery-day": {
+        "priority": "normal",
+        "eligiblePct": 98,
+        "shownPct": 43.5,
+        "deliveryPct": 44.4
+      },
+      "night-fear": {
+        "priority": "normal",
+        "eligiblePct": 98,
+        "shownPct": 42,
+        "deliveryPct": 42.9
+      },
+      "lost-corridor": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 34.5,
+        "deliveryPct": 35.6
+      },
+      "school-play": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 23,
+        "deliveryPct": 23.7
+      },
+      "curfew-night": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 4.5,
+        "deliveryPct": 4.6
+      },
+      "annual-exam": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 3.5,
+        "deliveryPct": 3.6
+      },
+      "promotion": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 35.8,
+        "deliveryPct": 36.9
+      },
+      "deck-lottery": {
+        "priority": "normal",
+        "eligiblePct": 41.5,
+        "shownPct": 12.8,
+        "deliveryPct": 30.7
+      },
+      "health-scare": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 65.9,
+        "deliveryPct": 68
+      },
+      "garden-plot": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 70.4,
+        "deliveryPct": 72.6
+      },
+      "last-window": {
+        "priority": "normal",
+        "eligiblePct": 87.2,
+        "shownPct": 62.4,
+        "deliveryPct": 71.6
+      },
+      "crack-report-hearing": {
+        "priority": "followup",
+        "eligiblePct": 6.1,
+        "shownPct": 6.1,
+        "deliveryPct": 100
+      },
+      "crack-inspector-offer": {
+        "priority": "followup",
+        "eligiblePct": 1.4,
+        "shownPct": 1.4,
+        "deliveryPct": 100
+      },
+      "crack-recurrence": {
+        "priority": "followup",
+        "eligiblePct": 1.8,
+        "shownPct": 1.8,
+        "deliveryPct": 100
+      },
+      "crack-secret-hero": {
+        "priority": "followup",
+        "eligiblePct": 3.3,
+        "shownPct": 3.3,
+        "deliveryPct": 100
+      },
+      "crack-student-return": {
+        "priority": "followup",
+        "eligiblePct": 1.1,
+        "shownPct": 1.1,
+        "deliveryPct": 100
+      },
+      "crack-failed-leak": {
+        "priority": "followup",
+        "eligiblePct": 1.4,
+        "shownPct": 1.4,
+        "deliveryPct": 100
+      },
+      "crack-worsened": {
+        "priority": "followup",
+        "eligiblePct": 0,
+        "shownPct": 0,
+        "deliveryPct": null
+      },
+      "crack-silent-accident": {
+        "priority": "followup",
+        "eligiblePct": 4.6,
+        "shownPct": 4.6,
+        "deliveryPct": 100
+      },
+      "crack-confessed-after": {
+        "priority": "followup",
+        "eligiblePct": 1.5,
+        "shownPct": 1.5,
+        "deliveryPct": 100
+      },
+      "crack-denied-after": {
+        "priority": "followup",
+        "eligiblePct": 2,
+        "shownPct": 2,
+        "deliveryPct": 100
+      },
+      "crack-blamed-after": {
+        "priority": "followup",
+        "eligiblePct": 1.1,
+        "shownPct": 1.1,
+        "deliveryPct": 100
+      },
+      "friend-return-stood": {
+        "priority": "followup",
+        "eligiblePct": 20,
+        "shownPct": 20,
+        "deliveryPct": 100
+      },
+      "friend-return-quiet": {
+        "priority": "followup",
+        "eligiblePct": 20.5,
+        "shownPct": 20.5,
+        "deliveryPct": 100
+      },
+      "friend-return-abandoned": {
+        "priority": "followup",
+        "eligiblePct": 17,
+        "shownPct": 17,
+        "deliveryPct": 100
+      },
+      "friend-crisis-close": {
+        "priority": "followup",
+        "eligiblePct": 27.7,
+        "shownPct": 27.7,
+        "deliveryPct": 100
+      },
+      "friend-crisis-distant": {
+        "priority": "followup",
+        "eligiblePct": 17,
+        "shownPct": 17,
+        "deliveryPct": 100
+      },
+      "signal-result": {
+        "priority": "followup",
+        "eligiblePct": 11.3,
+        "shownPct": 11.3,
+        "deliveryPct": 100
+      },
+      "signal-public-debate": {
+        "priority": "followup",
+        "eligiblePct": 4.3,
+        "shownPct": 4.3,
+        "deliveryPct": 100
+      },
+      "signal-report": {
+        "priority": "followup",
+        "eligiblePct": 1.3,
+        "shownPct": 1.3,
+        "deliveryPct": 100
+      },
+      "signal-archive-opened": {
+        "priority": "followup",
+        "eligiblePct": 2.9,
+        "shownPct": 2.9,
+        "deliveryPct": 100
+      },
+      "signal-secret-visitor": {
+        "priority": "followup",
+        "eligiblePct": 4.2,
+        "shownPct": 4.2,
+        "deliveryPct": 100
+      },
+      "signal-rumor-circle": {
+        "priority": "followup",
+        "eligiblePct": 12.4,
+        "shownPct": 12.4,
+        "deliveryPct": 100
+      },
+      "signal-circle-joined": {
+        "priority": "followup",
+        "eligiblePct": 5.2,
+        "shownPct": 5.2,
+        "deliveryPct": 100
+      },
+      "signal-circle-warned": {
+        "priority": "followup",
+        "eligiblePct": 3.1,
+        "shownPct": 3.1,
+        "deliveryPct": 100
+      },
+      "signal-ignored-echo": {
+        "priority": "followup",
+        "eligiblePct": 17,
+        "shownPct": 17,
+        "deliveryPct": 100
+      },
+      "parent-illness-followup": {
+        "priority": "followup",
+        "eligiblePct": 8.3,
+        "shownPct": 8.3,
+        "deliveryPct": 100
+      },
+      "parent-keepsake": {
+        "priority": "followup",
+        "eligiblePct": 0.8,
+        "shownPct": 0.8,
+        "deliveryPct": 100
+      },
+      "parent-regret": {
+        "priority": "followup",
+        "eligiblePct": 4.1,
+        "shownPct": 4.1,
+        "deliveryPct": 100
+      },
+      "parent-treatment": {
+        "priority": "followup",
+        "eligiblePct": 4.8,
+        "shownPct": 4.4,
+        "deliveryPct": 93
+      },
+      "parent-letter": {
+        "priority": "followup",
+        "eligiblePct": 5,
+        "shownPct": 4.8,
+        "deliveryPct": 96.7
+      },
+      "parent-last-call": {
+        "priority": "followup",
+        "eligiblePct": 0.8,
+        "shownPct": 0.8,
+        "deliveryPct": 100
+      },
+      "relationship-followup": {
+        "priority": "followup",
+        "eligiblePct": 14.6,
+        "shownPct": 14.6,
+        "deliveryPct": 100
+      },
+      "love-home-offer": {
+        "priority": "followup",
+        "eligiblePct": 4.6,
+        "shownPct": 4.6,
+        "deliveryPct": 100
+      },
+      "love-apart-return": {
+        "priority": "critical",
+        "eligiblePct": 1.8,
+        "shownPct": 1.8,
+        "deliveryPct": 100
+      },
+      "love-drift": {
+        "priority": "followup",
+        "eligiblePct": 4.1,
+        "shownPct": 4.1,
+        "deliveryPct": 100
+      },
+      "love-parted-meeting": {
+        "priority": "followup",
+        "eligiblePct": 6.3,
+        "shownPct": 6.3,
+        "deliveryPct": 100
+      },
+      "love-friends-union": {
+        "priority": "followup",
+        "eligiblePct": 13.8,
+        "shownPct": 13.8,
+        "deliveryPct": 100
+      },
+      "love-missed": {
+        "priority": "followup",
+        "eligiblePct": 11.2,
+        "shownPct": 11.2,
+        "deliveryPct": 100
+      },
+      "census-extra": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 39.9,
+        "deliveryPct": 41.2
+      },
+      "census-sealed-cabin": {
+        "priority": "followup",
+        "eligiblePct": 17.7,
+        "shownPct": 17.7,
+        "deliveryPct": 100
+      },
+      "census-someone-answers": {
+        "priority": "followup",
+        "eligiblePct": 5.9,
+        "shownPct": 5.9,
+        "deliveryPct": 100
+      },
+      "census-new-citizens": {
+        "priority": "followup",
+        "eligiblePct": 2.1,
+        "shownPct": 2.1,
+        "deliveryPct": 100
+      },
+      "census-keeper-night": {
+        "priority": "followup",
+        "eligiblePct": 2,
+        "shownPct": 2,
+        "deliveryPct": 100
+      },
+      "census-exposed": {
+        "priority": "followup",
+        "eligiblePct": 5.3,
+        "shownPct": 5.3,
+        "deliveryPct": 100
+      },
+      "census-correspondence": {
+        "priority": "followup",
+        "eligiblePct": 5.7,
+        "shownPct": 5.7,
+        "deliveryPct": 100
+      },
+      "census-petition-answer": {
+        "priority": "followup",
+        "eligiblePct": 1.7,
+        "shownPct": 1.7,
+        "deliveryPct": 100
+      },
+      "census-watched": {
+        "priority": "followup",
+        "eligiblePct": 6.1,
+        "shownPct": 6.1,
+        "deliveryPct": 100
+      },
+      "census-hidden-garden": {
+        "priority": "followup",
+        "eligiblePct": 1.6,
+        "shownPct": 1.6,
+        "deliveryPct": 100
+      },
+      "census-registry-answer": {
+        "priority": "followup",
+        "eligiblePct": 13.7,
+        "shownPct": 13.7,
+        "deliveryPct": 100
+      },
+      "census-recording": {
+        "priority": "followup",
+        "eligiblePct": 5.3,
+        "shownPct": 5.3,
+        "deliveryPct": 100
+      },
+      "census-quota-letter": {
+        "priority": "followup",
+        "eligiblePct": 5.5,
+        "shownPct": 5.5,
+        "deliveryPct": 100
+      },
+      "census-echo": {
+        "priority": "followup",
+        "eligiblePct": 16.8,
+        "shownPct": 16.8,
+        "deliveryPct": 100
+      },
+      "census-counting-voice": {
+        "priority": "followup",
+        "eligiblePct": 0,
+        "shownPct": 0,
+        "deliveryPct": null
+      },
+      "adult-shift-error": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 25.3,
+        "deliveryPct": 26.1
+      },
+      "adult-parent-care": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 23.3,
+        "deliveryPct": 24.1
+      },
+      "adult-sector-repair": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 26.6,
+        "deliveryPct": 27.4
+      },
+      "adult-family-choice": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 24.2,
+        "deliveryPct": 24.9
+      },
+      "adult-sector-move": {
+        "priority": "normal",
+        "eligiblePct": 77.5,
+        "shownPct": 23.2,
+        "deliveryPct": 29.9
+      },
+      "adult-family-return": {
+        "priority": "followup",
+        "eligiblePct": 7.8,
+        "shownPct": 7.8,
+        "deliveryPct": 100
+      },
+      "tin-whistle": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 30.5,
+        "deliveryPct": 31.4
+      },
+      "family-need-cell-small": {
+        "priority": "normal",
+        "eligiblePct": 42.8,
+        "shownPct": 2.8,
+        "deliveryPct": 6.6
+      },
+      "family-need-cell-medium": {
+        "priority": "normal",
+        "eligiblePct": 64.7,
+        "shownPct": 11.4,
+        "deliveryPct": 17.7
+      },
+      "family-need-cell-large": {
+        "priority": "normal",
+        "eligiblePct": 49.2,
+        "shownPct": 9.8,
+        "deliveryPct": 19.8
+      },
+      "family-need-key": {
+        "priority": "followup",
+        "eligiblePct": 7.4,
+        "shownPct": 7.4,
+        "deliveryPct": 100
+      },
+      "family-need-apples": {
+        "priority": "normal",
+        "eligiblePct": 9.5,
+        "shownPct": 1.9,
+        "deliveryPct": 20.2
+      },
+      "window-offer": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 27.3,
+        "deliveryPct": 28.1
+      },
+      "window-last-call": {
+        "priority": "followup",
+        "eligiblePct": 14.2,
+        "shownPct": 14.2,
+        "deliveryPct": 100
+      },
+      "cabin-closed-door": {
+        "priority": "normal",
+        "eligiblePct": 64.7,
+        "shownPct": 25.6,
+        "deliveryPct": 39.6
+      },
+      "trip-memory-friend": {
+        "priority": "normal",
+        "eligiblePct": 40,
+        "shownPct": 22.7,
+        "deliveryPct": 56.7
+      },
+      "lower-deck-stranger": {
+        "priority": "normal",
+        "eligiblePct": 34.4,
+        "shownPct": 21.8,
+        "deliveryPct": 63.4
+      },
+      "family-a-life-ahead": {
+        "priority": "followup",
+        "eligiblePct": 10.3,
+        "shownPct": 10.3,
+        "deliveryPct": 100
+      },
+      "family-crossing-decks": {
+        "priority": "followup",
+        "eligiblePct": 15.8,
+        "shownPct": 15.8,
+        "deliveryPct": 100
+      },
+      "family-child-question": {
+        "priority": "followup",
+        "eligiblePct": 4,
+        "shownPct": 4,
+        "deliveryPct": 100
+      },
+      "family-parent-last-days": {
+        "priority": "followup",
+        "eligiblePct": 19.9,
+        "shownPct": 19.7,
+        "deliveryPct": 98.7
+      },
+      "family-home-in-bio": {
+        "priority": "followup",
+        "eligiblePct": 7.4,
+        "shownPct": 7.4,
+        "deliveryPct": 100
+      },
+      "family-life-ahead-again": {
+        "priority": "followup",
+        "eligiblePct": 2.3,
+        "shownPct": 2.3,
+        "deliveryPct": 100
+      },
+      "late-friend-bench": {
+        "priority": "normal",
+        "eligiblePct": 77.6,
+        "shownPct": 46.6,
+        "deliveryPct": 60
+      },
+      "late-adult-child-route": {
+        "priority": "normal",
+        "eligiblePct": 3.8,
+        "shownPct": 2.8,
+        "deliveryPct": 73.9
+      },
+      "late-tech-handbook": {
+        "priority": "normal",
+        "eligiblePct": 25.4,
+        "shownPct": 16.5,
+        "deliveryPct": 64.9
+      },
+      "late-medic-routine": {
+        "priority": "normal",
+        "eligiblePct": 23.8,
+        "shownPct": 15.2,
+        "deliveryPct": 63.6
+      },
+      "late-crack-record": {
+        "priority": "normal",
+        "eligiblePct": 5.8,
+        "shownPct": 3.8,
+        "deliveryPct": 65.2
+      },
+      "late-signal-record": {
+        "priority": "normal",
+        "eligiblePct": 11.3,
+        "shownPct": 6.3,
+        "deliveryPct": 56.3
+      },
+      "late-neighbor-night": {
+        "priority": "normal",
+        "eligiblePct": 15.3,
+        "shownPct": 7.1,
+        "deliveryPct": 46.2
+      },
+      "late-common-room": {
+        "priority": "normal",
+        "eligiblePct": 94,
+        "shownPct": 68.4,
+        "deliveryPct": 72.8
+      },
+      "neighbor-medical": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 46.3,
+        "deliveryPct": 47.8
+      },
+      "neighbor-followup": {
+        "priority": "followup",
+        "eligiblePct": 16.7,
+        "shownPct": 16.5,
+        "deliveryPct": 99
+      },
+      "neighbor-kid-moved": {
+        "priority": "followup",
+        "eligiblePct": 6,
+        "shownPct": 5.8,
+        "deliveryPct": 97.2
+      },
+      "neighbor-kid-passed": {
+        "priority": "followup",
+        "eligiblePct": 5.3,
+        "shownPct": 5.3,
+        "deliveryPct": 100
+      },
+      "neighbor-kid-stayed": {
+        "priority": "followup",
+        "eligiblePct": 4.6,
+        "shownPct": 4.6,
+        "deliveryPct": 100
+      },
+      "neighbor-weekend": {
+        "priority": "followup",
+        "eligiblePct": 13.6,
+        "shownPct": 13.6,
+        "deliveryPct": 100
+      },
+      "neighbor-cold-leak": {
+        "priority": "followup",
+        "eligiblePct": 15.8,
+        "shownPct": 15.8,
+        "deliveryPct": 100
+      },
+      "neighbor-reconcile": {
+        "priority": "followup",
+        "eligiblePct": 5.3,
+        "shownPct": 5.3,
+        "deliveryPct": 100
+      },
+      "youth-shared-notes": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 10.5,
+        "deliveryPct": 10.8
+      },
+      "youth-window-shift": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 9.5,
+        "deliveryPct": 9.8
+      },
+      "youth-first-duty": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 13.8,
+        "deliveryPct": 14.2
+      },
+      "youth-family-table": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 12.8,
+        "deliveryPct": 13.2
+      },
+      "youth-garden-label": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 9,
+        "deliveryPct": 9.3
+      },
+      "youth-voice-message": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 8.1,
+        "deliveryPct": 8.3
+      },
+      "youth-lunch-line": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 10,
+        "deliveryPct": 10.3
+      },
+      "youth-map-corner": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 8.5,
+        "deliveryPct": 8.8
+      },
+      "youth-swap-evening": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 16.3,
+        "deliveryPct": 16.8
+      },
+      "youth-quiet-corner": {
+        "priority": "normal",
+        "eligiblePct": 97,
+        "shownPct": 6,
+        "deliveryPct": 6.2
+      }
+    }
+  },
+  "ages": {
+    "decisionsPer10Years": {
+      "0-9": 2.12,
+      "10-19": 3.37,
+      "20-29": 3.51,
+      "30-39": 3.71,
+      "40-49": 3.46,
+      "50-59": 3.35,
+      "60-69": 3.18,
+      "70-79": 3.05,
+      "80-89": 1.85,
+      "90-99": 0.13
+    },
+    "yearsWithAcceptedMomentPct": {
+      "0-9": 65.9,
+      "10-19": 64.8,
+      "20-29": 68,
+      "30-39": 65.3,
+      "40-49": 73.7,
+      "50-59": 71.5,
+      "60-69": 73.5,
+      "70-79": 77.1,
+      "80-89": 81.9,
+      "90-99": 54.7
+    },
+    "emptyYearsPct": {
+      "0-9": 9.4,
+      "10-19": 18.8,
+      "20-29": 14,
+      "30-39": 16.8,
+      "40-49": 13.5,
+      "50-59": 14.5,
+      "60-69": 16.3,
+      "70-79": 14.8,
+      "80-89": 14.2,
+      "90-99": 44.5
+    },
+    "longestEmptyStreak": {
+      "mean": 1.9,
+      "p90": 3,
+      "max": 9
+    },
+    "deathAge": {
+      "mean": 81.1,
+      "p10": 69,
+      "p90": 96
+    }
+  },
+  "trajectories": {
+    "sameSeedOtherPolicyJaccard": 0.565,
+    "sameSeedOtherAnswersJaccard": 0.405,
+    "differentSeedsJaccard": 0.234,
+    "familyVsCareeristRateDistance": 0.0212,
+    "noiseFloorRateDistance": 0.0332,
+    "note": "ответы при одном seed у всех стратегий одинаковы (хэш economy-t8a): первая строка измеряет только траты, фокус и время; вторая — только другие ответы при стратегии Moderate"
+  },
+  "professions": {
+    "livesByJobAt30": {
+      "Техник": 320,
+      "Медик": 301,
+      "Агроном": 265,
+      "Координатор": 278
+    },
+    "jaccardSameJob": 0.277,
+    "jaccardDifferentJob": 0.261,
+    "jobGatedStoryletsSeenPerLife": {
+      "Техник": 1.97,
+      "Медик": 1.9,
+      "Агроном": 1.44,
+      "Координатор": 1.52
+    },
+    "pairwiseRateDistance": {
+      "Техник/Медик": 0.0551,
+      "Техник/Агроном": 0.0534,
+      "Техник/Координатор": 0.0597,
+      "Медик/Агроном": 0.0494,
+      "Медик/Координатор": 0.0586,
+      "Агроном/Координатор": 0.0546
+    }
+  },
+  "family": {
+    "childPct": 4,
+    "partnerPct": 4.6,
+    "singlePct": 91.6,
+    "childVsNoChild": {
+      "lives": [
+        48,
+        1152
+      ],
+      "decisions": [
+        26.5,
+        25.1
+      ],
+      "acceptedMoments": [
+        80.1,
+        81.4
+      ],
+      "meanRateDistance": 0.0778,
+      "storyletsOnlyInFirst": 2,
+      "storyletsOnlyInSecond": 26
+    },
+    "partnerVsSingle": {
+      "lives": [
+        55,
+        1099
+      ],
+      "decisions": [
+        25.9,
+        25
+      ],
+      "acceptedMoments": [
+        82.3,
+        81.4
+      ],
+      "meanRateDistance": 0.0828,
+      "storyletsOnlyInFirst": 4,
+      "storyletsOnlyInSecond": 28
+    },
+    "lateDecisions": {
+      "withChild": 5.83,
+      "single": 5.13
+    },
+    "childByPolicy": {
+      "Careerist": 6.5,
+      "Moderate": 3,
+      "Family": 4,
+      "TimeBuyer": 3,
+      "Spender": 2,
+      "Saver": 5.5
+    }
+  },
+  "personalTime": {
+    "adultUnusedPct": 61.5,
+    "unusedByBasis": {
+      "full": {
+        "years": 50114,
+        "unusedPct": 58.9
+      },
+      "reduced": {
+        "years": 12002,
+        "unusedPct": 62.2
+      },
+      "retired": {
+        "years": 11037,
+        "unusedPct": 68.7
+      },
+      "mentor": {
+        "years": 3011,
+        "unusedPct": 65.7
+      },
+      "trainee": {
+        "years": 65,
+        "unusedPct": 55.4
+      }
+    },
+    "adultYearsWithAcceptedMomentPct": 71.2
+  },
+  "save": {
+    "finalSaveKb": {
+      "mean": 99.3,
+      "max": 125.9
+    },
+    "historyEntries": {
+      "mean": 501,
+      "max": 648
+    },
+    "flagsAtDeath": {
+      "mean": 38.1,
+      "max": 54
+    },
+    "memoriesAtDeath": {
+      "mean": 27.7,
+      "max": 46
+    },
+    "invariantViolations": 0
+  }
+}

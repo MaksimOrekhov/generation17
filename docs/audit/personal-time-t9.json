@@ -4,8 +4,10 @@
   "seeds": {
     "first": 102,
     "last": 201,
-    "count": 100
+    "count": 100,
+    "cohort": "development"
   },
+  "holdout": false,
   "rules": {
     "T8": {
       "allowance": {
@@ -2054,21 +2056,21 @@
     },
     "B/Careerist": {
       "lives": 100,
-      "deathAge": 82.25,
+      "deathAge": 82.37,
       "time": {
-        "grantedPerLife": 205.59,
-        "spentPerLife": 83.78,
-        "unusedPct": 59.2,
+        "grantedPerLife": 206.07,
+        "spentPerLife": 83.82,
+        "unusedPct": 59.3,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.3,
         "fullyUsedAdultYearsPct": 13.8,
-        "onMomentsPerLife": 61.93,
+        "onMomentsPerLife": 61.97,
         "onPurchasesPerLife": 21.85
       },
       "moments": {
-        "offeredPerLife": 80.5,
-        "acceptedPerLife": 77.65,
-        "adultAcceptedPerLife": 61.93,
+        "offeredPerLife": 80.54,
+        "acceptedPerLife": 77.69,
+        "adultAcceptedPerLife": 61.97,
         "uniqueAcceptedPerLife": 40.88,
         "declinedForPlanPerLife": 2.85,
         "emptyBeatsPerLife": 0.01,
@@ -2100,13 +2102,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5277,
+          "eligibleWindows": 5266,
           "availablePct": 97.3,
           "timeBlockedPct": 2.7,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6441,
+          "eligibleWindows": 6453,
           "availablePct": 97.5,
           "timeBlockedPct": 2.5,
           "moneyBlockedPct": 0
@@ -2123,14 +2125,14 @@
         "grade3MedianAge": 27,
         "grade4Lives": 99,
         "grade4MedianAge": 35,
-        "lifetimeIncome": 113649.95,
-        "finalBalance": 88011.45,
+        "lifetimeIncome": 113767.87,
+        "finalBalance": 88087.37,
         "reducedYears": 0,
-        "retiredYears": 12.36
+        "retiredYears": 12.48
       },
       "narrative": {
         "storyletsPerLife": 25.59,
-        "memoriesPerLife": 20.22,
+        "memoriesPerLife": 20.24,
         "followupsPerLife": 4.34,
         "uniqueLivedEventsPerLife": 66.47
       },
@@ -2178,12 +2180,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 857,
+          "years": 869,
           "limit": 4,
-          "spentPerYear": 1.24,
-          "unusedPct": 69.1,
-          "momentsPerYear": 1.24,
-          "offeredPerYear": 1.24,
+          "spentPerYear": 1.22,
+          "unusedPct": 69.4,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -2201,23 +2203,23 @@
         }
       },
       "integrity": {
-        "checks": 44505,
+        "checks": 44557,
         "violations": 0,
         "first": null
       }
     },
     "B/Moderate": {
       "lives": 100,
-      "deathAge": 84.47,
+      "deathAge": 84.55,
       "time": {
-        "grantedPerLife": 213.33,
-        "spentPerLife": 78.76,
+        "grantedPerLife": 213.65,
+        "spentPerLife": 78.74,
         "unusedPct": 63.1,
         "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.18,
         "fullyUsedAdultYearsPct": 7.7,
         "onMomentsPerLife": 65.4,
-        "onPurchasesPerLife": 13.36
+        "onPurchasesPerLife": 13.34
       },
       "moments": {
         "offeredPerLife": 81.95,
@@ -2242,9 +2244,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 15,
-        "familyTripsPerLife": 4.96,
+        "familyTripsPerLife": 4.94,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 3647.9
+        "spentCreditsPerLife": 3641.5
       },
       "availability": {
         "course": {
@@ -2254,7 +2256,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3580,
+          "eligibleWindows": 3576,
           "availablePct": 97.2,
           "timeBlockedPct": 2.8,
           "moneyBlockedPct": 0
@@ -2277,14 +2279,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 99,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 101674.49,
-        "finalBalance": 55520.99,
+        "lifetimeIncome": 101763.04,
+        "finalBalance": 55560.14,
         "reducedYears": 0,
-        "retiredYears": 13.44
+        "retiredYears": 13.52
       },
       "narrative": {
         "storyletsPerLife": 26.06,
-        "memoriesPerLife": 28.86,
+        "memoriesPerLife": 28.88,
         "followupsPerLife": 4.16,
         "uniqueLivedEventsPerLife": 71.23
       },
@@ -2332,12 +2334,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1067,
+          "years": 1075,
           "limit": 4,
-          "spentPerYear": 1.23,
-          "unusedPct": 69.3,
-          "momentsPerYear": 1.18,
-          "offeredPerYear": 1.18,
+          "spentPerYear": 1.22,
+          "unusedPct": 69.6,
+          "momentsPerYear": 1.17,
+          "offeredPerYear": 1.17,
           "purchaseTimePerYear": 0.04,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
@@ -2355,28 +2357,28 @@
         }
       },
       "integrity": {
-        "checks": 45891,
+        "checks": 45921,
         "violations": 0,
         "first": null
       }
     },
     "B/Family": {
       "lives": 100,
-      "deathAge": 83.02,
+      "deathAge": 83.42,
       "time": {
-        "grantedPerLife": 237.95,
-        "spentPerLife": 90.75,
-        "unusedPct": 61.9,
+        "grantedPerLife": 239.55,
+        "spentPerLife": 90.96,
+        "unusedPct": 62,
         "grantedPerAdultYear": 3.65,
         "spentPerAdultYear": 1.39,
         "fullyUsedAdultYearsPct": 4.8,
-        "onMomentsPerLife": 76.91,
-        "onPurchasesPerLife": 13.84
+        "onMomentsPerLife": 77.11,
+        "onPurchasesPerLife": 13.85
       },
       "moments": {
-        "offeredPerLife": 93.12,
-        "acceptedPerLife": 92.63,
-        "adultAcceptedPerLife": 76.91,
+        "offeredPerLife": 93.32,
+        "acceptedPerLife": 92.83,
+        "adultAcceptedPerLife": 77.11,
         "uniqueAcceptedPerLife": 44.96,
         "declinedForPlanPerLife": 0.49,
         "emptyBeatsPerLife": 0.13,
@@ -2396,9 +2398,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 28,
         "storyCourses": 22,
-        "familyTripsPerLife": 11.28,
+        "familyTripsPerLife": 11.29,
         "sectorTripsPerLife": 0,
-        "spentCreditsPerLife": 4442.6
+        "spentCreditsPerLife": 4445.8
       },
       "availability": {
         "course": {
@@ -2408,13 +2410,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 1127,
+          "eligibleWindows": 1128,
           "availablePct": 100,
           "timeBlockedPct": 0,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6518,
+          "eligibleWindows": 6558,
           "availablePct": 98.7,
           "timeBlockedPct": 1.3,
           "moneyBlockedPct": 0
@@ -2431,14 +2433,14 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 61552.76,
-        "finalBalance": 15625.26,
+        "lifetimeIncome": 61895.13,
+        "finalBalance": 15670.13,
         "reducedYears": 29.1,
-        "retiredYears": 13.31
+        "retiredYears": 13.71
       },
       "narrative": {
         "storyletsPerLife": 25.77,
-        "memoriesPerLife": 31.09,
+        "memoriesPerLife": 31.11,
         "followupsPerLife": 4.21,
         "uniqueLivedEventsPerLife": 70.73
       },
@@ -2497,12 +2499,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1067,
+          "years": 1107,
           "limit": 4,
-          "spentPerYear": 1.33,
-          "unusedPct": 66.7,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.3,
+          "unusedPct": 67.4,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
           "purchaseTimePerYear": 0.08,
           "fullyUsedYearsPct": 1.2,
           "declinedForPlanPerYear": 0
@@ -2520,28 +2522,28 @@
         }
       },
       "integrity": {
-        "checks": 46777,
+        "checks": 46958,
         "violations": 0,
         "first": null
       }
     },
     "B/TimeBuyer": {
       "lives": 100,
-      "deathAge": 82.27,
+      "deathAge": 82.26,
       "time": {
-        "grantedPerLife": 234.95,
-        "spentPerLife": 89.15,
+        "grantedPerLife": 234.91,
+        "spentPerLife": 89.13,
         "unusedPct": 62.1,
         "grantedPerAdultYear": 3.65,
         "spentPerAdultYear": 1.38,
         "fullyUsedAdultYearsPct": 5.3,
-        "onMomentsPerLife": 75.93,
-        "onPurchasesPerLife": 13.22
+        "onMomentsPerLife": 75.9,
+        "onPurchasesPerLife": 13.23
       },
       "moments": {
-        "offeredPerLife": 92.34,
-        "acceptedPerLife": 91.65,
-        "adultAcceptedPerLife": 75.93,
+        "offeredPerLife": 92.31,
+        "acceptedPerLife": 91.62,
+        "adultAcceptedPerLife": 75.9,
         "uniqueAcceptedPerLife": 46.82,
         "declinedForPlanPerLife": 0.69,
         "emptyBeatsPerLife": 0.03,
@@ -2561,9 +2563,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 12,
-        "familyTripsPerLife": 4.88,
+        "familyTripsPerLife": 4.89,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 3613.3
+        "spentCreditsPerLife": 3616.5
       },
       "availability": {
         "course": {
@@ -2573,7 +2575,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3542,
+          "eligibleWindows": 3543,
           "availablePct": 98.4,
           "timeBlockedPct": 1.6,
           "moneyBlockedPct": 0
@@ -2596,14 +2598,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 11,
         "grade4MedianAge": 61,
-        "lifetimeIncome": 71236.7,
-        "finalBalance": 26761.3,
+        "lifetimeIncome": 71230.37,
+        "finalBalance": 26750.27,
         "reducedYears": 29.16,
-        "retiredYears": 12.5
+        "retiredYears": 12.49
       },
       "narrative": {
         "storyletsPerLife": 25.56,
-        "memoriesPerLife": 28.46,
+        "memoriesPerLife": 28.47,
         "followupsPerLife": 4.25,
         "uniqueLivedEventsPerLife": 72.38
       },
@@ -2662,11 +2664,11 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1005,
+          "years": 1004,
           "limit": 4,
           "spentPerYear": 1.31,
           "unusedPct": 67.3,
-          "momentsPerYear": 1.27,
+          "momentsPerYear": 1.26,
           "offeredPerYear": 1.27,
           "purchaseTimePerYear": 0.04,
           "fullyUsedYearsPct": 0.3,
@@ -2685,28 +2687,28 @@
         }
       },
       "integrity": {
-        "checks": 48947,
+        "checks": 48941,
         "violations": 0,
         "first": null
       }
     },
     "B/Spender": {
       "lives": 100,
-      "deathAge": 81.64,
+      "deathAge": 81.57,
       "time": {
-        "grantedPerLife": 204.4,
-        "spentPerLife": 93.7,
-        "unusedPct": 54.2,
+        "grantedPerLife": 204.12,
+        "spentPerLife": 93.83,
+        "unusedPct": 54,
         "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.47,
         "fullyUsedAdultYearsPct": 18.9,
-        "onMomentsPerLife": 57.37,
-        "onPurchasesPerLife": 36.33
+        "onMomentsPerLife": 57.47,
+        "onPurchasesPerLife": 36.36
       },
       "moments": {
-        "offeredPerLife": 78.85,
-        "acceptedPerLife": 73.09,
-        "adultAcceptedPerLife": 57.37,
+        "offeredPerLife": 78.95,
+        "acceptedPerLife": 73.19,
+        "adultAcceptedPerLife": 57.47,
         "uniqueAcceptedPerLife": 42.56,
         "declinedForPlanPerLife": 5.76,
         "emptyBeatsPerLife": 0.09,
@@ -2726,9 +2728,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 10,
-        "familyTripsPerLife": 10.67,
+        "familyTripsPerLife": 10.7,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 8498.1
+        "spentCreditsPerLife": 8507.7
       },
       "availability": {
         "course": {
@@ -2738,7 +2740,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 1058,
+          "eligibleWindows": 1061,
           "availablePct": 100,
           "timeBlockedPct": 0,
           "moneyBlockedPct": 0
@@ -2761,14 +2763,14 @@
         "grade3MedianAge": 34,
         "grade4Lives": 99,
         "grade4MedianAge": 43,
-        "lifetimeIncome": 101230.44,
-        "finalBalance": 49143.94,
+        "lifetimeIncome": 101179.39,
+        "finalBalance": 49144.19,
         "reducedYears": 0,
-        "retiredYears": 13
+        "retiredYears": 12.93
       },
       "narrative": {
         "storyletsPerLife": 25.37,
-        "memoriesPerLife": 33.84,
+        "memoriesPerLife": 33.88,
         "followupsPerLife": 4.01,
         "uniqueLivedEventsPerLife": 67.93
       },
@@ -2816,12 +2818,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 941,
+          "years": 934,
           "limit": 4,
-          "spentPerYear": 1.28,
-          "unusedPct": 68,
-          "momentsPerYear": 1.21,
-          "offeredPerYear": 1.22,
+          "spentPerYear": 1.31,
+          "unusedPct": 67.4,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.24,
           "purchaseTimePerYear": 0.07,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
@@ -2839,28 +2841,28 @@
         }
       },
       "integrity": {
-        "checks": 45329,
+        "checks": 45314,
         "violations": 0,
         "first": null
       }
     },
     "B/Saver": {
       "lives": 100,
-      "deathAge": 82.45,
+      "deathAge": 82.74,
       "time": {
-        "grantedPerLife": 206.23,
-        "spentPerLife": 65.04,
-        "unusedPct": 68.5,
-        "grantedPerAdultYear": 3.19,
-        "spentPerAdultYear": 1.01,
+        "grantedPerLife": 207.39,
+        "spentPerLife": 65.07,
+        "unusedPct": 68.6,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1,
         "fullyUsedAdultYearsPct": 2.9,
-        "onMomentsPerLife": 65.04,
+        "onMomentsPerLife": 65.07,
         "onPurchasesPerLife": 0
       },
       "moments": {
-        "offeredPerLife": 80.76,
-        "acceptedPerLife": 80.76,
-        "adultAcceptedPerLife": 65.04,
+        "offeredPerLife": 80.79,
+        "acceptedPerLife": 80.79,
+        "adultAcceptedPerLife": 65.07,
         "uniqueAcceptedPerLife": 41.05,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0,
@@ -2892,13 +2894,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5367,
+          "eligibleWindows": 5359,
           "availablePct": 96.8,
           "timeBlockedPct": 3.2,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6461,
+          "eligibleWindows": 6490,
           "availablePct": 97.1,
           "timeBlockedPct": 2.9,
           "moneyBlockedPct": 0
@@ -2915,10 +2917,10 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 80043.46,
-        "finalBalance": 58285.56,
+        "lifetimeIncome": 80303.98,
+        "finalBalance": 58448.78,
         "reducedYears": 0,
-        "retiredYears": 12.4
+        "retiredYears": 12.69
       },
       "narrative": {
         "storyletsPerLife": 25.59,
@@ -2970,12 +2972,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 947,
+          "years": 976,
           "limit": 4,
-          "spentPerYear": 1.24,
-          "unusedPct": 68.9,
-          "momentsPerYear": 1.24,
-          "offeredPerYear": 1.24,
+          "spentPerYear": 1.21,
+          "unusedPct": 69.7,
+          "momentsPerYear": 1.21,
+          "offeredPerYear": 1.21,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -2993,28 +2995,28 @@
         }
       },
       "integrity": {
-        "checks": 43715,
+        "checks": 43834,
         "violations": 0,
         "first": null
       }
     },
     "C/Careerist": {
       "lives": 100,
-      "deathAge": 81.93,
+      "deathAge": 82.19,
       "time": {
-        "grantedPerLife": 204.31,
-        "spentPerLife": 83.54,
-        "unusedPct": 59.1,
+        "grantedPerLife": 205.35,
+        "spentPerLife": 83.69,
+        "unusedPct": 59.2,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.3,
         "fullyUsedAdultYearsPct": 13.9,
-        "onMomentsPerLife": 61.69,
+        "onMomentsPerLife": 61.84,
         "onPurchasesPerLife": 21.85
       },
       "moments": {
-        "offeredPerLife": 80.26,
-        "acceptedPerLife": 77.41,
-        "adultAcceptedPerLife": 61.69,
+        "offeredPerLife": 80.41,
+        "acceptedPerLife": 77.56,
+        "adultAcceptedPerLife": 61.84,
         "uniqueAcceptedPerLife": 42.1,
         "declinedForPlanPerLife": 2.85,
         "emptyBeatsPerLife": 0.01,
@@ -3046,13 +3048,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5263,
+          "eligibleWindows": 5262,
           "availablePct": 97.3,
           "timeBlockedPct": 2.7,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6409,
+          "eligibleWindows": 6435,
           "availablePct": 97.5,
           "timeBlockedPct": 2.5,
           "moneyBlockedPct": 0
@@ -3069,14 +3071,14 @@
         "grade3MedianAge": 27,
         "grade4Lives": 99,
         "grade4MedianAge": 35,
-        "lifetimeIncome": 113297.31,
-        "finalBalance": 87770.81,
+        "lifetimeIncome": 113566.32,
+        "finalBalance": 87951.82,
         "reducedYears": 0,
-        "retiredYears": 12.04
+        "retiredYears": 12.3
       },
       "narrative": {
         "storyletsPerLife": 25.58,
-        "memoriesPerLife": 20.86,
+        "memoriesPerLife": 20.89,
         "followupsPerLife": 4.34,
         "uniqueLivedEventsPerLife": 67.68
       },
@@ -3124,12 +3126,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 825,
+          "years": 851,
           "limit": 4,
-          "spentPerYear": 1.25,
-          "unusedPct": 68.6,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.23,
+          "unusedPct": 69.2,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.23,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -3147,28 +3149,28 @@
         }
       },
       "integrity": {
-        "checks": 44352,
+        "checks": 44471,
         "violations": 0,
         "first": null
       }
     },
     "C/Moderate": {
       "lives": 100,
-      "deathAge": 84.37,
+      "deathAge": 84.25,
       "time": {
-        "grantedPerLife": 212.93,
-        "spentPerLife": 78.68,
+        "grantedPerLife": 212.45,
+        "spentPerLife": 78.63,
         "unusedPct": 63,
         "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.18,
         "fullyUsedAdultYearsPct": 7.7,
-        "onMomentsPerLife": 65.32,
+        "onMomentsPerLife": 65.27,
         "onPurchasesPerLife": 13.36
       },
       "moments": {
-        "offeredPerLife": 81.87,
-        "acceptedPerLife": 81.04,
-        "adultAcceptedPerLife": 65.32,
+        "offeredPerLife": 81.82,
+        "acceptedPerLife": 80.99,
+        "adultAcceptedPerLife": 65.27,
         "uniqueAcceptedPerLife": 46.18,
         "declinedForPlanPerLife": 0.83,
         "emptyBeatsPerLife": 0.07,
@@ -3223,14 +3225,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 99,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 101543.86,
-        "finalBalance": 55450.96,
+        "lifetimeIncome": 101420.28,
+        "finalBalance": 55397.58,
         "reducedYears": 0,
-        "retiredYears": 13.34
+        "retiredYears": 13.22
       },
       "narrative": {
         "storyletsPerLife": 26.06,
-        "memoriesPerLife": 29.42,
+        "memoriesPerLife": 29.43,
         "followupsPerLife": 4.16,
         "uniqueLivedEventsPerLife": 72.24
       },
@@ -3278,12 +3280,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1057,
+          "years": 1045,
           "limit": 4,
-          "spentPerYear": 1.23,
-          "unusedPct": 69.2,
-          "momentsPerYear": 1.19,
-          "offeredPerYear": 1.19,
+          "spentPerYear": 1.24,
+          "unusedPct": 68.9,
+          "momentsPerYear": 1.2,
+          "offeredPerYear": 1.2,
           "purchaseTimePerYear": 0.05,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
@@ -3301,28 +3303,28 @@
         }
       },
       "integrity": {
-        "checks": 45843,
+        "checks": 45790,
         "violations": 0,
         "first": null
       }
     },
     "C/Family": {
       "lives": 100,
-      "deathAge": 82.78,
+      "deathAge": 83.19,
       "time": {
-        "grantedPerLife": 236.99,
-        "spentPerLife": 90.34,
-        "unusedPct": 61.9,
+        "grantedPerLife": 238.63,
+        "spentPerLife": 90.48,
+        "unusedPct": 62.1,
         "grantedPerAdultYear": 3.65,
-        "spentPerAdultYear": 1.39,
-        "fullyUsedAdultYearsPct": 4.9,
-        "onMomentsPerLife": 76.64,
+        "spentPerAdultYear": 1.38,
+        "fullyUsedAdultYearsPct": 4.8,
+        "onMomentsPerLife": 76.78,
         "onPurchasesPerLife": 13.7
       },
       "moments": {
-        "offeredPerLife": 92.88,
-        "acceptedPerLife": 92.36,
-        "adultAcceptedPerLife": 76.64,
+        "offeredPerLife": 93.02,
+        "acceptedPerLife": 92.5,
+        "adultAcceptedPerLife": 76.78,
         "uniqueAcceptedPerLife": 48.62,
         "declinedForPlanPerLife": 0.52,
         "emptyBeatsPerLife": 0.13,
@@ -3360,7 +3362,7 @@
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6494,
+          "eligibleWindows": 6535,
           "availablePct": 98.7,
           "timeBlockedPct": 1.3,
           "moneyBlockedPct": 0
@@ -3377,16 +3379,16 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 61268.01,
-        "finalBalance": 15546.71,
+        "lifetimeIncome": 61615.5,
+        "finalBalance": 15617.9,
         "reducedYears": 29.13,
-        "retiredYears": 13.04
+        "retiredYears": 13.45
       },
       "narrative": {
-        "storyletsPerLife": 25.72,
-        "memoriesPerLife": 32.49,
+        "storyletsPerLife": 25.73,
+        "memoriesPerLife": 32.51,
         "followupsPerLife": 4.12,
-        "uniqueLivedEventsPerLife": 74.34
+        "uniqueLivedEventsPerLife": 74.35
       },
       "at60": {
         "alive": 98,
@@ -3443,14 +3445,14 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1027,
+          "years": 1068,
           "limit": 4,
-          "spentPerYear": 1.32,
-          "unusedPct": 66.9,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
-          "purchaseTimePerYear": 0.08,
-          "fullyUsedYearsPct": 1.2,
+          "spentPerYear": 1.29,
+          "unusedPct": 67.9,
+          "momentsPerYear": 1.21,
+          "offeredPerYear": 1.21,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 1.1,
           "declinedForPlanPerYear": 0
         },
         "mentor": {
@@ -3466,28 +3468,28 @@
         }
       },
       "integrity": {
-        "checks": 46635,
+        "checks": 46814,
         "violations": 0,
         "first": null
       }
     },
     "C/TimeBuyer": {
       "lives": 100,
-      "deathAge": 83.12,
+      "deathAge": 82.96,
       "time": {
-        "grantedPerLife": 238.35,
-        "spentPerLife": 90.07,
-        "unusedPct": 62.2,
+        "grantedPerLife": 237.71,
+        "spentPerLife": 90.03,
+        "unusedPct": 62.1,
         "grantedPerAdultYear": 3.65,
         "spentPerAdultYear": 1.38,
         "fullyUsedAdultYearsPct": 5.3,
-        "onMomentsPerLife": 76.81,
-        "onPurchasesPerLife": 13.26
+        "onMomentsPerLife": 76.78,
+        "onPurchasesPerLife": 13.25
       },
       "moments": {
-        "offeredPerLife": 93.21,
-        "acceptedPerLife": 92.53,
-        "adultAcceptedPerLife": 76.81,
+        "offeredPerLife": 93.18,
+        "acceptedPerLife": 92.5,
+        "adultAcceptedPerLife": 76.78,
         "uniqueAcceptedPerLife": 50.54,
         "declinedForPlanPerLife": 0.68,
         "emptyBeatsPerLife": 0.03,
@@ -3507,9 +3509,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 12,
-        "familyTripsPerLife": 4.92,
+        "familyTripsPerLife": 4.91,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 3626.1
+        "spentCreditsPerLife": 3622.9
       },
       "availability": {
         "course": {
@@ -3519,7 +3521,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3562,
+          "eligibleWindows": 3557,
           "availablePct": 98.4,
           "timeBlockedPct": 1.6,
           "moneyBlockedPct": 0
@@ -3542,10 +3544,10 @@
         "grade3MedianAge": 39,
         "grade4Lives": 11,
         "grade4MedianAge": 60,
-        "lifetimeIncome": 72030.24,
-        "finalBalance": 26950.44,
+        "lifetimeIncome": 71853.15,
+        "finalBalance": 26862.35,
         "reducedYears": 29.68,
-        "retiredYears": 12.83
+        "retiredYears": 12.67
       },
       "narrative": {
         "storyletsPerLife": 25.65,
@@ -3608,12 +3610,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1043,
+          "years": 1027,
           "limit": 4,
-          "spentPerYear": 1.29,
-          "unusedPct": 67.8,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.3,
+          "unusedPct": 67.4,
+          "momentsPerYear": 1.26,
+          "offeredPerYear": 1.26,
           "purchaseTimePerYear": 0.04,
           "fullyUsedYearsPct": 0.4,
           "declinedForPlanPerYear": 0
@@ -3631,28 +3633,28 @@
         }
       },
       "integrity": {
-        "checks": 49444,
+        "checks": 49368,
         "violations": 0,
         "first": null
       }
     },
     "C/Spender": {
       "lives": 100,
-      "deathAge": 81.54,
+      "deathAge": 81.24,
       "time": {
-        "grantedPerLife": 204,
-        "spentPerLife": 93.74,
-        "unusedPct": 54,
+        "grantedPerLife": 202.8,
+        "spentPerLife": 93.73,
+        "unusedPct": 53.8,
         "grantedPerAdultYear": 3.2,
-        "spentPerAdultYear": 1.47,
-        "fullyUsedAdultYearsPct": 18.9,
-        "onMomentsPerLife": 57.4,
-        "onPurchasesPerLife": 36.34
+        "spentPerAdultYear": 1.48,
+        "fullyUsedAdultYearsPct": 19,
+        "onMomentsPerLife": 57.38,
+        "onPurchasesPerLife": 36.35
       },
       "moments": {
-        "offeredPerLife": 78.9,
-        "acceptedPerLife": 73.12,
-        "adultAcceptedPerLife": 57.4,
+        "offeredPerLife": 78.88,
+        "acceptedPerLife": 73.1,
+        "adultAcceptedPerLife": 57.38,
         "uniqueAcceptedPerLife": 43.71,
         "declinedForPlanPerLife": 5.78,
         "emptyBeatsPerLife": 0.09,
@@ -3672,9 +3674,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 10,
-        "familyTripsPerLife": 10.68,
+        "familyTripsPerLife": 10.69,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 8501.3
+        "spentCreditsPerLife": 8504.5
       },
       "availability": {
         "course": {
@@ -3684,7 +3686,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 1059,
+          "eligibleWindows": 1060,
           "availablePct": 100,
           "timeBlockedPct": 0,
           "moneyBlockedPct": 0
@@ -3707,16 +3709,16 @@
         "grade3MedianAge": 34,
         "grade4Lives": 99,
         "grade4MedianAge": 43,
-        "lifetimeIncome": 101081.25,
-        "finalBalance": 49064.15,
+        "lifetimeIncome": 100773.76,
+        "finalBalance": 48956.56,
         "reducedYears": 0,
-        "retiredYears": 12.9
+        "retiredYears": 12.6
       },
       "narrative": {
-        "storyletsPerLife": 25.37,
-        "memoriesPerLife": 34.38,
+        "storyletsPerLife": 25.36,
+        "memoriesPerLife": 34.4,
         "followupsPerLife": 4.01,
-        "uniqueLivedEventsPerLife": 69.08
+        "uniqueLivedEventsPerLife": 69.07
       },
       "at60": {
         "alive": 96,
@@ -3762,14 +3764,14 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 931,
+          "years": 901,
           "limit": 4,
-          "spentPerYear": 1.3,
-          "unusedPct": 67.5,
-          "momentsPerYear": 1.23,
-          "offeredPerYear": 1.23,
+          "spentPerYear": 1.34,
+          "unusedPct": 66.4,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
           "purchaseTimePerYear": 0.07,
-          "fullyUsedYearsPct": 0.5,
+          "fullyUsedYearsPct": 0.6,
           "declinedForPlanPerYear": 0
         },
         "mentor": {
@@ -3785,28 +3787,28 @@
         }
       },
       "integrity": {
-        "checks": 45293,
+        "checks": 45171,
         "violations": 0,
         "first": null
       }
     },
     "C/Saver": {
       "lives": 100,
-      "deathAge": 82.38,
+      "deathAge": 82.25,
       "time": {
-        "grantedPerLife": 205.95,
-        "spentPerLife": 65.03,
+        "grantedPerLife": 205.43,
+        "spentPerLife": 64.95,
         "unusedPct": 68.4,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.01,
         "fullyUsedAdultYearsPct": 2.9,
-        "onMomentsPerLife": 65.03,
+        "onMomentsPerLife": 64.95,
         "onPurchasesPerLife": 0
       },
       "moments": {
-        "offeredPerLife": 80.75,
-        "acceptedPerLife": 80.75,
-        "adultAcceptedPerLife": 65.03,
+        "offeredPerLife": 80.67,
+        "acceptedPerLife": 80.67,
+        "adultAcceptedPerLife": 64.95,
         "uniqueAcceptedPerLife": 42.17,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0,
@@ -3838,13 +3840,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5378,
+          "eligibleWindows": 5369,
           "availablePct": 96.8,
           "timeBlockedPct": 3.2,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6454,
+          "eligibleWindows": 6441,
           "availablePct": 97.1,
           "timeBlockedPct": 2.9,
           "moneyBlockedPct": 0
@@ -3861,14 +3863,14 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 79980.92,
-        "finalBalance": 58247.52,
+        "lifetimeIncome": 79888.68,
+        "finalBalance": 58200.78,
         "reducedYears": 0,
-        "retiredYears": 12.33
+        "retiredYears": 12.2
       },
       "narrative": {
         "storyletsPerLife": 25.56,
-        "memoriesPerLife": 20.57,
+        "memoriesPerLife": 20.55,
         "followupsPerLife": 4.38,
         "uniqueLivedEventsPerLife": 67.73
       },
@@ -3916,12 +3918,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 940,
+          "years": 927,
           "limit": 4,
-          "spentPerYear": 1.25,
-          "unusedPct": 68.7,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.26,
+          "unusedPct": 68.4,
+          "momentsPerYear": 1.26,
+          "offeredPerYear": 1.26,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -3939,7 +3941,7 @@
         }
       },
       "integrity": {
-        "checks": 43683,
+        "checks": 43623,
         "violations": 0,
         "first": null
       }
@@ -4892,21 +4894,21 @@
     },
     "CG/Careerist": {
       "lives": 100,
-      "deathAge": 82.04,
+      "deathAge": 82.28,
       "time": {
-        "grantedPerLife": 204.73,
-        "spentPerLife": 83.81,
-        "unusedPct": 59.1,
+        "grantedPerLife": 205.69,
+        "spentPerLife": 83.95,
+        "unusedPct": 59.2,
         "grantedPerAdultYear": 3.19,
-        "spentPerAdultYear": 1.31,
+        "spentPerAdultYear": 1.3,
         "fullyUsedAdultYearsPct": 11.8,
-        "onMomentsPerLife": 64.44,
+        "onMomentsPerLife": 64.58,
         "onPurchasesPerLife": 19.37
       },
       "moments": {
-        "offeredPerLife": 80.16,
-        "acceptedPerLife": 80.16,
-        "adultAcceptedPerLife": 64.44,
+        "offeredPerLife": 80.3,
+        "acceptedPerLife": 80.3,
+        "adultAcceptedPerLife": 64.58,
         "uniqueAcceptedPerLife": 42.44,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.07,
@@ -4938,15 +4940,15 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5327,
+          "eligibleWindows": 5326,
           "availablePct": 96.7,
           "timeBlockedPct": 3.3,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6420,
-          "availablePct": 96.9,
-          "timeBlockedPct": 3.1,
+          "eligibleWindows": 6444,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
           "moneyBlockedPct": 0
         },
         "retrain": {
@@ -4961,14 +4963,14 @@
         "grade3MedianAge": 28,
         "grade4Lives": 99,
         "grade4MedianAge": 36,
-        "lifetimeIncome": 113187.58,
-        "finalBalance": 88073.68,
+        "lifetimeIncome": 113432.53,
+        "finalBalance": 88237.63,
         "reducedYears": 0,
-        "retiredYears": 12.13
+        "retiredYears": 12.37
       },
       "narrative": {
         "storyletsPerLife": 25.6,
-        "memoriesPerLife": 20.67,
+        "memoriesPerLife": 20.7,
         "followupsPerLife": 4.28,
         "uniqueLivedEventsPerLife": 68.04
       },
@@ -5016,12 +5018,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 836,
+          "years": 860,
           "limit": 4,
-          "spentPerYear": 1.25,
-          "unusedPct": 68.8,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.23,
+          "unusedPct": 69.3,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.23,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -5039,28 +5041,28 @@
         }
       },
       "integrity": {
-        "checks": 44546,
+        "checks": 44656,
         "violations": 0,
         "first": null
       }
     },
     "CG/Moderate": {
       "lives": 100,
-      "deathAge": 83.96,
+      "deathAge": 83.77,
       "time": {
-        "grantedPerLife": 211.05,
-        "spentPerLife": 78.88,
-        "unusedPct": 62.6,
+        "grantedPerLife": 210.29,
+        "spentPerLife": 78.79,
+        "unusedPct": 62.5,
         "grantedPerAdultYear": 3.19,
-        "spentPerAdultYear": 1.19,
+        "spentPerAdultYear": 1.2,
         "fullyUsedAdultYearsPct": 7.7,
-        "onMomentsPerLife": 65.78,
+        "onMomentsPerLife": 65.69,
         "onPurchasesPerLife": 13.1
       },
       "moments": {
-        "offeredPerLife": 81.5,
-        "acceptedPerLife": 81.5,
-        "adultAcceptedPerLife": 65.78,
+        "offeredPerLife": 81.41,
+        "acceptedPerLife": 81.41,
+        "adultAcceptedPerLife": 65.69,
         "uniqueAcceptedPerLife": 46.35,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.11,
@@ -5092,7 +5094,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3654,
+          "eligibleWindows": 3656,
           "availablePct": 96.5,
           "timeBlockedPct": 3.5,
           "moneyBlockedPct": 0
@@ -5115,14 +5117,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 99,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 101286.05,
-        "finalBalance": 55566.25,
+        "lifetimeIncome": 101076.96,
+        "finalBalance": 55481.36,
         "reducedYears": 0,
-        "retiredYears": 12.69
+        "retiredYears": 12.5
       },
       "narrative": {
         "storyletsPerLife": 25.96,
-        "memoriesPerLife": 29.08,
+        "memoriesPerLife": 29.07,
         "followupsPerLife": 4.18,
         "uniqueLivedEventsPerLife": 72.31
       },
@@ -5170,12 +5172,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1009,
+          "years": 990,
           "limit": 4,
-          "spentPerYear": 1.26,
-          "unusedPct": 68.4,
-          "momentsPerYear": 1.22,
-          "offeredPerYear": 1.22,
+          "spentPerYear": 1.28,
+          "unusedPct": 68,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.23,
           "purchaseTimePerYear": 0.05,
           "fullyUsedYearsPct": 0.6,
           "declinedForPlanPerYear": 0
@@ -5193,28 +5195,28 @@
         }
       },
       "integrity": {
-        "checks": 45688,
+        "checks": 45603,
         "violations": 0,
         "first": null
       }
     },
     "CG/Family": {
       "lives": 100,
-      "deathAge": 83.22,
+      "deathAge": 83.56,
       "time": {
-        "grantedPerLife": 238.75,
-        "spentPerLife": 91.23,
-        "unusedPct": 61.8,
+        "grantedPerLife": 240.11,
+        "spentPerLife": 91.33,
+        "unusedPct": 62,
         "grantedPerAdultYear": 3.65,
-        "spentPerAdultYear": 1.4,
+        "spentPerAdultYear": 1.39,
         "fullyUsedAdultYearsPct": 4.7,
-        "onMomentsPerLife": 77.43,
+        "onMomentsPerLife": 77.53,
         "onPurchasesPerLife": 13.8
       },
       "moments": {
-        "offeredPerLife": 93.15,
-        "acceptedPerLife": 93.15,
-        "adultAcceptedPerLife": 77.43,
+        "offeredPerLife": 93.25,
+        "acceptedPerLife": 93.25,
+        "adultAcceptedPerLife": 77.53,
         "uniqueAcceptedPerLife": 48.67,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.16,
@@ -5252,7 +5254,7 @@
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6538,
+          "eligibleWindows": 6572,
           "availablePct": 98.4,
           "timeBlockedPct": 1.6,
           "moneyBlockedPct": 0
@@ -5269,16 +5271,16 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 61461.63,
-        "finalBalance": 15438.93,
+        "lifetimeIncome": 61759.2,
+        "finalBalance": 15502.8,
         "reducedYears": 29.25,
-        "retiredYears": 13.36
+        "retiredYears": 13.7
       },
       "narrative": {
-        "storyletsPerLife": 25.67,
-        "memoriesPerLife": 32.65,
+        "storyletsPerLife": 25.68,
+        "memoriesPerLife": 32.64,
         "followupsPerLife": 4.09,
-        "uniqueLivedEventsPerLife": 74.34
+        "uniqueLivedEventsPerLife": 74.35
       },
       "at60": {
         "alive": 98,
@@ -5335,12 +5337,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1083,
+          "years": 1117,
           "limit": 4,
-          "spentPerYear": 1.33,
-          "unusedPct": 66.8,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.3,
+          "unusedPct": 67.6,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
           "purchaseTimePerYear": 0.08,
           "fullyUsedYearsPct": 1,
           "declinedForPlanPerYear": 0
@@ -5358,28 +5360,28 @@
         }
       },
       "integrity": {
-        "checks": 46895,
+        "checks": 47042,
         "violations": 0,
         "first": null
       }
     },
     "CG/TimeBuyer": {
       "lives": 100,
-      "deathAge": 83.09,
+      "deathAge": 82.73,
       "time": {
-        "grantedPerLife": 238.23,
-        "spentPerLife": 90.72,
-        "unusedPct": 61.9,
+        "grantedPerLife": 236.79,
+        "spentPerLife": 90.59,
+        "unusedPct": 61.7,
         "grantedPerAdultYear": 3.65,
-        "spentPerAdultYear": 1.39,
+        "spentPerAdultYear": 1.4,
         "fullyUsedAdultYearsPct": 5.2,
-        "onMomentsPerLife": 77.63,
-        "onPurchasesPerLife": 13.09
+        "onMomentsPerLife": 77.51,
+        "onPurchasesPerLife": 13.08
       },
       "moments": {
-        "offeredPerLife": 93.35,
-        "acceptedPerLife": 93.35,
-        "adultAcceptedPerLife": 77.63,
+        "offeredPerLife": 93.23,
+        "acceptedPerLife": 93.23,
+        "adultAcceptedPerLife": 77.51,
         "uniqueAcceptedPerLife": 50.64,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.04,
@@ -5399,9 +5401,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 12,
-        "familyTripsPerLife": 4.77,
+        "familyTripsPerLife": 4.76,
         "sectorTripsPerLife": 3.94,
-        "spentCreditsPerLife": 3573.3
+        "spentCreditsPerLife": 3570.1
       },
       "availability": {
         "course": {
@@ -5411,7 +5413,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3629,
+          "eligibleWindows": 3624,
           "availablePct": 98.1,
           "timeBlockedPct": 1.9,
           "moneyBlockedPct": 0
@@ -5434,14 +5436,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 12,
         "grade4MedianAge": 56,
-        "lifetimeIncome": 72234.88,
-        "finalBalance": 27233.98,
+        "lifetimeIncome": 71813.52,
+        "finalBalance": 27042.02,
         "reducedYears": 29.63,
-        "retiredYears": 12.85
+        "retiredYears": 12.49
       },
       "narrative": {
         "storyletsPerLife": 25.63,
-        "memoriesPerLife": 30.07,
+        "memoriesPerLife": 30.08,
         "followupsPerLife": 4.25,
         "uniqueLivedEventsPerLife": 76.27
       },
@@ -5500,12 +5502,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1061,
+          "years": 1025,
           "limit": 4,
-          "spentPerYear": 1.28,
-          "unusedPct": 67.9,
-          "momentsPerYear": 1.24,
-          "offeredPerYear": 1.24,
+          "spentPerYear": 1.32,
+          "unusedPct": 67.1,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
           "purchaseTimePerYear": 0.04,
           "fullyUsedYearsPct": 0.4,
           "declinedForPlanPerYear": 0
@@ -5523,28 +5525,28 @@
         }
       },
       "integrity": {
-        "checks": 49492,
+        "checks": 49313,
         "violations": 0,
         "first": null
       }
     },
     "CG/Spender": {
       "lives": 100,
-      "deathAge": 80.64,
+      "deathAge": 80.31,
       "time": {
-        "grantedPerLife": 200.55,
-        "spentPerLife": 96.04,
-        "unusedPct": 52.1,
+        "grantedPerLife": 199.23,
+        "spentPerLife": 95.88,
+        "unusedPct": 51.9,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.53,
-        "fullyUsedAdultYearsPct": 19.6,
-        "onMomentsPerLife": 61.88,
-        "onPurchasesPerLife": 34.16
+        "fullyUsedAdultYearsPct": 19.7,
+        "onMomentsPerLife": 61.71,
+        "onPurchasesPerLife": 34.17
       },
       "moments": {
-        "offeredPerLife": 77.6,
-        "acceptedPerLife": 77.6,
-        "adultAcceptedPerLife": 61.88,
+        "offeredPerLife": 77.43,
+        "acceptedPerLife": 77.43,
+        "adultAcceptedPerLife": 61.71,
         "uniqueAcceptedPerLife": 44.62,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.12,
@@ -5564,9 +5566,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 11,
-        "familyTripsPerLife": 10.7,
+        "familyTripsPerLife": 10.71,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 8122.2
+        "spentCreditsPerLife": 8125.4
       },
       "availability": {
         "course": {
@@ -5576,7 +5578,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 1201,
+          "eligibleWindows": 1202,
           "availablePct": 97.3,
           "timeBlockedPct": 2.7,
           "moneyBlockedPct": 0
@@ -5599,14 +5601,14 @@
         "grade3MedianAge": 34,
         "grade4Lives": 99,
         "grade4MedianAge": 43,
-        "lifetimeIncome": 99362.03,
-        "finalBalance": 48481.43,
+        "lifetimeIncome": 98956.04,
+        "finalBalance": 48312.24,
         "reducedYears": 0,
-        "retiredYears": 12.15
+        "retiredYears": 11.82
       },
       "narrative": {
         "storyletsPerLife": 25.18,
-        "memoriesPerLife": 34.19,
+        "memoriesPerLife": 34.23,
         "followupsPerLife": 4.13,
         "uniqueLivedEventsPerLife": 69.8
       },
@@ -5654,13 +5656,13 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 876,
+          "years": 843,
           "limit": 4,
-          "spentPerYear": 1.33,
-          "unusedPct": 66.7,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
-          "purchaseTimePerYear": 0.08,
+          "spentPerYear": 1.37,
+          "unusedPct": 65.9,
+          "momentsPerYear": 1.28,
+          "offeredPerYear": 1.28,
+          "purchaseTimePerYear": 0.09,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
         },
@@ -5677,28 +5679,28 @@
         }
       },
       "integrity": {
-        "checks": 45253,
+        "checks": 45105,
         "violations": 0,
         "first": null
       }
     },
     "CG/Saver": {
       "lives": 100,
-      "deathAge": 82.38,
+      "deathAge": 82.25,
       "time": {
-        "grantedPerLife": 205.95,
-        "spentPerLife": 65.03,
+        "grantedPerLife": 205.43,
+        "spentPerLife": 64.95,
         "unusedPct": 68.4,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.01,
         "fullyUsedAdultYearsPct": 2.9,
-        "onMomentsPerLife": 65.03,
+        "onMomentsPerLife": 64.95,
         "onPurchasesPerLife": 0
       },
       "moments": {
-        "offeredPerLife": 80.75,
-        "acceptedPerLife": 80.75,
-        "adultAcceptedPerLife": 65.03,
+        "offeredPerLife": 80.67,
+        "acceptedPerLife": 80.67,
+        "adultAcceptedPerLife": 64.95,
         "uniqueAcceptedPerLife": 42.17,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0,
@@ -5730,13 +5732,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5378,
+          "eligibleWindows": 5369,
           "availablePct": 96.8,
           "timeBlockedPct": 3.2,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6454,
+          "eligibleWindows": 6441,
           "availablePct": 97.1,
           "timeBlockedPct": 2.9,
           "moneyBlockedPct": 0
@@ -5753,14 +5755,14 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 79980.92,
-        "finalBalance": 58247.52,
+        "lifetimeIncome": 79888.68,
+        "finalBalance": 58200.78,
         "reducedYears": 0,
-        "retiredYears": 12.33
+        "retiredYears": 12.2
       },
       "narrative": {
         "storyletsPerLife": 25.56,
-        "memoriesPerLife": 20.57,
+        "memoriesPerLife": 20.55,
         "followupsPerLife": 4.38,
         "uniqueLivedEventsPerLife": 67.73
       },
@@ -5808,12 +5810,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 940,
+          "years": 927,
           "limit": 4,
-          "spentPerYear": 1.25,
-          "unusedPct": 68.7,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.26,
+          "unusedPct": 68.4,
+          "momentsPerYear": 1.26,
+          "offeredPerYear": 1.26,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -5831,7 +5833,7 @@
         }
       },
       "integrity": {
-        "checks": 43683,
+        "checks": 43623,
         "violations": 0,
         "first": null
       }
@@ -6146,21 +6148,21 @@
     },
     "C/TimeBuyerFull": {
       "lives": 100,
-      "deathAge": 84.48,
+      "deathAge": 84.4,
       "time": {
-        "grantedPerLife": 213.37,
-        "spentPerLife": 78.77,
+        "grantedPerLife": 213.05,
+        "spentPerLife": 78.72,
         "unusedPct": 63.1,
         "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.18,
         "fullyUsedAdultYearsPct": 7.7,
-        "onMomentsPerLife": 65.41,
+        "onMomentsPerLife": 65.36,
         "onPurchasesPerLife": 13.36
       },
       "moments": {
-        "offeredPerLife": 81.96,
-        "acceptedPerLife": 81.13,
-        "adultAcceptedPerLife": 65.41,
+        "offeredPerLife": 81.91,
+        "acceptedPerLife": 81.08,
+        "adultAcceptedPerLife": 65.36,
         "uniqueAcceptedPerLife": 46.2,
         "declinedForPlanPerLife": 0.83,
         "emptyBeatsPerLife": 0.07,
@@ -6215,14 +6217,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 4,
         "grade4MedianAge": 46,
-        "lifetimeIncome": 92405.97,
-        "finalBalance": 46239.27,
+        "lifetimeIncome": 92348.39,
+        "finalBalance": 46223.99,
         "reducedYears": 0,
-        "retiredYears": 13.45
+        "retiredYears": 13.37
       },
       "narrative": {
         "storyletsPerLife": 26.06,
-        "memoriesPerLife": 29.42,
+        "memoriesPerLife": 29.43,
         "followupsPerLife": 4.16,
         "uniqueLivedEventsPerLife": 72.26
       },
@@ -6270,13 +6272,13 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1068,
+          "years": 1060,
           "limit": 4,
           "spentPerYear": 1.23,
-          "unusedPct": 69.3,
-          "momentsPerYear": 1.18,
-          "offeredPerYear": 1.18,
-          "purchaseTimePerYear": 0.04,
+          "unusedPct": 69.2,
+          "momentsPerYear": 1.19,
+          "offeredPerYear": 1.19,
+          "purchaseTimePerYear": 0.05,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
         },
@@ -6293,28 +6295,28 @@
         }
       },
       "integrity": {
-        "checks": 48883,
+        "checks": 48841,
         "violations": 0,
         "first": null
       }
     },
     "CG/TimeBuyerFull": {
       "lives": 100,
-      "deathAge": 84.04,
+      "deathAge": 83.89,
       "time": {
-        "grantedPerLife": 211.37,
-        "spentPerLife": 78.93,
-        "unusedPct": 62.7,
+        "grantedPerLife": 210.77,
+        "spentPerLife": 78.84,
+        "unusedPct": 62.6,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.19,
         "fullyUsedAdultYearsPct": 7.7,
-        "onMomentsPerLife": 65.83,
+        "onMomentsPerLife": 65.74,
         "onPurchasesPerLife": 13.1
       },
       "moments": {
-        "offeredPerLife": 81.55,
-        "acceptedPerLife": 81.55,
-        "adultAcceptedPerLife": 65.83,
+        "offeredPerLife": 81.46,
+        "acceptedPerLife": 81.46,
+        "adultAcceptedPerLife": 65.74,
         "uniqueAcceptedPerLife": 46.36,
         "declinedForPlanPerLife": 0,
         "emptyBeatsPerLife": 0.11,
@@ -6346,7 +6348,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3654,
+          "eligibleWindows": 3656,
           "availablePct": 96.5,
           "timeBlockedPct": 3.5,
           "moneyBlockedPct": 0
@@ -6369,14 +6371,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 4,
         "grade4MedianAge": 46,
-        "lifetimeIncome": 92310.81,
-        "finalBalance": 46534.31,
+        "lifetimeIncome": 92179.78,
+        "finalBalance": 46499.58,
         "reducedYears": 0,
-        "retiredYears": 12.77
+        "retiredYears": 12.62
       },
       "narrative": {
         "storyletsPerLife": 25.96,
-        "memoriesPerLife": 29.08,
+        "memoriesPerLife": 29.07,
         "followupsPerLife": 4.18,
         "uniqueLivedEventsPerLife": 72.32
       },
@@ -6424,12 +6426,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1017,
+          "years": 1002,
           "limit": 4,
-          "spentPerYear": 1.26,
-          "unusedPct": 68.5,
-          "momentsPerYear": 1.21,
-          "offeredPerYear": 1.21,
+          "spentPerYear": 1.27,
+          "unusedPct": 68.3,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
           "purchaseTimePerYear": 0.05,
           "fullyUsedYearsPct": 0.6,
           "declinedForPlanPerYear": 0
@@ -6447,7 +6449,7 @@
         }
       },
       "integrity": {
-        "checks": 48685,
+        "checks": 48607,
         "violations": 0,
         "first": null
       }
@@ -6894,21 +6896,21 @@
     },
     "C/Retire-left": {
       "lives": 100,
-      "deathAge": 84.39,
+      "deathAge": 84.36,
       "time": {
-        "grantedPerLife": 215.32,
-        "spentPerLife": 79.54,
+        "grantedPerLife": 215.2,
+        "spentPerLife": 79.49,
         "unusedPct": 63.1,
         "grantedPerAdultYear": 3.24,
-        "spentPerAdultYear": 1.2,
+        "spentPerAdultYear": 1.19,
         "fullyUsedAdultYearsPct": 7.6,
-        "onMomentsPerLife": 66.22,
+        "onMomentsPerLife": 66.17,
         "onPurchasesPerLife": 13.32
       },
       "moments": {
-        "offeredPerLife": 82.77,
-        "acceptedPerLife": 81.94,
-        "adultAcceptedPerLife": 66.22,
+        "offeredPerLife": 82.72,
+        "acceptedPerLife": 81.89,
+        "adultAcceptedPerLife": 66.17,
         "uniqueAcceptedPerLife": 46.28,
         "declinedForPlanPerLife": 0.83,
         "emptyBeatsPerLife": 0.07,
@@ -6940,7 +6942,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3544,
+          "eligibleWindows": 3548,
           "availablePct": 97.2,
           "timeBlockedPct": 2.8,
           "moneyBlockedPct": 0
@@ -6963,16 +6965,16 @@
         "grade3MedianAge": 39,
         "grade4Lives": 98,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 98041.41,
-        "finalBalance": 51917.81,
+        "lifetimeIncome": 97983.99,
+        "finalBalance": 51868.79,
         "reducedYears": 0,
-        "retiredYears": 15.67
+        "retiredYears": 15.64
       },
       "narrative": {
-        "storyletsPerLife": 26.01,
-        "memoriesPerLife": 29.9,
+        "storyletsPerLife": 26.02,
+        "memoriesPerLife": 29.91,
         "followupsPerLife": 4.16,
-        "uniqueLivedEventsPerLife": 72.29
+        "uniqueLivedEventsPerLife": 72.3
       },
       "at60": {
         "alive": 98,
@@ -7018,9 +7020,9 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1567,
+          "years": 1564,
           "limit": 4,
-          "spentPerYear": 1.28,
+          "spentPerYear": 1.27,
           "unusedPct": 68.1,
           "momentsPerYear": 1.23,
           "offeredPerYear": 1.23,
@@ -7030,28 +7032,28 @@
         }
       },
       "integrity": {
-        "checks": 45932,
+        "checks": 45916,
         "violations": 0,
         "first": null
       }
     },
     "C/Retire-mentor": {
       "lives": 100,
-      "deathAge": 84.37,
+      "deathAge": 84.35,
       "time": {
-        "grantedPerLife": 215.24,
-        "spentPerLife": 79.55,
+        "grantedPerLife": 215.16,
+        "spentPerLife": 79.66,
         "unusedPct": 63,
         "grantedPerAdultYear": 3.24,
         "spentPerAdultYear": 1.2,
         "fullyUsedAdultYearsPct": 7.6,
-        "onMomentsPerLife": 66.24,
+        "onMomentsPerLife": 66.35,
         "onPurchasesPerLife": 13.31
       },
       "moments": {
-        "offeredPerLife": 82.79,
-        "acceptedPerLife": 81.96,
-        "adultAcceptedPerLife": 66.24,
+        "offeredPerLife": 82.9,
+        "acceptedPerLife": 82.07,
+        "adultAcceptedPerLife": 66.35,
         "uniqueAcceptedPerLife": 46.97,
         "declinedForPlanPerLife": 0.83,
         "emptyBeatsPerLife": 0.07,
@@ -7083,7 +7085,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3543,
+          "eligibleWindows": 3541,
           "availablePct": 97.2,
           "timeBlockedPct": 2.8,
           "moneyBlockedPct": 0
@@ -7106,16 +7108,16 @@
         "grade3MedianAge": 39,
         "grade4Lives": 98,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 102189.57,
-        "finalBalance": 56083.27,
+        "lifetimeIncome": 102188.81,
+        "finalBalance": 56077.41,
         "reducedYears": 0,
-        "retiredYears": 15.65
+        "retiredYears": 15.63
       },
       "narrative": {
-        "storyletsPerLife": 26,
-        "memoriesPerLife": 29.79,
+        "storyletsPerLife": 26.01,
+        "memoriesPerLife": 29.82,
         "followupsPerLife": 4.16,
-        "uniqueLivedEventsPerLife": 72.97
+        "uniqueLivedEventsPerLife": 72.98
       },
       "at60": {
         "alive": 98,
@@ -7161,12 +7163,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 692,
+          "years": 690,
           "limit": 4,
-          "spentPerYear": 1.13,
-          "unusedPct": 71.9,
-          "momentsPerYear": 1.11,
-          "offeredPerYear": 1.11,
+          "spentPerYear": 1.14,
+          "unusedPct": 71.4,
+          "momentsPerYear": 1.13,
+          "offeredPerYear": 1.13,
           "purchaseTimePerYear": 0.01,
           "fullyUsedYearsPct": 0.1,
           "declinedForPlanPerYear": 0
@@ -7184,28 +7186,28 @@
         }
       },
       "integrity": {
-        "checks": 45924,
+        "checks": 45928,
         "violations": 0,
         "first": null
       }
     },
     "C/Retire-continue": {
       "lives": 100,
-      "deathAge": 83.38,
+      "deathAge": 83.41,
       "time": {
-        "grantedPerLife": 205.06,
-        "spentPerLife": 76.3,
+        "grantedPerLife": 205.18,
+        "spentPerLife": 76.32,
         "unusedPct": 62.8,
         "grantedPerAdultYear": 3.13,
         "spentPerAdultYear": 1.16,
         "fullyUsedAdultYearsPct": 8,
-        "onMomentsPerLife": 62.94,
+        "onMomentsPerLife": 62.96,
         "onPurchasesPerLife": 13.36
       },
       "moments": {
-        "offeredPerLife": 79.5,
-        "acceptedPerLife": 78.66,
-        "adultAcceptedPerLife": 62.94,
+        "offeredPerLife": 79.52,
+        "acceptedPerLife": 78.68,
+        "adultAcceptedPerLife": 62.96,
         "uniqueAcceptedPerLife": 45.12,
         "declinedForPlanPerLife": 0.84,
         "emptyBeatsPerLife": 0.07,
@@ -7237,7 +7239,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 3561,
+          "eligibleWindows": 3560,
           "availablePct": 97.1,
           "timeBlockedPct": 2.9,
           "moneyBlockedPct": 0
@@ -7260,14 +7262,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 99,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 103234.68,
-        "finalBalance": 57831.18,
+        "lifetimeIncome": 103270.51,
+        "finalBalance": 57832.51,
         "reducedYears": 0,
-        "retiredYears": 8.44
+        "retiredYears": 8.47
       },
       "narrative": {
         "storyletsPerLife": 25.85,
-        "memoriesPerLife": 28.73,
+        "memoriesPerLife": 28.78,
         "followupsPerLife": 4.16,
         "uniqueLivedEventsPerLife": 70.97
       },
@@ -7315,10 +7317,10 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 844,
+          "years": 847,
           "limit": 4,
           "spentPerYear": 1.25,
-          "unusedPct": 68.6,
+          "unusedPct": 68.7,
           "momentsPerYear": 1.21,
           "offeredPerYear": 1.21,
           "purchaseTimePerYear": 0.05,
@@ -7327,28 +7329,28 @@
         }
       },
       "integrity": {
-        "checks": 45188,
+        "checks": 45202,
         "violations": 0,
         "first": null
       }
     },
     "C-course1/Careerist": {
       "lives": 100,
-      "deathAge": 81.93,
+      "deathAge": 82.19,
       "time": {
-        "grantedPerLife": 204.31,
-        "spentPerLife": 75.24,
-        "unusedPct": 63.2,
+        "grantedPerLife": 205.35,
+        "spentPerLife": 75.39,
+        "unusedPct": 63.3,
         "grantedPerAdultYear": 3.19,
         "spentPerAdultYear": 1.17,
         "fullyUsedAdultYearsPct": 6.4,
-        "onMomentsPerLife": 64.23,
+        "onMomentsPerLife": 64.38,
         "onPurchasesPerLife": 11.01
       },
       "moments": {
-        "offeredPerLife": 80.26,
-        "acceptedPerLife": 79.95,
-        "adultAcceptedPerLife": 64.23,
+        "offeredPerLife": 80.41,
+        "acceptedPerLife": 80.1,
+        "adultAcceptedPerLife": 64.38,
         "uniqueAcceptedPerLife": 42.42,
         "declinedForPlanPerLife": 0.31,
         "emptyBeatsPerLife": 0.01,
@@ -7380,13 +7382,13 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 5272,
+          "eligibleWindows": 5271,
           "availablePct": 97.3,
           "timeBlockedPct": 2.7,
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6409,
+          "eligibleWindows": 6435,
           "availablePct": 97.6,
           "timeBlockedPct": 2.4,
           "moneyBlockedPct": 0
@@ -7403,14 +7405,14 @@
         "grade3MedianAge": 27,
         "grade4Lives": 99,
         "grade4MedianAge": 35,
-        "lifetimeIncome": 113309.19,
-        "finalBalance": 87782.69,
+        "lifetimeIncome": 113578.2,
+        "finalBalance": 87963.7,
         "reducedYears": 0,
-        "retiredYears": 12.04
+        "retiredYears": 12.3
       },
       "narrative": {
         "storyletsPerLife": 25.58,
-        "memoriesPerLife": 20.87,
+        "memoriesPerLife": 20.9,
         "followupsPerLife": 4.34,
         "uniqueLivedEventsPerLife": 68
       },
@@ -7458,12 +7460,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 825,
+          "years": 851,
           "limit": 4,
-          "spentPerYear": 1.25,
-          "unusedPct": 68.6,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.25,
+          "spentPerYear": 1.23,
+          "unusedPct": 69.2,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.23,
           "purchaseTimePerYear": 0,
           "fullyUsedYearsPct": 0,
           "declinedForPlanPerYear": 0
@@ -7481,7 +7483,7 @@
         }
       },
       "integrity": {
-        "checks": 44606,
+        "checks": 44725,
         "violations": 0,
         "first": null
       }
@@ -7642,21 +7644,21 @@
     },
     "C-course1/Moderate": {
       "lives": 100,
-      "deathAge": 84.22,
+      "deathAge": 84.04,
       "time": {
-        "grantedPerLife": 212.28,
-        "spentPerLife": 77.03,
-        "unusedPct": 63.7,
+        "grantedPerLife": 211.56,
+        "spentPerLife": 76.96,
+        "unusedPct": 63.6,
         "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.16,
         "fullyUsedAdultYearsPct": 6.3,
-        "onMomentsPerLife": 65.93,
+        "onMomentsPerLife": 65.86,
         "onPurchasesPerLife": 11.1
       },
       "moments": {
-        "offeredPerLife": 82.05,
-        "acceptedPerLife": 81.65,
-        "adultAcceptedPerLife": 65.93,
+        "offeredPerLife": 81.98,
+        "acceptedPerLife": 81.58,
+        "adultAcceptedPerLife": 65.86,
         "uniqueAcceptedPerLife": 46.23,
         "declinedForPlanPerLife": 0.4,
         "emptyBeatsPerLife": 0.03,
@@ -7711,14 +7713,14 @@
         "grade3MedianAge": 39,
         "grade4Lives": 99,
         "grade4MedianAge": 52,
-        "lifetimeIncome": 101532.96,
-        "finalBalance": 55551.86,
+        "lifetimeIncome": 101332.55,
+        "finalBalance": 55463.05,
         "reducedYears": 0,
-        "retiredYears": 13.14
+        "retiredYears": 12.96
       },
       "narrative": {
         "storyletsPerLife": 25.98,
-        "memoriesPerLife": 29.36,
+        "memoriesPerLife": 29.37,
         "followupsPerLife": 4.15,
         "uniqueLivedEventsPerLife": 72.21
       },
@@ -7766,12 +7768,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1041,
+          "years": 1023,
           "limit": 4,
-          "spentPerYear": 1.24,
-          "unusedPct": 69,
-          "momentsPerYear": 1.2,
-          "offeredPerYear": 1.2,
+          "spentPerYear": 1.26,
+          "unusedPct": 68.6,
+          "momentsPerYear": 1.21,
+          "offeredPerYear": 1.21,
           "purchaseTimePerYear": 0.05,
           "fullyUsedYearsPct": 0.5,
           "declinedForPlanPerYear": 0
@@ -7789,7 +7791,7 @@
         }
       },
       "integrity": {
-        "checks": 45832,
+        "checks": 45753,
         "violations": 0,
         "first": null
       }
@@ -7950,21 +7952,21 @@
     },
     "C-course1/Spender": {
       "lives": 100,
-      "deathAge": 81.5,
+      "deathAge": 81.24,
       "time": {
-        "grantedPerLife": 204.16,
-        "spentPerLife": 86.38,
-        "unusedPct": 57.7,
-        "grantedPerAdultYear": 3.21,
+        "grantedPerLife": 203.12,
+        "spentPerLife": 86.36,
+        "unusedPct": 57.5,
+        "grantedPerAdultYear": 3.2,
         "spentPerAdultYear": 1.36,
-        "fullyUsedAdultYearsPct": 11.6,
-        "onMomentsPerLife": 60.81,
-        "onPurchasesPerLife": 25.57
+        "fullyUsedAdultYearsPct": 11.7,
+        "onMomentsPerLife": 60.78,
+        "onPurchasesPerLife": 25.58
       },
       "moments": {
-        "offeredPerLife": 78.67,
-        "acceptedPerLife": 76.53,
-        "adultAcceptedPerLife": 60.81,
+        "offeredPerLife": 78.64,
+        "acceptedPerLife": 76.5,
+        "adultAcceptedPerLife": 60.78,
         "uniqueAcceptedPerLife": 44.58,
         "declinedForPlanPerLife": 2.14,
         "emptyBeatsPerLife": 0.04,
@@ -7984,9 +7986,9 @@
         "livesWithCourse": 99,
         "livesWith2Courses": 99,
         "storyCourses": 11,
-        "familyTripsPerLife": 10.76,
+        "familyTripsPerLife": 10.77,
         "sectorTripsPerLife": 3.96,
-        "spentCreditsPerLife": 8526.4
+        "spentCreditsPerLife": 8529.6
       },
       "availability": {
         "course": {
@@ -7996,7 +7998,7 @@
           "moneyBlockedPct": 0
         },
         "familyTrip": {
-          "eligibleWindows": 1067,
+          "eligibleWindows": 1068,
           "availablePct": 100,
           "timeBlockedPct": 0,
           "moneyBlockedPct": 0
@@ -8019,14 +8021,14 @@
         "grade3MedianAge": 34,
         "grade4Lives": 99,
         "grade4MedianAge": 43,
-        "lifetimeIncome": 100987.58,
-        "finalBalance": 49007.08,
+        "lifetimeIncome": 100705.55,
+        "finalBalance": 48893.45,
         "reducedYears": 0,
-        "retiredYears": 13.18
+        "retiredYears": 12.92
       },
       "narrative": {
         "storyletsPerLife": 25.27,
-        "memoriesPerLife": 34.48,
+        "memoriesPerLife": 34.51,
         "followupsPerLife": 3.96,
         "uniqueLivedEventsPerLife": 69.85
       },
@@ -8074,12 +8076,12 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 928,
+          "years": 902,
           "limit": 4,
-          "spentPerYear": 1.31,
-          "unusedPct": 67.3,
-          "momentsPerYear": 1.24,
-          "offeredPerYear": 1.24,
+          "spentPerYear": 1.34,
+          "unusedPct": 66.4,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
           "purchaseTimePerYear": 0.07,
           "fullyUsedYearsPct": 0.4,
           "declinedForPlanPerYear": 0
@@ -8097,7 +8099,7 @@
         }
       },
       "integrity": {
-        "checks": 45615,
+        "checks": 45509,
         "violations": 0,
         "first": null
       }
@@ -8258,21 +8260,21 @@
     },
     "C-course1/Family": {
       "lives": 100,
-      "deathAge": 82.77,
+      "deathAge": 83.22,
       "time": {
-        "grantedPerLife": 236.95,
-        "spentPerLife": 89.56,
-        "unusedPct": 62.2,
+        "grantedPerLife": 238.75,
+        "spentPerLife": 89.72,
+        "unusedPct": 62.4,
         "grantedPerAdultYear": 3.65,
-        "spentPerAdultYear": 1.38,
+        "spentPerAdultYear": 1.37,
         "fullyUsedAdultYearsPct": 4,
-        "onMomentsPerLife": 77.14,
+        "onMomentsPerLife": 77.3,
         "onPurchasesPerLife": 12.42
       },
       "moments": {
-        "offeredPerLife": 93.1,
-        "acceptedPerLife": 92.86,
-        "adultAcceptedPerLife": 77.14,
+        "offeredPerLife": 93.26,
+        "acceptedPerLife": 93.02,
+        "adultAcceptedPerLife": 77.3,
         "uniqueAcceptedPerLife": 48.55,
         "declinedForPlanPerLife": 0.24,
         "emptyBeatsPerLife": 0.03,
@@ -8310,7 +8312,7 @@
           "moneyBlockedPct": 0
         },
         "sectorTrip": {
-          "eligibleWindows": 6493,
+          "eligibleWindows": 6538,
           "availablePct": 98.9,
           "timeBlockedPct": 1.1,
           "moneyBlockedPct": 0
@@ -8327,16 +8329,16 @@
         "grade3MedianAge": null,
         "grade4Lives": 0,
         "grade4MedianAge": null,
-        "lifetimeIncome": 61264.73,
-        "finalBalance": 15532.93,
+        "lifetimeIncome": 61639.85,
+        "finalBalance": 15604.45,
         "reducedYears": 29.2,
-        "retiredYears": 12.96
+        "retiredYears": 13.41
       },
       "narrative": {
-        "storyletsPerLife": 25.68,
-        "memoriesPerLife": 32.42,
+        "storyletsPerLife": 25.69,
+        "memoriesPerLife": 32.44,
         "followupsPerLife": 4.1,
-        "uniqueLivedEventsPerLife": 74.23
+        "uniqueLivedEventsPerLife": 74.24
       },
       "at60": {
         "alive": 98,
@@ -8393,14 +8395,14 @@
           "declinedForPlanPerYear": 0
         },
         "retired": {
-          "years": 1021,
+          "years": 1066,
           "limit": 4,
-          "spentPerYear": 1.33,
-          "unusedPct": 66.7,
-          "momentsPerYear": 1.25,
-          "offeredPerYear": 1.26,
-          "purchaseTimePerYear": 0.08,
-          "fullyUsedYearsPct": 1.1,
+          "spentPerYear": 1.29,
+          "unusedPct": 67.7,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 1,
           "declinedForPlanPerYear": 0
         },
         "mentor": {
@@ -8416,7 +8418,7 @@
         }
       },
       "integrity": {
-        "checks": 46677,
+        "checks": 46874,
         "violations": 0,
         "first": null
       }
@@ -9104,16 +9106,16 @@
     },
     "B-vs-N/Careerist": {
       "pairs": 100,
-      "incomeDelta": 804.33,
-      "finalBalanceDelta": 514.43,
-      "momentsDelta": 4.88,
-      "momentsAfter40Delta": 4.88,
+      "incomeDelta": 922.25,
+      "finalBalanceDelta": 590.35,
+      "momentsDelta": 4.92,
+      "momentsAfter40Delta": 4.92,
       "uniqueMomentsDelta": 1.13,
-      "timeSpentDelta": 4.88,
+      "timeSpentDelta": 4.92,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.14,
+      "memoriesDelta": 0.16,
       "storyletsDelta": 0.21,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -9145,16 +9147,16 @@
     },
     "C-vs-B/Careerist": {
       "pairs": 100,
-      "incomeDelta": -352.64,
-      "finalBalanceDelta": -240.64,
-      "momentsDelta": -0.24,
-      "momentsAfter40Delta": -0.24,
+      "incomeDelta": -201.55,
+      "finalBalanceDelta": -135.55,
+      "momentsDelta": -0.13,
+      "momentsAfter40Delta": -0.13,
       "uniqueMomentsDelta": 1.22,
-      "timeSpentDelta": -0.24,
+      "timeSpentDelta": -0.13,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.64,
+      "memoriesDelta": 0.65,
       "storyletsDelta": -0.01,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -9186,16 +9188,16 @@
     },
     "C-vs-A/Careerist": {
       "pairs": 100,
-      "incomeDelta": 439.81,
-      "finalBalanceDelta": 261.91,
-      "momentsDelta": 2.1,
-      "momentsAfter40Delta": 3.48,
+      "incomeDelta": 708.82,
+      "finalBalanceDelta": 442.92,
+      "momentsDelta": 2.25,
+      "momentsAfter40Delta": 3.63,
       "uniqueMomentsDelta": 2,
-      "timeSpentDelta": 12.94,
+      "timeSpentDelta": 13.09,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.77,
+      "memoriesDelta": 0.8,
       "storyletsDelta": 0.2,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -9268,16 +9270,16 @@
     },
     "B-vs-N/Moderate": {
       "pairs": 100,
-      "incomeDelta": 2120.63,
-      "finalBalanceDelta": 917.23,
+      "incomeDelta": 2209.18,
+      "finalBalanceDelta": 956.38,
       "momentsDelta": 5.57,
       "momentsAfter40Delta": 5.57,
       "uniqueMomentsDelta": 1.43,
-      "timeSpentDelta": 5.53,
+      "timeSpentDelta": 5.51,
       "coursesDelta": 0,
-      "familyTripsDelta": -0.04,
+      "familyTripsDelta": -0.06,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.2,
+      "memoriesDelta": 0.22,
       "storyletsDelta": 0.17,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -9309,16 +9311,16 @@
     },
     "C-vs-B/Moderate": {
       "pairs": 100,
-      "incomeDelta": -130.63,
-      "finalBalanceDelta": -70.03,
-      "momentsDelta": -0.08,
-      "momentsAfter40Delta": -0.08,
+      "incomeDelta": -342.76,
+      "finalBalanceDelta": -162.56,
+      "momentsDelta": -0.13,
+      "momentsAfter40Delta": -0.13,
       "uniqueMomentsDelta": 1.01,
-      "timeSpentDelta": -0.08,
+      "timeSpentDelta": -0.11,
       "coursesDelta": 0,
-      "familyTripsDelta": 0,
+      "familyTripsDelta": 0.02,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.56,
+      "memoriesDelta": 0.55,
       "storyletsDelta": 0,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -9350,16 +9352,16 @@
     },
     "C-vs-A/Moderate": {
       "pairs": 100,
-      "incomeDelta": 2050.49,
-      "finalBalanceDelta": 775.19,
-      "momentsDelta": 4.94,
-      "momentsAfter40Delta": 5.35,
+      "incomeDelta": 1926.91,
+      "finalBalanceDelta": 721.81,
+      "momentsDelta": 4.89,
+      "momentsAfter40Delta": 5.3,
       "uniqueMomentsDelta": 2.45,
-      "timeSpentDelta": 7.16,
+      "timeSpentDelta": 7.11,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.86,
+      "memoriesDelta": 0.87,
       "storyletsDelta": 0.26,
       "followupsDelta": 0.01,
       "grade3Delta": 0,
@@ -9432,16 +9434,16 @@
     },
     "B-vs-N/Family": {
       "pairs": 100,
-      "incomeDelta": -41.45,
-      "finalBalanceDelta": 156.65,
-      "momentsDelta": 17.57,
-      "momentsAfter40Delta": 17.57,
+      "incomeDelta": 300.92,
+      "finalBalanceDelta": 201.52,
+      "momentsDelta": 17.77,
+      "momentsAfter40Delta": 17.77,
       "uniqueMomentsDelta": 3.09,
-      "timeSpentDelta": 17.37,
+      "timeSpentDelta": 17.58,
       "coursesDelta": -0.07,
-      "familyTripsDelta": -0.06,
+      "familyTripsDelta": -0.05,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.22,
+      "memoriesDelta": 0.24,
       "storyletsDelta": 0.24,
       "followupsDelta": 0.17,
       "grade3Delta": 0,
@@ -9473,17 +9475,17 @@
     },
     "C-vs-B/Family": {
       "pairs": 100,
-      "incomeDelta": -284.75,
-      "finalBalanceDelta": -78.55,
-      "momentsDelta": -0.27,
-      "momentsAfter40Delta": -0.27,
+      "incomeDelta": -279.63,
+      "finalBalanceDelta": -52.23,
+      "momentsDelta": -0.33,
+      "momentsAfter40Delta": -0.33,
       "uniqueMomentsDelta": 3.66,
-      "timeSpentDelta": -0.41,
+      "timeSpentDelta": -0.48,
       "coursesDelta": 0,
-      "familyTripsDelta": -0.14,
+      "familyTripsDelta": -0.15,
       "sectorTripsDelta": 0,
       "memoriesDelta": 1.4,
-      "storyletsDelta": -0.05,
+      "storyletsDelta": -0.04,
       "followupsDelta": -0.09,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -9514,17 +9516,17 @@
     },
     "C-vs-A/Family": {
       "pairs": 100,
-      "incomeDelta": -549.76,
-      "finalBalanceDelta": 86.24,
-      "momentsDelta": 16.67,
-      "momentsAfter40Delta": 16.94,
+      "incomeDelta": -202.27,
+      "finalBalanceDelta": 157.43,
+      "momentsDelta": 16.81,
+      "momentsAfter40Delta": 17.08,
       "uniqueMomentsDelta": 6.64,
-      "timeSpentDelta": 17.6,
+      "timeSpentDelta": 17.74,
       "coursesDelta": -0.07,
       "familyTripsDelta": -0.28,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 1.5,
-      "storyletsDelta": 0.13,
+      "memoriesDelta": 1.52,
+      "storyletsDelta": 0.14,
       "followupsDelta": 0.04,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -9596,16 +9598,16 @@
     },
     "B-vs-N/TimeBuyer": {
       "pairs": 100,
-      "incomeDelta": -144.15,
-      "finalBalanceDelta": 332.75,
-      "momentsDelta": 15.86,
-      "momentsAfter40Delta": 15.86,
+      "incomeDelta": -150.48,
+      "finalBalanceDelta": 321.72,
+      "momentsDelta": 15.83,
+      "momentsAfter40Delta": 15.83,
       "uniqueMomentsDelta": 3.06,
-      "timeSpentDelta": 15.72,
+      "timeSpentDelta": 15.7,
       "coursesDelta": -0.03,
-      "familyTripsDelta": -0.08,
+      "familyTripsDelta": -0.07,
       "sectorTripsDelta": 0,
-      "memoriesDelta": -0.17,
+      "memoriesDelta": -0.16,
       "storyletsDelta": -0.28,
       "followupsDelta": 0.1,
       "grade3Delta": 0.03,
@@ -9637,16 +9639,16 @@
     },
     "C-vs-B/TimeBuyer": {
       "pairs": 100,
-      "incomeDelta": 793.54,
-      "finalBalanceDelta": 189.14,
+      "incomeDelta": 622.78,
+      "finalBalanceDelta": 112.08,
       "momentsDelta": 0.88,
       "momentsAfter40Delta": 0.88,
       "uniqueMomentsDelta": 3.72,
-      "timeSpentDelta": 0.92,
+      "timeSpentDelta": 0.9,
       "coursesDelta": 0,
-      "familyTripsDelta": 0.04,
+      "familyTripsDelta": 0.02,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 1.69,
+      "memoriesDelta": 1.68,
       "storyletsDelta": 0.09,
       "followupsDelta": -0.03,
       "grade3Delta": -0.04,
@@ -9678,14 +9680,14 @@
     },
     "C-vs-A/TimeBuyer": {
       "pairs": 100,
-      "incomeDelta": 668.87,
-      "finalBalanceDelta": 461.27,
-      "momentsDelta": 16.4,
-      "momentsAfter40Delta": 16.81,
+      "incomeDelta": 491.78,
+      "finalBalanceDelta": 373.18,
+      "momentsDelta": 16.37,
+      "momentsAfter40Delta": 16.78,
       "uniqueMomentsDelta": 6.8,
-      "timeSpentDelta": 18.52,
+      "timeSpentDelta": 18.48,
       "coursesDelta": -0.03,
-      "familyTripsDelta": -0.04,
+      "familyTripsDelta": -0.05,
       "sectorTripsDelta": 0,
       "memoriesDelta": 1.57,
       "storyletsDelta": -0.15,
@@ -9760,16 +9762,16 @@
     },
     "B-vs-N/Spender": {
       "pairs": 100,
-      "incomeDelta": 2038.13,
-      "finalBalanceDelta": 808.53,
-      "momentsDelta": 5.87,
-      "momentsAfter40Delta": 5.87,
+      "incomeDelta": 1987.08,
+      "finalBalanceDelta": 808.78,
+      "momentsDelta": 5.97,
+      "momentsAfter40Delta": 5.97,
       "uniqueMomentsDelta": 1.32,
-      "timeSpentDelta": 5.97,
+      "timeSpentDelta": 6.1,
       "coursesDelta": 0,
-      "familyTripsDelta": 0.1,
+      "familyTripsDelta": 0.13,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.41,
+      "memoriesDelta": 0.45,
       "storyletsDelta": 0.21,
       "followupsDelta": -0.01,
       "grade3Delta": 0,
@@ -9801,17 +9803,17 @@
     },
     "C-vs-B/Spender": {
       "pairs": 100,
-      "incomeDelta": -149.19,
-      "finalBalanceDelta": -79.79,
-      "momentsDelta": 0.03,
-      "momentsAfter40Delta": 0.03,
+      "incomeDelta": -405.63,
+      "finalBalanceDelta": -187.63,
+      "momentsDelta": -0.09,
+      "momentsAfter40Delta": -0.09,
       "uniqueMomentsDelta": 1.15,
-      "timeSpentDelta": 0.04,
+      "timeSpentDelta": -0.1,
       "coursesDelta": 0,
-      "familyTripsDelta": 0.01,
+      "familyTripsDelta": -0.01,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.54,
-      "storyletsDelta": 0,
+      "memoriesDelta": 0.52,
+      "storyletsDelta": -0.01,
       "followupsDelta": 0,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -9842,17 +9844,17 @@
     },
     "C-vs-A/Spender": {
       "pairs": 100,
-      "incomeDelta": 1489.75,
-      "finalBalanceDelta": 591.85,
-      "momentsDelta": 2.39,
-      "momentsAfter40Delta": 4.5,
+      "incomeDelta": 1182.26,
+      "finalBalanceDelta": 484.26,
+      "momentsDelta": 2.37,
+      "momentsAfter40Delta": 4.48,
       "uniqueMomentsDelta": 1.5,
-      "timeSpentDelta": 13.22,
+      "timeSpentDelta": 13.21,
       "coursesDelta": 0,
-      "familyTripsDelta": -0.02,
+      "familyTripsDelta": -0.01,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.75,
-      "storyletsDelta": 0.2,
+      "memoriesDelta": 0.77,
+      "storyletsDelta": 0.19,
       "followupsDelta": 0.04,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -9924,12 +9926,12 @@
     },
     "B-vs-N/Saver": {
       "pairs": 100,
-      "incomeDelta": 286.72,
-      "finalBalanceDelta": 118.82,
-      "momentsDelta": 5.11,
-      "momentsAfter40Delta": 5.11,
+      "incomeDelta": 547.24,
+      "finalBalanceDelta": 282.04,
+      "momentsDelta": 5.14,
+      "momentsAfter40Delta": 5.14,
       "uniqueMomentsDelta": 0.93,
-      "timeSpentDelta": 5.11,
+      "timeSpentDelta": 5.14,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
@@ -9965,16 +9967,16 @@
     },
     "C-vs-B/Saver": {
       "pairs": 100,
-      "incomeDelta": -62.54,
-      "finalBalanceDelta": -38.04,
-      "momentsDelta": -0.01,
-      "momentsAfter40Delta": -0.01,
+      "incomeDelta": -415.3,
+      "finalBalanceDelta": -248,
+      "momentsDelta": -0.12,
+      "momentsAfter40Delta": -0.12,
       "uniqueMomentsDelta": 1.12,
-      "timeSpentDelta": -0.01,
+      "timeSpentDelta": -0.12,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.56,
+      "memoriesDelta": 0.54,
       "storyletsDelta": -0.03,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -10006,16 +10008,16 @@
     },
     "C-vs-A/Saver": {
       "pairs": 100,
-      "incomeDelta": 224.18,
-      "finalBalanceDelta": 80.78,
-      "momentsDelta": 5.1,
-      "momentsAfter40Delta": 5.1,
+      "incomeDelta": 131.94,
+      "finalBalanceDelta": 34.04,
+      "momentsDelta": 5.02,
+      "momentsAfter40Delta": 5.02,
       "uniqueMomentsDelta": 2.05,
-      "timeSpentDelta": 5.1,
+      "timeSpentDelta": 5.02,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.76,
+      "memoriesDelta": 0.74,
       "storyletsDelta": 0.1,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -10047,17 +10049,17 @@
     },
     "C/Family-vs-Careerist": {
       "pairs": 100,
-      "incomeDelta": -52029.3,
-      "finalBalanceDelta": -72224.1,
-      "momentsDelta": 14.95,
-      "momentsAfter40Delta": 13.73,
+      "incomeDelta": -51950.82,
+      "finalBalanceDelta": -72333.92,
+      "momentsDelta": 14.94,
+      "momentsAfter40Delta": 13.72,
       "uniqueMomentsDelta": 6.52,
-      "timeSpentDelta": 6.8,
+      "timeSpentDelta": 6.79,
       "coursesDelta": -9.56,
       "familyTripsDelta": 10.97,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 11.63,
-      "storyletsDelta": 0.14,
+      "memoriesDelta": 11.62,
+      "storyletsDelta": 0.15,
       "followupsDelta": -0.22,
       "grade3Delta": -0.99,
       "grade4Delta": -0.99,
@@ -10129,16 +10131,16 @@
     },
     "C/TimeBuyer-vs-Moderate": {
       "pairs": 100,
-      "incomeDelta": -29513.62,
-      "finalBalanceDelta": -28500.52,
-      "momentsDelta": 11.49,
-      "momentsAfter40Delta": 11.49,
+      "incomeDelta": -29567.13,
+      "finalBalanceDelta": -28535.23,
+      "momentsDelta": 11.51,
+      "momentsAfter40Delta": 11.51,
       "uniqueMomentsDelta": 4.36,
-      "timeSpentDelta": 11.39,
+      "timeSpentDelta": 11.4,
       "coursesDelta": -0.03,
-      "familyTripsDelta": -0.04,
+      "familyTripsDelta": -0.05,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.73,
+      "memoriesDelta": 0.72,
       "storyletsDelta": -0.41,
       "followupsDelta": 0.06,
       "grade3Delta": -0.11,
@@ -10211,16 +10213,16 @@
     },
     "CG-vs-AG/Careerist": {
       "pairs": 100,
-      "incomeDelta": 349.43,
-      "finalBalanceDelta": 493.13,
-      "momentsDelta": 4.53,
-      "momentsAfter40Delta": 4.53,
+      "incomeDelta": 594.38,
+      "finalBalanceDelta": 657.08,
+      "momentsDelta": 4.67,
+      "momentsAfter40Delta": 4.67,
       "uniqueMomentsDelta": 2.25,
-      "timeSpentDelta": 13.15,
+      "timeSpentDelta": 13.29,
       "coursesDelta": -0.95,
       "familyTripsDelta": -0.06,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.57,
+      "memoriesDelta": 0.6,
       "storyletsDelta": 0.22,
       "followupsDelta": -0.06,
       "grade3Delta": 0,
@@ -10252,16 +10254,16 @@
     },
     "CG-vs-AG/Moderate": {
       "pairs": 100,
-      "incomeDelta": 1725.65,
-      "finalBalanceDelta": 670.65,
-      "momentsDelta": 5.13,
-      "momentsAfter40Delta": 5.15,
+      "incomeDelta": 1516.56,
+      "finalBalanceDelta": 585.76,
+      "momentsDelta": 5.04,
+      "momentsAfter40Delta": 5.06,
       "uniqueMomentsDelta": 2.57,
-      "timeSpentDelta": 7.23,
+      "timeSpentDelta": 7.14,
       "coursesDelta": 0,
       "familyTripsDelta": -0.11,
       "sectorTripsDelta": -0.01,
-      "memoriesDelta": 0.67,
+      "memoriesDelta": 0.66,
       "storyletsDelta": 0.2,
       "followupsDelta": 0.02,
       "grade3Delta": 0,
@@ -10293,17 +10295,17 @@
     },
     "CG-vs-AG/Family": {
       "pairs": 100,
-      "incomeDelta": -420.52,
-      "finalBalanceDelta": -100.72,
-      "momentsDelta": 16.89,
-      "momentsAfter40Delta": 16.9,
+      "incomeDelta": -122.95,
+      "finalBalanceDelta": -36.85,
+      "momentsDelta": 16.99,
+      "momentsAfter40Delta": 17,
       "uniqueMomentsDelta": 6.53,
-      "timeSpentDelta": 17.99,
+      "timeSpentDelta": 18.09,
       "coursesDelta": -0.08,
       "familyTripsDelta": -0.1,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 1.66,
-      "storyletsDelta": 0.08,
+      "memoriesDelta": 1.65,
+      "storyletsDelta": 0.09,
       "followupsDelta": 0.02,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -10334,16 +10336,16 @@
     },
     "CG-vs-AG/TimeBuyer": {
       "pairs": 100,
-      "incomeDelta": 1052.57,
-      "finalBalanceDelta": 771.07,
-      "momentsDelta": 16.95,
-      "momentsAfter40Delta": 16.97,
+      "incomeDelta": 631.21,
+      "finalBalanceDelta": 579.11,
+      "momentsDelta": 16.83,
+      "momentsAfter40Delta": 16.85,
       "uniqueMomentsDelta": 6.85,
-      "timeSpentDelta": 19.04,
+      "timeSpentDelta": 18.91,
       "coursesDelta": -0.03,
-      "familyTripsDelta": -0.05,
+      "familyTripsDelta": -0.06,
       "sectorTripsDelta": -0.02,
-      "memoriesDelta": 1.64,
+      "memoriesDelta": 1.65,
       "storyletsDelta": -0.13,
       "followupsDelta": 0.09,
       "grade3Delta": 0.01,
@@ -10375,16 +10377,16 @@
     },
     "CG-vs-AG/Spender": {
       "pairs": 100,
-      "incomeDelta": -183.33,
-      "finalBalanceDelta": -157.43,
-      "momentsDelta": 5.08,
-      "momentsAfter40Delta": 5.1,
+      "incomeDelta": -589.32,
+      "finalBalanceDelta": -326.62,
+      "momentsDelta": 4.91,
+      "momentsAfter40Delta": 4.93,
       "uniqueMomentsDelta": 2.05,
-      "timeSpentDelta": 13.93,
+      "timeSpentDelta": 13.77,
       "coursesDelta": -0.87,
-      "familyTripsDelta": -0.03,
+      "familyTripsDelta": -0.02,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.45,
+      "memoriesDelta": 0.49,
       "storyletsDelta": 0.09,
       "followupsDelta": -0.08,
       "grade3Delta": 0,
@@ -10416,16 +10418,16 @@
     },
     "CG-vs-AG/Saver": {
       "pairs": 100,
-      "incomeDelta": 224.18,
-      "finalBalanceDelta": 80.78,
-      "momentsDelta": 5.1,
-      "momentsAfter40Delta": 5.1,
+      "incomeDelta": 131.94,
+      "finalBalanceDelta": 34.04,
+      "momentsDelta": 5.02,
+      "momentsAfter40Delta": 5.02,
       "uniqueMomentsDelta": 2.05,
-      "timeSpentDelta": 5.1,
+      "timeSpentDelta": 5.02,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.76,
+      "memoriesDelta": 0.74,
       "storyletsDelta": 0.1,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -10539,16 +10541,16 @@
     },
     "C/TimeBuyer-vs-TimeBuyerFull": {
       "pairs": 100,
-      "incomeDelta": -20375.73,
-      "finalBalanceDelta": -19288.83,
-      "momentsDelta": 11.4,
-      "momentsAfter40Delta": 11.4,
+      "incomeDelta": -20495.24,
+      "finalBalanceDelta": -19361.64,
+      "momentsDelta": 11.42,
+      "momentsAfter40Delta": 11.42,
       "uniqueMomentsDelta": 4.34,
-      "timeSpentDelta": 11.3,
+      "timeSpentDelta": 11.31,
       "coursesDelta": -0.03,
-      "familyTripsDelta": -0.04,
+      "familyTripsDelta": -0.05,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.73,
+      "memoriesDelta": 0.72,
       "storyletsDelta": -0.41,
       "followupsDelta": 0.06,
       "grade3Delta": -0.01,
@@ -10580,16 +10582,16 @@
     },
     "CG/TimeBuyer-vs-TimeBuyerFull": {
       "pairs": 100,
-      "incomeDelta": -20075.93,
-      "finalBalanceDelta": -19300.33,
-      "momentsDelta": 11.8,
-      "momentsAfter40Delta": 11.8,
+      "incomeDelta": -20366.26,
+      "finalBalanceDelta": -19457.56,
+      "momentsDelta": 11.77,
+      "momentsAfter40Delta": 11.77,
       "uniqueMomentsDelta": 4.28,
-      "timeSpentDelta": 11.79,
+      "timeSpentDelta": 11.75,
       "coursesDelta": -0.03,
-      "familyTripsDelta": 0.06,
+      "familyTripsDelta": 0.05,
       "sectorTripsDelta": -0.01,
-      "memoriesDelta": 0.99,
+      "memoriesDelta": 1.01,
       "storyletsDelta": -0.33,
       "followupsDelta": 0.07,
       "grade3Delta": -0.01,
@@ -10703,17 +10705,17 @@
     },
     "C/Retire-left-vs-continue": {
       "pairs": 100,
-      "incomeDelta": -5193.27,
-      "finalBalanceDelta": -5913.37,
-      "momentsDelta": 3.28,
-      "momentsAfter40Delta": 3.28,
+      "incomeDelta": -5286.52,
+      "finalBalanceDelta": -5963.72,
+      "momentsDelta": 3.21,
+      "momentsAfter40Delta": 3.21,
       "uniqueMomentsDelta": 1.16,
-      "timeSpentDelta": 3.24,
+      "timeSpentDelta": 3.17,
       "coursesDelta": 0,
       "familyTripsDelta": -0.04,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 1.17,
-      "storyletsDelta": 0.16,
+      "memoriesDelta": 1.13,
+      "storyletsDelta": 0.17,
       "followupsDelta": 0,
       "grade3Delta": 0,
       "grade4Delta": -0.01,
@@ -10744,17 +10746,17 @@
     },
     "C/Retire-mentor-vs-continue": {
       "pairs": 100,
-      "incomeDelta": -1045.11,
-      "finalBalanceDelta": -1747.91,
-      "momentsDelta": 3.3,
-      "momentsAfter40Delta": 3.3,
+      "incomeDelta": -1081.7,
+      "finalBalanceDelta": -1755.1,
+      "momentsDelta": 3.39,
+      "momentsAfter40Delta": 3.39,
       "uniqueMomentsDelta": 1.85,
-      "timeSpentDelta": 3.25,
+      "timeSpentDelta": 3.34,
       "coursesDelta": 0,
       "familyTripsDelta": -0.05,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 1.06,
-      "storyletsDelta": 0.15,
+      "memoriesDelta": 1.04,
+      "storyletsDelta": 0.16,
       "followupsDelta": 0,
       "grade3Delta": 0,
       "grade4Delta": -0.01,
@@ -10867,12 +10869,12 @@
     },
     "C-vs-C-course1/Moderate": {
       "pairs": 100,
-      "incomeDelta": 10.9,
-      "finalBalanceDelta": -100.9,
-      "momentsDelta": -0.61,
-      "momentsAfter40Delta": -0.2,
+      "incomeDelta": 87.73,
+      "finalBalanceDelta": -65.47,
+      "momentsDelta": -0.59,
+      "momentsAfter40Delta": -0.18,
       "uniqueMomentsDelta": -0.05,
-      "timeSpentDelta": 1.65,
+      "timeSpentDelta": 1.67,
       "coursesDelta": 0,
       "familyTripsDelta": 0.04,
       "sectorTripsDelta": 0,
@@ -10949,17 +10951,17 @@
     },
     "C-vs-C-course1/Spender": {
       "pairs": 100,
-      "incomeDelta": 93.67,
-      "finalBalanceDelta": 57.07,
-      "momentsDelta": -3.41,
-      "momentsAfter40Delta": -1.3,
+      "incomeDelta": 68.21,
+      "finalBalanceDelta": 63.11,
+      "momentsDelta": -3.4,
+      "momentsAfter40Delta": -1.29,
       "uniqueMomentsDelta": -0.87,
-      "timeSpentDelta": 7.36,
+      "timeSpentDelta": 7.37,
       "coursesDelta": 0,
       "familyTripsDelta": -0.08,
       "sectorTripsDelta": 0,
-      "memoriesDelta": -0.1,
-      "storyletsDelta": 0.1,
+      "memoriesDelta": -0.11,
+      "storyletsDelta": 0.09,
       "followupsDelta": 0.05,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -11031,12 +11033,12 @@
     },
     "C-vs-C-course1/Family": {
       "pairs": 100,
-      "incomeDelta": 3.28,
-      "finalBalanceDelta": 13.78,
-      "momentsDelta": -0.5,
-      "momentsAfter40Delta": -0.23,
+      "incomeDelta": -24.35,
+      "finalBalanceDelta": 13.45,
+      "momentsDelta": -0.52,
+      "momentsAfter40Delta": -0.25,
       "uniqueMomentsDelta": 0.07,
-      "timeSpentDelta": 0.78,
+      "timeSpentDelta": 0.76,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
@@ -11113,16 +11115,16 @@
     },
     "C-vs-C-retired3/Moderate": {
       "pairs": 100,
-      "incomeDelta": 2148.65,
-      "finalBalanceDelta": 913.15,
-      "momentsDelta": 5.57,
-      "momentsAfter40Delta": 5.57,
+      "incomeDelta": 2025.07,
+      "finalBalanceDelta": 859.77,
+      "momentsDelta": 5.52,
+      "momentsAfter40Delta": 5.52,
       "uniqueMomentsDelta": 1.7,
-      "timeSpentDelta": 5.53,
+      "timeSpentDelta": 5.48,
       "coursesDelta": 0,
       "familyTripsDelta": -0.04,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.15,
+      "memoriesDelta": 0.16,
       "storyletsDelta": 0.18,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -11154,17 +11156,17 @@
     },
     "C-vs-C-retired3/Family": {
       "pairs": 100,
-      "incomeDelta": -452.58,
-      "finalBalanceDelta": -205.48,
-      "momentsDelta": 4.86,
-      "momentsAfter40Delta": 4.86,
+      "incomeDelta": -105.09,
+      "finalBalanceDelta": -134.29,
+      "momentsDelta": 5,
+      "momentsAfter40Delta": 5,
       "uniqueMomentsDelta": 1.32,
-      "timeSpentDelta": 4.82,
+      "timeSpentDelta": 4.96,
       "coursesDelta": 0,
       "familyTripsDelta": -0.04,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.01,
-      "storyletsDelta": 0.12,
+      "memoriesDelta": 0.03,
+      "storyletsDelta": 0.13,
       "followupsDelta": 0,
       "grade3Delta": 0,
       "grade4Delta": 0,
@@ -11195,16 +11197,16 @@
     },
     "C-vs-C-retired3/Saver": {
       "pairs": 100,
-      "incomeDelta": 434.41,
-      "finalBalanceDelta": 207.11,
-      "momentsDelta": 5.2,
-      "momentsAfter40Delta": 5.2,
+      "incomeDelta": 342.17,
+      "finalBalanceDelta": 160.37,
+      "momentsDelta": 5.12,
+      "momentsAfter40Delta": 5.12,
       "uniqueMomentsDelta": 1.26,
-      "timeSpentDelta": 5.2,
+      "timeSpentDelta": 5.12,
       "coursesDelta": 0,
       "familyTripsDelta": 0,
       "sectorTripsDelta": 0,
-      "memoriesDelta": 0.23,
+      "memoriesDelta": 0.21,
       "storyletsDelta": 0.1,
       "followupsDelta": 0,
       "grade3Delta": 0,
@@ -11255,7 +11257,7 @@
         "Moderate ≻ Saver"
       ],
       "bestBy": {
-        "moments": "TimeBuyer",
+        "moments": "Family",
         "uniqueEvents": "TimeBuyer",
         "memories": "Spender",
         "bond60": "Family",

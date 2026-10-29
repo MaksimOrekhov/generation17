@@ -6,6 +6,7 @@ import { getMomentDef } from './moments'
 import { getOffer } from './offers'
 import { repairPersonalTime } from './personalTime'
 import type { GameState } from './types'
+import { relationshipState } from './people'
 
 export interface Repaired {
   game: GameState
@@ -24,6 +25,18 @@ export function repairSave(state: GameState): Repaired {
   const decisions = repairDecisions(state.decisions, state.age)
   if (JSON.stringify(decisions) !== JSON.stringify(state.decisions)) notes.push('Журнал решений: отсутствующие или повреждённые записи удалены; прошлые решения не восстанавливались.')
   let g = { ...state, decisions, economy: repairEconomy(state) }
+  if (g.relationships?.partnerId) {
+    const id = g.relationships.partnerId
+    const person = g.people.find(p => p.id === id)
+    if (!person || !person.alive) {
+      notes.push(person ? 'отношения с умершим человеком сохранены в истории' : `партнёр «${id}» отсутствует в сохранении`)
+      g = { ...g, flags: { ...g.flags, livingTogether: false }, relationships: {
+        ...g.relationships,
+        partnerId: null,
+        formerPartnerIds: person ? [...new Set([...g.relationships.formerPartnerIds, id])] : g.relationships.formerPartnerIds
+      } }
+    }
+  }
   if (economyWasMigrated) notes.push('Личные средства: выполнен расчёт по прошлым годам; история расходов до введения учёта недоступна.')
   // Цель накопления ссылается только на позицию каталога: неизвестный id молча снимается (§6.4).
   if (g.economy.goal !== null && !getOffer(g.economy.goal)) {
@@ -48,7 +61,10 @@ export function repairSave(state: GameState): Repaired {
   g = answerable
   if (!cohabitationOk(g)) {
     notes.push('совместная жизнь не сходилась с состоянием отношений и снята')
-    g = { ...g, flags: { ...g.flags, livingTogether: false } }
+    // При старой подтверждённой совместной жизни не теряем связь после смерти друга,
+    // когда сам флаг уже нельзя сохранить как текущий.
+    const historical = !g.relationships ? relationshipState(g) : undefined
+    g = { ...g, flags: { ...g.flags, livingTogether: false }, ...(historical?.formerPartnerIds.length ? { relationships: historical } : {}) }
   }
   return { game: g, notes }
 }

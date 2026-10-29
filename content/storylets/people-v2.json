@@ -1,0 +1,62 @@
+[
+  {
+    "id": "people-new-encounter", "category": "Отношения", "title": "Чай у автомата", "min": 20, "max": 48, "weight": 3,
+    "body": "После смены незнакомый человек задерживается у автомата с чаем. Вы оба ждёте, пока он закончит наливать, и разговор неожиданно продолжается уже за столом.",
+    "requires": { "focus": ["relationships"], "absent": ["acquaintance", "partner"], "flagNot": ["peopleEncounter"] },
+    "choices": [
+      { "id": "meet", "text": "Продолжить разговор", "hint": "Знакомство", "result": "{{acquaintance}} представляется, и вы договариваетесь встретиться снова, если обоим захочется.", "effects": { "addPerson": { "slot": "acquaintance", "role": "colleague" }, "flags": { "peopleEncounter": "met", "peopleEncounterAge": "@age" } } },
+      { "id": "leave", "text": "Попрощаться", "hint": "Время для себя", "result": "Ты благодаришь за разговор и возвращаешься к своим делам. Чай остаётся горячим ещё долго.", "effects": { "flags": { "peopleEncounter": "declined" } } }
+    ]
+  },
+  {
+    "id": "people-new-choice", "category": "Отношения", "title": "Место за столом", "min": 21, "max": 55, "weight": 4, "priority": "followup",
+    "body": "Вы с {{acquaintance}} снова встречаетесь после смены. Разговоры стали привычными, но никто ещё не сказал, какого места в жизни другого хотел бы занять.",
+    "requires": { "present": ["acquaintance"], "flagIs": { "peopleEncounter": "met" }, "since": { "peopleEncounterAge": 1 }, "flagNot": ["peopleChoice"] },
+    "choices": [
+      { "id": "romance", "text": "Предложить сблизиться", "hint": "Близость · Неизвестность", "result": "Вы решаете попробовать быть вместе, оставляя друг другу время привыкнуть к новому ритму.", "effects": { "relationship": { "action": "start", "person": "acquaintance" }, "bonds": { "acquaintance": 8 }, "flags": { "peopleChoice": "partner", "peopleChoiceAge": "@age" } } },
+      { "id": "friendship", "text": "Остаться друзьями", "hint": "Дружба", "result": "Вы договариваетесь встречаться без ожиданий и бережёте пространство для других дел.", "effects": { "bonds": { "acquaintance": 6 }, "flags": { "peopleChoice": "friend" } } },
+      { "id": "distance", "text": "Встречаться реже", "hint": "Свободное время", "result": "Вы спокойно признаёте, что сейчас у каждого свои заботы, и не назначаете следующую встречу.", "effects": { "flags": { "peopleChoice": "distance" } } }
+    ]
+  },
+  {
+    "id": "people-new-home", "category": "Отношения", "title": "Две полки", "min": 22, "max": 65, "weight": 4, "priority": "followup",
+    "body": "У {{partner}} заканчивается срок проживания в каюте. Вы рассматриваете план жилых блоков и обсуждаете, сколько пространства каждому нужно для работы и отдыха.",
+    "requires": { "present": ["partner"], "flagIs": { "peopleChoice": "partner" }, "since": { "peopleChoiceAge": 1 }, "flagNot": ["peopleHome"] },
+    "choices": [
+      { "id": "hero-home", "text": "Жить в твоей каюте", "hint": "Общий дом", "result": "Вы освобождаете полку и вместе решаете, что нужно изменить в привычном распорядке.", "effects": { "cohabit": "hero", "flags": { "peopleHome": "together", "peopleHomeAge": "@age" } } },
+      { "id": "partner-home", "text": "Переехать к партнёру", "hint": "Переезд · Общий дом", "result": "Ты переносишь вещи в другую каюту. Первым делом вы ищете место для двух чашек.", "effects": { "cohabit": "partner", "flags": { "peopleHome": "together", "peopleHomeAge": "@age" } } },
+      { "id": "apart", "text": "Сохранить отдельные каюты", "hint": "Личное пространство", "result": "Вы оставляете каждому свою каюту и выбираете дни, когда удобно встречаться.", "effects": { "flags": { "peopleHome": "apart", "peopleHomeAge": "@age" } } }
+    ]
+  },
+  {
+    "id": "people-new-crossroads", "category": "Отношения", "title": "Разный ритм", "min": 25, "max": 80, "weight": 3, "priority": "followup",
+    "body": "После ухода {{acquaintance}} ты находишь в ящике старую записку о встрече. Почерк знаком, хотя назначенный на ней вечер давно прошёл.",
+    "bodyVariants": [ { "requires": { "present": ["partner"] }, "text": "У вас с {{partner}} всё чаще не совпадают свободные часы. Однажды вы всё же садитесь вместе и обсуждаете, хотите ли менять привычный порядок." } ],
+    "requires": { "exists": ["acquaintance"], "flagIs": { "peopleChoice": "partner" }, "flagNot": ["peopleCrossroads"], "any": [ { "present": ["partner"], "flag": ["peopleHome"], "since": { "peopleHomeAge": 3 } }, { "dead": ["acquaintance"], "since": { "peopleChoiceAge": 1 } } ] },
+    "choices": [
+      { "id": "continue", "requires": { "present": ["partner"] }, "text": "Найти время друг для друга", "hint": "Общее время", "result": "Вы отмечаете в расписании вечер, который оба готовы оставить свободным.", "effects": { "flags": { "peopleCrossroads": "continue" } } },
+      { "id": "part", "requires": { "present": ["partner"] }, "text": "Расстаться бережно", "hint": "Перемена", "result": "Разговор даётся нелегко, но вы соглашаетесь больше не давать обещаний, которые не можете выполнить.", "effects": { "relationship": { "action": "end" }, "flags": { "peopleCrossroads": "parted" }, "memory": "Спокойный разговор после которого ваши пути разошлись." } },
+      { "id": "remember", "requires": { "dead": ["acquaintance"] }, "text": "Сохранить записку", "hint": "Память", "result": "Ты убираешь записку среди важных бумаг. На неё не нужно отвечать, но выбрасывать её тоже не хочется.", "effects": { "flags": { "peopleCrossroads": "lost" }, "memory": "Записка о встрече, которую больше не получится назначить." } },
+      { "id": "pause", "text": "Оставить всё на сегодня", "hint": "Пауза", "result": "Сегодня ты решаешь ничего не менять и возвращаешься к своим привычным делам.", "effects": { "flags": { "peopleCrossroads": "paused" } } }
+    ]
+  },
+  {
+    "id": "people-child-independence", "category": "Семья", "title": "Свой адрес", "min": 35, "max": 95, "weight": 3,
+    "body": "{{child}} рассказывает о свободной каюте в биокуполах. Решение уже почти принято, но хочется обсудить, как теперь находить время для общих встреч.",
+    "requires": { "present": ["child"], "childStage": ["adult"], "flagNot": ["childIndependent"] },
+    "choices": [
+      { "id": "move", "text": "Помочь с переездом", "hint": "Новый адрес", "result": "Вы вместе переносите коробки. На новом месте сразу находится полка для семейных фотографий.", "effects": { "person": { "child": { "sectorId": "bio", "availability": "available" } }, "flags": { "childIndependent": "moved", "childIndependentAge": "@age" } } },
+      { "id": "talk", "text": "Обсудить другие варианты", "hint": "Разговор", "result": "Вы перебираете возможные маршруты и договариваетесь вернуться к разговору, когда появится больше ясности.", "effects": { "flags": { "childIndependent": "considering", "childIndependentAge": "@age" } } }
+    ]
+  },
+  {
+    "id": "people-child-visit", "category": "Семья", "title": "Время увидеться", "min": 37, "max": 95, "weight": 3, "priority": "followup",
+    "body": "{{child}} предлагает найти вечер для встречи. Вы сверяете расписания и обсуждаете, где на этот раз будет удобнее собраться.",
+    "bodyVariants": [ { "requires": { "flagIs": { "childIndependent": "moved" }, "person": { "child": { "sectorId": "bio" } } }, "text": "{{child}} зовёт тебя в каюту в биокуполах. С переезда прошло время, и теперь на полках появились вещи, которые ты ещё не видел{{hero:|а}}." } ],
+    "requires": { "present": ["child"], "flag": ["childIndependent"], "since": { "childIndependentAge": 2 } },
+    "choices": [
+      { "id": "visit", "text": "Найти вечер для встречи", "hint": "Общее время", "result": "Вы долго обсуждаете повседневные дела, пока чай не остывает и не приходится заварить новый.", "effects": { "bonds": { "child": 4 } } },
+      { "id": "later", "text": "Договориться на другой раз", "hint": "Свободное время", "result": "Вы оставляете встречу на другой день и обмениваетесь несколькими короткими сообщениями.", "effects": {} }
+    ]
+  }
+]

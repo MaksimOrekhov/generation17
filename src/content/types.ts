@@ -1,4 +1,4 @@
-import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat, Skill, ShipStat } from '../domain/types'
+import type { ChildLifeStage, ChoiceDef, Effects, Focus, Job, PersonState, SectorId, SpotId, Stat, Skill, ShipStat } from '../domain/types'
 import type { Tone } from '../domain/director'
 import type { WorkKind } from '../domain/economy'
 import type { TimeRegime } from '../domain/personalTime'
@@ -7,6 +7,9 @@ type FlagValue = string | number | boolean
 
 /** Декларативное условие показа. Все заданные поля должны выполняться одновременно. */
 export interface Requires {
+  person?: Record<string, PersonState>
+  childStage?: ChildLifeStage[]
+  focus?: Focus[]
   any?: Requires[]
   seen?: string[]
   notSeen?: string[]

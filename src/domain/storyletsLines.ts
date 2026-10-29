@@ -1,5 +1,6 @@
 import { gYearPlaceholder as NOW } from './constants'
 import type { GameState, Storylet } from './types'
+import { friendLoveCompatible } from './people'
 
 /**
  * Ветвящиеся линии: «Сигнал», «Родитель», «Любовь».
@@ -186,7 +187,7 @@ export const lineStorylets: Storylet[] = [
     id: 'relationship-followup', arc: 'love', category: 'Последствие', min: 24, max: 75, priority: 'followup', weight: 12,
     title: 'Разговор о будущем',
     body: 'В личном дневнике {{friend}} находит старую запись о вашем разговоре в обзорном куполе. Вас обоих пугает, сколько времени пролетело.',
-    available: g => is(g, 'lovePath', 'confessed') && g.age >= 27 && !g.flags.loveStage && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'relationship-followup') && is(g, 'lovePath', 'confessed') && g.age >= 27 && !g.flags.loveStage && alive(g, 'friend'),
     choices: [
       { text: 'Серьёзно обсудить совместную жизнь', hint: 'Связи ↑ · Долгосрочное решение', result: 'Вы решаете жить вместе. Крошечное пространство вашей каюты неожиданно становится уютным.', effects: { stats: { bonds: 10, morale: 7 }, bonds: { friend: 14 }, flags: { livingTogether: true, loveStage: 'together', loveStageAge: NOW }, memory: 'Решение построить совместную жизнь с близким человеком.' } },
       { text: 'Оставить всё как есть', hint: 'Спокойствие', result: 'Вы выбираете собственный ритм, не давая друг другу обещаний.', effects: { stats: { morale: 2 }, flags: { loveStage: 'open', loveStageAge: NOW } } },
@@ -197,7 +198,7 @@ export const lineStorylets: Storylet[] = [
     id: 'love-home-offer', arc: 'love', category: 'Последствие', min: 30, max: 80, priority: 'followup', weight: 16,
     title: 'Предложение о переезде',
     body: 'Близкому человеку предлагают работу в другом секторе: больше возможностей, но жильё там выдают только по месту службы. Предлагают переехать вместе, но тогда придётся уйти с твоего привычного места.',
-    available: g => is(g, 'loveStage', 'together') && since(g, 'loveStageAge', 5) && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'love-home-offer') && is(g, 'loveStage', 'together') && since(g, 'loveStageAge', 5) && alive(g, 'friend'),
     choices: [
       { text: 'Переехать вместе', hint: 'Отношения ↑ · Карьера ↓', result: 'Новое место встречает тесной каютой и чужими коридорами. Но вечером, возвращаясь, ты видишь, что дверь не заперта, и понимаешь, что дом там, где вас двое.', effects: { stats: { bonds: 6, morale: 4, reputation: -4, stress: 4 }, bonds: { friend: 8 }, moveTo: 'partner', flags: { loveStage: 'moved-together', loveStageAge: NOW }, memory: 'Переезд в другой сектор вслед за близким человеком.' } },
       { text: 'Попросить остаться', hint: 'Карьера ↑ · Отношения ↓', result: 'Близкий человек молчит долго. Потом соглашается, но в каюте с тех пор слышнее тиканье часов.', effects: { stats: { bonds: -5, stress: 4, reputation: 2 }, bonds: { friend: -8 }, flags: { loveStage: 'held', loveStageAge: NOW } } },
@@ -210,7 +211,7 @@ export const lineStorylets: Storylet[] = [
     expiresIn: g => (typeof g.flags.loveStageAge === 'number' ? g.flags.loveStageAge + 3 - g.age : Infinity),
     title: 'Год врозь',
     body: 'Срок, о котором вы договорились, прошёл. По выходным вы по-прежнему встречаетесь, но каждый раз прощание у перехода становится чуть длиннее. {{friend}} спрашивает, что дальше.',
-    available: g => is(g, 'loveStage', 'apart') && since(g, 'loveStageAge', 1) && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'love-apart-return') && is(g, 'loveStage', 'apart') && since(g, 'loveStageAge', 1) && alive(g, 'friend'),
     choices: [
       { text: 'Вернуться в общую каюту', hint: 'Отношения ↑', result: 'Вещи возвращаются на старые полки так быстро, будто и не уходили. Ужин в этот вечер получается тихим и очень домашним.', effects: { stats: { bonds: 5, morale: 4, stress: -2 }, bonds: { friend: 8 }, flags: { livingTogether: true, loveStage: 'reunited', loveStageAge: NOW }, memory: 'Возвращение под одну крышу после года врозь.' } },
       { text: 'Оставить всё как есть', hint: 'Свобода · Дистанция', result: 'Вы решаете не менять устоявшийся порядок. Выходные остаются вашими, а всё остальное время — каждого своим.', effects: { stats: { morale: 1 }, flags: { loveStage: 'open', loveStageAge: NOW } } },
@@ -221,7 +222,7 @@ export const lineStorylets: Storylet[] = [
     id: 'love-drift', arc: 'love', category: 'Последствие', min: 30, max: 80, priority: 'followup', weight: 16,
     title: 'Новое лицо',
     body: '{{friend}} начинает чаще упоминать нового коллегу: невзначай, между делом. Вы так и не называли своё положение словами, и теперь нет никого, кто мог бы сказать, что что-то нарушено.',
-    available: g => is(g, 'loveStage', 'open') && since(g, 'loveStageAge', 6) && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'love-drift') && is(g, 'loveStage', 'open') && since(g, 'loveStageAge', 6) && alive(g, 'friend'),
     choices: [
       { text: 'Сказать, что чувствуешь', hint: 'Честность · Риск', result: 'Слова даются трудно. Выясняется, что {{friend}} давно ждал{{friend:|а}} именно этих слов. Но и что у ваших ожиданий были разные формы.', effects: { stats: { morale: 3, stress: 3, bonds: 3 }, bonds: { friend: 6 }, flags: { loveStage: 'spoken' } } },
       { text: 'Отпустить без разговора', hint: 'Спокойствие · Потеря', result: 'Вы продолжаете здороваться. Вскоре ты замечаешь, что давно не приходишь первым.', effects: { stats: { morale: -4, stress: 2 }, bonds: { friend: -6 }, flags: { loveStage: 'drifted' }, memory: 'Медленное расхождение с близким человеком без единого слова об этом.' } },
@@ -243,7 +244,7 @@ export const lineStorylets: Storylet[] = [
     id: 'love-friends-union', arc: 'love', category: 'Последствие', min: 26, max: 70, priority: 'followup', weight: 14,
     title: 'Приглашение на свадьбу',
     body: '{{friend}} приглашает тебя на торжество: союз с человеком из соседнего сектора. Приглашение тёплое, но среди имён в списке гостей ты находишь своё не в первом ряду.',
-    available: g => is(g, 'lovePath', 'friends') && since(g, 'loveAge', 6) && !g.flags.loveStage && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'love-friends-union') && is(g, 'lovePath', 'friends') && since(g, 'loveAge', 6) && !g.flags.loveStage && alive(g, 'friend'),
     choices: [
       { text: 'Прийти и поздравить', hint: 'Дружба ↑', result: 'Торжество шумное и тёплое. Ты смеёшься, танцуешь и впервые понимаешь, что прошлая ночь у купола стоила не сожалений, а доброй памяти.', effects: { stats: { morale: 5, bonds: 4 }, bonds: { friend: 6 }, flags: { loveStage: 'attended', loveStageAge: NOW } } },
       { text: 'Отправить подарок и извинения', hint: 'Дистанция', result: 'Подарок принимают с благодарностью. Но вы оба знаете: некоторые двери закрылись, хотя никто их не захлопывал.', effects: { stats: { stress: -1 }, bonds: { friend: -2 }, flags: { loveStage: 'absent', loveStageAge: NOW } } },
@@ -254,7 +255,7 @@ export const lineStorylets: Storylet[] = [
     id: 'love-missed', arc: 'love', category: 'Последствие', min: 34, max: 85, priority: 'followup', weight: 14,
     title: 'Что осталось недосказанным',
     body: 'Случайная встреча со старым другом растягивается на целый вечер. Под конец {{friend}} признаётся: «Тогда у купола мне тоже было что сказать. Просто ты быстро сменил{{hero:|а}} тему».',
-    available: g => is(g, 'lovePath', 'skipped') && since(g, 'loveAge', 10) && !g.flags.loveStage && alive(g, 'friend'),
+    available: g => friendLoveCompatible(g, 'love-missed') && is(g, 'lovePath', 'skipped') && since(g, 'loveAge', 10) && !g.flags.loveStage && alive(g, 'friend'),
     choices: [
       { text: 'Признаться, что хотел{{hero:|а}} бы вернуться в тот вечер', hint: 'Честность', result: '{{friend}} долго молчит, а потом улыбается: «Хорошо, что хоть сейчас». Вы расходитесь поздно, не обещая ничего, но и не прощаясь по-настоящему.', effects: { stats: { morale: 4, stress: 2, bonds: 3 }, bonds: { friend: 8 }, flags: { loveStage: 'late-honest', loveStageAge: NOW }, memory: 'Поздний разговор о несказанном вечере у обзорного купола.' } },
       { text: 'Сказать, что всё к лучшему', hint: 'Защита', result: 'Ты говоришь привычные слова. {{friend}} кивает: «Наверное». Домой ты идёшь пешком, и дорога оказывается длиннее обычного.', effects: { stats: { stress: 3, morale: -3 }, bonds: { friend: -2 }, flags: { loveStage: 'late-closed', loveStageAge: NOW } } },

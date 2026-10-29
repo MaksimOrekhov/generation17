@@ -13,6 +13,22 @@ const categories = JSON.parse(readFileSync(join(root, 'content/categories.json')
 
 const files: ContentFile[] = []
 const issues: Issue[] = []
+const slots: unknown = JSON.parse(readFileSync(join(root, 'content/people.json'), 'utf8'))
+const roles: unknown = JSON.parse(readFileSync(join(root, 'content/person-roles.json'), 'utf8'))
+if (!roles || typeof roles !== 'object' || Array.isArray(roles) || !Object.keys(roles).length) issues.push({ level: 'error', where: 'content/person-roles.json', message: 'нужна непустая карта ролей' })
+else for (const [id, label] of Object.entries(roles)) {
+  if (!/^[a-z][a-z0-9]*$/.test(id) || typeof label !== 'string' || !label.trim() || label !== label.trim() || label.length > 40) issues.push({ level: 'error', where: 'content/person-roles.json', message: `некорректная роль: ${id}` })
+}
+const reserved = new Set(['parent', 'parent2', 'sibling', 'friend', 'neighbor', 'mentor', 'child', 'partner', 'formerPartner', 'hero', 'name', 'job'])
+if (!Array.isArray(slots)) issues.push({ level: 'error', where: 'content/people.json', message: 'нужен массив объявлений слотов' })
+else {
+  const seen = new Set<string>()
+  for (const slot of slots) {
+    const id = slot && typeof slot === 'object' && !Array.isArray(slot) ? (slot as Record<string, unknown>).id : undefined
+    if (typeof id !== 'string' || !/^[a-z][a-z0-9]*$/.test(id) || reserved.has(id) || seen.has(id) || Object.keys(slot).some(key => key !== 'id')) issues.push({ level: 'error', where: 'content/people.json', message: `некорректный или повторный слот: ${String(id)}` })
+    else seen.add(id)
+  }
+}
 for (const kind of ['storylets', 'moments'] as const) {
   const dir = join(root, 'content', kind)
   if (!existsSync(dir)) continue

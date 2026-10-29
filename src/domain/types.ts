@@ -20,6 +20,25 @@ export type SectorId = 'atrium' | 'bio' | 'engineering' | 'clinic' | 'lower'
 /** Люди, которых сюжеты могут добавить в жизнь героя. */
 export type NewPersonId = 'child'
 
+/** Жизненный этап ребёнка вычисляется по возрасту, а не хранится в сохранении. */
+export type ChildLifeStage = 'early-childhood' | 'school-age' | 'youth' | 'adult'
+export type PersonAvailability = 'available' | 'distant'
+export type PersonFamilyStatus = 'unknown' | 'single' | 'family'
+export interface PersonState {
+  sectorId?: SectorId
+  job?: Job
+  availability?: PersonAvailability
+  familyStatus?: PersonFamilyStatus
+}
+
+/** Присутствует только после явного перехода к новой модели отношений. */
+export interface Relationships {
+  partnerId: string | null
+  formerPartnerIds: string[]
+  /** Явный разрыв завершил старую открытую линию, не меняя её исторические флаги. */
+  friendLoveClosed?: boolean
+}
+
 export interface Person {
   id: string
   name: string
@@ -31,6 +50,7 @@ export interface Person {
   alive: boolean
   /** Возраст героя, с которого этот человек появляется в его жизни. */
   since: number
+  state?: PersonState
 }
 
 /** Ровесник: родился в тот же год, живёт упрощённой параллельной жизнью. */
@@ -82,7 +102,10 @@ export interface Effects {
   job?: Job | 'Переобучение'
   memory?: string
   /** В жизни героя появляется человек: сейчас только ребёнок (`child`). Повторный эффект ничего не меняет. */
-  addPerson?: NewPersonId
+  addPerson?: NewPersonId | { slot: string; role: string }
+  person?: Record<string, PersonState>
+  relationship?: { action: 'start'; person: string } | { action: 'end' }
+  cohabit?: 'hero' | 'partner' | 'apart'
   /** Герой переезжает в другой сектор. */
   /** Сектор или 'partner' — сектор близкого человека (не совпадает с нынешним домом). */
   moveTo?: SectorId | 'partner'
@@ -239,6 +262,7 @@ export interface GameState {
   ship: Record<ShipStat, number>
   focus: Focus
   people: Person[]
+  relationships?: Relationships
   peers: Peer[]
   flags: Record<string, string | number | boolean>
   memories: string[]

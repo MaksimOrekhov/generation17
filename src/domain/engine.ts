@@ -14,6 +14,7 @@ import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality
 import { applyOfferChanges, canBuy, getOffer, type OfferDefinition, type PurchaseAvailability, type PurchaseTarget } from './offers'
 import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
 import { PERSONAL_TIME, canSpendPersonalTime, endPersonalTime, freeTimeChance, spendPersonalTime, startPersonalTimeYear } from './personalTime'
+import { beginRelationship, createStoryPerson, currentPartner, endRelationship, friendLoveCompatible, personByRef, STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from './people'
 
 const HISTORY_LIMIT = 1500
 const MOMENT_CHANCE = .3
@@ -96,7 +97,7 @@ export function createGame(seed: number, atmosphere: Atmosphere = 'mystery'): Ga
 /** Род героя или человека. Для старых сохранений без `gender` выводится из seed или имени. */
 export function genderOf(g: GameState, who: string): Gender {
   if (who === 'hero') return g.protagonist.gender ?? heroGender(g.seed)
-  const person = g.people.find(p => p.id === who)
+  const person = personByRef(g, who)
   if (person?.gender) return person.gender
   if (who === 'parent') return 'f'
   return person ? genderOfName(person.name) : 'm'
@@ -106,11 +107,12 @@ export function genderOf(g: GameState, who: string): Gender {
 const GENDER_FORM = /\{\{(\w+):([^|{}]*)\|([^|{}]*)\}\}/g
 
 export function resolveText(g: GameState, value: string) {
-  const who = (id: string, fallback: string) => g.people.find(p => p.id === id)?.name.split(' ')[0] ?? fallback
+  const who = (id: string, fallback: string) => personByRef(g, id)?.name.split(' ')[0] ?? fallback
   let rendered = value
     .replace(GENDER_FORM, (_, subject: string, masculine: string, feminine: string) => (genderOf(g, subject) === 'f' ? feminine : masculine))
     .replaceAll('{{name}}', g.protagonist.name)
-  for (const id of CONTENT_PEOPLE) rendered = rendered.replaceAll(`{{${id}}}`, who(id, ({ parent: 'родитель', parent2: 'отец', friend: 'друг', neighbor: 'сосед', mentor: 'наставник', sibling: 'брат или сестра', child: 'ребёнок' })[id]))
+  const fallbacks: Record<string, string> = { parent: 'родитель', parent2: 'отец', friend: 'друг', neighbor: 'сосед', mentor: 'наставник', sibling: 'брат или сестра', child: 'ребёнок', partner: 'партнёр', formerPartner: 'бывший партнёр' }
+  for (const id of CONTENT_PEOPLE) rendered = rendered.replaceAll(`{{${id}}}`, who(id, fallbacks[id] ?? 'знакомый'))
   return rendered
     .replaceAll('{{job}}', g.protagonist.job.toLowerCase())
 }
@@ -126,7 +128,40 @@ function diminish(stat: Stat, current: number, delta: number) {
   return delta * clamp(1 - (good - 55) / 40, .1, 1)
 }
 
-function applyEffects(g: GameState, effects: Effects) {
+/** Проверка до списания денег и применения эффектов; повреждённый контент не меняет мир частично. */
+function peopleEffectsOk(g: GameState, effects: Effects, eventId?: string): boolean {
+  const startsFriend = !!g.relationships && (eventId === 'relationship-followup' || eventId === 'love-apart-return') && ['together', 'reunited'].includes(String(effects.flags?.loveStage))
+  if (!startsFriend && !effects.person && !effects.relationship && !effects.cohabit && typeof effects.addPerson !== 'object' && effects.moveTo !== 'partner') return true
+  const probe = { ...g, people: g.people.map(p => ({ ...p, state: p.state && { ...p.state } })), flags: { ...g.flags }, relationships: g.relationships && structuredClone(g.relationships) }
+  if (startsFriend && !beginRelationship(probe, 'friend')) return false
+  if (typeof effects.addPerson === 'object') {
+    if (!STORY_PERSON_SLOTS.includes(effects.addPerson.slot) || !Object.hasOwn(STORY_PERSON_ROLES, effects.addPerson.role)) return false
+    if (personByRef(probe, effects.addPerson.slot)) return false
+    createStoryPerson(probe, effects.addPerson.slot, effects.addPerson.role)
+  }
+  for (const [ref, update] of Object.entries(effects.person ?? {})) {
+    if (!['friend', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) return false
+    const person = personByRef(probe, ref)
+    if (!person || !person.alive || person.since > probe.age || !update) return false
+    if (Object.keys(update).some(k => !['sectorId', 'job', 'availability', 'familyStatus'].includes(k))) return false
+    if (update.sectorId !== undefined && !['atrium', 'bio', 'engineering', 'clinic', 'lower'].includes(update.sectorId)) return false
+    if (update.job !== undefined && (!['Ученик', 'Техник', 'Медик', 'Агроном', 'Координатор', 'Без специальности'].includes(update.job) || person.age < 16)) return false
+    if (update.availability !== undefined && !['available', 'distant'].includes(update.availability)) return false
+    if (update.familyStatus !== undefined && (!['unknown', 'single', 'family'].includes(update.familyStatus) || update.familyStatus === 'family' && person.age < 18)) return false
+    person.state = { ...person.state, ...update }
+  }
+  if (effects.relationship?.action === 'start') {
+    if (!['friend', ...STORY_PERSON_SLOTS].includes(effects.relationship.person)) return false
+    const target = personByRef(probe, effects.relationship.person)
+    if (!target || !beginRelationship(probe, target.id)) return false
+  } else if (effects.relationship?.action === 'end' && !endRelationship(probe)) return false
+  if (effects.cohabit && (!currentPartner(probe) || currentPartner(probe)?.state?.availability === 'distant' || effects.cohabit === 'partner' && !currentPartner(probe)?.state?.sectorId)) return false
+  if (effects.moveTo === 'partner' && eventId === 'love-home-offer' && probe.relationships && currentPartner(probe)?.state?.sectorId === residenceOf(probe)) return false
+  if (effects.moveTo === 'partner' && !(currentPartner(probe)?.state?.sectorId || !probe.relationships && isKnown(probe, 'friend') || eventId === 'love-home-offer' && currentPartner(probe)?.id === 'friend')) return false
+  return true
+}
+
+function applyEffects(g: GameState, effects: Effects, eventId?: string) {
   for (const [key, value] of Object.entries(effects.stats ?? {})) {
     const k = key as Stat
     g.stats[k] = clamp(g.stats[k] + diminish(k, g.stats[k], value))
@@ -139,13 +174,41 @@ function applyEffects(g: GameState, effects: Effects) {
     const k = key as Skill
     g.skills[k] = clamp(g.skills[k] + value)
   }
-  if (effects.addPerson) addPerson(g, effects.addPerson)
+  if (effects.addPerson) {
+    if (typeof effects.addPerson === 'string') addPerson(g, effects.addPerson)
+    else createStoryPerson(g, effects.addPerson.slot, effects.addPerson.role)
+  }
+  for (const [ref, state] of Object.entries(effects.person ?? {})) {
+    const person = personByRef(g, ref)
+    if (person?.alive && state) person.state = { ...person.state, ...state }
+  }
+  if (effects.relationship?.action === 'start') beginRelationship(g, personByRef(g, effects.relationship.person)?.id ?? '')
+  if (effects.relationship?.action === 'end') endRelationship(g)
+  if (effects.cohabit) {
+    const partner = currentPartner(g)!
+    if (effects.cohabit === 'hero') partner.state = { ...partner.state, sectorId: residenceOf(g) }
+    if (effects.cohabit === 'partner') moveTo(g, partner.state!.sectorId!)
+    g.flags.livingTogether = effects.cohabit !== 'apart'
+  }
   for (const [key, value] of Object.entries(effects.bonds ?? {})) {
-    const person = g.people.find(p => p.id === key)
+    const person = personByRef(g, key)
     if (person?.alive) person.bond = clamp(person.bond + value)
   }
   for (const [key, value] of Object.entries(effects.flags ?? {})) {
     g.flags[key] = value === gYearPlaceholder ? g.age : value
+  }
+  // Только старые сцены любви переводят их подтверждённые решения в явные ссылки.
+  // Сохранения без новой структуры продолжают использовать прежние флаги без изменений.
+  if (g.relationships && (eventId === 'relationship-followup' || eventId === 'love-apart-return') && ['together', 'reunited'].includes(String(effects.flags?.loveStage))) {
+    if (beginRelationship(g, 'friend')) {
+      const friend = currentPartner(g)
+      if (friend?.state?.sectorId) friend.state.sectorId = residenceOf(g)
+    }
+  }
+  if (g.relationships?.partnerId === 'friend' && ((eventId === 'relationship-followup' || eventId === 'love-apart-return') && effects.flags?.loveStage === 'parted' || eventId === 'love-drift' && effects.flags?.loveStage === 'drifted')) endRelationship(g)
+  if (g.relationships && g.flags.livingTogether === true) {
+    const partner = currentPartner(g)
+    if (!partner || partner.state?.availability === 'distant' || partner.state?.sectorId && partner.state.sectorId !== residenceOf(g)) g.flags.livingTogether = false
   }
   if (effects.job === 'Переобучение') {
     const next: Record<Job, Job> = {
@@ -159,7 +222,7 @@ function applyEffects(g: GameState, effects: Effects) {
     const memory = resolveText(g, effects.memory)
     if (!g.memories.includes(memory)) g.memories.push(memory)
   }
-  if (effects.moveTo) moveTo(g, effects.moveTo)
+  if (effects.moveTo) moveTo(g, effects.moveTo, eventId === 'love-home-offer')
 }
 
 function addPerson(g: GameState, id: NewPersonId) {
@@ -171,10 +234,15 @@ function addPerson(g: GameState, id: NewPersonId) {
   addLog(g, 'life', 'В семье пополнение', `В твоей жизни появляется ${name}.`)
 }
 
-function moveTo(g: GameState, target: SectorId | 'partner') {
-  const sector = target === 'partner' ? partnerSector(g) : target
+function moveTo(g: GameState, target: SectorId | 'partner', legacyFriendMove = false) {
+  const partner = currentPartner(g)
+  const sector = target === 'partner' ? partner?.state?.sectorId ?? ((!g.relationships && isKnown(g, 'friend') || legacyFriendMove && partner?.id === 'friend') ? partnerSector(g) : undefined) : target
+  if (!sector) return
   if (residenceOf(g) === sector) return
+  // Независимый переезд не перемещает другого человека без отдельного сюжетного эффекта.
+  if (g.relationships && g.flags.livingTogether === true && partner?.state?.sectorId && partner.state.sectorId !== sector) g.flags.livingTogether = false
   g.residence = sector
+  if (legacyFriendMove && g.relationships && partner?.id === 'friend' && !partner.state?.sectorId) partner.state = { ...partner.state, sectorId: sector }
   const s = sectorById(sector)
   addLog(g, 'life', 'Переезд', `Теперь твой дом — ${s.name}, ${s.deck}.`)
 }
@@ -232,6 +300,8 @@ function choiceAvailability(state: GameState, event: Storylet | undefined, choic
   else if (!event || !choice) reason = 'Нет доступного сюжетного варианта.'
   else if (state.decisions?.some(record => record.id === event.id)) reason = 'Решение уже принято.'
   else if (choice.available && !choice.available(state) || !safePeople(state, choice.text, choice.historicalPeople)) reason = 'Этот вариант недоступен в этой жизни.'
+  else if (event?.arc === 'love' && !friendLoveCompatible(state, event.id)) reason = 'Обстоятельства близких изменились.'
+  else if (!peopleEffectsOk(state, choice.effects, event?.id) || choice.check && (!peopleEffectsOk(state, choice.check.success, event?.id) || !peopleEffectsOk(state, choice.check.failure, event?.id))) reason = 'Обстоятельства близких изменились.'
   else if (purchase && !purchase.available) reason = purchase.reason
   else {
     reason = storyMoneyReason(state, [choice.effects.money])
@@ -265,7 +335,7 @@ export function decide(state: GameState, choiceIndex: number, target?: PurchaseT
   const visibleBefore = event.arc ? visibleChoiceIndices(state, event) : []
   const g = structuredClone(state)
   applyStoryMoney(g, choice.effects.money, event)
-  applyEffects(g, choice.effects)
+  applyEffects(g, choice.effects, event.id)
   addLog(g, 'choice', `Решение: ${resolveText(g, choice.text)}`, resolveText(g, resultText))
   // Настоящая покупка каталога: одна операция, без RNG, с теми же последствиями, что из экрана трат.
   if (choice.purchase && availability.purchase) applyPurchase(g, getOffer(choice.purchase.offer)!, availability.purchase, target, event.title)
@@ -282,11 +352,11 @@ export function decide(state: GameState, choiceIndex: number, target?: PurchaseT
     const { check } = choice
     if (random(g) < checkChance(g, check)) {
       applyStoryMoney(g, check.success.money, event)
-      applyEffects(g, check.success)
+      applyEffects(g, check.success, event.id)
       addLog(g, 'life', 'Получилось', resolveText(g, successText))
     } else {
       applyStoryMoney(g, check.failure.money, event)
-      applyEffects(g, check.failure)
+      applyEffects(g, check.failure, event.id)
       addLog(g, 'life', 'Неудача', resolveText(g, failureText))
     }
   }
@@ -356,7 +426,7 @@ function expireMoment(g: GameState) {
 export function canTakeMoment(state: GameState): boolean {
   const def = getMoment(state)
   return !!def && !state.stopped && !state.pending && canSpendPersonalTime(state, PERSONAL_TIME.moment).available
-    && !storyMoneyReason(state, [def.accept.effects.money], false)
+    && !storyMoneyReason(state, [def.accept.effects.money], false) && peopleEffectsOk(state, def.accept.effects)
 }
 
 /** Принять момент: стоит единицу личного времени. Истечение и отказ (`skipMoment`) бесплатны. */
@@ -404,7 +474,10 @@ const JOB_GENITIVE_PLURAL: Partial<Record<Job, string>> = { Техник: 'те�
 const JOB_PLURAL: Partial<Record<Job, string>> = { Техник: 'техники', Медик: 'медики', Агроном: 'агрономы', Координатор: 'координаторы' }
 
 /** Флаг-возраст последней семейной поездки с этим человеком: `familyTripFriend`, `familyTripParent2`… */
-export const familyTripFlag = (personId: string) => `familyTrip${personId.charAt(0).toUpperCase()}${personId.slice(1)}`
+export const familyTripFlag = (personId: string) => {
+  const slot = personId.startsWith('story-') && STORY_PERSON_SLOTS.includes(personId.slice(6)) ? personId.slice(6) : personId
+  return `familyTrip${slot.charAt(0).toUpperCase()}${slot.slice(1)}`
+}
 
 /**
  * Единственное место, где покупка меняет состояние: экран трат и сюжетное решение (`story` — его название).
@@ -577,7 +650,7 @@ export function cancelService(state: GameState, serviceId: string): GameState {
 export function skipMoment(state: GameState): GameState {
   const def = getMoment(state)
   if (!def || state.stopped) return state
-  if (storyMoneyReason(state, [def.skip.effects?.money], false)) return state
+  if (storyMoneyReason(state, [def.skip.effects?.money], false) || def.skip.effects && !peopleEffectsOk(state, def.skip.effects)) return state
   const g = structuredClone(state)
   applyStoryMoney(g, def.skip.effects?.money, def)
   if (def.skip.effects) applyEffects(g, def.skip.effects)
@@ -695,8 +768,11 @@ function peopleTick(g: GameState) {
     if (person.age < 65) continue
     const probability = Math.min(.58, Math.pow((person.age - 62) / 42, 2.2) * .24)
     if (random(g) < probability || person.age > 103) {
+      const wasPartner = g.relationships?.partnerId === person.id
+      if (wasPartner) endRelationship(g)
+      if (!g.relationships && person.id === 'friend' && g.flags.livingTogether === true && g.flags.lovePath !== 'confessed') endRelationship(g)
       person.alive = false
-      if (person.id === 'friend') g.flags.livingTogether = false
+      if (!g.relationships && person.id === 'friend') g.flags.livingTogether = false
       addLog(g, 'memory', `Уход: ${person.name}`, `В возрасте ${person.age} лет ${person.name} уходит из жизни. На корабле продолжают работать двигатели, но привычный мир становится немного другим.`)
       g.memories.push(resolveText(g, `Пережил{{hero:|а}} уход человека, с которым была связана значительная часть жизни: ${person.name}.`))
       g.stats.morale = clamp(g.stats.morale - Math.min(13, Math.round(person.bond / 8)))

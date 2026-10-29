@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { applyTimeRules } from '../../../scripts/personal-time-rules'
 import { annualObligationsOf, projectYear, projectYears, reserveYearsOf, settleYear } from '../economy'
 import { canChoose, canSetLoad, purchase } from '../engine'
 import { availableSectorOptions, canBuy, familyTripParticipants, retrainOptions } from '../offers'
@@ -11,6 +12,12 @@ import { moneyWorker } from './t6-fixtures'
 
 const worker = (balance = 5000, age = 35) => { const g = moneyWorker(balance, age); g.pending = null; return g }
 
+
+// The T8/T8a/T5 audit tooling reproduces pre-T9 rules: explicit personal-time compatibility mode
+// (3 units every year, the course costs 1). T9 behaviour is covered by personal-time-t9.test.ts.
+let restoreTimeRules = () => {}
+beforeAll(() => { restoreTimeRules = applyTimeRules('T8') })
+afterAll(() => restoreTimeRules())
 describe('T8 protocol and real domain actions', () => {
   it('fills targets before querying the catalogue, with deterministic legal professions/sectors/people', () => {
     const g = worker(), before = structuredClone(g)

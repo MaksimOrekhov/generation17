@@ -1,8 +1,15 @@
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { applyTimeRules } from '../../../scripts/personal-time-rules'
 import { assertProfessionStoriesExist, ownRecoveryYears, pairedParityAge, pairedRetraining, summarizeRetraining } from '../../../scripts/economy-career-t5-core'
 import { playLife, retrainTargetFor } from '../../../scripts/economy-pilot-core'
 import { createGame } from '../engine'
 
+
+// The T8/T8a/T5 audit tooling reproduces pre-T9 rules: explicit personal-time compatibility mode
+// (3 units every year, the course costs 1). T9 behaviour is covered by personal-time-t9.test.ts.
+let restoreTimeRules = () => {}
+beforeAll(() => { restoreTimeRules = applyTimeRules('T8') })
+afterAll(() => restoreTimeRules())
 describe('T5 career audit runner', () => {
   it('Switcher: deterministic, one paid retraining at 35, accounting and invariants clean; control untouched', () => {
     assertProfessionStoriesExist()

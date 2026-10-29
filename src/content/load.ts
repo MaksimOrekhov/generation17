@@ -50,6 +50,7 @@ export function compileRequires(r?: Requires): (g: GameState) => boolean {
       (range.min === undefined || value >= range.min) && (range.max === undefined || value <= range.max)
     if (r.money && !inRange(g.economy.balance, r.money)) return false
     if (r.work && !r.work.includes(g.economy.work.kind)) return false
+    if (r.regime && !(r.regime as string[]).includes(g.timeYear?.basis)) return false
     if (r.grade && !inRange(g.economy.work.grade, r.grade)) return false
     if (r.housing && !inRange(g.economy.housing, r.housing)) return false
     const owns = (id: string) => Object.hasOwn(g.economy.owned, id) || Object.hasOwn(g.economy.services, id)

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
+import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
 import { spotLabels } from '../../ui/format'
@@ -33,6 +34,8 @@ const model = computed<SceneModel>(() => {
 const moment = computed(() => store.currentMoment)
 const latest = computed(() => g.value.history[0])
 const place = computed(() => `Каюта ${g.value.birth.deck}`)
+const time = computed(() => personalTimeOf(g.value))
+const timeTitle = computed(() => `Личное время: ${time.value.left} из ${time.value.limit}. ${basisText(time.value)}. Это дела сверх обычных обязанностей; новый год приносит новое время, остаток не копится.`)
 </script>
 
 <template>
@@ -41,9 +44,9 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
     <SceneCanvas :model="model" />
     <div class="scene__hud">
       <span class="scene__tag">{{ place }}</span>
-      <span class="scene__tag scene__attn" title="Внимание: сколько моментов можно принять в этом году">
-        внимание
-        <i v-for="n in 3" :key="n" :class="{ used: n > g.attention }" />
+      <span class="scene__tag scene__attn" :title="timeTitle" :aria-label="timeTitle" data-test="time-hud">
+        личное время
+        <i v-for="n in time.limit" :key="n" :class="{ used: n > time.left }" />
       </span>
     </div>
     <Transition name="moment">
@@ -55,7 +58,8 @@ const place = computed(() => `Каюта ${g.value.birth.deck}`)
         :where="spotLabels[moment.spot]"
         :accept-label="resolveText(g, moment.accept.label)"
         :skip-label="resolveText(g, moment.skip.label)"
-        :attention="g.attention"
+        :time-left="time.left"
+        :cost="PERSONAL_TIME.moment"
         :left="store.momentLeft"
         @accept="store.acceptMoment()"
         @skip="store.dismissMoment()"

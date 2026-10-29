@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { applyTimeRules } from '../../../scripts/personal-time-rules'
 import { beat, createGame, decide, tick } from '../engine'
 import { obligationsOf, projectYear, settleYear } from '../economy'
 import { residenceOf } from '../birth'
@@ -19,6 +20,12 @@ function worker(age = 30, balance = 2000): GameState {
   return g
 }
 
+
+// The T8/T8a/T5 audit tooling reproduces pre-T9 rules: explicit personal-time compatibility mode
+// (3 units every year, the course costs 1). T9 behaviour is covered by personal-time-t9.test.ts.
+let restoreTimeRules = () => {}
+beforeAll(() => { restoreTimeRules = applyTimeRules('T8') })
+afterAll(() => restoreTimeRules())
 describe('T8a policy boundaries and accounting', () => {
   it('uses pure event/age hashes and deterministic policies/targets without consuming RNG', () => {
     const g = worker(), before = structuredClone(g)
@@ -40,7 +47,7 @@ describe('T8a policy boundaries and accounting', () => {
     expect(r.purchases.reduce((n, p) => n + p.attention, 0)).toBeLessThanOrEqual(1)
     expect(r.game.attention).toBeGreaterThanOrEqual(0)
     expect(r.states.every(s => s.game.attention >= 0)).toBe(true)
-    expect(r.attempts.some(a => a.result.includes('внимания'))).toBe(true)
+    expect(r.attempts.some(a => a.result.includes('личного времени'))).toBe(true)
   })
 
   it('makes no economic action while pending or after death', () => {

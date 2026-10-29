@@ -224,7 +224,7 @@ export const useGameStore = defineStore('game', () => {
     return true
   }
 
-  /** Смена нагрузки целиком на доменном слое: без списаний, внимания и RNG. `false` — ничего не изменилось. */
+  /** Смена нагрузки целиком на доменном слое: без списаний, личного времени и RNG. `false` — ничего не изменилось. */
   function changeLoad(nextLoad: number): boolean {
     if (!started.value) return false
     const next = setLoad(game.value, nextLoad)

@@ -143,7 +143,7 @@ function changeLoad(next: 1 | 0.6) {
   notes.value = {
     ...notes.value,
     load: ok
-      ? { ok, text: next === 0.6 ? 'Теперь 0,6 ставки. Кредиты и внимание не списаны; изменение учтётся в следующем году.' : 'Возврат на полную ставку. Кредиты и внимание не списаны.' }
+      ? { ok, text: next === 0.6 ? 'Решено: 0,6 ставки. Ничего не списано. Новая нагрузка и дополнительная единица личного времени начнут действовать со следующего игрового года.' : 'Решено: полная ставка со следующего игрового года. Ничего не списано; личное время этого года остаётся как есть.' }
       : { ok, text: `Не удалось: ${reason ?? 'изменение недоступно.'}` }
   }
 }
@@ -161,9 +161,12 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
         </div>
         <dl class="spend__stats">
           <div><dt>Баланс</dt><dd class="spend__money" data-test="balance">{{ view.balanceText }}</dd></div>
-          <div><dt>Внимание года</dt><dd data-test="attention">{{ view.attention }}</dd></div>
+          <div><dt>Личное время</dt><dd class="spend__time" data-test="attention" :aria-label="view.time.counter">{{ view.time.left }}/{{ view.time.limit }}</dd></div>
           <div v-if="forecast"><dt>Прогноз за год</dt><dd :class="`spend__fc--${forecast.direction}`" data-test="forecast">{{ forecast.deltaText }} → {{ groupDigits(forecast.after) }}</dd></div>
         </dl>
+        <p class="spend__basis" data-test="time-basis">
+          {{ view.time.basisText }}<template v-if="view.time.emptyText"> · {{ view.time.emptyText }}</template><template v-if="view.time.next"> · <span data-test="time-next">{{ view.time.next.text }}</span></template>
+        </p>
         <div class="spend__tabs" role="tablist" aria-label="Разделы">
           <button
             v-for="t in tabs" :id="`spend-tab-${t.id}`" :key="t.id" type="button" role="tab"
@@ -299,6 +302,8 @@ const buttonText = (o: OfferView) => confirming.value !== null && confirming.val
 .spend__stats dt { font: 500 11px/1.3 var(--font-mono); letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
 .spend__stats dd { margin: 0; font: 600 16px/1.3 var(--font-mono); color: var(--text); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .spend__money { color: var(--amber); font-size: 20px !important; }
+.spend__time { color: var(--cool) !important; }
+.spend__basis { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--muted); overflow-wrap: anywhere; }
 .spend__fc--up { color: var(--good) !important; }
 .spend__fc--down { color: var(--bad) !important; }
 .spend__tabs { display: flex; gap: 2px; overflow-x: auto; }

@@ -1,5 +1,6 @@
 import type { ChoiceDef, Effects, Job, SectorId, SpotId, Stat } from '../domain/types'
 import type { WorkKind } from '../domain/economy'
+import type { TimeRegime } from '../domain/personalTime'
 
 type FlagValue = string | number | boolean
 
@@ -7,6 +8,11 @@ type FlagValue = string | number | boolean
 export interface Requires {
   money?: { min?: number; max?: number }
   work?: WorkKind[]
+  /**
+   * Рабочий режим, который уже действует в этом году (основание годового личного времени, T9):
+   * `reduced` — 0,6 ставки после годового расчёта, а не сразу после нажатия; `retired`, `mentor` и т. д.
+   */
+  regime?: TimeRegime[]
   grade?: { min?: number; max?: number }
   housing?: { min?: number; max?: number }
   owns?: string[]

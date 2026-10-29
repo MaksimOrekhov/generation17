@@ -114,7 +114,8 @@ describe('T7 story purchases use the real catalogue', () => {
     expect(next.skills.engineering).toBe(skill + 3)
     expect(next.economy.work.courses).toBe(g.economy.work.courses + 1)
     expect(next.economy.lastBought['course-pro']).toBe(35)
-    expect(next.attention).toBe(2)
+    // Тот же каталожный курс: две единицы личного времени, как и в окне трат (T9).
+    expect(next.attention).toBe(1)
     expect(next.economy.totals.spent - g.economy.totals.spent).toBe(300)
     expect(newTxns(g, next)).toEqual([expect.objectContaining({ kind: 'purchase', ref: 'course-pro', amount: 300 })])
     expect(next.rng).toBe(g.rng)
@@ -137,7 +138,7 @@ describe('T7 story purchases use the real catalogue', () => {
     expect(canChoose(cooldown, 0)).toMatchObject({ available: false, reason: 'Следующий курс доступен через 2 года.' })
     expect(decide(cooldown, 0)).toBe(cooldown)
     const tired = windowGame(); tired.attention = 0
-    expect(canChoose(tired, 0).reason).toBe('Не хватает 1 единицы внимания.')
+    expect(canChoose(tired, 0).reason).toBe('Не хватает личного времени: в этом году оно закончилось.')
     const between = windowGame(); between.economy.work.kind = 'between'
     expect(canChoose(between, 0).reason).toBe('Для покупки курса нужно работать.')
     const older = withPending(t7Worker(1000, 59), 'window-offer')

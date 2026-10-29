@@ -22,7 +22,7 @@ const moneyText = (index: number) => {
   if (bought) {
     parts.push(signed(-bought.oneTimeCost))
     if (bought.regularCost !== undefined && bought.oneTimeCost < bought.regularCost) parts.push(`вместо ${formatCredits(bought.regularCost)}.`)
-    if (bought.attention) parts.push(`внимание −${bought.attention}`)
+    if (bought.attention) parts.push(`личное время −${bought.attention} ед.`)
   }
   if (choice.effects.money !== undefined) parts.push(signed(choice.effects.money))
   if (choice.check?.success.money) parts.push(`При успехе: ${signed(choice.check.success.money)}`)

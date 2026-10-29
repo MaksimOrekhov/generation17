@@ -198,7 +198,7 @@ describe('покупки через хранилище', () => {
     const skill = g.skills.engineering
     expect(store.buy('course-pro')).toBe(true)
     expect(store.game.economy.balance).toBe(4_650)
-    expect(store.game.attention).toBe(2)
+    expect(store.game.attention).toBe(1)
     expect(store.game.skills.engineering).toBe(skill + 3)
     expect(store.game.economy.work.courses).toBe(1)
     expect(spendView(store.game).balanceText).toBe(workFinanceView(store.game).savings!.text)

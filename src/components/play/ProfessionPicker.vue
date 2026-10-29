@@ -20,7 +20,7 @@ defineEmits<{ select: [job: Job] }>()
     </div>
 
     <section v-if="forecast" class="prof__fc" aria-label="Сравнение до и после переобучения" data-test="retrain-forecast">
-      <p v-if="forecast.hypothetical" class="prof__hyp">Пока не хватает средств или внимания: сравнение показано так, будто взнос уже оплачен.</p>
+      <p v-if="forecast.hypothetical" class="prof__hyp">Пока не хватает средств или личного времени: сравнение показано так, будто взнос уже оплачен.</p>
       <table class="prof__table">
         <thead><tr><th scope="col"><span class="sr">Показатель</span></th><th scope="col">Сейчас</th><th scope="col">После перехода</th></tr></thead>
         <tbody>

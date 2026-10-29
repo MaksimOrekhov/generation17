@@ -75,7 +75,7 @@ describe('экскурсия в дальний сектор', () => {
     expect(canBuy(poor, 'sector-trip', { sectorId: target.id }).reason).toBe('Не хватает 1 кр.')
     poor.economy.balance = 240
     poor.attention = 0
-    expect(canBuy(poor, 'sector-trip', { sectorId: target.id }).reason).toMatch(/внимания/)
+    expect(canBuy(poor, 'sector-trip', { sectorId: target.id }).reason).toMatch(/личного времени/)
   })
 
   it('исключает текущую резиденцию, в том числе после переезда', () => {
@@ -209,7 +209,7 @@ describe('семейная поездка', () => {
     expect(canBuy(g, 'family-trip', participants).reason).toBe('Не хватает 1 кр.')
     g.economy.balance = 320
     g.attention = 0
-    expect(canBuy(g, 'family-trip', participants).reason).toMatch(/внимания/)
+    expect(canBuy(g, 'family-trip', participants).reason).toMatch(/личного времени/)
   })
 
   it('стоит 320, повышает выбранные связи на 2, пишет память, флаг и журнал', () => {
@@ -491,24 +491,29 @@ describe('сквозные сценарии T3b', () => {
     const target = availableSectorOptions(g)[0]!
     const course = purchase(g, 'course-pro')
     const sector = purchase(course, 'sector-trip', { sectorId: target.id })
-    const family = purchase(sector, 'family-trip', { participantIds: ['parent', 'parent2'] })
-    expect(family.economy.balance).toBe(4_090)
-    expect(family.attention).toBe(0)
-    expect(family.economy.work.courses).toBe(1)
-    expect(family.stats.knowledge).toBe(11)
-    expect(family.people.find(person => person.id === 'parent')?.bond).toBe(72)
-    expect(family.economy.totals.spent).toBe(910)
-    expect(family.economy.ledger.filter(txn => txn.kind === 'purchase').map(txn => txn.amount)).toEqual([350, 240, 320])
+    // T9: курс (2) и экскурсия (1) занимают всё личное время года — поездка ждёт следующего.
+    expect(sector.attention).toBe(0)
+    const tripTarget = { participantIds: ['parent', 'parent2'] }
+    expect(canBuy(sector, 'family-trip', tripTarget).reason).toMatch(/личного времени/)
+    expect(purchase(sector, 'family-trip', tripTarget)).toBe(sector)
+    expect(sector.economy.balance).toBe(4_410)
+    expect(sector.economy.work.courses).toBe(1)
+    expect(sector.stats.knowledge).toBe(11)
     checkClean(course)
     checkClean(sector)
-    checkClean(family)
 
-    const loaded = roundTrip(family)
+    const loaded = roundTrip(sector)
     loaded.age = 31
     settleYear(loaded)
-    expect(loaded.economy.years.at(-1)).toMatchObject({ wage: 1_100, bills: 350, balance: 4_840 })
-    expect(loaded.economy.totals.spent).toBe(1_260)
-    checkClean(loaded)
+    expect(loaded.economy.years.at(-1)).toMatchObject({ wage: 1_100, bills: 350, balance: 5_160 })
+    loaded.attention = 3
+    const family = purchase(loaded, 'family-trip', tripTarget)
+    expect(family.economy.balance).toBe(4_840)
+    expect(family.attention).toBe(2)
+    expect(family.people.find(person => person.id === 'parent')?.bond).toBe(72)
+    expect(family.economy.totals.spent).toBe(1_260)
+    expect(family.economy.ledger.filter(txn => txn.kind === 'purchase').map(txn => txn.amount)).toEqual([350, 240, 320])
+    checkClean(family)
   })
 
   it('отказывает повторной покупке посещённого сектора без списаний', () => {

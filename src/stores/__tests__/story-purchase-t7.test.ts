@@ -54,8 +54,8 @@ describe('T7 story purchases in Pinia and the decision modal', () => {
   it('renders the discounted price, attention, the picker and the missing-participants reason', async () => {
     start()
     const html = await render()
-    expect(html).toContain('−300 кр. · вместо 350 кр. · внимание −1')
-    expect(html).toContain('−320 кр. · внимание −1')
+    expect(html).toContain('−300 кр. · вместо 350 кр. · личное время −2 ед.')
+    expect(html).toContain('−320 кр. · личное время −1 ед.')
     expect(html).toContain('Для поездки нужно выбрать не менее двух участников.')
     expect(html).toContain('Кого позвать: двое или трое близких.')
     expect(html).toMatch(/<button class="choice"(?![^>]*disabled)[^>]*>[\s\S]*?Записаться на сокращённый курс/)

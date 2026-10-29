@@ -121,7 +121,7 @@ describe('экскурсии в интерфейсе', () => {
     expect(offer(g, 'sector-trip').reason).toBe('Недостаточно средств: не хватает 40 кр.')
     const noAttention = workerAt(30)
     noAttention.attention = 0
-    expect(offer(noAttention, 'sector-trip').reason).toMatch(/внимания/)
+    expect(offer(noAttention, 'sector-trip').reason).toMatch(/личного времени/)
   })
 
   it('подтверждение привязано к сектору и стоимости', () => {

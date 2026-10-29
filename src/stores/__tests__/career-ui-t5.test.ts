@@ -46,7 +46,7 @@ describe('T5: карточка переобучения', () => {
     expect(o).toMatchObject({ kind: 'profession', stage: 'needs-choice', available: false, hint: 'Выберите новую специальность', target: null, retrain: null })
     expect(o.jobOptions.map(j => j.job)).toEqual(['Медик', 'Агроном', 'Координатор'])
     expect(plain(o.oneTimeText)).toBe('500 кр разово')
-    expect(o.attentionText).toBe('Внимание: 1')
+    expect(o.attentionText).toBe('Личное время: 1 ед.')
     expect(o.consequences.join(' ')).toMatch(/60% тарифа/)
     expect(o.consequences.join(' ')).toMatch(/курсы \(2\) обнуляются/)
     expect(o.consequences.join(' ')).toMatch(/назначение завершится/i)
@@ -85,7 +85,7 @@ describe('T5: карточка переобучения', () => {
     expect(rows['Пройденные курсы']).toMatchObject({ now: '2', after: '0' })
     expect(rows['Назначение']).toMatchObject({ now: 'действует (+10%)', after: 'завершено' })
     expect(rows['Навык: медицина']).toMatchObject({ now: '12', after: '21' })
-    expect(plain(f.costText)).toBe('Сразу: −500 кр и 1 внимание года.')
+    expect(plain(f.costText)).toBe('Сразу: −500 кр и 1 ед. личного времени.')
     expect(f.timeline[0]).toBe('Стажировка — ближайший годовой расчёт, в 36 лет: оплата 60% тарифа.')
     expect(f.timeline[1]).toBe('С 37 лет — обычная работа: медик, II разряд.')
     expect(plain(f.payGapText)).toBe(`Год стажировки принесёт на ${(now.wage - 780).toLocaleString('ru-RU').replace(/\s/g, ' ')} кр меньше нынешнего прогноза.`)
@@ -103,7 +103,7 @@ describe('T5: карточка переобучения', () => {
     expect(o).toMatchObject({ stage: 'invalid', available: false, reason: 'Недостаточно средств: не хватает 300 кр.' })
     expect(o.retrain?.hypothetical).toBe(true)
     const tired = technician(); tired.attention = 0
-    expect(retrainCard(tired, 'Медик').reason).toBe('Не хватает 1 единицы внимания.')
+    expect(retrainCard(tired, 'Медик').reason).toBe('Не хватает личного времени: в этом году оно закончилось.')
   })
 
   it('при неснятой паузе выбор не показывается, причина называет год', () => {

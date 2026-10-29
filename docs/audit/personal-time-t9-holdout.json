@@ -1,0 +1,5569 @@
+{
+  "schemaVersion": 1,
+  "task": "T9 personal time",
+  "seeds": {
+    "first": 1002,
+    "last": 1101,
+    "count": 100,
+    "cohort": "holdout"
+  },
+  "holdout": true,
+  "rules": {
+    "T8": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 3,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 3,
+        "mentor": 3
+      },
+      "costs": {
+        "course-pro": 1,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0
+    },
+    "T9": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 4,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 4,
+        "mentor": 4
+      },
+      "costs": {
+        "course-pro": 2,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0.2
+    },
+    "T9-nofree": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 4,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 4,
+        "mentor": 4
+      },
+      "costs": {
+        "course-pro": 2,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0
+    },
+    "T9-course1": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 4,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 4,
+        "mentor": 4
+      },
+      "costs": {
+        "course-pro": 1,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0.2
+    },
+    "T8-course2": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 3,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 3,
+        "mentor": 3
+      },
+      "costs": {
+        "course-pro": 2,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0
+    },
+    "T9-retired3": {
+      "allowance": {
+        "childhood": 3,
+        "study": 3,
+        "full": 3,
+        "reduced": 4,
+        "trainee": 3,
+        "transition": 3,
+        "retired": 3,
+        "mentor": 3
+      },
+      "costs": {
+        "course-pro": 2,
+        "retrain": 1,
+        "own-cabin": 0,
+        "dome-pass": 0,
+        "sector-trip": 1,
+        "family-trip": 1
+      },
+      "moment": 1,
+      "freeTimeChance": 0.2
+    }
+  },
+  "modes": {
+    "A": "T8 rules (3 every year, course 1), T8 catalogue",
+    "N": "T9 allowances and costs without the free-evening roll, T8 catalogue (resource only)",
+    "B": "Full T9 rules incl. free-evening roll, T8 catalogue",
+    "C": "T9 rules and T9 free-time moments (shipped)",
+    "AG": "A with greedy moments",
+    "CG": "C with greedy moments"
+  },
+  "methodology": {
+    "loop": "Resolve stories with the T8 policy choice (economy-t8a hash, first available fallback); focus by policy; three real beats; then one shop window (financialDecisions) before tick. Same as the T8 audit.",
+    "moments": "planned: accept a moment only if it does not change the purchases the policy would make this year (financialDecisions before/after the real takeMoment on a copy); greedy: accept every affordable moment before the shop.",
+    "accounting": "Personal time spent per year = year limit − remainder before tick (moments, catalogue purchases and story purchases). Adult years are 18+.",
+    "windows": "At the shop window each eligible offer is classified by canBuy: available, blocked only by personal time, blocked by money; other refusals (age, cooldown, conditions, targets) are excluded.",
+    "limits": [
+      "Bots accept every affordable moment their plan allows; humans are pickier.",
+      "Moment offers are rolled by the engine (≤ 1 per beat, 3 beats a year); the audit never forces offers.",
+      "Mean lifetime values include infant deaths; checkpoint rows report survivors."
+    ]
+  },
+  "groups": {
+    "A/Careerist": {
+      "lives": 100,
+      "deathAge": 80.72,
+      "time": {
+        "grantedPerLife": 189.06,
+        "spentPerLife": 67.91,
+        "unusedPct": 64.1,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.08,
+        "fullyUsedAdultYearsPct": 6.5,
+        "onMomentsPerLife": 57.04,
+        "onPurchasesPerLife": 10.87
+      },
+      "moments": {
+        "offeredPerLife": 73.32,
+        "acceptedPerLife": 73.07,
+        "adultAcceptedPerLife": 57.04,
+        "uniqueAcceptedPerLife": 39.77,
+        "declinedForPlanPerLife": 0.25,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 2,
+        "familyTripsPerLife": 0.13,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 3799.6
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1072,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5430,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6302,
+          "availablePct": 97.4,
+          "timeBlockedPct": 2.6,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.4,
+          "timeBlockedPct": 2.6,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 27,
+        "grade4Lives": 98,
+        "grade4MedianAge": 35,
+        "lifetimeIncome": 110002.18,
+        "finalBalance": 85422.38,
+        "reducedYears": 0,
+        "retiredYears": 11.94
+      },
+      "narrative": {
+        "storyletsPerLife": 25.23,
+        "memoriesPerLife": 19.73,
+        "followupsPerLife": 4.46,
+        "uniqueLivedEventsPerLife": 65
+      },
+      "at60": {
+        "alive": 98,
+        "health": 69.11,
+        "stress": 96.18,
+        "morale": 58.52,
+        "bonds": 43.33,
+        "meanBond": 65.28,
+        "closePeople": 3.05,
+        "balance": 59683.64
+      },
+      "at80": {
+        "alive": 60,
+        "health": 32.53,
+        "stress": 97.92,
+        "morale": 59.85,
+        "bonds": 31.85,
+        "meanBond": 70.16,
+        "closePeople": 1.63,
+        "balance": 86669.85
+      },
+      "byBasis": {
+        "full": {
+          "years": 5100,
+          "limit": 3,
+          "spentPerYear": 1.12,
+          "unusedPct": 62.5,
+          "momentsPerYear": 0.91,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0.21,
+          "fullyUsedYearsPct": 7.4,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 780,
+          "limit": 3,
+          "spentPerYear": 0.88,
+          "unusedPct": 70.7,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 2.6,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 414,
+          "limit": 3,
+          "spentPerYear": 0.89,
+          "unusedPct": 70.5,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.89,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 2.4,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43388,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Moderate": {
+      "lives": 100,
+      "deathAge": 83.32,
+      "time": {
+        "grantedPerLife": 196.86,
+        "spentPerLife": 69.87,
+        "unusedPct": 64.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.06,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.89,
+        "onPurchasesPerLife": 10.98
+      },
+      "moments": {
+        "offeredPerLife": 75.23,
+        "acceptedPerLife": 74.92,
+        "adultAcceptedPerLife": 58.89,
+        "uniqueAcceptedPerLife": 44.24,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.86,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3593.1
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3538,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 100147.13,
+        "finalBalance": 55760.03,
+        "reducedYears": 0,
+        "retiredYears": 13.24
+      },
+      "narrative": {
+        "storyletsPerLife": 26.05,
+        "memoriesPerLife": 29.03,
+        "followupsPerLife": 4.36,
+        "uniqueLivedEventsPerLife": 70.29
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.43,
+        "stress": 21.61,
+        "morale": 64.14,
+        "bonds": 42.71,
+        "meanBond": 66.32,
+        "closePeople": 2.85,
+        "balance": 36383.69
+      },
+      "at80": {
+        "alive": 71,
+        "health": 48.37,
+        "stress": 21.48,
+        "morale": 65.79,
+        "bonds": 29.99,
+        "meanBond": 77.06,
+        "closePeople": 1.66,
+        "balance": 55139.99
+      },
+      "byBasis": {
+        "full": {
+          "years": 5230,
+          "limit": 3,
+          "spentPerYear": 1.1,
+          "unusedPct": 63.3,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.2,
+          "fullyUsedYearsPct": 6.3,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 945,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.2,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 2.6,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 379,
+          "limit": 3,
+          "spentPerYear": 0.93,
+          "unusedPct": 69,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 4.2,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44801,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Family": {
+      "lives": 100,
+      "deathAge": 81.74,
+      "time": {
+        "grantedPerLife": 192.12,
+        "spentPerLife": 68.8,
+        "unusedPct": 64.2,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.07,
+        "fullyUsedAdultYearsPct": 6.2,
+        "onMomentsPerLife": 56.31,
+        "onPurchasesPerLife": 12.49
+      },
+      "moments": {
+        "offeredPerLife": 72.77,
+        "acceptedPerLife": 72.34,
+        "adultAcceptedPerLife": 56.31,
+        "uniqueAcceptedPerLife": 41.33,
+        "declinedForPlanPerLife": 0.43,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 1.23,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 24,
+        "storyCourses": 18,
+        "familyTripsPerLife": 11.26,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 4416.7
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3615,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1125,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6404,
+          "availablePct": 98,
+          "timeBlockedPct": 2,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3318,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 60906.26,
+        "finalBalance": 16827.96,
+        "reducedYears": 29.09,
+        "retiredYears": 12.41
+      },
+      "narrative": {
+        "storyletsPerLife": 25.37,
+        "memoriesPerLife": 30.84,
+        "followupsPerLife": 4.25,
+        "uniqueLivedEventsPerLife": 66.7
+      },
+      "at60": {
+        "alive": 95,
+        "health": 76.22,
+        "stress": 3.77,
+        "morale": 76.97,
+        "bonds": 99.76,
+        "meanBond": 68.63,
+        "closePeople": 2.85,
+        "balance": 14514.85
+      },
+      "at80": {
+        "alive": 68,
+        "health": 56.57,
+        "stress": 2.11,
+        "morale": 78.1,
+        "bonds": 100,
+        "meanBond": 82.26,
+        "closePeople": 1.69,
+        "balance": 17236.62
+      },
+      "byBasis": {
+        "full": {
+          "years": 2247,
+          "limit": 3,
+          "spentPerYear": 1.17,
+          "unusedPct": 61.1,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.27,
+          "fullyUsedYearsPct": 8,
+          "declinedForPlanPerYear": 0.01
+        },
+        "reduced": {
+          "years": 2909,
+          "limit": 3,
+          "spentPerYear": 1.06,
+          "unusedPct": 64.7,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.89,
+          "purchaseTimePerYear": 0.18,
+          "fullyUsedYearsPct": 5.8,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 7,
+          "limit": 3,
+          "spentPerYear": 0.43,
+          "unusedPct": 85.7,
+          "momentsPerYear": 0.29,
+          "offeredPerYear": 0.29,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 804,
+          "limit": 3,
+          "spentPerYear": 0.94,
+          "unusedPct": 68.8,
+          "momentsPerYear": 0.85,
+          "offeredPerYear": 0.85,
+          "purchaseTimePerYear": 0.09,
+          "fullyUsedYearsPct": 3.5,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 437,
+          "limit": 3,
+          "spentPerYear": 0.97,
+          "unusedPct": 67.8,
+          "momentsPerYear": 0.82,
+          "offeredPerYear": 0.82,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 4.6,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44189,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/TimeBuyer": {
+      "lives": 100,
+      "deathAge": 83.22,
+      "time": {
+        "grantedPerLife": 196.56,
+        "spentPerLife": 69.74,
+        "unusedPct": 64.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.06,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.75,
+        "onPurchasesPerLife": 10.99
+      },
+      "moments": {
+        "offeredPerLife": 75.09,
+        "acceptedPerLife": 74.78,
+        "adultAcceptedPerLife": 58.75,
+        "uniqueAcceptedPerLife": 44.15,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3544,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 86,
+        "grade3MedianAge": 39,
+        "grade4Lives": 9,
+        "grade4MedianAge": 64,
+        "lifetimeIncome": 72197,
+        "finalBalance": 27876.9,
+        "reducedYears": 29.84,
+        "retiredYears": 13.14
+      },
+      "narrative": {
+        "storyletsPerLife": 26.02,
+        "memoriesPerLife": 28.99,
+        "followupsPerLife": 4.32,
+        "uniqueLivedEventsPerLife": 70.17
+      },
+      "at60": {
+        "alive": 96,
+        "health": 83.02,
+        "stress": 4.1,
+        "morale": 76.28,
+        "bonds": 74.13,
+        "meanBond": 66.4,
+        "closePeople": 2.86,
+        "balance": 20808.86
+      },
+      "at80": {
+        "alive": 71,
+        "health": 72.5,
+        "stress": 1.57,
+        "morale": 78.14,
+        "bonds": 78.05,
+        "meanBond": 77.2,
+        "closePeople": 1.68,
+        "balance": 26942.8
+      },
+      "byBasis": {
+        "full": {
+          "years": 2246,
+          "limit": 3,
+          "spentPerYear": 1.17,
+          "unusedPct": 61,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.27,
+          "fullyUsedYearsPct": 7.2,
+          "declinedForPlanPerYear": 0.01
+        },
+        "reduced": {
+          "years": 2984,
+          "limit": 3,
+          "spentPerYear": 1.05,
+          "unusedPct": 65.1,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 5.8,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 935,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.2,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 2.7,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 379,
+          "limit": 3,
+          "spentPerYear": 0.93,
+          "unusedPct": 69,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 4.2,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 47774,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Spender": {
+      "lives": 100,
+      "deathAge": 80.66,
+      "time": {
+        "grantedPerLife": 188.88,
+        "spentPerLife": 80.33,
+        "unusedPct": 57.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.28,
+        "fullyUsedAdultYearsPct": 12.2,
+        "onMomentsPerLife": 54.5,
+        "onPurchasesPerLife": 25.83
+      },
+      "moments": {
+        "offeredPerLife": 72.69,
+        "acceptedPerLife": 70.53,
+        "adultAcceptedPerLife": 54.5,
+        "uniqueAcceptedPerLife": 42.7,
+        "declinedForPlanPerLife": 2.16,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 1.96,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 1.96,
+        "livesWithTimeBlockedPurchase": 98
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 10,
+        "familyTripsPerLife": 11.17,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 8598.8
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1064,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1112,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 199,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.9,
+          "timeBlockedPct": 2.1,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 34,
+        "grade4Lives": 98,
+        "grade4MedianAge": 42,
+        "lifetimeIncome": 99480.09,
+        "finalBalance": 48652.19,
+        "reducedYears": 0,
+        "retiredYears": 12.76
+      },
+      "narrative": {
+        "storyletsPerLife": 25.18,
+        "memoriesPerLife": 34.25,
+        "followupsPerLife": 3.92,
+        "uniqueLivedEventsPerLife": 67.88
+      },
+      "at60": {
+        "alive": 95,
+        "health": 76.24,
+        "stress": 20,
+        "morale": 64.8,
+        "bonds": 42.26,
+        "meanBond": 69.51,
+        "closePeople": 3,
+        "balance": 32728.73
+      },
+      "at80": {
+        "alive": 63,
+        "health": 49.96,
+        "stress": 19.36,
+        "morale": 66.28,
+        "bonds": 32.16,
+        "meanBond": 82.99,
+        "closePeople": 1.67,
+        "balance": 48932.19
+      },
+      "byBasis": {
+        "full": {
+          "years": 5012,
+          "limit": 3,
+          "spentPerYear": 1.35,
+          "unusedPct": 54.9,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.49,
+          "fullyUsedYearsPct": 14.3,
+          "declinedForPlanPerYear": 0.04
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 1,
+          "unusedPct": 66.7,
+          "momentsPerYear": 0.75,
+          "offeredPerYear": 0.75,
+          "purchaseTimePerYear": 0.25,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 877,
+          "limit": 3,
+          "spentPerYear": 0.96,
+          "unusedPct": 68,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.08,
+          "fullyUsedYearsPct": 3.4,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 399,
+          "limit": 3,
+          "spentPerYear": 0.99,
+          "unusedPct": 66.9,
+          "momentsPerYear": 0.83,
+          "offeredPerYear": 0.83,
+          "purchaseTimePerYear": 0.16,
+          "fullyUsedYearsPct": 4.8,
+          "declinedForPlanPerYear": 0.01
+        }
+      },
+      "integrity": {
+        "checks": 44699,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Saver": {
+      "lives": 100,
+      "deathAge": 82.54,
+      "time": {
+        "grantedPerLife": 194.52,
+        "spentPerLife": 58.89,
+        "unusedPct": 69.7,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 0.91,
+        "fullyUsedAdultYearsPct": 3.1,
+        "onMomentsPerLife": 58.89,
+        "onPurchasesPerLife": 0
+      },
+      "moments": {
+        "offeredPerLife": 74.92,
+        "acceptedPerLife": 74.92,
+        "adultAcceptedPerLife": 58.89,
+        "uniqueAcceptedPerLife": 40.36,
+        "declinedForPlanPerLife": 0,
+        "emptyBeatsPerLife": 0,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 0,
+        "livesWithCourse": 0,
+        "livesWith2Courses": 0,
+        "storyCourses": 0,
+        "familyTripsPerLife": 0,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 0
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 4002,
+          "availablePct": 96.8,
+          "timeBlockedPct": 3.2,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5576,
+          "availablePct": 96.8,
+          "timeBlockedPct": 3.2,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6484,
+          "availablePct": 96.9,
+          "timeBlockedPct": 3.1,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 96.8,
+          "timeBlockedPct": 3.2,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 79212.03,
+        "finalBalance": 57842.53,
+        "reducedYears": 0,
+        "retiredYears": 13.62
+      },
+      "narrative": {
+        "storyletsPerLife": 25.63,
+        "memoriesPerLife": 19.91,
+        "followupsPerLife": 4.51,
+        "uniqueLivedEventsPerLife": 65.99
+      },
+      "at60": {
+        "alive": 98,
+        "health": 76.02,
+        "stress": 35.5,
+        "morale": 58.29,
+        "bonds": 43.51,
+        "meanBond": 64.51,
+        "closePeople": 3.02,
+        "balance": 41948.82
+      },
+      "at80": {
+        "alive": 67,
+        "health": 49.34,
+        "stress": 44.17,
+        "morale": 60.35,
+        "bonds": 32.69,
+        "meanBond": 70.78,
+        "closePeople": 1.76,
+        "balance": 57557.76
+      },
+      "byBasis": {
+        "full": {
+          "years": 5114,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.4,
+          "momentsPerYear": 0.92,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 3.2,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 936,
+          "limit": 3,
+          "spentPerYear": 0.88,
+          "unusedPct": 70.7,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 2.8,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 426,
+          "limit": 3,
+          "spentPerYear": 0.87,
+          "unusedPct": 71,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 1.9,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43171,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/Careerist": {
+      "lives": 100,
+      "deathAge": 80.81,
+      "time": {
+        "grantedPerLife": 201.16,
+        "spentPerLife": 76.31,
+        "unusedPct": 62.1,
+        "grantedPerAdultYear": 3.19,
+        "spentPerAdultYear": 1.21,
+        "fullyUsedAdultYearsPct": 13.5,
+        "onMomentsPerLife": 54.7,
+        "onPurchasesPerLife": 21.61
+      },
+      "moments": {
+        "offeredPerLife": 73.41,
+        "acceptedPerLife": 70.73,
+        "adultAcceptedPerLife": 54.7,
+        "uniqueAcceptedPerLife": 39.33,
+        "declinedForPlanPerLife": 2.68,
+        "emptyBeatsPerLife": 0.05,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 2,
+        "familyTripsPerLife": 0.13,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 3799.6
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1072,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5444,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6311,
+          "availablePct": 97.8,
+          "timeBlockedPct": 2.2,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.4,
+          "timeBlockedPct": 2.6,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 27,
+        "grade4Lives": 98,
+        "grade4MedianAge": 35,
+        "lifetimeIncome": 110367.37,
+        "finalBalance": 85754.87,
+        "reducedYears": 0,
+        "retiredYears": 11.83
+      },
+      "narrative": {
+        "storyletsPerLife": 25.25,
+        "memoriesPerLife": 19.79,
+        "followupsPerLife": 4.5,
+        "uniqueLivedEventsPerLife": 64.58
+      },
+      "at60": {
+        "alive": 98,
+        "health": 68.57,
+        "stress": 96.59,
+        "morale": 58.14,
+        "bonds": 42.22,
+        "meanBond": 64.89,
+        "closePeople": 3.01,
+        "balance": 59677.81
+      },
+      "at80": {
+        "alive": 60,
+        "health": 31.51,
+        "stress": 97.92,
+        "morale": 59.75,
+        "bonds": 30.73,
+        "meanBond": 69.68,
+        "closePeople": 1.65,
+        "balance": 87048.75
+      },
+      "byBasis": {
+        "full": {
+          "years": 5120,
+          "limit": 3,
+          "spentPerYear": 1.29,
+          "unusedPct": 57.1,
+          "momentsPerYear": 0.86,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0.42,
+          "fullyUsedYearsPct": 16.7,
+          "declinedForPlanPerYear": 0.05
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 769,
+          "limit": 4,
+          "spentPerYear": 0.88,
+          "unusedPct": 78.1,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 414,
+          "limit": 4,
+          "spentPerYear": 0.89,
+          "unusedPct": 77.8,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.89,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43192,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/Moderate": {
+      "lives": 100,
+      "deathAge": 83.24,
+      "time": {
+        "grantedPerLife": 209.9,
+        "spentPerLife": 71.58,
+        "unusedPct": 65.9,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1.09,
+        "fullyUsedAdultYearsPct": 6.8,
+        "onMomentsPerLife": 58.4,
+        "onPurchasesPerLife": 13.18
+      },
+      "moments": {
+        "offeredPerLife": 75.11,
+        "acceptedPerLife": 74.43,
+        "adultAcceptedPerLife": 58.4,
+        "uniqueAcceptedPerLife": 44.15,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.86,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3593.1
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3537,
+          "availablePct": 97.6,
+          "timeBlockedPct": 2.4,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 99964.27,
+        "finalBalance": 55634.77,
+        "reducedYears": 0,
+        "retiredYears": 13.28
+      },
+      "narrative": {
+        "storyletsPerLife": 26.02,
+        "memoriesPerLife": 28.95,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 70.17
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.37,
+        "stress": 21.6,
+        "morale": 64.11,
+        "bonds": 42.47,
+        "meanBond": 66.23,
+        "closePeople": 2.84,
+        "balance": 36352.67
+      },
+      "at80": {
+        "alive": 71,
+        "health": 48.49,
+        "stress": 21.42,
+        "morale": 65.81,
+        "bonds": 29.83,
+        "meanBond": 77.16,
+        "closePeople": 1.66,
+        "balance": 55098.01
+      },
+      "byBasis": {
+        "full": {
+          "years": 5218,
+          "limit": 3,
+          "spentPerYear": 1.14,
+          "unusedPct": 62.2,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.24,
+          "fullyUsedYearsPct": 8.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 942,
+          "limit": 4,
+          "spentPerYear": 0.92,
+          "unusedPct": 76.9,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 386,
+          "limit": 4,
+          "spentPerYear": 0.93,
+          "unusedPct": 76.8,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44717,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/Family": {
+      "lives": 100,
+      "deathAge": 81.74,
+      "time": {
+        "grantedPerLife": 233.62,
+        "spentPerLife": 70.1,
+        "unusedPct": 70,
+        "grantedPerAdultYear": 3.65,
+        "spentPerAdultYear": 1.09,
+        "fullyUsedAdultYearsPct": 4.2,
+        "onMomentsPerLife": 56.38,
+        "onPurchasesPerLife": 13.72
+      },
+      "moments": {
+        "offeredPerLife": 72.78,
+        "acceptedPerLife": 72.41,
+        "adultAcceptedPerLife": 56.38,
+        "uniqueAcceptedPerLife": 41.35,
+        "declinedForPlanPerLife": 0.37,
+        "emptyBeatsPerLife": 0.02,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 1.23,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 24,
+        "storyCourses": 18,
+        "familyTripsPerLife": 11.26,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 4416.7
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3615,
+          "availablePct": 86.8,
+          "timeBlockedPct": 13.2,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1125,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6404,
+          "availablePct": 99.2,
+          "timeBlockedPct": 0.8,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3318,
+          "availablePct": 98.5,
+          "timeBlockedPct": 1.5,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 60811.96,
+        "finalBalance": 16733.66,
+        "reducedYears": 29.09,
+        "retiredYears": 12.41
+      },
+      "narrative": {
+        "storyletsPerLife": 25.37,
+        "memoriesPerLife": 30.87,
+        "followupsPerLife": 4.25,
+        "uniqueLivedEventsPerLife": 66.72
+      },
+      "at60": {
+        "alive": 95,
+        "health": 76.21,
+        "stress": 3.78,
+        "morale": 76.99,
+        "bonds": 99.76,
+        "meanBond": 68.61,
+        "closePeople": 2.85,
+        "balance": 14415.59
+      },
+      "at80": {
+        "alive": 68,
+        "health": 56.58,
+        "stress": 2.11,
+        "morale": 78.1,
+        "bonds": 100,
+        "meanBond": 82.28,
+        "closePeople": 1.69,
+        "balance": 17113.38
+      },
+      "byBasis": {
+        "full": {
+          "years": 2247,
+          "limit": 3,
+          "spentPerYear": 1.21,
+          "unusedPct": 59.6,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.32,
+          "fullyUsedYearsPct": 11,
+          "declinedForPlanPerYear": 0.02
+        },
+        "reduced": {
+          "years": 2909,
+          "limit": 4,
+          "spentPerYear": 1.07,
+          "unusedPct": 73.3,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.89,
+          "purchaseTimePerYear": 0.18,
+          "fullyUsedYearsPct": 0.8,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 7,
+          "limit": 3,
+          "spentPerYear": 0.43,
+          "unusedPct": 85.7,
+          "momentsPerYear": 0.29,
+          "offeredPerYear": 0.29,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 804,
+          "limit": 4,
+          "spentPerYear": 0.94,
+          "unusedPct": 76.6,
+          "momentsPerYear": 0.85,
+          "offeredPerYear": 0.85,
+          "purchaseTimePerYear": 0.09,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 437,
+          "limit": 4,
+          "spentPerYear": 0.97,
+          "unusedPct": 75.8,
+          "momentsPerYear": 0.82,
+          "offeredPerYear": 0.82,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 0.2,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44196,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/TimeBuyer": {
+      "lives": 100,
+      "deathAge": 83.14,
+      "time": {
+        "grantedPerLife": 239.22,
+        "spentPerLife": 71.55,
+        "unusedPct": 70.1,
+        "grantedPerAdultYear": 3.66,
+        "spentPerAdultYear": 1.09,
+        "fullyUsedAdultYearsPct": 4.3,
+        "onMomentsPerLife": 58.36,
+        "onPurchasesPerLife": 13.19
+      },
+      "moments": {
+        "offeredPerLife": 74.95,
+        "acceptedPerLife": 74.39,
+        "adultAcceptedPerLife": 58.36,
+        "uniqueAcceptedPerLife": 44.1,
+        "declinedForPlanPerLife": 0.56,
+        "emptyBeatsPerLife": 0.04,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 88.8,
+          "timeBlockedPct": 11.2,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3543,
+          "availablePct": 98.8,
+          "timeBlockedPct": 1.2,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 98.6,
+          "timeBlockedPct": 1.4,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 98.5,
+          "timeBlockedPct": 1.5,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 85,
+        "grade3MedianAge": 39,
+        "grade4Lives": 9,
+        "grade4MedianAge": 64,
+        "lifetimeIncome": 72052.35,
+        "finalBalance": 27789.85,
+        "reducedYears": 29.72,
+        "retiredYears": 13.18
+      },
+      "narrative": {
+        "storyletsPerLife": 25.99,
+        "memoriesPerLife": 28.93,
+        "followupsPerLife": 4.29,
+        "uniqueLivedEventsPerLife": 70.09
+      },
+      "at60": {
+        "alive": 96,
+        "health": 82.99,
+        "stress": 4.14,
+        "morale": 76.25,
+        "bonds": 74.05,
+        "meanBond": 66.3,
+        "closePeople": 2.85,
+        "balance": 20768.41
+      },
+      "at80": {
+        "alive": 71,
+        "health": 72.55,
+        "stress": 1.57,
+        "morale": 78.15,
+        "bonds": 78.03,
+        "meanBond": 77.3,
+        "closePeople": 1.68,
+        "balance": 26832.92
+      },
+      "byBasis": {
+        "full": {
+          "years": 2246,
+          "limit": 3,
+          "spentPerYear": 1.25,
+          "unusedPct": 58.4,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.36,
+          "fullyUsedYearsPct": 12,
+          "declinedForPlanPerYear": 0.02
+        },
+        "reduced": {
+          "years": 2972,
+          "limit": 4,
+          "spentPerYear": 1.05,
+          "unusedPct": 73.7,
+          "momentsPerYear": 0.91,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.15,
+          "fullyUsedYearsPct": 0.4,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 932,
+          "limit": 4,
+          "spentPerYear": 0.92,
+          "unusedPct": 76.9,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 386,
+          "limit": 4,
+          "spentPerYear": 0.93,
+          "unusedPct": 76.8,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 47694,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/Spender": {
+      "lives": 100,
+      "deathAge": 80.78,
+      "time": {
+        "grantedPerLife": 201.79,
+        "spentPerLife": 87.41,
+        "unusedPct": 56.7,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1.39,
+        "fullyUsedAdultYearsPct": 18.2,
+        "onMomentsPerLife": 50.91,
+        "onPurchasesPerLife": 36.5
+      },
+      "moments": {
+        "offeredPerLife": 72.57,
+        "acceptedPerLife": 66.94,
+        "adultAcceptedPerLife": 50.91,
+        "uniqueAcceptedPerLife": 41.59,
+        "declinedForPlanPerLife": 5.63,
+        "emptyBeatsPerLife": 0.08,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 2.96,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 2.96,
+        "livesWithTimeBlockedPurchase": 98
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 10,
+        "familyTripsPerLife": 11.1,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 8576.4
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1064,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1106,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 199,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 34,
+        "grade4Lives": 98,
+        "grade4MedianAge": 43,
+        "lifetimeIncome": 99823.49,
+        "finalBalance": 48906.19,
+        "reducedYears": 0,
+        "retiredYears": 12.55
+      },
+      "narrative": {
+        "storyletsPerLife": 25.18,
+        "memoriesPerLife": 34.19,
+        "followupsPerLife": 3.94,
+        "uniqueLivedEventsPerLife": 66.77
+      },
+      "at60": {
+        "alive": 95,
+        "health": 76.08,
+        "stress": 19.72,
+        "morale": 64.7,
+        "bonds": 40.53,
+        "meanBond": 68.52,
+        "closePeople": 3,
+        "balance": 32625.67
+      },
+      "at80": {
+        "alive": 61,
+        "health": 49.75,
+        "stress": 19.53,
+        "morale": 66.07,
+        "bonds": 30.17,
+        "meanBond": 81.91,
+        "closePeople": 1.64,
+        "balance": 48706.66
+      },
+      "byBasis": {
+        "full": {
+          "years": 5045,
+          "limit": 3,
+          "spentPerYear": 1.49,
+          "unusedPct": 50.2,
+          "momentsPerYear": 0.8,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.7,
+          "fullyUsedYearsPct": 22.7,
+          "declinedForPlanPerYear": 0.11
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 1,
+          "unusedPct": 66.7,
+          "momentsPerYear": 0.75,
+          "offeredPerYear": 0.75,
+          "purchaseTimePerYear": 0.25,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 875,
+          "limit": 4,
+          "spentPerYear": 0.95,
+          "unusedPct": 76.2,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.08,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 380,
+          "limit": 4,
+          "spentPerYear": 0.97,
+          "unusedPct": 75.7,
+          "momentsPerYear": 0.82,
+          "offeredPerYear": 0.82,
+          "purchaseTimePerYear": 0.16,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44382,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/Saver": {
+      "lives": 100,
+      "deathAge": 82.54,
+      "time": {
+        "grantedPerLife": 208.14,
+        "spentPerLife": 58.89,
+        "unusedPct": 71.7,
+        "grantedPerAdultYear": 3.21,
+        "spentPerAdultYear": 0.91,
+        "fullyUsedAdultYearsPct": 2.5,
+        "onMomentsPerLife": 58.89,
+        "onPurchasesPerLife": 0
+      },
+      "moments": {
+        "offeredPerLife": 74.92,
+        "acceptedPerLife": 74.92,
+        "adultAcceptedPerLife": 58.89,
+        "uniqueAcceptedPerLife": 40.36,
+        "declinedForPlanPerLife": 0,
+        "emptyBeatsPerLife": 0,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 0,
+        "livesWithCourse": 0,
+        "livesWith2Courses": 0,
+        "storyCourses": 0,
+        "familyTripsPerLife": 0,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 0
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 4002,
+          "availablePct": 77.6,
+          "timeBlockedPct": 22.4,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5576,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6484,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 96.8,
+          "timeBlockedPct": 3.2,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 79212.03,
+        "finalBalance": 57842.53,
+        "reducedYears": 0,
+        "retiredYears": 13.62
+      },
+      "narrative": {
+        "storyletsPerLife": 25.63,
+        "memoriesPerLife": 19.91,
+        "followupsPerLife": 4.51,
+        "uniqueLivedEventsPerLife": 65.99
+      },
+      "at60": {
+        "alive": 98,
+        "health": 76.02,
+        "stress": 35.5,
+        "morale": 58.29,
+        "bonds": 43.51,
+        "meanBond": 64.51,
+        "closePeople": 3.02,
+        "balance": 41948.82
+      },
+      "at80": {
+        "alive": 67,
+        "health": 49.34,
+        "stress": 44.17,
+        "morale": 60.35,
+        "bonds": 32.69,
+        "meanBond": 70.78,
+        "closePeople": 1.76,
+        "balance": 57557.76
+      },
+      "byBasis": {
+        "full": {
+          "years": 5114,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.4,
+          "momentsPerYear": 0.92,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 3.2,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 936,
+          "limit": 4,
+          "spentPerYear": 0.88,
+          "unusedPct": 78,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 426,
+          "limit": 4,
+          "spentPerYear": 0.87,
+          "unusedPct": 78.2,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43171,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Careerist": {
+      "lives": 100,
+      "deathAge": 80.95,
+      "time": {
+        "grantedPerLife": 201.72,
+        "spentPerLife": 80.97,
+        "unusedPct": 59.9,
+        "grantedPerAdultYear": 3.19,
+        "spentPerAdultYear": 1.28,
+        "fullyUsedAdultYearsPct": 13.5,
+        "onMomentsPerLife": 59.36,
+        "onPurchasesPerLife": 21.61
+      },
+      "moments": {
+        "offeredPerLife": 78.07,
+        "acceptedPerLife": 75.39,
+        "adultAcceptedPerLife": 59.36,
+        "uniqueAcceptedPerLife": 41.5,
+        "declinedForPlanPerLife": 2.68,
+        "emptyBeatsPerLife": 0.05,
+        "t9OfferedPerLife": 1.46,
+        "t9AcceptedPerLife": 1.46,
+        "t9LivesWithAny": 72
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 2,
+        "familyTripsPerLife": 0.13,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 3799.6
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1072,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5410,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6325,
+          "availablePct": 97.8,
+          "timeBlockedPct": 2.2,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.4,
+          "timeBlockedPct": 2.6,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 27,
+        "grade4Lives": 98,
+        "grade4MedianAge": 35,
+        "lifetimeIncome": 110525.54,
+        "finalBalance": 85858.64,
+        "reducedYears": 0,
+        "retiredYears": 11.97
+      },
+      "narrative": {
+        "storyletsPerLife": 25.31,
+        "memoriesPerLife": 20.41,
+        "followupsPerLife": 4.49,
+        "uniqueLivedEventsPerLife": 66.81
+      },
+      "at60": {
+        "alive": 98,
+        "health": 68.57,
+        "stress": 96.59,
+        "morale": 58.14,
+        "bonds": 42.22,
+        "meanBond": 64.89,
+        "closePeople": 3.01,
+        "balance": 59677.81
+      },
+      "at80": {
+        "alive": 65,
+        "health": 33,
+        "stress": 97.83,
+        "morale": 60.76,
+        "bonds": 30.17,
+        "meanBond": 70.48,
+        "closePeople": 1.6,
+        "balance": 86449.85
+      },
+      "byBasis": {
+        "full": {
+          "years": 5120,
+          "limit": 3,
+          "spentPerYear": 1.29,
+          "unusedPct": 57.1,
+          "momentsPerYear": 0.86,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0.42,
+          "fullyUsedYearsPct": 16.7,
+          "declinedForPlanPerYear": 0.05
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 787,
+          "limit": 4,
+          "spentPerYear": 1.24,
+          "unusedPct": 69.1,
+          "momentsPerYear": 1.24,
+          "offeredPerYear": 1.24,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 410,
+          "limit": 4,
+          "spentPerYear": 1.3,
+          "unusedPct": 67.4,
+          "momentsPerYear": 1.3,
+          "offeredPerYear": 1.3,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43720,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Moderate": {
+      "lives": 100,
+      "deathAge": 82.85,
+      "time": {
+        "grantedPerLife": 208.34,
+        "spentPerLife": 76.4,
+        "unusedPct": 63.3,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1.17,
+        "fullyUsedAdultYearsPct": 6.9,
+        "onMomentsPerLife": 63.2,
+        "onPurchasesPerLife": 13.2
+      },
+      "moments": {
+        "offeredPerLife": 79.91,
+        "acceptedPerLife": 79.23,
+        "adultAcceptedPerLife": 63.2,
+        "uniqueAcceptedPerLife": 46.39,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 1.53,
+        "t9AcceptedPerLife": 1.53,
+        "t9LivesWithAny": 78
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.88,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3599.5
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3533,
+          "availablePct": 97.6,
+          "timeBlockedPct": 2.4,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 99579.64,
+        "finalBalance": 55493.64,
+        "reducedYears": 0,
+        "retiredYears": 12.89
+      },
+      "narrative": {
+        "storyletsPerLife": 25.78,
+        "memoriesPerLife": 29.42,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 72.17
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.37,
+        "stress": 21.6,
+        "morale": 64.11,
+        "bonds": 42.47,
+        "meanBond": 66.23,
+        "closePeople": 2.84,
+        "balance": 36352.67
+      },
+      "at80": {
+        "alive": 69,
+        "health": 49.45,
+        "stress": 21.45,
+        "morale": 66.18,
+        "bonds": 30.12,
+        "meanBond": 75.45,
+        "closePeople": 1.52,
+        "balance": 55463.68
+      },
+      "byBasis": {
+        "full": {
+          "years": 5218,
+          "limit": 3,
+          "spentPerYear": 1.14,
+          "unusedPct": 62.2,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.24,
+          "fullyUsedYearsPct": 8.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 910,
+          "limit": 4,
+          "spentPerYear": 1.31,
+          "unusedPct": 67.2,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0.7,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 379,
+          "limit": 4,
+          "spentPerYear": 1.36,
+          "unusedPct": 66,
+          "momentsPerYear": 1.29,
+          "offeredPerYear": 1.29,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 45019,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Family": {
+      "lives": 100,
+      "deathAge": 82,
+      "time": {
+        "grantedPerLife": 234.66,
+        "spentPerLife": 87.84,
+        "unusedPct": 62.6,
+        "grantedPerAdultYear": 3.65,
+        "spentPerAdultYear": 1.37,
+        "fullyUsedAdultYearsPct": 4.8,
+        "onMomentsPerLife": 74.13,
+        "onPurchasesPerLife": 13.71
+      },
+      "moments": {
+        "offeredPerLife": 90.56,
+        "acceptedPerLife": 90.16,
+        "adultAcceptedPerLife": 74.13,
+        "uniqueAcceptedPerLife": 47.94,
+        "declinedForPlanPerLife": 0.4,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 4,
+        "t9AcceptedPerLife": 4,
+        "t9LivesWithAny": 97
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 1.18,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 19,
+        "storyCourses": 13,
+        "familyTripsPerLife": 11.35,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 4430.5
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3637,
+          "availablePct": 83.7,
+          "timeBlockedPct": 16.3,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1131,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6430,
+          "availablePct": 99.2,
+          "timeBlockedPct": 0.8,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3318,
+          "availablePct": 98.4,
+          "timeBlockedPct": 1.6,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 60893.93,
+        "finalBalance": 16516.63,
+        "reducedYears": 29.6,
+        "retiredYears": 12.16
+      },
+      "narrative": {
+        "storyletsPerLife": 25.26,
+        "memoriesPerLife": 32.75,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 73.2
+      },
+      "at60": {
+        "alive": 97,
+        "health": 76.45,
+        "stress": 3.98,
+        "morale": 78.41,
+        "bonds": 99.94,
+        "meanBond": 70.08,
+        "closePeople": 2.94,
+        "balance": 14429.19
+      },
+      "at80": {
+        "alive": 62,
+        "health": 58.36,
+        "stress": 2.74,
+        "morale": 78.05,
+        "bonds": 100,
+        "meanBond": 80.69,
+        "closePeople": 1.71,
+        "balance": 16525.42
+      },
+      "byBasis": {
+        "full": {
+          "years": 2247,
+          "limit": 3,
+          "spentPerYear": 1.21,
+          "unusedPct": 59.6,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.32,
+          "fullyUsedYearsPct": 11,
+          "declinedForPlanPerYear": 0.02
+        },
+        "reduced": {
+          "years": 2960,
+          "limit": 4,
+          "spentPerYear": 1.5,
+          "unusedPct": 62.6,
+          "momentsPerYear": 1.32,
+          "offeredPerYear": 1.32,
+          "purchaseTimePerYear": 0.18,
+          "fullyUsedYearsPct": 1.8,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 7,
+          "limit": 3,
+          "spentPerYear": 0.43,
+          "unusedPct": 85.7,
+          "momentsPerYear": 0.29,
+          "offeredPerYear": 0.29,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 884,
+          "limit": 4,
+          "spentPerYear": 1.3,
+          "unusedPct": 67.5,
+          "momentsPerYear": 1.22,
+          "offeredPerYear": 1.22,
+          "purchaseTimePerYear": 0.08,
+          "fullyUsedYearsPct": 0.5,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 332,
+          "limit": 4,
+          "spentPerYear": 1.44,
+          "unusedPct": 64,
+          "momentsPerYear": 1.3,
+          "offeredPerYear": 1.3,
+          "purchaseTimePerYear": 0.14,
+          "fullyUsedYearsPct": 0.6,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 46070,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/TimeBuyer": {
+      "lives": 100,
+      "deathAge": 82.36,
+      "time": {
+        "grantedPerLife": 236.1,
+        "spentPerLife": 87.19,
+        "unusedPct": 63.1,
+        "grantedPerAdultYear": 3.65,
+        "spentPerAdultYear": 1.35,
+        "fullyUsedAdultYearsPct": 4.9,
+        "onMomentsPerLife": 73.93,
+        "onPurchasesPerLife": 13.26
+      },
+      "moments": {
+        "offeredPerLife": 90.54,
+        "acceptedPerLife": 89.96,
+        "adultAcceptedPerLife": 73.93,
+        "uniqueAcceptedPerLife": 50.23,
+        "declinedForPlanPerLife": 0.58,
+        "emptyBeatsPerLife": 0.05,
+        "t9OfferedPerLife": 3.88,
+        "t9AcceptedPerLife": 3.88,
+        "t9LivesWithAny": 98
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.19,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 10,
+        "familyTripsPerLife": 4.96,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3622.1
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3343,
+          "availablePct": 86.1,
+          "timeBlockedPct": 13.9,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3625,
+          "availablePct": 98.8,
+          "timeBlockedPct": 1.2,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 98.6,
+          "timeBlockedPct": 1.4,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 98.4,
+          "timeBlockedPct": 1.6,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 90,
+        "grade3MedianAge": 39,
+        "grade4Lives": 8,
+        "grade4MedianAge": 57,
+        "lifetimeIncome": 70763.04,
+        "finalBalance": 26916.44,
+        "reducedYears": 30.75,
+        "retiredYears": 11.37
+      },
+      "narrative": {
+        "storyletsPerLife": 25.84,
+        "memoriesPerLife": 30.21,
+        "followupsPerLife": 4.3,
+        "uniqueLivedEventsPerLife": 76.07
+      },
+      "at60": {
+        "alive": 98,
+        "health": 83.11,
+        "stress": 3.29,
+        "morale": 78.64,
+        "bonds": 75.2,
+        "meanBond": 67.25,
+        "closePeople": 2.92,
+        "balance": 20720.42
+      },
+      "at80": {
+        "alive": 63,
+        "health": 73.81,
+        "stress": 2.3,
+        "morale": 77.62,
+        "bonds": 78.94,
+        "meanBond": 75.61,
+        "closePeople": 1.63,
+        "balance": 26345.52
+      },
+      "byBasis": {
+        "full": {
+          "years": 2246,
+          "limit": 3,
+          "spentPerYear": 1.25,
+          "unusedPct": 58.4,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.36,
+          "fullyUsedYearsPct": 12,
+          "declinedForPlanPerYear": 0.02
+        },
+        "reduced": {
+          "years": 3075,
+          "limit": 4,
+          "spentPerYear": 1.46,
+          "unusedPct": 63.6,
+          "momentsPerYear": 1.31,
+          "offeredPerYear": 1.31,
+          "purchaseTimePerYear": 0.15,
+          "fullyUsedYearsPct": 1.5,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 959,
+          "limit": 4,
+          "spentPerYear": 1.24,
+          "unusedPct": 69,
+          "momentsPerYear": 1.2,
+          "offeredPerYear": 1.2,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0.2,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 178,
+          "limit": 4,
+          "spentPerYear": 1.36,
+          "unusedPct": 66,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
+          "purchaseTimePerYear": 0.09,
+          "fullyUsedYearsPct": 0.6,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 48880,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Spender": {
+      "lives": 100,
+      "deathAge": 81.26,
+      "time": {
+        "grantedPerLife": 203.71,
+        "spentPerLife": 92.94,
+        "unusedPct": 54.4,
+        "grantedPerAdultYear": 3.21,
+        "spentPerAdultYear": 1.46,
+        "fullyUsedAdultYearsPct": 18.2,
+        "onMomentsPerLife": 56.36,
+        "onPurchasesPerLife": 36.58
+      },
+      "moments": {
+        "offeredPerLife": 78.02,
+        "acceptedPerLife": 72.39,
+        "adultAcceptedPerLife": 56.36,
+        "uniqueAcceptedPerLife": 44.22,
+        "declinedForPlanPerLife": 5.63,
+        "emptyBeatsPerLife": 0.08,
+        "t9OfferedPerLife": 1.39,
+        "t9AcceptedPerLife": 1.39,
+        "t9LivesWithAny": 69
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 2.96,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 2.96,
+        "livesWithTimeBlockedPurchase": 98
+      },
+      "purchases": {
+        "coursesPerLife": 10.74,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 10,
+        "familyTripsPerLife": 11.18,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 8602
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 1064,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 1114,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 199,
+          "availablePct": 100,
+          "timeBlockedPct": 0,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 34,
+        "grade4Lives": 98,
+        "grade4MedianAge": 43,
+        "lifetimeIncome": 100556.87,
+        "finalBalance": 49238.37,
+        "reducedYears": 0,
+        "retiredYears": 13.03
+      },
+      "narrative": {
+        "storyletsPerLife": 25.18,
+        "memoriesPerLife": 34.85,
+        "followupsPerLife": 3.94,
+        "uniqueLivedEventsPerLife": 69.4
+      },
+      "at60": {
+        "alive": 95,
+        "health": 76.08,
+        "stress": 19.72,
+        "morale": 64.7,
+        "bonds": 40.53,
+        "meanBond": 68.52,
+        "closePeople": 3,
+        "balance": 32625.67
+      },
+      "at80": {
+        "alive": 61,
+        "health": 52.08,
+        "stress": 19.42,
+        "morale": 66.37,
+        "bonds": 29,
+        "meanBond": 80.86,
+        "closePeople": 1.66,
+        "balance": 49865.67
+      },
+      "byBasis": {
+        "full": {
+          "years": 5045,
+          "limit": 3,
+          "spentPerYear": 1.49,
+          "unusedPct": 50.2,
+          "momentsPerYear": 0.8,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.7,
+          "fullyUsedYearsPct": 22.7,
+          "declinedForPlanPerYear": 0.11
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 1,
+          "unusedPct": 66.7,
+          "momentsPerYear": 0.75,
+          "offeredPerYear": 0.75,
+          "purchaseTimePerYear": 0.25,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 914,
+          "limit": 4,
+          "spentPerYear": 1.31,
+          "unusedPct": 67.2,
+          "momentsPerYear": 1.23,
+          "offeredPerYear": 1.23,
+          "purchaseTimePerYear": 0.09,
+          "fullyUsedYearsPct": 0.8,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 389,
+          "limit": 4,
+          "spentPerYear": 1.43,
+          "unusedPct": 64.3,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
+          "purchaseTimePerYear": 0.16,
+          "fullyUsedYearsPct": 1,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 45127,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Saver": {
+      "lives": 100,
+      "deathAge": 82.12,
+      "time": {
+        "grantedPerLife": 206.46,
+        "spentPerLife": 63.41,
+        "unusedPct": 69.3,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 0.98,
+        "fullyUsedAdultYearsPct": 2.6,
+        "onMomentsPerLife": 63.41,
+        "onPurchasesPerLife": 0
+      },
+      "moments": {
+        "offeredPerLife": 79.44,
+        "acceptedPerLife": 79.44,
+        "adultAcceptedPerLife": 63.41,
+        "uniqueAcceptedPerLife": 42.48,
+        "declinedForPlanPerLife": 0,
+        "emptyBeatsPerLife": 0,
+        "t9OfferedPerLife": 1.56,
+        "t9AcceptedPerLife": 1.56,
+        "t9LivesWithAny": 76
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 0,
+        "livesWithCourse": 0,
+        "livesWith2Courses": 0,
+        "storyCourses": 0,
+        "familyTripsPerLife": 0,
+        "sectorTripsPerLife": 0,
+        "spentCreditsPerLife": 0
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 4002,
+          "availablePct": 77.6,
+          "timeBlockedPct": 22.4,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 5498,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 6442,
+          "availablePct": 97.4,
+          "timeBlockedPct": 2.6,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 96.8,
+          "timeBlockedPct": 3.2,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 0,
+        "grade3MedianAge": null,
+        "grade4Lives": 0,
+        "grade4MedianAge": null,
+        "lifetimeIncome": 78869.54,
+        "finalBalance": 57653.04,
+        "reducedYears": 0,
+        "retiredYears": 13.2
+      },
+      "narrative": {
+        "storyletsPerLife": 25.51,
+        "memoriesPerLife": 20.51,
+        "followupsPerLife": 4.5,
+        "uniqueLivedEventsPerLife": 67.99
+      },
+      "at60": {
+        "alive": 98,
+        "health": 76.02,
+        "stress": 35.5,
+        "morale": 58.29,
+        "bonds": 43.51,
+        "meanBond": 64.51,
+        "closePeople": 3.02,
+        "balance": 41948.82
+      },
+      "at80": {
+        "alive": 68,
+        "health": 51.13,
+        "stress": 42.93,
+        "morale": 61.58,
+        "bonds": 32.16,
+        "meanBond": 69.78,
+        "closePeople": 1.72,
+        "balance": 57174.74
+      },
+      "byBasis": {
+        "full": {
+          "years": 5114,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.4,
+          "momentsPerYear": 0.92,
+          "offeredPerYear": 0.92,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 3.2,
+          "declinedForPlanPerYear": 0
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.38,
+          "unusedPct": 87.5,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 910,
+          "limit": 4,
+          "spentPerYear": 1.2,
+          "unusedPct": 69.9,
+          "momentsPerYear": 1.2,
+          "offeredPerYear": 1.2,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 410,
+          "limit": 4,
+          "spentPerYear": 1.34,
+          "unusedPct": 66.5,
+          "momentsPerYear": 1.34,
+          "offeredPerYear": 1.34,
+          "purchaseTimePerYear": 0,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 43443,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/TimeBuyerFull": {
+      "lives": 100,
+      "deathAge": 83.22,
+      "time": {
+        "grantedPerLife": 196.56,
+        "spentPerLife": 69.74,
+        "unusedPct": 64.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.06,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.75,
+        "onPurchasesPerLife": 10.99
+      },
+      "moments": {
+        "offeredPerLife": 75.09,
+        "acceptedPerLife": 74.78,
+        "adultAcceptedPerLife": 58.75,
+        "uniqueAcceptedPerLife": 44.15,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3544,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 86,
+        "grade3MedianAge": 39,
+        "grade4Lives": 9,
+        "grade4MedianAge": 64,
+        "lifetimeIncome": 91049.92,
+        "finalBalance": 46729.82,
+        "reducedYears": 0,
+        "retiredYears": 13.14
+      },
+      "narrative": {
+        "storyletsPerLife": 26.02,
+        "memoriesPerLife": 28.99,
+        "followupsPerLife": 4.32,
+        "uniqueLivedEventsPerLife": 70.17
+      },
+      "at60": {
+        "alive": 96,
+        "health": 83.02,
+        "stress": 5.72,
+        "morale": 76.28,
+        "bonds": 63.99,
+        "meanBond": 66.4,
+        "closePeople": 2.86,
+        "balance": 33110.04
+      },
+      "at80": {
+        "alive": 71,
+        "health": 67.33,
+        "stress": 2.34,
+        "morale": 78.14,
+        "bonds": 70.59,
+        "meanBond": 77.2,
+        "closePeople": 1.68,
+        "balance": 46535.15
+      },
+      "byBasis": {
+        "full": {
+          "years": 5230,
+          "limit": 3,
+          "spentPerYear": 1.1,
+          "unusedPct": 63.3,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.2,
+          "fullyUsedYearsPct": 6.4,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 935,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.2,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 2.7,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 379,
+          "limit": 3,
+          "spentPerYear": 0.93,
+          "unusedPct": 69,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 4.2,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 47676,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "N/TimeBuyerFull": {
+      "lives": 100,
+      "deathAge": 83.14,
+      "time": {
+        "grantedPerLife": 209.5,
+        "spentPerLife": 71.45,
+        "unusedPct": 65.9,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1.09,
+        "fullyUsedAdultYearsPct": 6.8,
+        "onMomentsPerLife": 58.26,
+        "onPurchasesPerLife": 13.19
+      },
+      "moments": {
+        "offeredPerLife": 74.97,
+        "acceptedPerLife": 74.29,
+        "adultAcceptedPerLife": 58.26,
+        "uniqueAcceptedPerLife": 44.06,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3543,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 85,
+        "grade3MedianAge": 39,
+        "grade4Lives": 8,
+        "grade4MedianAge": 64,
+        "lifetimeIncome": 90768.52,
+        "finalBalance": 46506.02,
+        "reducedYears": 0,
+        "retiredYears": 13.18
+      },
+      "narrative": {
+        "storyletsPerLife": 25.99,
+        "memoriesPerLife": 28.91,
+        "followupsPerLife": 4.29,
+        "uniqueLivedEventsPerLife": 70.05
+      },
+      "at60": {
+        "alive": 96,
+        "health": 82.99,
+        "stress": 5.74,
+        "morale": 76.25,
+        "bonds": 63.84,
+        "meanBond": 66.3,
+        "closePeople": 2.85,
+        "balance": 33048.5
+      },
+      "at80": {
+        "alive": 71,
+        "health": 67.39,
+        "stress": 2.34,
+        "morale": 78.15,
+        "bonds": 70.53,
+        "meanBond": 77.3,
+        "closePeople": 1.68,
+        "balance": 46344.7
+      },
+      "byBasis": {
+        "full": {
+          "years": 5218,
+          "limit": 3,
+          "spentPerYear": 1.13,
+          "unusedPct": 62.2,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.24,
+          "fullyUsedYearsPct": 8.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 932,
+          "limit": 4,
+          "spentPerYear": 0.92,
+          "unusedPct": 76.9,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 386,
+          "limit": 4,
+          "spentPerYear": 0.93,
+          "unusedPct": 76.8,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 47586,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/TimeBuyerFull": {
+      "lives": 100,
+      "deathAge": 82.88,
+      "time": {
+        "grantedPerLife": 208.46,
+        "spentPerLife": 76.38,
+        "unusedPct": 63.4,
+        "grantedPerAdultYear": 3.2,
+        "spentPerAdultYear": 1.17,
+        "fullyUsedAdultYearsPct": 6.9,
+        "onMomentsPerLife": 63.18,
+        "onPurchasesPerLife": 13.2
+      },
+      "moments": {
+        "offeredPerLife": 79.89,
+        "acceptedPerLife": 79.21,
+        "adultAcceptedPerLife": 63.18,
+        "uniqueAcceptedPerLife": 46.36,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 1.53,
+        "t9AcceptedPerLife": 1.53,
+        "t9LivesWithAny": 78
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.88,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3599.5
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3530,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 85,
+        "grade3MedianAge": 39,
+        "grade4Lives": 8,
+        "grade4MedianAge": 64,
+        "lifetimeIncome": 90451.58,
+        "finalBalance": 46349.98,
+        "reducedYears": 0,
+        "retiredYears": 12.92
+      },
+      "narrative": {
+        "storyletsPerLife": 25.75,
+        "memoriesPerLife": 29.38,
+        "followupsPerLife": 4.29,
+        "uniqueLivedEventsPerLife": 72.11
+      },
+      "at60": {
+        "alive": 96,
+        "health": 82.99,
+        "stress": 5.74,
+        "morale": 76.25,
+        "bonds": 63.84,
+        "meanBond": 66.3,
+        "closePeople": 2.85,
+        "balance": 33048.5
+      },
+      "at80": {
+        "alive": 69,
+        "health": 68.05,
+        "stress": 2.89,
+        "morale": 77.87,
+        "bonds": 70.62,
+        "meanBond": 75.45,
+        "closePeople": 1.52,
+        "balance": 46952.54
+      },
+      "byBasis": {
+        "full": {
+          "years": 5218,
+          "limit": 3,
+          "spentPerYear": 1.13,
+          "unusedPct": 62.2,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.24,
+          "fullyUsedYearsPct": 8.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 913,
+          "limit": 4,
+          "spentPerYear": 1.31,
+          "unusedPct": 67.3,
+          "momentsPerYear": 1.27,
+          "offeredPerYear": 1.27,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0.7,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 379,
+          "limit": 4,
+          "spentPerYear": 1.36,
+          "unusedPct": 66,
+          "momentsPerYear": 1.29,
+          "offeredPerYear": 1.29,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 0.3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 47928,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Retire-left": {
+      "lives": 100,
+      "deathAge": 83.39,
+      "time": {
+        "grantedPerLife": 197.07,
+        "spentPerLife": 69.94,
+        "unusedPct": 64.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.06,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.95,
+        "onPurchasesPerLife": 10.99
+      },
+      "moments": {
+        "offeredPerLife": 75.29,
+        "acceptedPerLife": 74.98,
+        "adultAcceptedPerLife": 58.95,
+        "uniqueAcceptedPerLife": 44.09,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3543,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 95936.77,
+        "finalBalance": 51495.17,
+        "reducedYears": 0,
+        "retiredYears": 15.77
+      },
+      "narrative": {
+        "storyletsPerLife": 26.06,
+        "memoriesPerLife": 29.27,
+        "followupsPerLife": 4.36,
+        "uniqueLivedEventsPerLife": 70.15
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.43,
+        "stress": 21.61,
+        "morale": 64.14,
+        "bonds": 42.71,
+        "meanBond": 66.32,
+        "closePeople": 2.85,
+        "balance": 36383.69
+      },
+      "at80": {
+        "alive": 71,
+        "health": 52.18,
+        "stress": 18.44,
+        "morale": 66.08,
+        "bonds": 29.36,
+        "meanBond": 77.1,
+        "closePeople": 1.66,
+        "balance": 50311.23
+      },
+      "byBasis": {
+        "full": {
+          "years": 4984,
+          "limit": 3,
+          "spentPerYear": 1.11,
+          "unusedPct": 63.1,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.2,
+          "fullyUsedYearsPct": 6.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 1577,
+          "limit": 3,
+          "spentPerYear": 0.93,
+          "unusedPct": 68.9,
+          "momentsPerYear": 0.88,
+          "offeredPerYear": 0.88,
+          "purchaseTimePerYear": 0.05,
+          "fullyUsedYearsPct": 3,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44837,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Retire-mentor": {
+      "lives": 100,
+      "deathAge": 83.49,
+      "time": {
+        "grantedPerLife": 197.37,
+        "spentPerLife": 69.91,
+        "unusedPct": 64.6,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.06,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.93,
+        "onPurchasesPerLife": 10.98
+      },
+      "moments": {
+        "offeredPerLife": 75.27,
+        "acceptedPerLife": 74.96,
+        "adultAcceptedPerLife": 58.93,
+        "uniqueAcceptedPerLife": 44.29,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.86,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3593.1
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3538,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 100450.01,
+        "finalBalance": 55954.61,
+        "reducedYears": 0,
+        "retiredYears": 15.87
+      },
+      "narrative": {
+        "storyletsPerLife": 26.06,
+        "memoriesPerLife": 29.29,
+        "followupsPerLife": 4.36,
+        "uniqueLivedEventsPerLife": 70.35
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.43,
+        "stress": 21.61,
+        "morale": 64.14,
+        "bonds": 42.71,
+        "meanBond": 66.32,
+        "closePeople": 2.85,
+        "balance": 36383.69
+      },
+      "at80": {
+        "alive": 71,
+        "health": 52.33,
+        "stress": 19.38,
+        "morale": 65.82,
+        "bonds": 31.34,
+        "meanBond": 77.04,
+        "closePeople": 1.66,
+        "balance": 55435.46
+      },
+      "byBasis": {
+        "full": {
+          "years": 4984,
+          "limit": 3,
+          "spentPerYear": 1.11,
+          "unusedPct": 63.1,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.2,
+          "fullyUsedYearsPct": 6.5,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 653,
+          "limit": 3,
+          "spentPerYear": 0.87,
+          "unusedPct": 71,
+          "momentsPerYear": 0.86,
+          "offeredPerYear": 0.86,
+          "purchaseTimePerYear": 0.02,
+          "fullyUsedYearsPct": 2.1,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 934,
+          "limit": 3,
+          "spentPerYear": 0.96,
+          "unusedPct": 67.9,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.89,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 3.5,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44874,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "A/Retire-continue": {
+      "lives": 100,
+      "deathAge": 83.36,
+      "time": {
+        "grantedPerLife": 196.98,
+        "spentPerLife": 69.94,
+        "unusedPct": 64.5,
+        "grantedPerAdultYear": 3,
+        "spentPerAdultYear": 1.07,
+        "fullyUsedAdultYearsPct": 5.7,
+        "onMomentsPerLife": 58.95,
+        "onPurchasesPerLife": 10.99
+      },
+      "moments": {
+        "offeredPerLife": 75.29,
+        "acceptedPerLife": 74.98,
+        "adultAcceptedPerLife": 58.95,
+        "uniqueAcceptedPerLife": 44.1,
+        "declinedForPlanPerLife": 0.31,
+        "emptyBeatsPerLife": 0.01,
+        "t9OfferedPerLife": 0,
+        "t9AcceptedPerLife": 0,
+        "t9LivesWithAny": 0
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.87,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3596.3
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3543,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97.2,
+          "timeBlockedPct": 2.8,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 102878.08,
+        "finalBalance": 58467.08,
+        "reducedYears": 0,
+        "retiredYears": 8.75
+      },
+      "narrative": {
+        "storyletsPerLife": 26.04,
+        "memoriesPerLife": 28.55,
+        "followupsPerLife": 4.36,
+        "uniqueLivedEventsPerLife": 70.14
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.43,
+        "stress": 21.61,
+        "morale": 64.14,
+        "bonds": 42.71,
+        "meanBond": 66.32,
+        "closePeople": 2.85,
+        "balance": 36383.69
+      },
+      "at80": {
+        "alive": 71,
+        "health": 41.76,
+        "stress": 26.2,
+        "morale": 65.69,
+        "bonds": 29.27,
+        "meanBond": 77.17,
+        "closePeople": 1.66,
+        "balance": 57436.13
+      },
+      "byBasis": {
+        "full": {
+          "years": 5683,
+          "limit": 3,
+          "spentPerYear": 1.09,
+          "unusedPct": 63.7,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.19,
+          "fullyUsedYearsPct": 6.1,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 875,
+          "limit": 3,
+          "spentPerYear": 0.92,
+          "unusedPct": 69.5,
+          "momentsPerYear": 0.87,
+          "offeredPerYear": 0.87,
+          "purchaseTimePerYear": 0.05,
+          "fullyUsedYearsPct": 3.1,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44823,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Retire-left": {
+      "lives": 100,
+      "deathAge": 82.22,
+      "time": {
+        "grantedPerLife": 208.28,
+        "spentPerLife": 76.69,
+        "unusedPct": 63.2,
+        "grantedPerAdultYear": 3.23,
+        "spentPerAdultYear": 1.19,
+        "fullyUsedAdultYearsPct": 6.9,
+        "onMomentsPerLife": 63.47,
+        "onPurchasesPerLife": 13.22
+      },
+      "moments": {
+        "offeredPerLife": 80.18,
+        "acceptedPerLife": 79.5,
+        "adultAcceptedPerLife": 63.47,
+        "uniqueAcceptedPerLife": 46.12,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 1.45,
+        "t9AcceptedPerLife": 1.45,
+        "t9LivesWithAny": 80
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.9,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3605.9
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3552,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 94567.31,
+        "finalBalance": 50899.41,
+        "reducedYears": 0,
+        "retiredYears": 14.72
+      },
+      "narrative": {
+        "storyletsPerLife": 25.78,
+        "memoriesPerLife": 29.68,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 71.9
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.37,
+        "stress": 21.6,
+        "morale": 64.11,
+        "bonds": 42.47,
+        "meanBond": 66.23,
+        "closePeople": 2.84,
+        "balance": 36352.67
+      },
+      "at80": {
+        "alive": 68,
+        "health": 53.6,
+        "stress": 18.02,
+        "morale": 66.88,
+        "bonds": 30.01,
+        "meanBond": 74.43,
+        "closePeople": 1.57,
+        "balance": 50317.47
+      },
+      "byBasis": {
+        "full": {
+          "years": 4972,
+          "limit": 3,
+          "spentPerYear": 1.14,
+          "unusedPct": 61.9,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.25,
+          "fullyUsedYearsPct": 8.8,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 1472,
+          "limit": 4,
+          "spentPerYear": 1.34,
+          "unusedPct": 66.4,
+          "momentsPerYear": 1.29,
+          "offeredPerYear": 1.29,
+          "purchaseTimePerYear": 0.06,
+          "fullyUsedYearsPct": 0.5,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44796,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Retire-mentor": {
+      "lives": 100,
+      "deathAge": 82.42,
+      "time": {
+        "grantedPerLife": 209.08,
+        "spentPerLife": 76.86,
+        "unusedPct": 63.2,
+        "grantedPerAdultYear": 3.23,
+        "spentPerAdultYear": 1.19,
+        "fullyUsedAdultYearsPct": 6.9,
+        "onMomentsPerLife": 63.66,
+        "onPurchasesPerLife": 13.2
+      },
+      "moments": {
+        "offeredPerLife": 80.37,
+        "acceptedPerLife": 79.69,
+        "adultAcceptedPerLife": 63.66,
+        "uniqueAcceptedPerLife": 46.76,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 1.81,
+        "t9AcceptedPerLife": 1.81,
+        "t9LivesWithAny": 81
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.88,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3599.5
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3553,
+          "availablePct": 97.7,
+          "timeBlockedPct": 2.3,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 99189.08,
+        "finalBalance": 55394.68,
+        "reducedYears": 0,
+        "retiredYears": 14.92
+      },
+      "narrative": {
+        "storyletsPerLife": 25.78,
+        "memoriesPerLife": 29.58,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 72.54
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.37,
+        "stress": 21.6,
+        "morale": 64.11,
+        "bonds": 42.47,
+        "meanBond": 66.23,
+        "closePeople": 2.84,
+        "balance": 36352.67
+      },
+      "at80": {
+        "alive": 68,
+        "health": 53.3,
+        "stress": 19.45,
+        "morale": 67.18,
+        "bonds": 31.9,
+        "meanBond": 74.32,
+        "closePeople": 1.57,
+        "balance": 55398.31
+      },
+      "byBasis": {
+        "full": {
+          "years": 4972,
+          "limit": 3,
+          "spentPerYear": 1.14,
+          "unusedPct": 61.9,
+          "momentsPerYear": 0.89,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.25,
+          "fullyUsedYearsPct": 8.8,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 567,
+          "limit": 4,
+          "spentPerYear": 1.27,
+          "unusedPct": 68.2,
+          "momentsPerYear": 1.25,
+          "offeredPerYear": 1.25,
+          "purchaseTimePerYear": 0.02,
+          "fullyUsedYearsPct": 0.2,
+          "declinedForPlanPerYear": 0
+        },
+        "mentor": {
+          "years": 925,
+          "limit": 4,
+          "spentPerYear": 1.38,
+          "unusedPct": 65.5,
+          "momentsPerYear": 1.3,
+          "offeredPerYear": 1.3,
+          "purchaseTimePerYear": 0.07,
+          "fullyUsedYearsPct": 0.8,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44893,
+        "violations": 0,
+        "first": null
+      }
+    },
+    "C/Retire-continue": {
+      "lives": 100,
+      "deathAge": 83.16,
+      "time": {
+        "grantedPerLife": 204.98,
+        "spentPerLife": 74.74,
+        "unusedPct": 63.5,
+        "grantedPerAdultYear": 3.13,
+        "spentPerAdultYear": 1.14,
+        "fullyUsedAdultYearsPct": 7.1,
+        "onMomentsPerLife": 61.57,
+        "onPurchasesPerLife": 13.17
+      },
+      "moments": {
+        "offeredPerLife": 78.28,
+        "acceptedPerLife": 77.6,
+        "adultAcceptedPerLife": 61.57,
+        "uniqueAcceptedPerLife": 45.53,
+        "declinedForPlanPerLife": 0.68,
+        "emptyBeatsPerLife": 0.06,
+        "t9OfferedPerLife": 1.16,
+        "t9AcceptedPerLife": 1.16,
+        "t9LivesWithAny": 65
+      },
+      "refusals": {
+        "timeBlockedPurchasesPerLife": 0,
+        "course": 0,
+        "familyTrip": 0,
+        "sectorTrip": 0,
+        "livesWithTimeBlockedPurchase": 0
+      },
+      "purchases": {
+        "coursesPerLife": 2.2,
+        "livesWithCourse": 98,
+        "livesWith2Courses": 98,
+        "storyCourses": 11,
+        "familyTripsPerLife": 4.85,
+        "sectorTripsPerLife": 3.92,
+        "spentCreditsPerLife": 3589.9
+      },
+      "availability": {
+        "course": {
+          "eligibleWindows": 3339,
+          "availablePct": 79.2,
+          "timeBlockedPct": 20.8,
+          "moneyBlockedPct": 0
+        },
+        "familyTrip": {
+          "eligibleWindows": 3543,
+          "availablePct": 97.5,
+          "timeBlockedPct": 2.5,
+          "moneyBlockedPct": 0
+        },
+        "sectorTrip": {
+          "eligibleWindows": 3846,
+          "availablePct": 97.3,
+          "timeBlockedPct": 2.7,
+          "moneyBlockedPct": 0
+        },
+        "retrain": {
+          "eligibleWindows": 3316,
+          "availablePct": 97,
+          "timeBlockedPct": 3,
+          "moneyBlockedPct": 0
+        }
+      },
+      "career": {
+        "grade3Lives": 98,
+        "grade3MedianAge": 39,
+        "grade4Lives": 98,
+        "grade4MedianAge": 51,
+        "lifetimeIncome": 102546.34,
+        "finalBalance": 58323.24,
+        "reducedYears": 0,
+        "retiredYears": 8.6
+      },
+      "narrative": {
+        "storyletsPerLife": 25.85,
+        "memoriesPerLife": 29.02,
+        "followupsPerLife": 4.33,
+        "uniqueLivedEventsPerLife": 71.38
+      },
+      "at60": {
+        "alive": 96,
+        "health": 76.37,
+        "stress": 21.6,
+        "morale": 64.11,
+        "bonds": 42.47,
+        "meanBond": 66.23,
+        "closePeople": 2.84,
+        "balance": 36352.67
+      },
+      "at80": {
+        "alive": 72,
+        "health": 42.53,
+        "stress": 26.34,
+        "morale": 65.23,
+        "bonds": 28.84,
+        "meanBond": 77.86,
+        "closePeople": 1.5,
+        "balance": 57886.32
+      },
+      "byBasis": {
+        "full": {
+          "years": 5678,
+          "limit": 3,
+          "spentPerYear": 1.12,
+          "unusedPct": 62.7,
+          "momentsPerYear": 0.9,
+          "offeredPerYear": 0.91,
+          "purchaseTimePerYear": 0.22,
+          "fullyUsedYearsPct": 8.1,
+          "declinedForPlanPerYear": 0.01
+        },
+        "trainee": {
+          "years": 8,
+          "limit": 3,
+          "spentPerYear": 0.75,
+          "unusedPct": 75,
+          "momentsPerYear": 0.38,
+          "offeredPerYear": 0.38,
+          "purchaseTimePerYear": 0.38,
+          "fullyUsedYearsPct": 0,
+          "declinedForPlanPerYear": 0
+        },
+        "retired": {
+          "years": 860,
+          "limit": 4,
+          "spentPerYear": 1.29,
+          "unusedPct": 67.8,
+          "momentsPerYear": 1.25,
+          "offeredPerYear": 1.25,
+          "purchaseTimePerYear": 0.04,
+          "fullyUsedYearsPct": 0.7,
+          "declinedForPlanPerYear": 0
+        }
+      },
+      "integrity": {
+        "checks": 44984,
+        "violations": 0,
+        "first": null
+      }
+    }
+  },
+  "comparisons": {
+    "N-vs-A/Careerist": {
+      "pairs": 100,
+      "incomeDelta": 365.19,
+      "finalBalanceDelta": 332.49,
+      "momentsDelta": -2.34,
+      "momentsAfter40Delta": -1.17,
+      "uniqueMomentsDelta": -0.44,
+      "timeSpentDelta": 8.4,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.06,
+      "storyletsDelta": 0.02,
+      "followupsDelta": 0.04,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": -0.39
+      },
+      "bond80": {
+        "n": 56,
+        "delta": -0.48
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0.41
+      },
+      "health80": {
+        "n": 60,
+        "delta": -1.02
+      },
+      "morale60": {
+        "n": 98,
+        "delta": -0.38
+      },
+      "close80": {
+        "n": 60,
+        "delta": 0.02
+      }
+    },
+    "C-vs-N/Careerist": {
+      "pairs": 100,
+      "incomeDelta": 158.17,
+      "finalBalanceDelta": 103.77,
+      "momentsDelta": 4.66,
+      "momentsAfter40Delta": 4.66,
+      "uniqueMomentsDelta": 2.17,
+      "timeSpentDelta": 4.66,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.62,
+      "storyletsDelta": 0.06,
+      "followupsDelta": -0.01,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 45,
+        "delta": -0.71
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0
+      },
+      "health80": {
+        "n": 49,
+        "delta": 1.75
+      },
+      "morale60": {
+        "n": 98,
+        "delta": 0
+      },
+      "close80": {
+        "n": 49,
+        "delta": -0.08
+      }
+    },
+    "C-vs-A/Careerist": {
+      "pairs": 100,
+      "incomeDelta": 523.36,
+      "finalBalanceDelta": 436.26,
+      "momentsDelta": 2.32,
+      "momentsAfter40Delta": 3.49,
+      "uniqueMomentsDelta": 1.73,
+      "timeSpentDelta": 13.06,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.68,
+      "storyletsDelta": 0.08,
+      "followupsDelta": 0.03,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": -0.39
+      },
+      "bond80": {
+        "n": 45,
+        "delta": -1.13
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0.41
+      },
+      "health80": {
+        "n": 49,
+        "delta": 0.83
+      },
+      "morale60": {
+        "n": 98,
+        "delta": -0.38
+      },
+      "close80": {
+        "n": 49,
+        "delta": -0.06
+      }
+    },
+    "N-vs-A/Moderate": {
+      "pairs": 100,
+      "incomeDelta": -182.86,
+      "finalBalanceDelta": -125.26,
+      "momentsDelta": -0.49,
+      "momentsAfter40Delta": -0.1,
+      "uniqueMomentsDelta": -0.09,
+      "timeSpentDelta": 1.71,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": -0.08,
+      "storyletsDelta": -0.03,
+      "followupsDelta": -0.03,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": -0.09
+      },
+      "bond80": {
+        "n": 70,
+        "delta": 0.1
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -0.01
+      },
+      "health80": {
+        "n": 71,
+        "delta": 0.12
+      },
+      "morale60": {
+        "n": 96,
+        "delta": -0.03
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "C-vs-N/Moderate": {
+      "pairs": 100,
+      "incomeDelta": -384.63,
+      "finalBalanceDelta": -141.13,
+      "momentsDelta": 4.8,
+      "momentsAfter40Delta": 4.8,
+      "uniqueMomentsDelta": 2.24,
+      "timeSpentDelta": 4.82,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.02,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.47,
+      "storyletsDelta": -0.24,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 51,
+        "delta": -1.14
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0
+      },
+      "health80": {
+        "n": 54,
+        "delta": 1.22
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 54,
+        "delta": -0.04
+      }
+    },
+    "C-vs-A/Moderate": {
+      "pairs": 100,
+      "incomeDelta": -567.49,
+      "finalBalanceDelta": -266.39,
+      "momentsDelta": 4.31,
+      "momentsAfter40Delta": 4.7,
+      "uniqueMomentsDelta": 2.15,
+      "timeSpentDelta": 6.53,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.02,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.39,
+      "storyletsDelta": -0.27,
+      "followupsDelta": -0.03,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": -0.09
+      },
+      "bond80": {
+        "n": 51,
+        "delta": -0.99
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -0.01
+      },
+      "health80": {
+        "n": 54,
+        "delta": 1.38
+      },
+      "morale60": {
+        "n": 96,
+        "delta": -0.03
+      },
+      "close80": {
+        "n": 54,
+        "delta": -0.04
+      }
+    },
+    "N-vs-A/Family": {
+      "pairs": 100,
+      "incomeDelta": -94.3,
+      "finalBalanceDelta": -94.3,
+      "momentsDelta": 0.07,
+      "momentsAfter40Delta": 0.2,
+      "uniqueMomentsDelta": 0.02,
+      "timeSpentDelta": 1.3,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.03,
+      "storyletsDelta": 0,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 95,
+        "delta": -0.03
+      },
+      "bond80": {
+        "n": 65,
+        "delta": 0.02
+      },
+      "stress60": {
+        "n": 95,
+        "delta": 0.01
+      },
+      "health80": {
+        "n": 68,
+        "delta": 0.01
+      },
+      "morale60": {
+        "n": 95,
+        "delta": 0.02
+      },
+      "close80": {
+        "n": 68,
+        "delta": 0
+      }
+    },
+    "C-vs-N/Family": {
+      "pairs": 100,
+      "incomeDelta": 81.97,
+      "finalBalanceDelta": -217.03,
+      "momentsDelta": 17.75,
+      "momentsAfter40Delta": 17.75,
+      "uniqueMomentsDelta": 6.59,
+      "timeSpentDelta": 17.74,
+      "coursesDelta": -0.05,
+      "familyTripsDelta": 0.09,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 1.88,
+      "storyletsDelta": -0.11,
+      "followupsDelta": 0.08,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 94,
+        "delta": 1.5
+      },
+      "bond80": {
+        "n": 39,
+        "delta": 0.37
+      },
+      "stress60": {
+        "n": 94,
+        "delta": 0.17
+      },
+      "health80": {
+        "n": 42,
+        "delta": 1.32
+      },
+      "morale60": {
+        "n": 94,
+        "delta": 1.44
+      },
+      "close80": {
+        "n": 42,
+        "delta": 0.17
+      }
+    },
+    "C-vs-A/Family": {
+      "pairs": 100,
+      "incomeDelta": -12.33,
+      "finalBalanceDelta": -311.33,
+      "momentsDelta": 17.82,
+      "momentsAfter40Delta": 17.95,
+      "uniqueMomentsDelta": 6.61,
+      "timeSpentDelta": 19.04,
+      "coursesDelta": -0.05,
+      "familyTripsDelta": 0.09,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 1.91,
+      "storyletsDelta": -0.11,
+      "followupsDelta": 0.08,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 94,
+        "delta": 1.48
+      },
+      "bond80": {
+        "n": 39,
+        "delta": 0.39
+      },
+      "stress60": {
+        "n": 94,
+        "delta": 0.18
+      },
+      "health80": {
+        "n": 42,
+        "delta": 1.33
+      },
+      "morale60": {
+        "n": 94,
+        "delta": 1.46
+      },
+      "close80": {
+        "n": 42,
+        "delta": 0.17
+      }
+    },
+    "N-vs-A/TimeBuyer": {
+      "pairs": 100,
+      "incomeDelta": -144.65,
+      "finalBalanceDelta": -87.05,
+      "momentsDelta": -0.39,
+      "momentsAfter40Delta": 0,
+      "uniqueMomentsDelta": -0.05,
+      "timeSpentDelta": 1.81,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": -0.06,
+      "storyletsDelta": -0.03,
+      "followupsDelta": -0.03,
+      "grade3Delta": -0.01,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": -0.09
+      },
+      "bond80": {
+        "n": 70,
+        "delta": 0.1
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0.04
+      },
+      "health80": {
+        "n": 71,
+        "delta": 0.05
+      },
+      "morale60": {
+        "n": 96,
+        "delta": -0.03
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "C-vs-N/TimeBuyer": {
+      "pairs": 100,
+      "incomeDelta": -1289.31,
+      "finalBalanceDelta": -873.41,
+      "momentsDelta": 15.57,
+      "momentsAfter40Delta": 15.57,
+      "uniqueMomentsDelta": 6.13,
+      "timeSpentDelta": 15.64,
+      "coursesDelta": -0.01,
+      "familyTripsDelta": 0.09,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 1.28,
+      "storyletsDelta": -0.15,
+      "followupsDelta": 0.01,
+      "grade3Delta": 0.05,
+      "grade4Delta": -0.01,
+      "bond60": {
+        "n": 96,
+        "delta": 0.95
+      },
+      "bond80": {
+        "n": 43,
+        "delta": 0.07
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -0.91
+      },
+      "health80": {
+        "n": 47,
+        "delta": 1.29
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 2.34
+      },
+      "close80": {
+        "n": 47,
+        "delta": -0.04
+      }
+    },
+    "C-vs-A/TimeBuyer": {
+      "pairs": 100,
+      "incomeDelta": -1433.96,
+      "finalBalanceDelta": -960.46,
+      "momentsDelta": 15.18,
+      "momentsAfter40Delta": 15.57,
+      "uniqueMomentsDelta": 6.08,
+      "timeSpentDelta": 17.45,
+      "coursesDelta": -0.01,
+      "familyTripsDelta": 0.09,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 1.22,
+      "storyletsDelta": -0.18,
+      "followupsDelta": -0.02,
+      "grade3Delta": 0.04,
+      "grade4Delta": -0.01,
+      "bond60": {
+        "n": 96,
+        "delta": 0.86
+      },
+      "bond80": {
+        "n": 43,
+        "delta": 0.27
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -0.87
+      },
+      "health80": {
+        "n": 47,
+        "delta": 1.36
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 2.32
+      },
+      "close80": {
+        "n": 47,
+        "delta": -0.04
+      }
+    },
+    "N-vs-A/Spender": {
+      "pairs": 100,
+      "incomeDelta": 343.4,
+      "finalBalanceDelta": 254,
+      "momentsDelta": -3.59,
+      "momentsAfter40Delta": -1.53,
+      "uniqueMomentsDelta": -1.11,
+      "timeSpentDelta": 7.08,
+      "coursesDelta": 0,
+      "familyTripsDelta": -0.07,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": -0.06,
+      "storyletsDelta": 0,
+      "followupsDelta": 0.02,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 95,
+        "delta": -0.99
+      },
+      "bond80": {
+        "n": 58,
+        "delta": -0.47
+      },
+      "stress60": {
+        "n": 95,
+        "delta": -0.28
+      },
+      "health80": {
+        "n": 60,
+        "delta": -0.21
+      },
+      "morale60": {
+        "n": 95,
+        "delta": -0.1
+      },
+      "close80": {
+        "n": 60,
+        "delta": 0
+      }
+    },
+    "C-vs-N/Spender": {
+      "pairs": 100,
+      "incomeDelta": 733.38,
+      "finalBalanceDelta": 332.18,
+      "momentsDelta": 5.45,
+      "momentsAfter40Delta": 5.45,
+      "uniqueMomentsDelta": 2.63,
+      "timeSpentDelta": 5.53,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.08,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.66,
+      "storyletsDelta": 0,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 95,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 43,
+        "delta": 0.61
+      },
+      "stress60": {
+        "n": 95,
+        "delta": 0
+      },
+      "health80": {
+        "n": 46,
+        "delta": 1.79
+      },
+      "morale60": {
+        "n": 95,
+        "delta": 0
+      },
+      "close80": {
+        "n": 46,
+        "delta": 0.02
+      }
+    },
+    "C-vs-A/Spender": {
+      "pairs": 100,
+      "incomeDelta": 1076.78,
+      "finalBalanceDelta": 586.18,
+      "momentsDelta": 1.86,
+      "momentsAfter40Delta": 3.92,
+      "uniqueMomentsDelta": 1.52,
+      "timeSpentDelta": 12.61,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.01,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.6,
+      "storyletsDelta": 0,
+      "followupsDelta": 0.02,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 95,
+        "delta": -0.99
+      },
+      "bond80": {
+        "n": 44,
+        "delta": -0.2
+      },
+      "stress60": {
+        "n": 95,
+        "delta": -0.28
+      },
+      "health80": {
+        "n": 47,
+        "delta": 1.28
+      },
+      "morale60": {
+        "n": 95,
+        "delta": -0.1
+      },
+      "close80": {
+        "n": 47,
+        "delta": 0
+      }
+    },
+    "N-vs-A/Saver": {
+      "pairs": 100,
+      "incomeDelta": 0,
+      "finalBalanceDelta": 0,
+      "momentsDelta": 0,
+      "momentsAfter40Delta": 0,
+      "uniqueMomentsDelta": 0,
+      "timeSpentDelta": 0,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0,
+      "storyletsDelta": 0,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 63,
+        "delta": 0
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0
+      },
+      "health80": {
+        "n": 67,
+        "delta": 0
+      },
+      "morale60": {
+        "n": 98,
+        "delta": 0
+      },
+      "close80": {
+        "n": 67,
+        "delta": 0
+      }
+    },
+    "C-vs-N/Saver": {
+      "pairs": 100,
+      "incomeDelta": -342.49,
+      "finalBalanceDelta": -189.49,
+      "momentsDelta": 4.52,
+      "momentsAfter40Delta": 4.52,
+      "uniqueMomentsDelta": 2.12,
+      "timeSpentDelta": 4.52,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.6,
+      "storyletsDelta": -0.12,
+      "followupsDelta": -0.01,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 52,
+        "delta": -1.57
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0
+      },
+      "health80": {
+        "n": 55,
+        "delta": 1.49
+      },
+      "morale60": {
+        "n": 98,
+        "delta": 0
+      },
+      "close80": {
+        "n": 55,
+        "delta": -0.07
+      }
+    },
+    "C-vs-A/Saver": {
+      "pairs": 100,
+      "incomeDelta": -342.49,
+      "finalBalanceDelta": -189.49,
+      "momentsDelta": 4.52,
+      "momentsAfter40Delta": 4.52,
+      "uniqueMomentsDelta": 2.12,
+      "timeSpentDelta": 4.52,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.6,
+      "storyletsDelta": -0.12,
+      "followupsDelta": -0.01,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 98,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 52,
+        "delta": -1.57
+      },
+      "stress60": {
+        "n": 98,
+        "delta": 0
+      },
+      "health80": {
+        "n": 55,
+        "delta": 1.49
+      },
+      "morale60": {
+        "n": 98,
+        "delta": 0
+      },
+      "close80": {
+        "n": 55,
+        "delta": -0.07
+      }
+    },
+    "C/Family-vs-Careerist": {
+      "pairs": 100,
+      "incomeDelta": -49631.61,
+      "finalBalanceDelta": -69342.01,
+      "momentsDelta": 14.77,
+      "momentsAfter40Delta": 13.66,
+      "uniqueMomentsDelta": 6.44,
+      "timeSpentDelta": 6.87,
+      "coursesDelta": -9.56,
+      "familyTripsDelta": 11.22,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 12.34,
+      "storyletsDelta": -0.05,
+      "followupsDelta": -0.16,
+      "grade3Delta": -0.98,
+      "grade4Delta": -0.98,
+      "bond60": {
+        "n": 97,
+        "delta": 5.19
+      },
+      "bond80": {
+        "n": 41,
+        "delta": 12.11
+      },
+      "stress60": {
+        "n": 97,
+        "delta": -92.59
+      },
+      "health80": {
+        "n": 41,
+        "delta": 26.97
+      },
+      "morale60": {
+        "n": 97,
+        "delta": 20.36
+      },
+      "close80": {
+        "n": 41,
+        "delta": 0.1
+      }
+    },
+    "A/Family-vs-Careerist": {
+      "pairs": 100,
+      "incomeDelta": -49095.92,
+      "finalBalanceDelta": -68594.42,
+      "momentsDelta": -0.73,
+      "momentsAfter40Delta": -0.8,
+      "uniqueMomentsDelta": 1.56,
+      "timeSpentDelta": 0.89,
+      "coursesDelta": -9.51,
+      "familyTripsDelta": 11.13,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 11.11,
+      "storyletsDelta": 0.14,
+      "followupsDelta": -0.21,
+      "grade3Delta": -0.98,
+      "grade4Delta": -0.98,
+      "bond60": {
+        "n": 95,
+        "delta": 3.44
+      },
+      "bond80": {
+        "n": 43,
+        "delta": 10.39
+      },
+      "stress60": {
+        "n": 95,
+        "delta": -92.41
+      },
+      "health80": {
+        "n": 46,
+        "delta": 23.67
+      },
+      "morale60": {
+        "n": 95,
+        "delta": 18.38
+      },
+      "close80": {
+        "n": 46,
+        "delta": -0.04
+      }
+    },
+    "C/TimeBuyer-vs-Moderate": {
+      "pairs": 100,
+      "incomeDelta": -28816.6,
+      "finalBalanceDelta": -28577.2,
+      "momentsDelta": 10.73,
+      "momentsAfter40Delta": 10.73,
+      "uniqueMomentsDelta": 3.84,
+      "timeSpentDelta": 10.79,
+      "coursesDelta": -0.01,
+      "familyTripsDelta": 0.08,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.79,
+      "storyletsDelta": 0.06,
+      "followupsDelta": -0.03,
+      "grade3Delta": -0.08,
+      "grade4Delta": -0.9,
+      "bond60": {
+        "n": 96,
+        "delta": 1.02
+      },
+      "bond80": {
+        "n": 39,
+        "delta": -0.89
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -18.37
+      },
+      "health80": {
+        "n": 43,
+        "delta": 24.14
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 14.49
+      },
+      "close80": {
+        "n": 43,
+        "delta": 0
+      }
+    },
+    "A/TimeBuyer-vs-Moderate": {
+      "pairs": 100,
+      "incomeDelta": -27950.13,
+      "finalBalanceDelta": -27883.13,
+      "momentsDelta": -0.14,
+      "momentsAfter40Delta": -0.14,
+      "uniqueMomentsDelta": -0.09,
+      "timeSpentDelta": -0.13,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.01,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": -0.04,
+      "storyletsDelta": -0.03,
+      "followupsDelta": -0.04,
+      "grade3Delta": -0.12,
+      "grade4Delta": -0.89,
+      "bond60": {
+        "n": 96,
+        "delta": 0.07
+      },
+      "bond80": {
+        "n": 70,
+        "delta": 0.14
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -17.51
+      },
+      "health80": {
+        "n": 71,
+        "delta": 24.13
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 12.14
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0.01
+      }
+    },
+    "A/TimeBuyer-vs-TimeBuyerFull": {
+      "pairs": 100,
+      "incomeDelta": -18852.92,
+      "finalBalanceDelta": -18852.92,
+      "momentsDelta": 0,
+      "momentsAfter40Delta": 0,
+      "uniqueMomentsDelta": 0,
+      "timeSpentDelta": 0,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0,
+      "storyletsDelta": 0,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 70,
+        "delta": 0
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -1.62
+      },
+      "health80": {
+        "n": 71,
+        "delta": 5.17
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "N/TimeBuyer-vs-TimeBuyerFull": {
+      "pairs": 100,
+      "incomeDelta": -18716.17,
+      "finalBalanceDelta": -18716.17,
+      "momentsDelta": 0.1,
+      "momentsAfter40Delta": 0.1,
+      "uniqueMomentsDelta": 0.04,
+      "timeSpentDelta": 0.1,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.02,
+      "storyletsDelta": 0,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0.01,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 70,
+        "delta": 0
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -1.6
+      },
+      "health80": {
+        "n": 71,
+        "delta": 5.16
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0.01
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "C/TimeBuyer-vs-TimeBuyerFull": {
+      "pairs": 100,
+      "incomeDelta": -19688.54,
+      "finalBalanceDelta": -19433.54,
+      "momentsDelta": 10.75,
+      "momentsAfter40Delta": 10.75,
+      "uniqueMomentsDelta": 3.87,
+      "timeSpentDelta": 10.81,
+      "coursesDelta": -0.01,
+      "familyTripsDelta": 0.08,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.83,
+      "storyletsDelta": 0.09,
+      "followupsDelta": 0.01,
+      "grade3Delta": 0.05,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0.95
+      },
+      "bond80": {
+        "n": 39,
+        "delta": -0.89
+      },
+      "stress60": {
+        "n": 96,
+        "delta": -2.51
+      },
+      "health80": {
+        "n": 43,
+        "delta": 5.54
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 2.35
+      },
+      "close80": {
+        "n": 43,
+        "delta": 0
+      }
+    },
+    "A/Retire-left-vs-continue": {
+      "pairs": 100,
+      "incomeDelta": -6941.31,
+      "finalBalanceDelta": -6971.91,
+      "momentsDelta": 0,
+      "momentsAfter40Delta": 0,
+      "uniqueMomentsDelta": -0.01,
+      "timeSpentDelta": 0,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.72,
+      "storyletsDelta": 0.02,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 70,
+        "delta": -0.07
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0
+      },
+      "health80": {
+        "n": 71,
+        "delta": 10.42
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "A/Retire-mentor-vs-continue": {
+      "pairs": 100,
+      "incomeDelta": -2428.07,
+      "finalBalanceDelta": -2512.47,
+      "momentsDelta": -0.02,
+      "momentsAfter40Delta": -0.02,
+      "uniqueMomentsDelta": 0.19,
+      "timeSpentDelta": -0.03,
+      "coursesDelta": 0,
+      "familyTripsDelta": -0.01,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.74,
+      "storyletsDelta": 0.02,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 70,
+        "delta": -0.13
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0
+      },
+      "health80": {
+        "n": 71,
+        "delta": 10.58
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 71,
+        "delta": 0
+      }
+    },
+    "C/Retire-left-vs-continue": {
+      "pairs": 100,
+      "incomeDelta": -7979.03,
+      "finalBalanceDelta": -7423.83,
+      "momentsDelta": 1.9,
+      "momentsAfter40Delta": 1.9,
+      "uniqueMomentsDelta": 0.59,
+      "timeSpentDelta": 1.95,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.05,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.66,
+      "storyletsDelta": -0.07,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 48,
+        "delta": -1.81
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0
+      },
+      "health80": {
+        "n": 53,
+        "delta": 10.24
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 53,
+        "delta": 0.02
+      }
+    },
+    "C/Retire-mentor-vs-continue": {
+      "pairs": 100,
+      "incomeDelta": -3357.26,
+      "finalBalanceDelta": -2928.56,
+      "momentsDelta": 2.09,
+      "momentsAfter40Delta": 2.09,
+      "uniqueMomentsDelta": 1.23,
+      "timeSpentDelta": 2.12,
+      "coursesDelta": 0,
+      "familyTripsDelta": 0.03,
+      "sectorTripsDelta": 0,
+      "memoriesDelta": 0.56,
+      "storyletsDelta": -0.07,
+      "followupsDelta": 0,
+      "grade3Delta": 0,
+      "grade4Delta": 0,
+      "bond60": {
+        "n": 96,
+        "delta": 0
+      },
+      "bond80": {
+        "n": 48,
+        "delta": -2.02
+      },
+      "stress60": {
+        "n": 96,
+        "delta": 0
+      },
+      "health80": {
+        "n": 53,
+        "delta": 10.2
+      },
+      "morale60": {
+        "n": 96,
+        "delta": 0
+      },
+      "close80": {
+        "n": 53,
+        "delta": 0.02
+      }
+    }
+  },
+  "dominance": {
+    "A": {
+      "dominatedPairs": [
+        "Moderate ≻ Saver"
+      ],
+      "bestBy": {
+        "moments": "Moderate",
+        "uniqueEvents": "Moderate",
+        "memories": "Spender",
+        "bond60": "Spender",
+        "lowStress60": "Family",
+        "income": "Careerist",
+        "grade3": "Careerist"
+      }
+    },
+    "C": {
+      "dominatedPairs": [],
+      "bestBy": {
+        "moments": "Family",
+        "uniqueEvents": "TimeBuyer",
+        "memories": "Spender",
+        "bond60": "Family",
+        "lowStress60": "TimeBuyer",
+        "income": "Careerist",
+        "grade3": "Careerist"
+      }
+    }
+  },
+  "integrity": {
+    "lives": 2700,
+    "violations": 0
+  }
+}

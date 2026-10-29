@@ -1,5 +1,6 @@
 import type { Economy } from './economy'
 import type { Director } from './director'
+import type { PersonalTimeYear } from './personalTime'
 
 export type Focus = 'study' | 'relationships' | 'work' | 'rest' | 'civic'
 export type Stat = 'health' | 'morale' | 'stress' | 'knowledge' | 'bonds' | 'reputation'
@@ -147,7 +148,7 @@ export interface Storylet {
   choices: ChoiceDef[]
 }
 
-/** Небольшая возможность внутри года: не останавливает время, стоит единицу внимания. */
+/** Небольшая возможность внутри года: не останавливает время, принять её стоит единицу личного времени. */
 export interface MomentDef {
   id: string
   spot: SpotId
@@ -186,8 +187,10 @@ export interface GameState {
   shipYear: number
   /** Сколько отметок года уже прошло (0–3): год делится на четыре равные части. */
   phase: Phase
-  /** Свободное внимание на текущий год. */
+  /** Остаток личного времени на текущий год (имя поля сохранено для совместимости сохранений). */
   attention: number
+  /** Лимит личного времени этого года и его основание: фиксируются при смене года (T9). */
+  timeYear: PersonalTimeYear
   /** id активного момента или null. */
   moment: string | null
   /** Возраст, в котором момент появлялся в последний раз. */

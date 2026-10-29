@@ -1,6 +1,7 @@
 import { isKnown, sectors } from './birth'
 import { getMomentDef } from './moments'
 import { getOffer } from './offers'
+import { PERSONAL_TIME, TIME_REGIMES } from './personalTime'
 import { storylets } from './storylets'
 import type { GameState } from './types'
 
@@ -109,6 +110,13 @@ export function findInconsistencies(g: GameState): string[] {
     if (g.stopped && economy.estate !== economy.balance) bad('остаток наследства не совпадает с балансом после смерти')
     if (!g.stopped && economy.estate !== null) bad('наследство закрыто при жизни')
   }
+  const year = g.timeYear
+  const expectedLimit = !year ? null : year.basis === 'ended' ? 0 : year.basis === 'legacy' ? PERSONAL_TIME.legacy
+    : (TIME_REGIMES as readonly string[]).includes(year.basis) ? PERSONAL_TIME.allowance[year.basis] : null
+  if (expectedLimit === null || year.limit !== expectedLimit) bad('лимит личного времени не соответствует основанию года')
+  if (!Number.isInteger(g.attention) || g.attention < 0) bad('личное время отрицательное или дробное')
+  else if (year && g.attention > year.limit) bad('остаток личного времени больше лимита года')
+  if (year?.basis === 'ended' && !g.stopped) bad('личное время закрыто при жизни')
   if (g.pending && !storylets.some(s => s.id === g.pending)) bad(`ожидается решение «${g.pending}», которого нет в каталоге`)
   const moment = g.moment ? getMomentDef(g.moment) : null
   if (g.moment && !moment) bad(`активен неизвестный момент «${g.moment}»`)

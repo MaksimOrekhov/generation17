@@ -84,7 +84,7 @@ export type Blocker = 'money' | 'attention' | 'age' | 'cooldown' | 'target' | 'c
 export function blocker(g: GameState, id: OfferId, reason: string | null): Blocker {
   if (!reason) return 'none'
   if (/^Не хватает .*кр\.$/.test(reason)) return 'money'
-  if (/^Не хватает .*внимания/.test(reason)) return 'attention'
+  if (/^Не хватает (.*внимания|личного времени)/.test(reason)) return 'attention'
   if (/^Доступно (с|до) /.test(reason)) return 'age'
   if (/Следующ|через .*год|через .*лет/.test(reason)) return 'cooldown'
   if (id === 'sector-trip' && !availableSectorOptions(g).length || id === 'family-trip' && familyTripParticipants(g).length < 2
@@ -235,7 +235,7 @@ export function playT8(seed: number, policy: Policy, acceptMoments = false, opti
     life.trace.push(`${state.age}:${action}`); life.invariantChecks++
     const messages = findInconsistencies(state)
     if (messages.length) life.violations.push({ action, messages, trace: [...life.trace] })
-    if (state.attention < 0 || state.attention > 3) throw Error(`Attention: ${seed} ${action}`)
+    if (state.attention < 0 || state.attention > state.timeYear.limit) throw Error(`Attention: ${seed} ${action}`)
     options.onState?.(state, action)
   }
   function recordPurchase(before: GameState, after: GameState, p: BuyRecord, source: 'shop' | 'story') {

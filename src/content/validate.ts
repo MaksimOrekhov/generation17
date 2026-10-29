@@ -1,5 +1,6 @@
 import type { Effects, MomentDef, Storylet } from '../domain/types'
 import { getOffer } from '../domain/offers'
+import { TIME_REGIMES } from '../domain/personalTime'
 import { STORY_MONEY_LIMIT, validStoryMoney } from '../domain/storyMoney'
 
 export interface Issue { level: 'error' | 'warn'; where: string; message: string }
@@ -142,7 +143,7 @@ class Ctx {
   requires(r: unknown, where: string, flagsSetHere: Set<string>) {
     if (r === undefined) return
     if (!isObj(r)) { this.err(where, 'requires должен быть объектом'); return }
-    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen'], where)
+    this.keys(r, ['flag', 'flagNot', 'flagIs', 'flagNotIs', 'since', 'until', 'personAge', 'job', 'alive', 'present', 'stat', 'sector', 'sectorNot', 'money', 'work', 'grade', 'housing', 'owns', 'ownsNot', 'reserveYears', 'ownedYears', 'servicesOpen', 'regime'], where)
     const range = (key: string, min: number, max: number, step = 1) => {
       const value = r[key], w = `${where}.${key}`
       if (value === undefined) return
@@ -162,13 +163,15 @@ class Ctx {
     range('housing', 0, 2)
     range('reserveYears', ...LIMITS.reserveYears, .1)
     const knownOwnable = (id: string) => !!getOffer(id) || id.startsWith('visit-sector-') && SECTORS.includes(id.slice('visit-sector-'.length))
-    for (const key of ['work', 'owns', 'ownsNot']) {
+    for (const key of ['work', 'regime', 'owns', 'ownsNot']) {
       const value = r[key], w = `${where}.${key}`
       if (value === undefined) continue
       if (!Array.isArray(value) || !value.every(isStr)) { this.err(w, 'должен быть массивом строк'); continue }
       for (const id of value) {
         if (key === 'work') {
           if (!['child', 'trainee', 'working', 'between', 'sick', 'retired'].includes(id)) this.err(w, `неизвестный рабочий статус «${id}»`)
+        } else if (key === 'regime') {
+          if (!(TIME_REGIMES as readonly string[]).includes(id)) this.err(w, `неизвестный рабочий режим «${id}» (допустимы: ${TIME_REGIMES.join(', ')})`)
         } else if (!knownOwnable(id)) {
           this.err(w, `неизвестная позиция или посещённый сектор «${id}»`)
         }

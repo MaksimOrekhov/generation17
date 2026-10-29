@@ -5,7 +5,9 @@ defineProps<{
   where: string
   acceptLabel: string
   skipLabel: string
-  attention: number
+  /** Остаток личного времени года и цена принятия момента. */
+  timeLeft: number
+  cost: number
   /** Оставшееся время, 1 → 0. */
   left: number
 }>()
@@ -25,12 +27,12 @@ defineEmits<{ accept: []; skip: [] }>()
         <p class="moment__text">{{ text }}</p>
       </div>
       <div class="moment__actions">
-        <button class="btn btn--primary" :disabled="attention < 1" @click="$emit('accept')">
-          {{ acceptLabel }}<span class="moment__cost">−1 внимание</span>
+        <button class="btn btn--primary" :disabled="timeLeft < cost" @click="$emit('accept')">
+          {{ acceptLabel }}<span class="moment__cost">−{{ cost }} ед. личного времени · осталось {{ timeLeft }}</span>
         </button>
         <button class="btn btn--sm btn--ghost" @click="$emit('skip')">{{ skipLabel }}</button>
         <span class="moment__hint">
-          <template v-if="attention < 1">Внимание на этот год закончилось</template>
+          <template v-if="timeLeft < cost">В этом году не осталось личного времени</template>
           <template v-else><kbd>Enter</kbd> принять · <kbd>Esc</kbd> пропустить</template>
         </span>
       </div>
@@ -64,7 +66,7 @@ kbd { font: 500 10px var(--font-mono); border: 1px solid var(--line-2); padding:
 @media (max-width: 640px) {
   .moment { margin: 8px; }
   .moment__body { grid-template-columns: minmax(0, 1fr); }
-  .moment__actions { grid-template-columns: 1fr auto; min-width: 0; align-items: center; }
+  .moment__actions { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); min-width: 0; align-items: center; }
   .moment__hint { display: none; }
   .moment__text { font-size: 12.5px; }
 }

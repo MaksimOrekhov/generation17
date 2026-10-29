@@ -45,7 +45,8 @@ describe('доступность каталога и чистота провер
     const before = structuredClone(g)
     const rng = g.rng
     const result = canBuy(g, 'course-pro')
-    expect(result).toMatchObject({ available: true, oneTimeCost: 350, annualCost: 0, attention: 1, reason: null, action: 'purchase' })
+    // T9: курс — серьёзное занятие сверх смены, две единицы личного времени.
+    expect(result).toMatchObject({ available: true, oneTimeCost: 350, annualCost: 0, attention: 2, reason: null, action: 'purchase' })
     expect(result.opens.length).toBeGreaterThan(0)
     expect(g).toEqual(before)
     expect(g.rng).toBe(rng)
@@ -76,7 +77,7 @@ describe('доступность каталога и чистота провер
 
     const noAttention = workerAt(30)
     noAttention.attention = 0
-    expect(canBuy(noAttention, 'course-pro').reason).toMatch(/внимания/)
+    expect(canBuy(noAttention, 'course-pro').reason).toMatch(/личного времени/)
 
     const poor = workerAt(30)
     poor.economy.balance = 349
@@ -183,7 +184,7 @@ describe('профессиональный курс', () => {
     const purchased = purchase(g, 'course-pro')
     expect(g.economy.balance).toBe(1_000)
     expect(purchased.economy.balance).toBe(650)
-    expect(purchased.attention).toBe(2)
+    expect(purchased.attention).toBe(1)
     expect(purchased.economy.work.courses).toBe(1)
     expect(purchased.skills[skill]).toBe(45)
     expect(purchased.economy.work.grade).toBe(2)
@@ -216,7 +217,7 @@ describe('профессиональный курс', () => {
     const loaded = roundTrip(first)
     expect(loaded.economy.lastBought['course-pro']).toBe(25)
     expect(canBuy({ ...loaded, age: 28, economy: { ...loaded.economy, settledAge: 28 } }, 'course-pro').reason).toMatch(/через 1 год/)
-    const afterFourYears = { ...loaded, age: 29, economy: { ...loaded.economy, settledAge: 29 } }
+    const afterFourYears = { ...loaded, age: 29, attention: 3, economy: { ...loaded.economy, settledAge: 29 } }
     expect(canBuy(afterFourYears, 'course-pro').available).toBe(true)
     const second = purchase(afterFourYears, 'course-pro')
     expect(second.economy.work.courses).toBe(2)
@@ -545,7 +546,7 @@ describe('покупки вместе, сохранение и ограниче�
     const course = purchase(g, 'course-pro')
     const cabin = purchase(course, 'own-cabin')
     expect(cabin.economy.balance).toBe(1_250)
-    expect(cabin.attention).toBe(2)
+    expect(cabin.attention).toBe(1)
     cabin.age = 31
     settleYear(cabin)
     expect(cabin.economy.years.at(-1)).toMatchObject({ wage: 1_100, bills: 630, balance: 1_720 })
@@ -571,6 +572,7 @@ describe('покупки вместе, сохранение и ограниче�
     for (const age of [25, 29, 33]) {
       g.age = age
       g.economy.settledAge = age
+      g.attention = 3 // новый год — новое личное время
       g = purchase(g, 'course-pro')
     }
     expect(g.economy.work.courses).toBe(3)

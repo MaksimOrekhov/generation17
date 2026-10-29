@@ -1,4 +1,5 @@
 import { onBeforeUnmount, onMounted } from 'vue'
+import { canTakeMoment } from '../domain/engine'
 import { useGameStore } from '../stores/game'
 
 /**
@@ -25,7 +26,7 @@ export function useHotkeys(enabled: () => boolean) {
       store.step()
     } else if (e.key === 'Enter' && !onButton) {
       if (store.result) store.continueAfterResult()
-      else if (store.currentMoment && store.game.attention > 0) store.acceptMoment()
+      else if (store.currentMoment && canTakeMoment(store.game)) store.acceptMoment()
     } else if (e.key === 'Escape' && store.currentMoment) {
       store.dismissMoment()
     }

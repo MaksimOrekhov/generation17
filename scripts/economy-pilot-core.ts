@@ -286,7 +286,7 @@ export function playLife(seed: number, strategy: Strategy, opts: PilotOptions = 
     life.invariantChecks++
     const messages = findInconsistencies(state)
     if (messages.length) life.violations.push({ action, messages, trace: [...life.trace] })
-    if (state.attention < 0 || state.attention > 3) throw Error(`Attention seed=${seed}: ${life.trace.join(',')}`)
+    if (state.attention < 0 || state.attention > state.timeYear.limit) throw Error(`Attention seed=${seed}: ${life.trace.join(',')}`)
   }
   check('create', g)
   for (let guard = 0; guard < 130 && !g.stopped; guard++) {

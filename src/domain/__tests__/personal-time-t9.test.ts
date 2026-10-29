@@ -403,6 +403,71 @@ describe('T9: «свободный вечер» — дополнительный
     const t9 = beat(legacy), t8 = withTimeRules('T8', () => beat(legacy))
     expect(t9.rng).toBe(t8.rng)
   })
+
+  /** Отметки года подряд: какой RNG и какой момент дала каждая (момент перед отметкой снимается). */
+  const beats = (g: GameState, n = 12) => {
+    const out: { rng: number; moment: string | null }[] = []
+    let s = g
+    for (let i = 0; i < n; i++) { s = beat({ ...s, phase: 0, moment: null }); out.push({ rng: s.rng, moment: s.moment }) }
+    return out
+  }
+
+  it('пустой пул: дополнительный бросок не тратит RNG — последовательность как у T8 и как у полной ставки', () => {
+    const saved = [...moments]
+    moments.splice(0, moments.length)
+    try {
+      for (const g of [adult(45, .6), retired(70), retired(70, true)]) {
+        expect(eligibleMoments(g)).toEqual([])
+        const t9 = beats(g)
+        expect(t9).toEqual(withTimeRules('T8', () => beats(g)))
+        expect(t9.every(b => b.moment === null)).toBe(true)
+        // Ровно один бросок на отметку: тот же, что у полной ставки в этом состоянии.
+        expect(t9.map(b => b.rng)).toEqual(beats({ ...g, timeYear: { limit: 3, basis: 'full' }, attention: 3 }).map(b => b.rng))
+      }
+    } finally {
+      moments.splice(0, moments.length, ...saved)
+    }
+  })
+
+  it('непустой пул: при промахе обычного шанса — ровно один дополнительный бросок, не больше одного момента', () => {
+    const g = adult(45, .6)
+    expect(eligibleMoments(g).length).toBeGreaterThan(0)
+    let s = g, extra = 0, misses = 0
+    for (let i = 0; i < 40; i++) {
+      const prev = { ...s, phase: 0 as const, moment: null }
+      const t8 = withTimeRules('T8', () => beat(prev)), t9 = beat(prev)
+      if (t8.moment) {
+        // Обычный шанс сработал: «свободный вечер» не бросается, исход тот же.
+        expect(t9.rng).toBe(t8.rng); expect(t9.moment).toBe(t8.moment)
+      } else {
+        misses++
+        expect(t9.rng).not.toBe(t8.rng)
+        if (t9.moment) extra++
+      }
+      expect(typeof t9.moment === 'string' || t9.moment === null).toBe(true)
+      s = t9
+    }
+    expect(misses).toBeGreaterThan(0)
+    expect(extra).toBeGreaterThan(0)
+    expect(extra).toBeLessThan(misses)
+  })
+
+  it('полная ставка: тот же RNG и те же моменты, что в T8, при любом пуле', () => {
+    const g = adult()
+    expect(beats(g, 30)).toEqual(withTimeRules('T8', () => beats(g, 30)))
+  })
+
+  it('одинаковые seed дают одинаковые жизни на 0,6 ставки и на пенсии', () => {
+    const live = (seed: number) => {
+      let g = adult(45, .6, 5_000, seed)
+      for (let i = 0; i < 40 && !g.stopped; i++) {
+        if (g.pending) { const e = storylets.find(x => x.id === g.pending)!; g = decide(g, e.choices.findIndex((_, k) => canChoose(g, k).available)); continue }
+        g = advanceYear(g)
+      }
+      return g
+    }
+    for (const seed of [11, 4242]) expect(live(seed)).toEqual(live(seed))
+  })
 })
 
 describe('T9: миграция сохранений до T9', () => {

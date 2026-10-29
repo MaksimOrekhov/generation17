@@ -1165,7 +1165,7 @@ scripts/audit.ts  + экономический отчёт и «ботов»
 | Момент | Режим | Возраст |
 |---|---|---|
 | `m-free-workshop` «Мастерская у грузового лифта» | `reduced` | 40–76 |
-| `m-free-strings` «Футляр на верхней полке» | `reduced` | 40–76 |
+| `m-free-strings` «Инструмент без одной струны» | `reduced` | 40–76 |
 | `m-free-parent-day` «Свободная среда» (нужна мать) | `reduced` | 40–70 |
 | `m-retired-alarm` «Будильник на шесть десять» | `retired`, `mentor` | 60–95 |
 | `m-retired-archive` «Объявления без описи» | `retired`, `mentor` | 62–95 |

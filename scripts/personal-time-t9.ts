@@ -14,6 +14,8 @@ const args = process.argv.slice(2).filter(a => a !== '--')
 const value = (key: string, fallback?: string) => { const i = args.indexOf(key); return i < 0 ? fallback : args[i + 1] }
 const count = Number(args[0] && /^\d+$/.test(args[0]) ? args[0] : 100), start = Number(value('--start', '102'))
 const jsonPath = value('--json'), mdPath = value('--md'), mainOnly = args.includes('--main-only')
+/** Independent check: T8, T9 without the free evening, full T9; plus reduced-vs-full and retirement paths. */
+const holdout = args.includes('--holdout')
 if (!Number.isInteger(count) || count < 1 || count > 2000) throw Error('Usage: [1..2000] --start seed --json file --md file --main-only')
 const seeds = Array.from({ length: count }, (_, i) => start + i)
 
@@ -145,11 +147,13 @@ function batch(mode: Mode, policy: Policy, label = policy.name) {
   return lives
 }
 
-for (const key of ['A', 'N', 'B', 'C'] as const) for (const name of T9_POLICIES) batch(MODES[key], policyFor(name))
+for (const key of holdout ? ['A', 'N', 'C'] as const : ['A', 'N', 'B', 'C'] as const) for (const name of T9_POLICIES) batch(MODES[key], policyFor(name))
 for (const name of T9_POLICIES) {
   comparisons[`N-vs-A/${name}`] = paired(cache.get(`A/${name}`)!, cache.get(`N/${name}`)!)
-  comparisons[`B-vs-N/${name}`] = paired(cache.get(`N/${name}`)!, cache.get(`B/${name}`)!)
-  comparisons[`C-vs-B/${name}`] = paired(cache.get(`B/${name}`)!, cache.get(`C/${name}`)!)
+  if (!holdout) {
+    comparisons[`B-vs-N/${name}`] = paired(cache.get(`N/${name}`)!, cache.get(`B/${name}`)!)
+    comparisons[`C-vs-B/${name}`] = paired(cache.get(`B/${name}`)!, cache.get(`C/${name}`)!)
+  } else comparisons[`C-vs-N/${name}`] = paired(cache.get(`N/${name}`)!, cache.get(`C/${name}`)!)
   comparisons[`C-vs-A/${name}`] = paired(cache.get(`A/${name}`)!, cache.get(`C/${name}`)!)
 }
 comparisons['C/Family-vs-Careerist'] = paired(cache.get('C/Careerist')!, cache.get('C/Family')!)
@@ -157,7 +161,18 @@ comparisons['A/Family-vs-Careerist'] = paired(cache.get('A/Careerist')!, cache.g
 comparisons['C/TimeBuyer-vs-Moderate'] = paired(cache.get('C/Moderate')!, cache.get('C/TimeBuyer')!)
 comparisons['A/TimeBuyer-vs-Moderate'] = paired(cache.get('A/Moderate')!, cache.get('A/TimeBuyer')!)
 
-if (!mainOnly) {
+if (holdout) {
+  const full = { ...policyFor('TimeBuyer'), name: 'TimeBuyerFull', fullLoad: true }
+  for (const key of ['A', 'N', 'C'] as const) {
+    batch(MODES[key], full)
+    comparisons[`${key}/TimeBuyer-vs-TimeBuyerFull`] = paired(cache.get(`${key}/TimeBuyerFull`)!, cache.get(`${key}/TimeBuyer`)!)
+  }
+  for (const key of ['A', 'C'] as const) {
+    for (const path of ['left', 'mentor', 'continue'] as const) batch(MODES[key], { ...policyFor('Moderate'), name: `Retire-${path}`, retirement: path })
+    comparisons[`${key}/Retire-left-vs-continue`] = paired(cache.get(`${key}/Retire-continue`)!, cache.get(`${key}/Retire-left`)!)
+    comparisons[`${key}/Retire-mentor-vs-continue`] = paired(cache.get(`${key}/Retire-continue`)!, cache.get(`${key}/Retire-mentor`)!)
+  }
+} else if (!mainOnly) {
   for (const key of ['AG', 'CG'] as const) for (const name of T9_POLICIES) batch(MODES[key], policyFor(name))
   for (const name of T9_POLICIES) comparisons[`CG-vs-AG/${name}`] = paired(cache.get(`AG/${name}`)!, cache.get(`CG/${name}`)!)
   // Reduced vs full load with an identical TimeBuyer focus: the clean price and value of 0.6.
@@ -188,7 +203,7 @@ if (!mainOnly) {
 }
 
 const report = {
-  schemaVersion: 1, task: 'T9 personal time', seeds: { first: start, last: start + count - 1, count },
+  schemaVersion: 1, task: 'T9 personal time', seeds: { first: start, last: start + count - 1, count, cohort: start === 102 ? 'development' : start === 1002 ? 'holdout' : 'custom' }, holdout,
   rules: TIME_RULESETS,
   modes: { A: 'T8 rules (3 every year, course 1), T8 catalogue', N: 'T9 allowances and costs without the free-evening roll, T8 catalogue (resource only)',
     B: 'Full T9 rules incl. free-evening roll, T8 catalogue', C: 'T9 rules and T9 free-time moments (shipped)',

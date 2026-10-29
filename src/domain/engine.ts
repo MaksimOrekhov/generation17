@@ -562,9 +562,12 @@ export function beat(state: GameState): GameState {
   const line = ambientLine(g, g.phase)
   addLog(g, 'ambient', line.title, resolveText(g, line.text))
   // после тяжёлого события тихие моменты приходят чаще
-  if (g.attention > 0 && (chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0)) || freeTimeRoll(g))) {
-    const pool = eligibleMoments(g)
-    if (pool.length) {
+  if (g.attention > 0) {
+    // Обычный бросок идёт первым и всегда, как в T8; пул моментов считается без RNG.
+    const regular = chance(g, MOMENT_CHANCE + (g.director.tension >= 2 ? .15 : 0))
+    const pool = regular || freeTimeChance(g) > 0 ? eligibleMoments(g) : []
+    // «Свободный вечер» бросается, только если обычный мимо и предложить есть что: пустой пул RNG не тратит.
+    if (pool.length && (regular || freeTimeRoll(g))) {
       const next = weighted(g, pool.map(m => [m, m.weight] as const))
       g.moment = next.id
       g.momentLog[next.id] = g.age

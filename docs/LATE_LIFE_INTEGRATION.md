@@ -1,5 +1,7 @@
 # LATE LIFE INTEGRATION: отчёт
 
+> **Исторический отчёт об интеграции от 29.10.2026.** Сюжеты поздней жизни и связанные исправления вошли в `main`; этот документ сохраняет сравнение и методику на исходных выборках. Для текущего поведения используйте [ARCHITECTURE.md](ARCHITECTURE.md), [PROJECT_STATE.md](PROJECT_STATE.md) и текущий код.
+
 Ветка `integrate/late-life` (от `main` = `de52e87`). Вливает `codex/late-life-content-v1` (`aaccc37`; в задаче опечатка `aaacc37`) в актуальную архитектуру: директор с `priority`, часы, `npm run audit`.
 
 Сравнение «до/после»: `docs/audit/late-life-before-1000.json` и `docs/audit/late-life-after-1000.json` — `npm run audit -- 1000` на одних и тех же seed и стратегиях.

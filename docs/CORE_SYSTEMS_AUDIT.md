@@ -1,5 +1,7 @@
 # CORE SYSTEMS AUDIT — готовность Generation 17 к масштабному контенту
 
+> **Исторический аудит на 29.10.2026.** Он фиксирует состояние `main` на `74fe07d4e9615e97b85dccb9fa3ebcaed1bd111b` и предложения того периода. Часть описанных как будущие систем впоследствии появилась в `main`; выводы и приоритеты ниже не являются текущей оценкой или утверждённым планом. Текущее состояние — в [PROJECT_STATE.md](PROJECT_STATE.md), направления — в [ROADMAP.md](ROADMAP.md), задачи — в Linear.
+
 > **База:** `main` = `74fe07d` («Слияние claude/personal-time-t9»). T9 уже в `main`; анализ ведётся по ней, не по старым веткам. Ветка отчёта `claude/core-systems-roadmap`, 29.10.2026.
 > **Метод:** чтение кода и документов, существующие тесты (38 файлов, 874 теста — все проходят), `npm run content:check`, новый диагностический аудит `npm run audit:variety` и пробы валидатора. Игра, баланс и контент не менялись.
 > **Данные:** [`docs/audit/core-systems-variety.json`](audit/core-systems-variety.json). Воспроизведение: `npm run audit:variety -- 200 --scale --json docs/audit/core-systems-variety.json` (≈ 6 мин; без `--scale` ≈ 4 мин).

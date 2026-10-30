@@ -1,10 +1,11 @@
 # Generation17 — roadmap студии
 
-Начальный обзор задач Linear на 30.10.2026. Содержимое не назначает новых приоритетов, сроков, исполнителей или игровых механик. Текущее состояние кода указано в [PROJECT_STATE.md](PROJECT_STATE.md).
+Датированный снимок задач Linear на 30.10.2026. Markdown-roadmap не синхронизируется с Linear автоматически; актуальные статусы задач находятся в [Linear](https://linear.app/generation17). Содержимое не назначает новых приоритетов, сроков, исполнителей или игровых механик. Текущее состояние кода указано в [PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## Текущая организационная работа
 
-- [GEN-5 — документация виртуальной студии](https://linear.app/generation17/issue/GEN-5/perenesti-narrative-bible-v10-i-reglament-virtualnoj-studii-v-github) — согласованная документационная задача. Текущий статус: `In Progress`.
+- [GEN-5 — документация виртуальной студии](https://linear.app/generation17/issue/GEN-5/perenesti-narrative-bible-v10-i-reglament-virtualnoj-studii-v-github) — согласованная документационная задача. Текущий статус: `In Review`.
+- [GEN-10 — Аудит и актуализация старой документации Generation17](https://linear.app/generation17/issue/GEN-10/audit-i-aktualizaciya-staroj-dokumentacii-generation17) — `Backlog`, заблокирована задачей GEN-5; начнётся после принятия и merge GEN-5. Это аудит документации, а не новая игровая функция.
 - [GEN-6 — первичные аудиты специалистов и решение о следующем этапе](https://linear.app/generation17/issue/GEN-6/sobrat-pervichnye-audity-specialistov-i-utverdit-sleduyushij-etap-igry) — организационная задача в Backlog. Следующий игровой этап не утверждён.
 
 ## Исследования и концепции

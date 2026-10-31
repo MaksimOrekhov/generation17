@@ -19,6 +19,10 @@ jobs:
         run: |
           npx tsx scripts/names-baseline.ts --samples 5000 --check-samples 100
           git diff --exit-code -- docs/audit/names-baseline-5000.md
+      - name: Воспроизводимость аудита автономии NPC
+        run: |
+          npx tsx scripts/npc-autonomy-diagnostics.ts
+          git diff --exit-code -- docs/audit/npc-autonomy-diagnostics.md
       - name: Контент и бандл
         run: npm run content:check
       - name: TypeScript

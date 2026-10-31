@@ -1,14 +1,17 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import baseline from './fixtures/neighbor-v1-baseline.json'
 import samples from './fixtures/neighbor-v1-states.json'
 import { legacyNeighbor } from './fixtures/neighbor-v1'
 import { friendshipV1Text } from './fixtures/friendship-v1-text'
 import { neighborReplay } from '../../../scripts/content-v2-neighbor'
 import { canChoose, createGame, decide, tick } from '../engine'
+import { npcMilestonePlan, NPC_MILESTONE_FLAGS } from '../npcMilestones'
 import { repairSave } from '../save'
 import { storylets, codeStorylets, contentStorylets } from '../storylets'
 import type { GameState, Storylet } from '../types'
 import { safePeople } from '../contentPeople'
+import { GEN57_STORYLET_IDS } from './gen57-fixtures'
+import * as npcMilestones from '../npcMilestones'
 
 const original = [...storylets]
 afterEach(() => storylets.splice(0, storylets.length, ...original))
@@ -38,6 +41,20 @@ function run(g: GameState, s: Storylet, index: number) {
 }
 
 describe('Сосед: frozen pre-v2 behaviour and JSON equivalence', () => {
+  it('can isolate the frozen replay from the new annual NPC milestones', () => {
+    const disableNewMilestones = vi.spyOn(npcMilestones, 'npcMilestonesTick').mockImplementation(() => { disableNewMilestones.mockClear() })
+    try {
+      const g = createGame(17)
+      const friend = g.people.find(person => person.id === 'friend')!
+      const targetAge = npcMilestonePlan(g.seed, 'friend').jobAge
+      g.age = targetAge - 1
+      friend.age = targetAge - 1
+      friend.since = 0
+      const next = tick(g)
+      expect(next.age).toBe(targetAge)
+      expect(next.flags[NPC_MILESTONE_FLAGS[0]]).toBeUndefined()
+    } finally { disableNewMilestones.mockRestore() }
+  })
   it('migrates exactly eight unique events, with no active TypeScript copy', () => {
     expect(migrated.size).toBe(8)
     expect(codeStorylets.filter(s => s.arc === 'neighbor')).toHaveLength(0)
@@ -76,19 +93,23 @@ describe('Сосед: frozen pre-v2 behaviour and JSON equivalence', () => {
     // storylets deliberately alter full-life scheduling and RNG consumption.
     // Restore GEN-22 strings from the same historical main revision: the digest
     // includes narrative log/fork text as well as mechanical state.
-    storylets.splice(0, storylets.length, ...storylets.filter(s => !s.id.startsWith('people-')).map(withHistoricalFriendText))
+    storylets.splice(0, storylets.length, ...storylets.filter(s => !s.id.startsWith('people-') && !GEN57_STORYLET_IDS.has(s.id)).map(withHistoricalFriendText))
     let comparisons = 0, comparedOutcomes = 0
-    const report = await neighborReplay((g, old) => {
-      if (migrated.get(old.id)!.available(g) !== old.available(g)) throw Error(`eligibility ${old.id} at ${g.age}`)
-      comparisons++
-    }, (g, old, index, expected) => {
-      // The original tick guards active body mentions too. A forced call on a dead
-      // neighbour is not a playable pre-v2 scene and is excluded from outcome parity.
-      if (!safePeople(g, old.body)) return
-      const actual = run(g, migrated.get(old.id)!, index)
-      if (JSON.stringify(withoutJournal(actual)) !== JSON.stringify(withoutJournal(expected))) throw Error(`outcome ${old.id}/${index}, seed ${g.seed}, age ${g.age}`)
-      comparedOutcomes++
-    })
+    let report: Awaited<ReturnType<typeof neighborReplay>>
+    const disableNewMilestones = vi.spyOn(npcMilestones, 'npcMilestonesTick').mockImplementation(() => { disableNewMilestones.mockClear() })
+    try {
+      report = await neighborReplay((g, old) => {
+        if (migrated.get(old.id)!.available(g) !== old.available(g)) throw Error(`eligibility ${old.id} at ${g.age}`)
+        comparisons++
+      }, (g, old, index, expected) => {
+        // The original tick guards active body mentions too. A forced call on a dead
+        // neighbour is not a playable pre-v2 scene and is excluded from outcome parity.
+        if (!safePeople(g, old.body)) return
+        const actual = run(g, migrated.get(old.id)!, index)
+        if (JSON.stringify(withoutJournal(actual)) !== JSON.stringify(withoutJournal(expected))) throw Error(`outcome ${old.id}/${index}, seed ${g.seed}, age ${g.age}`)
+        comparedOutcomes++
+      })
+    } finally { disableNewMilestones.mockRestore() }
     expect(report.digest).toBe(baseline.digest)
     expect(report.encountered).toEqual(baseline.encountered)
     expect(report.encountered['crack-worsened']).toBeGreaterThan(0)

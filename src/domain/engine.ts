@@ -15,6 +15,7 @@ import { applyOfferChanges, canBuy, getOffer, type OfferDefinition, type Purchas
 import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
 import { PERSONAL_TIME, canSpendPersonalTime, endPersonalTime, freeTimeChance, spendPersonalTime, startPersonalTimeYear } from './personalTime'
 import { beginRelationship, createStoryPerson, currentPartner, endRelationship, friendLoveCompatible, personByRef, relationshipState, STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from './people'
+import { friendAutonomyStoryAvailable, npcMilestoneMarkersValid, NPC_MILESTONE_FLAGS, npcMilestonesTick } from './npcMilestones'
 
 const HISTORY_LIMIT = 1500
 const MOMENT_CHANCE = .3
@@ -130,6 +131,7 @@ function diminish(stat: Stat, current: number, delta: number) {
 
 /** Проверка до списания денег и применения эффектов; повреждённый контент не меняет мир частично. */
 function peopleEffectsOk(g: GameState, effects: Effects, eventId?: string): boolean {
+  if (Object.keys(effects.flags ?? {}).some(key => (NPC_MILESTONE_FLAGS as readonly string[]).includes(key))) return false
   const startsFriend = !!g.relationships && (eventId === 'relationship-followup' || eventId === 'love-apart-return') && ['together', 'reunited'].includes(String(effects.flags?.loveStage))
   if (!startsFriend && !effects.person && !effects.relationship && !effects.cohabit && typeof effects.addPerson !== 'object' && effects.moveTo !== 'partner') return true
   const probe = { ...g, people: g.people.map(p => ({ ...p, state: p.state && { ...p.state } })), flags: { ...g.flags }, relationships: g.relationships && structuredClone(g.relationships) }
@@ -140,9 +142,10 @@ function peopleEffectsOk(g: GameState, effects: Effects, eventId?: string): bool
     createStoryPerson(probe, effects.addPerson.slot, effects.addPerson.role)
   }
   for (const [ref, update] of Object.entries(effects.person ?? {})) {
-    if (!['friend', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) return false
+    if (!['friend', 'sibling', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) return false
     const person = personByRef(probe, ref)
     if (!person || !person.alive || person.since > probe.age || !update) return false
+    if (ref === 'sibling' && (person.state?.availability === 'distant' || update.availability === 'distant')) return false
     if (Object.keys(update).some(k => !['sectorId', 'job', 'availability', 'familyStatus'].includes(k))) return false
     if (update.sectorId !== undefined && !['atrium', 'bio', 'engineering', 'clinic', 'lower'].includes(update.sectorId)) return false
     if (update.job !== undefined && (!['Ученик', 'Техник', 'Медик', 'Агроном', 'Координатор', 'Без специальности'].includes(update.job) || person.age < 16)) return false
@@ -300,6 +303,8 @@ function choiceAvailability(state: GameState, event: Storylet | undefined, choic
   else if (!event || !choice) reason = 'Нет доступного сюжетного варианта.'
   else if (state.decisions?.some(record => record.id === event.id)) reason = 'Решение уже принято.'
   else if (choice.available && !choice.available(state) || !safePeople(state, choice.text, choice.historicalPeople)) reason = 'Этот вариант недоступен в этой жизни.'
+  else if (event.id === 'npc-friend-shift-ledger' && (!npcMilestoneMarkersValid(state) || !event.available(state) || !friendAutonomyStoryAvailable(state))) reason = 'Обстоятельства близких изменились.'
+  else if (event.id === 'npc-sibling-own-rhythm' && (!npcMilestoneMarkersValid(state) || !event.available(state))) reason = 'Обстоятельства близких изменились.'
   else if (event?.arc === 'love' && !friendLoveCompatible(state, event.id)) reason = 'Обстоятельства близких изменились.'
   else if (!peopleEffectsOk(state, choice.effects, event?.id) || choice.check && (!peopleEffectsOk(state, choice.check.success, event?.id) || !peopleEffectsOk(state, choice.check.failure, event?.id))) reason = 'Обстоятельства близких изменились.'
   else if (purchase && !purchase.available) reason = purchase.reason
@@ -838,6 +843,7 @@ export function tick(state: GameState): GameState {
   if (!canFocus(g.age, g.focus) && g.age >= FOCUS_FROM_AGE) g.focus = 'study'
   worldTick(g)
   peopleTick(g)
+  npcMilestonesTick(g)
   peersTick(g)
   focusTick(g)
   const economyResult = settleYear(g)

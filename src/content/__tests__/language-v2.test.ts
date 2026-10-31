@@ -97,6 +97,55 @@ describe('v2 conditions: positive, negative, inclusive boundaries and missing fa
   })
 })
 
+describe('sibling state-write content guard', () => {
+  it('requires statically provable sibling presence for personal writes, including check branches', () => {
+    const item = structuredClone(json()[0]!)
+    item.id = 'test-sibling-state-write'
+    item.choices[0]!.effects.person = { sibling: { job: 'Медик' } }
+    expect(errors([item]).some(issue => issue.where.includes('person.sibling'))).toBe(true)
+    item.requires = { present: ['sibling'] } as Requires
+    expect(errors([item]).some(issue => issue.where.includes('person.sibling'))).toBe(false)
+    delete item.requires
+    item.choices[0]!.requires = { present: ['sibling'] } as Requires
+    expect(errors([item]).some(issue => issue.where.includes('person.sibling'))).toBe(false)
+
+    const checked = structuredClone(item)
+    checked.id = 'test-sibling-check-write'
+    delete checked.requires
+    delete checked.choices[0]!.requires
+    checked.choices[0]!.effects = {}
+    checked.choices[0]!.check = {
+      skill: 'social', difficulty: 10, successText: 'Успех.', failureText: 'Попытка не удалась.',
+      success: { person: { sibling: { sectorId: 'clinic' } } }, failure: {}
+    }
+    expect(errors([checked]).some(issue => issue.where.includes('person.sibling'))).toBe(true)
+
+    const moment = structuredClone(codeMoments[0]!)
+    moment.id = 'm-test-sibling-state-write'
+    moment.needs = []
+    moment.accept.effects = { person: { sibling: { sectorId: 'clinic' } } }
+    const momentIssues = () => validateContent([{ path: 'test-moments.json', kind: 'moments', data: [moment] }], known())
+    expect(momentIssues().some(issue => issue.where.includes('person.sibling'))).toBe(true)
+    moment.needs = ['sibling']
+    expect(momentIssues().some(issue => issue.where.includes('person.sibling'))).toBe(false)
+  })
+})
+
+describe('engine-owned NPC marker validation', () => {
+  it.each(['npcFriendFirstJobAt', 'npcSiblingFirstJobAt', 'npcFriendFirstMoveAt', 'npcSiblingFirstMoveAt'])('rejects %s in every story effect path', marker => {
+    const item = structuredClone(json()[0]!)
+    item.id = `test-marker-${marker.toLowerCase()}`
+    item.choices[0]!.effects.flags = { [marker]: 18 }
+    expect(errors([item]).some(issue => issue.message.includes('engine-owned marker'))).toBe(true)
+    item.choices[0]!.effects.flags = undefined
+    item.choices[0]!.check = {
+      skill: 'social', difficulty: 10, successText: 'Успех.', failureText: 'Неудача.',
+      success: { flags: { [marker]: 18 } }, failure: { flags: { [marker]: 19 } }
+    }
+    expect(errors([item]).filter(issue => issue.message.includes('engine-owned marker'))).toHaveLength(2)
+  })
+})
+
 describe('v2 compiler vertical slice: one JSON situation, three actual pasts', () => {
   it('validates the complete fixture', () => expect(errors()).toEqual([]))
   it.each(['help', 'refuse', 'unseen'])('past %s changes body, answers, result and effects', past => {

@@ -13,6 +13,7 @@ import { storylets } from '../storylets'
 import type { GameState } from '../types'
 import { T7_MOMENT_IDS, T7_STORYLET_IDS, t7Worker, withPending } from './t7-fixtures'
 import { T9_MOMENT_IDS } from './t9-fixtures'
+import { GEN57_STORYLET_IDS } from './gen57-fixtures'
 import { TIME_RULESETS, withTimeRules } from '../../../scripts/personal-time-rules'
 
 /** Взрослый техник; год уже начат по действующему режиму, как после настоящего годового расчёта. */
@@ -581,7 +582,7 @@ describe('T9: жизни без покупок — те же эталоны T6 �
   // (пенсия): там работает «свободный вечер». Новые моменты T9 исключены: они меняют пул.
   const savedStorylets = [...storylets], savedMoments = [...moments]
   beforeAll(() => {
-    storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id)).sort((a, b) => catalogV1.indexOf(a.id) - catalogV1.indexOf(b.id)))
+    storylets.splice(0, storylets.length, ...savedStorylets.filter(s => !T7_STORYLET_IDS.has(s.id) && !GEN57_STORYLET_IDS.has(s.id)).sort((a, b) => catalogV1.indexOf(a.id) - catalogV1.indexOf(b.id)))
     moments.splice(0, moments.length, ...savedMoments.filter(m => !T7_MOMENT_IDS.has(m.id) && !T9_MOMENT_IDS.has(m.id)))
   })
   afterAll(() => {

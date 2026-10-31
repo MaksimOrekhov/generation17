@@ -37,11 +37,11 @@ const baseStorylets: Storylet[] = [
   },
   {
     id: 'friend-accusation', arc: 'friend', fork: true, category: 'Отношения', min: 9, max: 18, weight: 3,
-    title: 'Обвинение', body: '{{friend}} обвиняют в порче школьного очистителя воды. Ты видел{{hero:|а}}, что прибор был неисправен ещё вчера, но взрослые уже нашли виноватого.', available: any,
+    title: 'Обвинение', body: 'Школьный очиститель воды снова сбоит — ты заметил{{hero:|а}} это ещё вчера. Теперь {{friend}} обвиняют в поломке, а взрослые уже решили, кто виноват.', available: any,
     choices: [
-      { text: 'Заступиться публично', hint: 'Дружба ↑ · Репутация ↕', result: 'Ты говоришь то, что видел{{hero:|а}}. Не все верят, но друг не остаётся один.', effects: { stats: { bonds: 4, reputation: -1 }, bonds: { friend: 15 }, flags: { stoodForFriend: true }, memory: 'Заступил{{hero:ся|ась}} за друга, когда его обвинили без доказательств.' } },
-      { text: 'Поговорить с учителем наедине', hint: 'Осторожный путь', result: 'Разговор остаётся между вами, но проверку всё же начинают.', effects: { stats: { reputation: 2 }, bonds: { friend: 4 }, flags: { quietWitness: true } } },
-      { text: 'Не вмешиваться', hint: 'Риск ↓ · Доверие ↓', result: 'Через неделю обвинение снимают. Друг запоминает, что ты промолчал{{hero:|а}}.', effects: { stats: { stress: -2, bonds: -3 }, bonds: { friend: -14 }, flags: { abandonedFriend: true } } }
+      { text: 'Заступиться публично', hint: 'Дружба ↑ · Репутация ↕', result: 'Ты вслух подтверждаешь: очиститель сбоит ещё со вчерашнего дня. Взрослые спорят, но другу больше не приходится оправдываться одному.', effects: { stats: { bonds: 4, reputation: -1 }, bonds: { friend: 15 }, flags: { stoodForFriend: true }, memory: 'Заступил{{hero:ся|ась}} за друга, когда его обвинили без доказательств.' } },
+      { text: 'Поговорить с учителем наедине', hint: 'Осторожный путь', result: 'Ты говоришь учителю наедине, что очиститель барахлил ещё вчера. Учитель начинает проверку; друг не узнаёт, кто об этом сообщил.', effects: { stats: { reputation: 2 }, bonds: { friend: 4 }, flags: { quietWitness: true } } },
+      { text: 'Не вмешиваться', hint: 'Риск ↓ · Доверие ↓', result: 'Через неделю обвинение снимают. Друг помнит не оправдание, а ту паузу, когда ты мог{{hero:|ла}} сказать, что видел{{hero:|а}}.', effects: { stats: { stress: -2, bonds: -3 }, bonds: { friend: -14 }, flags: { abandonedFriend: true } } }
     ]
   },
   {

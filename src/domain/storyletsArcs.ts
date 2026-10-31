@@ -152,7 +152,7 @@ export const arcStorylets: Storylet[] = [
     available: g => g.flags.quietWitness === true && g.age >= 28 && !friendFlag(g),
     choices: [
       { text: 'Сказать, что это был ты', hint: 'Откровенность', result: '«Я тоже тогда поговорил{{hero:|а}} с учителем», — говоришь ты. {{friend}} замолкает, потом кивает: «Значит, проверка началась не случайно». Ты не просил{{hero:|а}} благодарности, но теперь можешь принять её.', effects: { stats: { bonds: 4, morale: 3 }, bonds: { friend: 7 }, flags: { friendReturn: true, friendState: 'close' } } },
-      { text: 'Промолчать', hint: 'Скромность', result: 'Ты оставляешь чужую благодарность тому, кого назвал{{hero:|а}} {{friend}}. Но помнишь и своё: именно твой разговор с учителем помог запустить проверку. Ты уходишь с тихим облегчением и лёгким уколом.', effects: { stats: { stress: -1, morale: 1 }, bonds: { friend: 1 }, flags: { friendReturn: true, friendState: 'distant' } } },
+      { text: 'Промолчать', hint: 'Скромность', result: 'Ты не вмешиваешься: благодарность остаётся тому человеку. Но помнишь и своё: именно твой разговор с учителем помог запустить проверку. Ты уходишь с тихим облегчением и лёгким уколом.', effects: { stats: { stress: -1, morale: 1 }, bonds: { friend: 1 }, flags: { friendReturn: true, friendState: 'distant' } } },
       { text: 'Намекнуть, что знаешь больше', hint: 'Игра', result: 'Ты упоминаешь закрытую дверь и разговор с учителем. {{friend}} смотрит на тебя внимательнее: «Так ты тоже был{{hero:|а}} частью той истории». Благодарность не требует от тебя объяснений.', effects: { stats: { bonds: 3 }, bonds: { friend: 5 }, flags: { friendReturn: true, friendState: 'close' } } }
     ]
   },

@@ -90,7 +90,7 @@ export const useGameStore = defineStore('game', () => {
   const hasDecision = computed(() => !!game.value.pending)
   const currentEvent = computed(() => getStorylet(game.value))
   const visibleChoices = computed(() => visibleChoiceIndices(game.value))
-  const currentMoment = computed(() => getMoment(game.value))
+  const currentMoment = computed(() => visibleMoment(game.value))
   /** Сколько осталось у момента, 1 → 0. Момент живёт до следующей отметки года. */
   const momentLeft = computed(() => Math.max(0, Math.min(1, 1 - (progress.value - game.value.phase / 4) * 4)))
   const remaining = computed(() => Math.max(0, 340 - game.value.shipYear))
@@ -103,6 +103,11 @@ export const useGameStore = defineStore('game', () => {
   const latest = computed(() => filter.value === 'all'
     ? game.value.history
     : game.value.history.filter(h => h.kind === filter.value))
+
+  function visibleMoment(state: GameState) {
+    const moment = getMoment(state)
+    return moment?.id === 'm-call-parent' && !isKnown(state, 'parent') ? null : moment
+  }
 
   watch(game, () => persist())
   watch(game, (next, previous) => {
@@ -203,6 +208,7 @@ export const useGameStore = defineStore('game', () => {
   function acceptMoment() {
     if (shopOpen.value) return
     const before = game.value
+    if (!visibleMoment(before)) return
     const next = takeMoment(before)
     if (next !== before && next.moment === null) clearSkipFeedback()
     game.value = next
@@ -212,7 +218,7 @@ export const useGameStore = defineStore('game', () => {
     const before = game.value
     if (!started.value || shopOpen.value || before.pending || before.stopped || result.value !== null || !before.moment
       || expectedMomentId !== undefined && before.moment !== expectedMomentId) return false
-    const def = getMoment(before)
+    const def = visibleMoment(before)
     if (!def) return false
     const feedbackText = FEEDBACK_MOMENTS.has(def.id) && def.skip.result
       && (def.id !== 'm-call-parent' || isKnown(before, 'parent'))

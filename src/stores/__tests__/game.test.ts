@@ -195,7 +195,7 @@ describe('хранилище игры', () => {
     expect(store.skipFeedback).toBeNull()
   })
 
-  it('подавляет stale reply матери и отклоняет старый обработчик при новом моменте', () => {
+  it('не применяет отказ с недоступным parent и отклоняет старый обработчик при новом моменте', () => {
     for (const mutate of [
       (g: ReturnType<typeof createGame>) => { g.people.find(p => p.id === 'parent')!.alive = false },
       (g: ReturnType<typeof createGame>) => { g.people.find(p => p.id === 'parent')!.state = { availability: 'distant' } },
@@ -203,9 +203,9 @@ describe('хранилище игры', () => {
     ]) {
       const store = withMoment('m-call-parent')
       mutate(store.game)
-      const bonds = store.game.stats.bonds
-      expect(store.dismissMoment('m-call-parent')).toBe(true)
-      expect(store.game.stats.bonds).toBe(bonds - 1)
+      const before = structuredClone(store.game)
+      expect(store.dismissMoment('m-call-parent')).toBe(false)
+      expect(store.game).toEqual(before)
       expect(store.skipFeedback).toBeNull()
     }
 
@@ -312,5 +312,76 @@ describe('хранилище игры', () => {
     expect(restored.skipFeedback).toBeNull()
     expect(restored.dismissMoment()).toBe(true)
     expect(restored.skipFeedback?.text).toBe(moments.find(moment => moment.id === 'm-night-archive')!.skip.result)
+  })
+
+  it.each([
+    ['умершим родителем', (g: ReturnType<typeof createGame>) => { g.people.find(p => p.id === 'parent')!.alive = false }],
+    ['родителем на расстоянии', (g: ReturnType<typeof createGame>) => { g.people.find(p => p.id === 'parent')!.state = { availability: 'distant' } }],
+    ['ещё не появившимся родителем', (g: ReturnType<typeof createGame>) => { g.people.find(p => p.id === 'parent')!.since = g.age + 1 }]
+  ])('восстановленное m-call-parent не показывается и не пропускается для случая с %s', (_label, makeParentUnavailable) => {
+    const records = new Map<string, string>()
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => records.get(key) ?? null,
+      setItem: (key: string, value: string) => records.set(key, value),
+      removeItem: (key: string) => records.delete(key)
+    })
+    const legacy = createGame(773)
+    legacy.age = 18
+    legacy.moment = 'm-call-parent'
+    legacy.momentLog[legacy.moment] = legacy.age
+    makeParentUnavailable(legacy)
+    records.set('generation17-v2', JSON.stringify({ game: legacy, started: true, preset: 60 }))
+    setActivePinia(createPinia())
+
+    const restored = useGameStore()
+    const before = structuredClone(restored.game)
+    const listeners = new Map<string, (event: KeyboardEvent) => void>()
+    vi.stubGlobal('window', {
+      addEventListener: (type: string, listener: EventListener) => listeners.set(type, listener as (event: KeyboardEvent) => void),
+      removeEventListener: (type: string) => listeners.delete(type)
+    })
+    const { app } = mountTestComponent(defineComponent({
+      setup() {
+        useHotkeys(() => true)
+        return () => h('div')
+      }
+    }))
+
+    expect(restored.game.moment).toBe('m-call-parent')
+    expect(restored.currentMoment).toBeNull()
+    listeners.get('keydown')!({ key: 'Escape', code: 'Escape', altKey: false, ctrlKey: false, metaKey: false, target: null } as unknown as KeyboardEvent)
+    expect(restored.dismissMoment('m-call-parent')).toBe(false)
+    restored.acceptMoment()
+
+    expect(restored.game).toEqual(before)
+    expect(restored.game.momentLog).toEqual(before.momentLog)
+    expect(restored.game.rng).toBe(before.rng)
+    expect(restored.game.stats).toEqual(before.stats)
+    expect(restored.skipFeedback).toBeNull()
+    app.unmount()
+  })
+
+  it('восстановленное m-call-parent показывается и пропускается, если мама жива и доступна', () => {
+    const records = new Map<string, string>()
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => records.get(key) ?? null,
+      setItem: (key: string, value: string) => records.set(key, value),
+      removeItem: (key: string) => records.delete(key)
+    })
+    const legacy = createGame(773)
+    legacy.age = 18
+    legacy.moment = 'm-call-parent'
+    legacy.momentLog[legacy.moment] = legacy.age
+    records.set('generation17-v2', JSON.stringify({ game: legacy, started: true, preset: 60 }))
+    setActivePinia(createPinia())
+    const restored = useGameStore()
+    const beforeBonds = restored.game.stats.bonds
+    const beforeMomentLog = structuredClone(restored.game.momentLog)
+
+    expect(restored.currentMoment?.id).toBe('m-call-parent')
+    expect(restored.dismissMoment('m-call-parent')).toBe(true)
+    expect(restored.game.stats.bonds).toBe(beforeBonds - 1)
+    expect(restored.game.momentLog).toEqual(beforeMomentLog)
+    expect(restored.skipFeedback?.text).toBe('Ты говоришь, что сегодня не заедешь. Мама чуть медлит: «Хорошо, береги себя».')
   })
 })

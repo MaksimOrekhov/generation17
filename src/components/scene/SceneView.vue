@@ -3,9 +3,9 @@ import { variantText } from '../../content/load'
 import { computed, onBeforeUnmount, watch } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
-import { currentPartner } from '../../domain/people'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
-import type { SceneModel } from '../../render/scene'
+import { resolveScene } from '../../render/scene'
+import type { SceneContext, SceneModel, SceneResolution } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
 import { shortYears, spotLabels, years } from '../../ui/format'
 import MomentPopup from './MomentPopup.vue'
@@ -14,29 +14,61 @@ import SceneCanvas from './SceneCanvas.vue'
 const store = useGameStore()
 const g = computed(() => store.game)
 
+const fixtureId = import.meta.env.DEV && typeof window !== 'undefined'
+  ? new URLSearchParams(window.location.search).get('sceneFixture')
+  : null
+const fixtureScenes = {
+  home: { momentId: null, momentSpot: null },
+  infant: { momentId: null, momentSpot: null },
+  neutral: { momentId: 'm-terminal-copy', momentSpot: 'terminal' },
+  archive: { momentId: 'm-night-archive', momentSpot: 'terminal' },
+  greenhouse: { momentId: 'm-job-agro', momentSpot: 'plant' },
+  observation: { momentId: 'm-night-deck', momentSpot: 'window' }
+} satisfies Record<string, { momentId: string | null; momentSpot: SceneContext['momentSpot'] }>
+type SceneFixtureId = keyof typeof fixtureScenes
+const validFixture: SceneFixtureId | null = fixtureId && Object.hasOwn(fixtureScenes, fixtureId)
+  ? fixtureId as SceneFixtureId
+  : null
+
+const resolution = computed<SceneResolution>(() => {
+  if (validFixture) {
+    const fixture = fixtureScenes[validFixture]
+    return resolveScene({
+      started: true, momentId: fixture.momentId, momentSpot: fixture.momentSpot,
+      pendingStorylet: false, hasDecision: false, resultVisible: false, stopped: false, shopOpen: false,
+      residenceSectorId: residenceOf(g.value)
+    })
+  }
+  return resolveScene({
+    started: store.started,
+    momentId: store.currentMoment && !store.blocked ? store.currentMoment.id : null,
+    momentSpot: store.currentMoment && !store.blocked ? store.currentMoment.spot : null,
+    pendingStorylet: !!g.value.pending,
+    hasDecision: store.hasDecision,
+    resultVisible: !!store.result,
+    stopped: g.value.stopped,
+    shopOpen: store.shopOpen,
+    residenceSectorId: residenceOf(g.value)
+  })
+})
+
 const model = computed<SceneModel>(() => {
-  const parent = g.value.people.find(p => p.id === 'parent')
-  const partner = g.value.flags.livingTogether === true ? currentPartner(g.value) ?? (!g.value.relationships ? g.value.people.find(p => p.id === 'friend') : undefined) : undefined
-  const companion = g.value.age <= 18 && parent?.alive
-    ? { name: parent.name, age: parent.age, kind: 'parent' as const }
-    : g.value.age >= 20 && partner?.alive
-      ? { name: partner.name, age: partner.age, kind: 'partner' as const }
-      : null
+  const sectorId = residenceOf(g.value)
   return {
     name: g.value.protagonist.name,
-    age: g.value.age,
+    age: validFixture === 'infant' ? 0 : g.value.age,
     wealth: g.value.birth.wealth,
-    sectorId: residenceOf(g.value),
-    progress: store.progress,
-    companion,
-    spot: store.currentMoment?.spot ?? null
+    sectorId,
+    // Relationships, shared residence and sector are not proof of physical co-presence in this cabin.
+    companion: null,
+    scene: resolution.value
   }
 })
 
-const moment = computed(() => store.currentMoment)
-const visibleSkipFeedback = computed(() => store.started && store.skipFeedback && !moment.value && !store.blocked ? store.skipFeedback : null)
+const moment = computed(() => validFixture ? null : store.currentMoment)
+const visibleSkipFeedback = computed(() => !validFixture && store.started && store.skipFeedback && !moment.value && !store.blocked ? store.skipFeedback : null)
 const latest = computed(() => g.value.history[0])
-const place = computed(() => `Каюта ${g.value.birth.deck}`)
+const place = computed(() => resolution.value.label)
 const time = computed(() => personalTimeOf(g.value))
 const timeTitle = computed(() => `Личное время: ${time.value.left} из ${time.value.limit}. ${basisText(time.value)}. Это дела сверх обычных обязанностей; новый год приносит новое время, остаток не копится.`)
 
@@ -63,6 +95,7 @@ onBeforeUnmount(() => {
     <SceneCanvas :model="model" />
     <div class="scene__hud">
       <span class="scene__tag">{{ place }}</span>
+      <span v-if="validFixture" class="scene__tag scene__fixture">{{ validFixture === 'infant' ? 'FIXTURE · infant · age=0' : `FIXTURE · ${validFixture}` }}</span>
       <span class="scene__tag scene__attn" :title="timeTitle" :aria-label="timeTitle" data-test="time-hud">
         личное время
         <i v-for="n in time.limit" :key="n" :class="{ used: n > time.left }" />
@@ -102,6 +135,7 @@ onBeforeUnmount(() => {
 .scene__hud { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
 .scene__tag { background: rgba(14, 12, 23, .78); border: 1px solid #665a7d; padding: 5px 8px; font: 500 11px var(--font-mono); letter-spacing: .4px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
 .scene__tag b { color: var(--amber); font-weight: 500; }
+.scene__fixture { position: absolute; top: 44px; left: 0; color: #ffd08a; border-color: #a77945; }
 .scene__attn i { width: 11px; height: 11px; background: var(--amber); border: 2px solid #ffd08a; transition: background .2s, border-color .2s; }
 .scene__attn i.used { background: transparent; border-color: var(--line-2); }
 .scene__caption { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); font: 400 14px/1.5 var(--font-ui); color: var(--text-soft); align-items: baseline; }

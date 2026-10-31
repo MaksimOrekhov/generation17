@@ -33,9 +33,9 @@ const baseMoments: MomentDef[] = [
   },
   {
     id: 'm-terminal-copy', spot: 'terminal', title: 'Терминал без подписи', min: 7, max: 15, weight: 2, cooldown: ONCE,
-    text: 'Школьный терминал остался включённым. В списке файлов — папка без названия, с записями, которые обычно закрывают.',
-    accept: { label: 'Скопировать на память', result: 'Ты прячешь копию среди домашних заданий. Сердце стучит громче вентиляции.', effects: { stats: { knowledge: 3, stress: 2 }, flags: { archiveCopy: true }, memory: 'Тайком скопировал{{hero:|а}} закрытую папку со школьного терминала.' } },
-    skip: { label: 'Выключить и уйти' }
+    text: 'На школьном терминале открыт список файлов. Среди них — папка без подписи со значком замка. Рядом кнопка копирования.',
+    accept: { label: 'Скопировать папку', result: 'Ты копируешь папку и сохраняешь её среди домашних заданий. В коридоре замечаешь, что ладони вспотели.', effects: { stats: { knowledge: 3, stress: 2 }, flags: { archiveCopy: true }, memory: 'Тайком скопировал{{hero:|а}} закрытую папку со школьного терминала.' } },
+    skip: { label: 'Не трогать закрытые файлы', result: 'Ты закрываешь список файлов, не открывая папку. В коридоре продолжается обычный школьный день.' }
   },
   {
     id: 'm-friend-run', spot: 'door', title: 'Зов в коридоре', min: 6, max: 16, weight: 3, cooldown: 3, needs: ['friend'],
@@ -52,9 +52,9 @@ const baseMoments: MomentDef[] = [
   // — юность и взрослая жизнь —
   {
     id: 'm-night-archive', spot: 'terminal', title: 'Ночной архив', min: 13, max: 75, weight: 3, cooldown: 3,
-    text: 'После смены свободный терминал снова зовёт: курс, который давно хотелось пройти.',
-    accept: { label: 'Пройти пару уроков', result: 'Голова гудит, но кое-что наконец встаёт на места.', effects: { stats: { knowledge: 3, stress: 1 } } },
-    skip: { label: 'Лечь спать', effects: { stats: { stress: -1 } } }
+    text: 'В учебном архиве свободен терминал. На экране — два коротких урока. Свет в коридоре уже приглушили.',
+    accept: { label: 'Пройти два урока', result: 'Ты проходишь оба урока. Второе задание даётся не сразу, но теперь ты знаешь, как к нему подступиться.', effects: { stats: { knowledge: 3, stress: 1 } } },
+    skip: { label: 'Пойти спать', effects: { stats: { stress: -1 } }, result: 'Ты закрываешь учебный каталог и идёшь спать. В коридоре стихает шум чужих разговоров.' }
   },
   {
     id: 'm-window-evening', spot: 'window', title: 'Вечер у стекла', min: 14, max: 90, weight: 3, cooldown: 4,
@@ -77,9 +77,9 @@ const baseMoments: MomentDef[] = [
   },
   {
     id: 'm-call-parent', spot: 'table', title: 'Звонок родителю', min: 18, max: 65, weight: 3, cooldown: 3, needs: ['parent'],
-    text: '{{parent}} звонит просто так — спросить, ел ли ты сегодня.',
-    accept: { label: 'Заехать в гости', result: 'Чай, старые шутки и пирог, который почти удался. Уходить не хочется.', effects: { stats: { morale: 2, stress: -1 }, bonds: { parent: 4 } } },
-    skip: { label: 'Ответить коротко', effects: { stats: { bonds: -1 } } }
+    text: 'Мама звонит узнать, ел ли ты сегодня. Слышно, как она ставит чайник. «Заглянешь, если есть время?»',
+    accept: { label: 'Заехать к маме', result: 'Пирог осел посередине. «Так и задумано», — смеётся мама. За чаем вы вспоминаете семейные истории.', effects: { stats: { morale: 2, stress: -1 }, bonds: { parent: 4 } } },
+    skip: { label: 'Сказать, что сегодня не сможешь', effects: { stats: { bonds: -1 } }, result: 'Ты говоришь, что сегодня не заедешь. Мама чуть медлит: «Хорошо, береги себя».' }
   },
   {
     id: 'm-mentor-schema', spot: 'door', title: 'Пять минут наставника', min: 17, max: 45, weight: 2, cooldown: 6, needs: ['mentor'],

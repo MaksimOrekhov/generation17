@@ -217,7 +217,7 @@ export interface MomentDef {
   needs?: string[]
   available?: (g: GameState) => boolean
   accept: { label: string; result: string; resultVariants?: TextVariant[]; effects: Effects }
-  skip: { label: string; effects?: Effects }
+  skip: { label: string; effects?: Effects; result?: string }
 }
 
 /** Развилка жизни: что выбрал герой и к чему это привело годы спустя. */

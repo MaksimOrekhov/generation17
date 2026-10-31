@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef, watch } from 'vue'
-import { advanceYear, cancelService, canChoose, createGame, dropUnanswerablePending, visibleChoiceIndices, decide, epitaph, getMoment, getStorylet, purchase, setFocus, setGoal, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import { advanceYear, cancelService, canChoose, createGame, dropUnanswerablePending, visibleChoiceIndices, decide, epitaph, getMoment, getStorylet, purchase, resolveText, setFocus, setGoal, setLoad, skipMoment, takeMoment } from '../domain/engine'
+import { isKnown } from '../domain/birth'
 import type { PurchaseTarget } from '../domain/offers'
 import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } from '../domain/clock'
 import type { LifePreset } from '../domain/clock'
@@ -19,6 +20,7 @@ interface Saved {
 }
 
 const HINTS_KEY = 'generation17-hints'
+const FEEDBACK_MOMENTS = new Set(['m-night-archive', 'm-call-parent', 'm-terminal-copy'])
 
 function loadHints(): Record<string, boolean> {
   try {
@@ -70,6 +72,9 @@ export const useGameStore = defineStore('game', () => {
   const filter = ref<LogFilter>('all')
   /** Записи хроники, появившиеся от последнего решения: показываются перед продолжением. */
   const result = ref<LogEntry[] | null>(null)
+  /** Одноразовый UI-отклик на явный отказ; намеренно не входит в `game` и сохранение. */
+  const skipFeedback = ref<{ token: number; text: string } | null>(null)
+  let skipFeedbackToken = 0
   const resumeAfter = ref(false)
   /** Окно «Траты и карьера» открыто: время стоит. */
   const shopOpen = ref(false)
@@ -100,7 +105,20 @@ export const useGameStore = defineStore('game', () => {
     : game.value.history.filter(h => h.kind === filter.value))
 
   watch(game, () => persist())
+  watch(game, (next, previous) => {
+    if (next.moment && next.moment !== previous.moment || next.pending || next.stopped) clearSkipFeedback()
+  }, { flush: 'sync' })
   watch([started, preset], () => persist())
+  watch([started, shopOpen, result], ([isStarted, isShopOpen, visibleResult]) => {
+    if (!isStarted || isShopOpen || visibleResult !== null) clearSkipFeedback()
+  }, { flush: 'sync' })
+
+  function clearSkipFeedback(token?: number): boolean {
+    const current = skipFeedback.value
+    if (!current || token !== undefined && current.token !== token) return false
+    skipFeedback.value = null
+    return true
+  }
 
   function persist() {
     try {
@@ -170,6 +188,7 @@ export const useGameStore = defineStore('game', () => {
     const before = game.value.nextLogId
     const next = decide(game.value, index, target)
     if (next === game.value) return
+    clearSkipFeedback()
     seeHint('decision')
     game.value = next
     result.value = game.value.history.filter(h => h.id >= before).reverse()
@@ -183,12 +202,28 @@ export const useGameStore = defineStore('game', () => {
 
   function acceptMoment() {
     if (shopOpen.value) return
-    game.value = takeMoment(game.value)
+    const before = game.value
+    const next = takeMoment(before)
+    if (next !== before && next.moment === null) clearSkipFeedback()
+    game.value = next
   }
 
-  function dismissMoment() {
-    if (shopOpen.value) return
-    game.value = skipMoment(game.value)
+  function dismissMoment(expectedMomentId?: string): boolean {
+    const before = game.value
+    if (!started.value || shopOpen.value || before.pending || before.stopped || result.value !== null || !before.moment
+      || expectedMomentId !== undefined && before.moment !== expectedMomentId) return false
+    const def = getMoment(before)
+    if (!def) return false
+    const feedbackText = FEEDBACK_MOMENTS.has(def.id) && def.skip.result
+      && (def.id !== 'm-call-parent' || isKnown(before, 'parent'))
+      ? resolveText(before, def.skip.result)
+      : null
+    const next = skipMoment(before)
+    if (next === before || next.moment !== null) return false
+    game.value = next
+    clearSkipFeedback()
+    if (feedbackText) skipFeedback.value = { token: ++skipFeedbackToken, text: feedbackText }
+    return true
   }
 
   function changeFocus(focus: Focus) {
@@ -209,6 +244,7 @@ export const useGameStore = defineStore('game', () => {
 
   function openShop() {
     if (shopOpen.value || !canOpenShop.value) return
+    clearSkipFeedback()
     shopResume.value = playing.value
     playing.value = false
     shopOpen.value = true
@@ -263,6 +299,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function newLife(seed?: number) {
+    clearSkipFeedback()
     playing.value = false
     resumeAfter.value = false
     shopOpen.value = false
@@ -296,9 +333,9 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop,
+    game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop, skipFeedback,
     visibleChoices, chooseVisible, secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
-    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment,
+    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment, clearSkipFeedback,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }
 })

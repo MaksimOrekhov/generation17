@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import baseline from './fixtures/neighbor-v1-baseline.json'
 import samples from './fixtures/neighbor-v1-states.json'
 import { legacyNeighbor } from './fixtures/neighbor-v1'
+import { friendshipV1Text } from './fixtures/friendship-v1-text'
 import { neighborReplay } from '../../../scripts/content-v2-neighbor'
 import { canChoose, createGame, decide, tick } from '../engine'
 import { repairSave } from '../save'
@@ -14,6 +15,21 @@ afterEach(() => storylets.splice(0, storylets.length, ...original))
 const migrated = new Map(contentStorylets.filter(s => s.arc === 'neighbor').map(s => [s.id, s]))
 const normalize = (v: unknown) => JSON.parse(JSON.stringify(v))
 const withoutJournal = ({ decisions: _decisions, ...g }: GameState) => g
+function withHistoricalFriendText(storylet: Storylet): Storylet {
+  const historical = friendshipV1Text[storylet.id as keyof typeof friendshipV1Text]
+  if (!historical) return storylet
+  const checks = 'checks' in historical ? historical.checks as Record<number, { successText: string; failureText: string }> : {}
+  return {
+    ...storylet,
+    body: historical.body,
+    choices: storylet.choices.map((choice, index) => {
+      const frozen = { ...choice, result: historical.results[index]! }
+      const checkText = checks[index]
+      if (!checkText || !choice.check) return frozen
+      return { ...frozen, check: { ...choice.check, ...checkText } }
+    })
+  }
+}
 function run(g: GameState, s: Storylet, index: number) {
   const at = storylets.findIndex(event => event.id === s.id)
   const previous = storylets[at]!
@@ -58,7 +74,9 @@ describe('Сосед: frozen pre-v2 behaviour and JSON equivalence', () => {
   it('replays 200 seeds × 4 strategies against the immutable pre-edit digest', async () => {
     // Replay the historical catalog used to capture the digest. New, unrelated
     // storylets deliberately alter full-life scheduling and RNG consumption.
-    storylets.splice(0, storylets.length, ...storylets.filter(s => !s.id.startsWith('people-')))
+    // Restore GEN-22 strings from the same historical main revision: the digest
+    // includes narrative log/fork text as well as mechanical state.
+    storylets.splice(0, storylets.length, ...storylets.filter(s => !s.id.startsWith('people-')).map(withHistoricalFriendText))
     let comparisons = 0, comparedOutcomes = 0
     const report = await neighborReplay((g, old) => {
       if (migrated.get(old.id)!.available(g) !== old.available(g)) throw Error(`eligibility ${old.id} at ${g.age}`)

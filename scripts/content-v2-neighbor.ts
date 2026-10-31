@@ -2,13 +2,37 @@
 import { createHash } from 'node:crypto'
 import { existsSync, writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { advanceYear, canChoose, createGame, decide, setFocus } from '../src/domain/engine'
+import { advanceYear, canChoose, createGame, decide, genderOf, setFocus } from '../src/domain/engine'
 import { canFocus } from '../src/domain/focus'
 import { hash32 } from '../src/domain/random'
 import { storylets } from '../src/domain/storylets'
 import type { GameState, Focus, Storylet } from '../src/domain/types'
 import { legacyNeighbor } from '../src/domain/__tests__/fixtures/neighbor-v1'
 import order from '../src/domain/__tests__/fixtures/catalog-v1.json'
+
+/** Keep approved death-copy edits out of the frozen mechanical/catalogue digest. */
+function legacyDeathCopy(state: GameState) {
+  const clone = structuredClone(state)
+  clone.history = clone.history.map(entry => {
+    if (!entry.title.startsWith('Умерла ') && !entry.title.startsWith('Умер ')) return entry
+    const name = entry.title.replace(/^Умер(?:ла)? /, '')
+    const person = clone.people.find(candidate => candidate.name === name)
+    if (!person) return entry
+    return {
+      ...entry,
+      title: `Уход: ${name}`,
+      text: `В возрасте ${person.age} лет ${name} уходит из жизни. На корабле продолжают работать двигатели, но привычный мир становится немного другим.`
+    }
+  })
+  clone.memories = clone.memories.map(memory => {
+    const match = memory.match(/^Умер(?:ла)? (.+?) — .+? \(\d+ (?:год|года|лет)\)\.$/)
+    if (!match) return memory
+    const name = match[1]!
+    const verb = genderOf(clone, 'hero') === 'f' ? 'Пережила' : 'Пережил'
+    return `${verb} уход человека, с которым была связана значительная часть жизни: ${name}.`
+  })
+  return clone
+}
 
 export async function neighborReplay(
   compare?: (g: GameState, old: Storylet) => void,
@@ -39,7 +63,7 @@ export async function neighborReplay(
               const next = decide(state, index)
               compareOutcome?.(state, old, index, next)
               // Journals are deliberately new; every pre-existing field must match.
-              const { decisions: _journal, ...legacy } = next
+              const { decisions: _journal, ...legacy } = legacyDeathCopy(next)
               hash.update(JSON.stringify(legacy))
               outcomes++
             }

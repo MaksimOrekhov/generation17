@@ -7,6 +7,8 @@ import { DEFAULT_PRESET, LIFE_PRESETS, runClock, secondsPerYearFor, beatAt } fro
 import type { LifePreset } from '../domain/clock'
 import { randomSeed } from '../domain/random'
 import { repairSave } from '../domain/save'
+import { collectDeathNotices, repairDeathNotices } from '../domain/deathNotices'
+import type { DeathNotice } from '../domain/deathNotices'
 import type { Atmosphere, Focus, GameState, LogEntry, LogKind } from '../domain/types'
 
 const STORAGE_KEY = 'generation17-v2'
@@ -17,6 +19,7 @@ interface Saved {
   started: boolean
   preset: LifePreset
   playedSeconds?: number
+  pendingDeathNotices?: DeathNotice[]
 }
 
 const HINTS_KEY = 'generation17-hints'
@@ -48,6 +51,7 @@ function loadSaved(): Saved | null {
     // Каталог событий мог измениться с прошлой игры: устаревшие ссылки снимаются, жизнь остаётся.
     const repaired = repairSave(g)
     saved.game = repaired.game
+    saved.pendingDeathNotices = repairDeathNotices(saved.pendingDeathNotices, saved.game)
     if (repaired.notes.length) console.warn('Сохранение исправлено:', repaired.notes.join('; '))
     return saved
   } catch {
@@ -82,6 +86,7 @@ export const useGameStore = defineStore('game', () => {
   const shopResume = ref(false)
   /** Сколько реального времени игрок провёл в живой игре (для отчёта тестера). */
   const playedSeconds = ref(saved?.playedSeconds ?? 0)
+  const pendingDeathNotices = ref<DeathNotice[]>(saved?.pendingDeathNotices ?? [])
   const hintsSeen = ref<Record<string, boolean>>(loadHints())
   /** Участники семейной поездки, выбранные в сюжетном решении (T7); привязаны к решению и не переходят в следующее. */
   const storyPick = ref<{ decision: string; ids: string[] }>({ decision: '', ids: [] })
@@ -125,12 +130,36 @@ export const useGameStore = defineStore('game', () => {
     return true
   }
 
-  function persist() {
+  function persist(snapshot: GameState = game.value): boolean {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ game: game.value, started: started.value, preset: preset.value, playedSeconds: Math.round(playedSeconds.value) } satisfies Saved))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ game: snapshot, started: started.value, preset: preset.value, playedSeconds: Math.round(playedSeconds.value), pendingDeathNotices: pendingDeathNotices.value } satisfies Saved))
+      return true
     } catch {
       // Хранилище может быть недоступно: игра продолжит работу в текущей вкладке
+      return false
     }
+  }
+
+  function recordYear(before: GameState, after: GameState) {
+    pendingDeathNotices.value = collectDeathNotices(before, after, pendingDeathNotices.value)
+    // Store the exact intermediate year together with the complete queue before processing another year.
+    persist(after)
+  }
+
+  function advanceOneYear() {
+    const before = game.value
+    const after = advanceYear(before)
+    recordYear(before, after)
+    game.value = after
+  }
+
+  function acknowledgeDeathNotices(): boolean {
+    if (!pendingDeathNotices.value.length) return true
+    const unread = pendingDeathNotices.value
+    pendingDeathNotices.value = []
+    if (persist()) return true
+    pendingDeathNotices.value = unread
+    return false
   }
 
   function settle() {
@@ -145,7 +174,7 @@ export const useGameStore = defineStore('game', () => {
     game.value = dropUnanswerablePending(game.value)
     if (!started.value || !playing.value || blocked.value) return
     playedSeconds.value += Math.min(dt, .1)
-    const r = runClock(game.value, progress.value, Math.min(dt, .1), speed.value, secondsPerYear.value)
+    const r = runClock(game.value, progress.value, Math.min(dt, .1), speed.value, secondsPerYear.value, recordYear)
     progress.value = r.progress
     if (r.game !== game.value) game.value = r.game
     settle()
@@ -153,7 +182,7 @@ export const useGameStore = defineStore('game', () => {
 
   function step() {
     if (blocked.value) return
-    game.value = advanceYear(game.value)
+    advanceOneYear()
     progress.value = 0
     resumeAfter.value = false
     settle()
@@ -163,7 +192,7 @@ export const useGameStore = defineStore('game', () => {
     if (blocked.value) return
     playing.value = false
     for (let i = 0; i < MAX_JUMP_YEARS && !game.value.pending && !game.value.stopped; i++) {
-      game.value = advanceYear(game.value)
+      advanceOneYear()
     }
     progress.value = 0
     resumeAfter.value = false
@@ -314,6 +343,7 @@ export const useGameStore = defineStore('game', () => {
     progress.value = 0
     filter.value = 'all'
     playedSeconds.value = 0
+    pendingDeathNotices.value = []
     game.value = createGame(seed ?? randomSeed(), game.value.atmosphere)
     started.value = false
   }
@@ -339,9 +369,9 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    game, started, preset, playedSeconds, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop, skipFeedback,
+    game, started, preset, playedSeconds, pendingDeathNotices, hintsSeen, storyParticipants, storyTarget, toggleStoryParticipant, speed, playing, progress, filter, result, shopOpen, canOpenShop, skipFeedback,
     visibleChoices, chooseVisible, secondsPerYear, hasDecision, currentEvent, currentMoment, momentLeft, remaining, finalText, blocked, latest,
-    frame, step, runToDecision, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment, clearSkipFeedback,
+    frame, step, runToDecision, acknowledgeDeathNotices, openShop, closeShop, buy, changeLoad, chooseGoal, cancelServiceById, choose, continueAfterResult, acceptMoment, dismissMoment, clearSkipFeedback,
     changeFocus, changeSpeed, togglePlay, begin, newLife, setPreset, setAtmosphere, seeHint
   }
 })

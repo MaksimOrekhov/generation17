@@ -38,7 +38,7 @@ export const beatAt = (phase: number) => phase / 4
  * Пока ждёт решение или жизнь окончена, время не идёт.
  * Пока открыт момент, скорость ограничена так, чтобы он оставался на экране не меньше `MOMENT_MIN_SECONDS`.
  */
-export function runClock(game: GameState, progress: number, dtSeconds: number, speed: number, secondsPerYear: number): ClockResult {
+export function runClock(game: GameState, progress: number, dtSeconds: number, speed: number, secondsPerYear: number, onYear?: (before: GameState, after: GameState) => void): ClockResult {
   if (game.stopped || game.pending) return { game, progress }
   const cap = momentSpeedCap(secondsPerYear)
   let g = game
@@ -60,7 +60,9 @@ export function runClock(game: GameState, progress: number, dtSeconds: number, s
       g = beat(g)
     } else {
       p = 0
+      const before = g
       g = tick(g)
+      onYear?.(before, g)
     }
     if (g.stopped || g.pending) return { game: g, progress: p }
   }

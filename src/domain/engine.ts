@@ -14,7 +14,7 @@ import { elderDeathChance, infantRiskFor, infantYearlyChance } from './mortality
 import { applyOfferChanges, canBuy, getOffer, type OfferDefinition, type PurchaseAvailability, type PurchaseTarget } from './offers'
 import { applyStoryMoney, storyMoneyReason, validStoryMoney } from './storyMoney'
 import { PERSONAL_TIME, canSpendPersonalTime, endPersonalTime, freeTimeChance, spendPersonalTime, startPersonalTimeYear } from './personalTime'
-import { beginRelationship, createStoryPerson, currentPartner, endRelationship, friendLoveCompatible, personByRef, STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from './people'
+import { beginRelationship, createStoryPerson, currentPartner, endRelationship, friendLoveCompatible, personByRef, relationshipState, STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from './people'
 
 const HISTORY_LIMIT = 1500
 const MOMENT_CHANCE = .3
@@ -768,13 +768,19 @@ function peopleTick(g: GameState) {
     if (person.age < 65) continue
     const probability = Math.min(.58, Math.pow((person.age - 62) / 42, 2.2) * .24)
     if (random(g) < probability || person.age > 103) {
-      const wasPartner = g.relationships?.partnerId === person.id
-      if (wasPartner) endRelationship(g)
+      const wasPartner = relationshipState(g).partnerId === person.id
+      if (wasPartner && g.relationships?.partnerId === person.id) endRelationship(g)
       if (!g.relationships && person.id === 'friend' && g.flags.livingTogether === true && g.flags.lovePath !== 'confessed') endRelationship(g)
       person.alive = false
       if (!g.relationships && person.id === 'friend') g.flags.livingTogether = false
-      addLog(g, 'memory', `Уход: ${person.name}`, `В возрасте ${person.age} лет ${person.name} уходит из жизни. На корабле продолжают работать двигатели, но привычный мир становится немного другим.`)
-      g.memories.push(resolveText(g, `Пережил{{hero:|а}} уход человека, с которым была связана значительная часть жизни: ${person.name}.`))
+      const female = (person.gender ?? genderOfName(person.name)) === 'f'
+      const ageWord = person.age % 10 === 1 && person.age % 100 !== 11 ? 'год'
+        : person.age % 10 >= 2 && person.age % 10 <= 4 && (person.age % 100 < 12 || person.age % 100 > 14) ? 'года' : 'лет'
+      const ageLabel = `${person.age} ${ageWord}`
+      const role = person.role || 'Человек из окружения'
+      const text = `${role} — ${person.name} (${ageLabel}). Смерть отмечена в летописи «Пилигрима».${wasPartner ? ' На момент смерти вы состояли в отношениях.' : ''}`
+      addLog(g, 'memory', `${female ? 'Умерла' : 'Умер'} ${person.name}`, text)
+      g.memories.push(`${female ? 'Умерла' : 'Умер'} ${person.name} — ${role} (${ageLabel}).`)
       g.stats.morale = clamp(g.stats.morale - Math.min(13, Math.round(person.bond / 8)))
       g.stats.stress = clamp(g.stats.stress + 6)
     }
@@ -880,7 +886,7 @@ export function getStorylet(g: GameState) {
 export function epitaph(g: GameState) {
   const decisions = g.history.filter(h => h.kind === 'choice').length
   if (g.age < 5) {
-    return `Эта жизнь продлилась ${g.age} ${g.age === 1 ? 'год' : 'года'}. «Пилигрим» этого не заметил, но в одном секторе стало тише. Каждая жизнь на корабле начинается с лотереи, и не всем в ней везёт.`
+    return 'Эта жизнь оказалась короткой. В одном из жилых секторов «Пилигрима» стало тише. Корабль продолжает путь.'
   }
   return [
     `Жизнь ${g.protagonist.name} продолжалась ${g.age} лет на корабле, который так и не увидел своего пункта назначения.`,

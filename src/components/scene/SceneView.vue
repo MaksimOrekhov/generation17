@@ -7,7 +7,7 @@ import { currentPartner } from '../../domain/people'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
-import { spotLabels } from '../../ui/format'
+import { shortYears, spotLabels, years } from '../../ui/format'
 import MomentPopup from './MomentPopup.vue'
 import SceneCanvas from './SceneCanvas.vue'
 
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
     </div>
     </div>
     <div v-if="latest" class="scene__caption">
-      <span class="scene__when">{{ g.age }} л</span>
+      <span class="scene__when" :aria-label="years(g.age)">{{ shortYears(g.age) }}</span>
       <p class="wrap"><b>{{ latest.title }}.</b> {{ latest.text }}</p>
     </div>
   </section>
@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
 .scene__tag b { color: var(--amber); font-weight: 500; }
 .scene__attn i { width: 11px; height: 11px; background: var(--amber); border: 2px solid #ffd08a; transition: background .2s, border-color .2s; }
 .scene__attn i.used { background: transparent; border-color: var(--line-2); }
-.scene__caption { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); font: 400 14px/1.5 var(--font-ui); color: var(--text-soft); align-items: baseline; }
+.scene__caption { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--panel); font: 400 14px/1.5 var(--font-ui); color: var(--text-soft); align-items: baseline; }
 .scene__caption b { color: var(--text); font-weight: 500; }
 .scene__when { align-self: start; padding-top: 4px; font: 600 12px var(--font-mono); color: var(--amber); }
 .scene__skip-feedback {

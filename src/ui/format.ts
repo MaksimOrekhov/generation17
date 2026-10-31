@@ -1,12 +1,24 @@
 import type { Job, LogKind, SpotId, Stat, ShipStat, Skill } from '../domain/types'
 
-/** «1 год», «2 года», «5 лет». */
-export function years(n: number) {
+function yearForm(n: number) {
   const m10 = n % 10
   const m100 = n % 100
-  if (m10 === 1 && m100 !== 11) return `${n} год`
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return `${n} года`
+  if (m10 === 1 && m100 !== 11) return 'one'
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'few'
+  return 'many'
+}
+
+/** «1 год», «2 года», «5 лет». */
+export function years(n: number) {
+  const form = yearForm(n)
+  if (form === 'one') return `${n} год`
+  if (form === 'few') return `${n} года`
   return `${n} лет`
+}
+
+/** Короткие возрастные метки: «1 г.», «2 г.», «5 л.». */
+export function shortYears(n: number) {
+  return `${n} ${yearForm(n) === 'many' ? 'л.' : 'г.'}`
 }
 
 export function lifeStage(age: number) {

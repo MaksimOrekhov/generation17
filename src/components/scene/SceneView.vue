@@ -7,7 +7,7 @@ import { currentPartner } from '../../domain/people'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
 import type { SceneModel } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
-import { spotLabels, years } from '../../ui/format'
+import { shortYears, spotLabels, years } from '../../ui/format'
 import MomentPopup from './MomentPopup.vue'
 import SceneCanvas from './SceneCanvas.vue'
 
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
     </div>
     </div>
     <div v-if="latest" class="scene__caption">
-      <span class="scene__when">{{ years(g.age) }}</span>
+      <span class="scene__when" :aria-label="years(g.age)">{{ shortYears(g.age) }}</span>
       <p class="wrap"><b>{{ latest.title }}.</b> {{ latest.text }}</p>
     </div>
   </section>

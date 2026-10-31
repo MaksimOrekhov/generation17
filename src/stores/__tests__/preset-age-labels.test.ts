@@ -9,6 +9,7 @@ import HelpModal from '../../components/play/HelpModal.vue'
 import ChroniclePanel from '../../components/panels/ChroniclePanel.vue'
 import SceneView from '../../components/scene/SceneView.vue'
 import { useGameStore } from '../game'
+import { shortYears, years } from '../../ui/format'
 
 let pinia: ReturnType<typeof createPinia>
 
@@ -61,10 +62,31 @@ describe('preset duration hints and age labels', () => {
   })
 
   it.each([
-    { age: 0, label: '0 лет' },
-    { age: 3, label: '3 года' },
-    { age: 5, label: '5 лет' }
-  ])('uses the age formatter in the chronicle and scene: $label', async ({ age, label }) => {
+    { age: 0, short: '0 л.', full: '0 лет' },
+    { age: 1, short: '1 г.', full: '1 год' },
+    { age: 2, short: '2 г.', full: '2 года' },
+    { age: 3, short: '3 г.', full: '3 года' },
+    { age: 4, short: '4 г.', full: '4 года' },
+    { age: 5, short: '5 л.', full: '5 лет' },
+    { age: 11, short: '11 л.', full: '11 лет' },
+    { age: 21, short: '21 г.', full: '21 год' },
+    { age: 22, short: '22 г.', full: '22 года' },
+    { age: 24, short: '24 г.', full: '24 года' },
+    { age: 25, short: '25 л.', full: '25 лет' },
+    { age: 100, short: '100 л.', full: '100 лет' },
+    { age: 101, short: '101 г.', full: '101 год' },
+    { age: 111, short: '111 л.', full: '111 лет' },
+    { age: 114, short: '114 л.', full: '114 лет' },
+    { age: 121, short: '121 г.', full: '121 год' }
+  ])('formats age $age with a short UI label and full accessible label', ({ age, short, full }) => {
+    expect(shortYears(age)).toBe(short)
+    expect(years(age)).toBe(full)
+  })
+
+  it.each([
+    { age: 100, short: '100 л.', full: '100 лет' },
+    { age: 101, short: '101 г.', full: '101 год' }
+  ])('renders long age $age compactly with accessible full labels', async ({ age, short, full }) => {
     const store = useGameStore()
     const game = createGame(14)
     game.age = age
@@ -74,8 +96,7 @@ describe('preset duration hints and age labels', () => {
     const chronicle = await render(ChroniclePanel)
     const scene = await render(SceneView)
 
-    expect(chronicle).toMatch(new RegExp(`<time class="entry__age"[^>]*>${label}</time>`))
-    expect(chronicle).not.toMatch(/<small[^>]*>л<\/small>/)
-    expect(scene).toMatch(new RegExp(`<span class="scene__when"[^>]*>${label}</span>`))
+    expect(chronicle).toMatch(new RegExp(`<time class="entry__age"[^>]*aria-label="${full}"[^>]*>${short}</time>`))
+    expect(scene).toMatch(new RegExp(`<span class="scene__when"[^>]*aria-label="${full}"[^>]*>${short}</span>`))
   })
 })

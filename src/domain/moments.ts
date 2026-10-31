@@ -27,7 +27,7 @@ const baseMoments: MomentDef[] = [
   },
   {
     id: 'm-neighbor-radio', spot: 'door', title: 'Стук в дверь', min: 4, max: 14, weight: 2, cooldown: 4, needs: ['neighbor'],
-    text: 'За дверью топчется {{neighbor}} с коробкой деталей от старого радио. Кажется, {{neighbor:ему|ей}} нужен кто-то для затеи.',
+    text: 'За дверью топчется {{neighbor:сосед|соседка}} по сектору {{neighbor}} с коробкой деталей от старого радио. Кажется, {{neighbor:ему|ей}} нужен кто-то для затеи.',
     accept: { label: 'Открыть и помочь', result: 'К вечеру радио хрипит, как простуженное, но что-то в нём играет. {{neighbor}} сияет.', effects: { skills: { engineering: 1 }, stats: { knowledge: 1, bonds: 2 }, bonds: { neighbor: 5 } } },
     skip: { label: 'Сказать, что занят{{hero:|а}}' }
   },
@@ -46,7 +46,7 @@ const baseMoments: MomentDef[] = [
   {
     id: 'm-laundry', spot: 'parent', title: 'Уставшие руки', min: 5, max: 16, weight: 2, cooldown: 4, needs: ['parent'],
     text: '{{parent}} возвращается с работы с усталым лицом и просит помочь разобрать бельё.',
-    accept: { label: 'Помочь', result: 'Вдвоём получается быстрее. Родитель впервые за вечер улыбается.', effects: { stats: { stress: 1, bonds: 2 }, bonds: { parent: 4 } } },
+    accept: { label: 'Помочь', result: 'Вдвоём получается быстрее. Мама впервые за вечер улыбается.', effects: { stats: { stress: 1, bonds: 2 }, bonds: { parent: 4 } } },
     skip: { label: 'Сказать, что делаешь уроки' }
   },
   // — юность и взрослая жизнь —
@@ -84,7 +84,7 @@ const baseMoments: MomentDef[] = [
   {
     id: 'm-mentor-schema', spot: 'door', title: 'Пять минут наставника', min: 17, max: 45, weight: 2, cooldown: 6, needs: ['mentor'],
     text: '{{mentor}} машет из конца коридора: «Есть пять минут? Хочу показать одну схему».',
-    accept: { label: 'Пойти за наставником', result: 'Пять минут превращаются в час. Ты уходишь с исписанным листом и странным чувством, что тебя заметили.', effects: { stats: { knowledge: 2, reputation: 1 }, bonds: { mentor: 4 } } },
+    accept: { label: 'Посмотреть схему', result: 'Пять минут превращаются в час. Ты уходишь с исписанным листом и странным чувством, что тебя заметили.', effects: { stats: { knowledge: 2, reputation: 1 }, bonds: { mentor: 4 } } },
     skip: { label: 'Сослаться на смену' }
   },
   {

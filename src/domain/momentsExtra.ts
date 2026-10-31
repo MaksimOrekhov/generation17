@@ -10,7 +10,7 @@ export const extraMoments: MomentDef[] = [
   // — первые годы: события происходят вокруг героя, он только откликается —
   {
     id: 'm-lullaby', spot: 'parent', title: 'Колыбельная', min: 0, max: 3, weight: 3, cooldown: 1, needs: ['parent'],
-    text: '{{parent}} укачивает тебя и тихо напевает мелодию без слов. За стеной ровно гудит вентиляция.',
+    text: 'Мама укачивает тебя и тихо напевает мелодию без слов. За стеной ровно гудит вентиляция.',
     accept: { label: 'Прижаться и слушать', result: 'Мелодия смешивается с гулом корабля. Ты засыпаешь раньше, чем она заканчивается.', effects: { stats: { morale: 2, stress: -2 }, bonds: { parent: 4 } } },
     skip: { label: 'Отвернуться и хныкать' }
   },
@@ -48,7 +48,7 @@ export const extraMoments: MomentDef[] = [
   {
     id: 'm-snack', spot: 'table', title: 'Половина булки', min: 5, max: 14, weight: 3, cooldown: 4, needs: ['friend'],
     text: '{{friend}} достаёт из кармана булку, разламывает пополам и молча протягивает половину.',
-    accept: { label: 'Взять и поделиться', result: 'Булка тёплая и слегка помятая. Вы жуёте и обсуждаете, кто в классе странный.', effects: { stats: { morale: 2, bonds: 1 }, bonds: { friend: 4 } } },
+    accept: { label: 'Взять предложенную половину', result: 'Булка тёплая и слегка помятая. Вы жуёте и обсуждаете, кто в классе странный.', effects: { stats: { morale: 2, bonds: 1 }, bonds: { friend: 4 } } },
     skip: { label: 'Отказаться из вежливости' }
   },
   {
@@ -71,10 +71,10 @@ export const extraMoments: MomentDef[] = [
   },
   // — юность —
   {
-    id: 'm-curfew', spot: 'door', title: 'После отбоя', min: 14, max: 19, weight: 3, cooldown: 4,
-    text: 'До отбоя двадцать минут, а до вашей двери — длинный коридор и дежурный на повороте. Можно ли успеть?',
-    accept: { label: 'Идти тихо', result: 'Вы проскальзываете мимо дежурного. Сердце колотится сильнее, чем должно.', effects: { stats: { stress: 2, morale: 3 } } },
-    skip: { label: 'Вернуться вовремя', effects: { stats: { reputation: 1 } } }
+    id: 'm-curfew', spot: 'door', title: 'Перед отбоем', min: 14, max: 19, weight: 3, cooldown: 4,
+    text: 'После позднего разговора до отбоя двадцать минут. Обычным путём едва успеешь. Через служебный коридор ближе, но там дежурный.',
+    accept: { label: 'Срезать через служебный коридор', result: 'Ты проскальзываешь мимо дежурного. Сердце колотится сильнее, чем должно.', effects: { stats: { stress: 2, morale: 3 } } },
+    skip: { label: 'Идти обычной дорогой и успеть к отбою', effects: { stats: { reputation: 1 } } }
   },
   {
     id: 'm-radio-wall', spot: 'door', title: 'Музыка за стеной', min: 12, max: 45, weight: 2, cooldown: 5,

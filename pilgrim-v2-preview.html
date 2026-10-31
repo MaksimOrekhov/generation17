@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0812" />
+    <title>Пилигрим · A+C Refined v2.0</title>
+    <style>
+      :root { color-scheme: dark; font-family: "IBM Plex Sans", system-ui, sans-serif; background: #0a0812; color: #e9e4d7; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; }
+      main { width: min(100%, 920px); }
+      header { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 14px; }
+      h1 { margin: 0; font-size: 20px; font-weight: 500; letter-spacing: .04em; }
+      .badge { color: #ffd08a; border: 1px solid #6a6296; padding: 5px 9px; font: 12px/1.2 "IBM Plex Mono", monospace; }
+      .frame { background: #100e19; border: 1px solid #3a3358; padding: 12px; box-shadow: 0 16px 48px #0008; }
+      canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #070620; }
+      figure { margin: 0; }
+      .small { width: 240px; margin: 14px 0 0 auto; }
+      figcaption { margin-top: 7px; color: #a9a4b7; font: 11px/1.4 "IBM Plex Mono", monospace; }
+      figcaption a { color: #ffd08a; margin-left: 8px; }
+      .notes { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 14px; color: #aaa4b4; font-size: 13px; line-height: 1.5; }
+      .notes p { margin: 0; }
+      button { color: #ffe3b0; background: #17121f; border: 1px solid #6a6296; padding: 8px 12px; font: inherit; cursor: pointer; }
+      button:hover, button:focus-visible { background: #2a2540; outline: 1px solid #ffd08a; }
+      button:disabled { opacity: .72; cursor: default; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Пилигрим · внешний вид A+C Refined v2.0</h1>
+        <div class="badge">КОНЦЕПТ · НЕ УТВЕРЖДЁННЫЙ КАНОН</div>
+      </header>
+      <section class="frame" aria-label="Пиксельный предпросмотр корабля">
+        <figure>
+          <canvas id="ship-full" width="480" height="270" aria-label="Внешний вид Пилигрима, 480 на 270 пикселей"></canvas>
+          <figcaption>480 × 270 · единый защищённый корпус, нос слева <a id="download-full" download="pilgrim-ac-refined-v2-480x270.png">Скачать PNG</a></figcaption>
+        </figure>
+        <figure class="small">
+          <canvas id="ship-small" width="240" height="135" aria-label="Миниатюра внешнего вида Пилигрима, 240 на 135 пикселей"></canvas>
+          <figcaption>240 × 135 · проверка читаемости кольца <a id="download-small" download="pilgrim-ac-refined-v2-240x135.png">Скачать PNG</a></figcaption>
+        </figure>
+      </section>
+      <section class="notes">
+        <p>Защищённый ковчег · встроенное кольцо · закрытые жилые ярусы · маркировка миссии<br />Огни декоративные; кольцо не обозначает двигатель, гравитацию или местоположение.</p>
+        <button id="motion-toggle" type="button">Анимация: включена</button>
+      </section>
+    </main>
+    <script type="module" src="/src/render/pilgrimArkV2Preview.ts"></script>
+  </body>
+</html>

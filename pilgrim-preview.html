@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0812" />
+    <title>Пилигрим — концепт F3</title>
+    <style>
+      :root { color-scheme: dark; font-family: "IBM Plex Sans", system-ui, sans-serif; background: #0a0812; color: #e9e4d7; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 28px; }
+      main { width: min(100%, 900px); }
+      header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+      h1 { margin: 0; font-size: 20px; font-weight: 500; letter-spacing: .04em; }
+      .badge { color: #ffd08a; border: 1px solid #6a6296; padding: 5px 9px; font: 12px/1.2 "IBM Plex Mono", monospace; }
+      .stage { background: #100e19; border: 1px solid #3a3358; padding: 12px; box-shadow: 0 16px 48px #0008; }
+      .frames { display: grid; gap: 14px; align-items: start; }
+      .frame { margin: 0; min-width: 0; }
+      .frame canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #070620; }
+      .frame.thumb { width: 240px; max-width: 100%; justify-self: end; }
+      figcaption { margin-top: 7px; color: #a9a4b7; font: 11px/1.4 "IBM Plex Mono", monospace; }
+      figcaption a { color: #ffd08a; margin-left: 8px; }
+      .notes { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 14px; color: #aaa4b4; font-size: 13px; line-height: 1.5; }
+      .notes p { margin: 0; }
+      button { color: #ffe3b0; background: #17121f; border: 1px solid #6a6296; padding: 8px 12px; font: inherit; cursor: pointer; }
+      button:hover, button:focus-visible { background: #2a2540; outline: 1px solid #ffd08a; }
+      button:disabled { opacity: .72; cursor: default; }
+      @media (max-width: 560px) { body { padding: 14px; } header { align-items: start; flex-direction: column; } .frame.thumb { width: 100%; } .notes { align-items: start; flex-direction: column; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Пилигрим · внешний вид</h1>
+        <div class="badge">КОНЦЕПТ F3 — НЕ УТВЕРЖДЁННЫЙ ОБЛИК</div>
+      </header>
+      <section class="stage" aria-label="Предпросмотр корпуса">
+        <div class="frames">
+          <figure class="frame">
+            <canvas id="full" width="480" height="270" aria-label="Концепт внешнего вида, 480 на 270 пикселей"></canvas>
+            <figcaption>480 × 270 · side 3/4 · нос слева <a id="save-full" download="pilgrim-f3-480x270.png">Скачать PNG</a></figcaption>
+          </figure>
+          <figure class="frame thumb">
+            <canvas id="thumb" width="240" height="135" aria-label="Миниатюра концепта, 240 на 135 пикселей"></canvas>
+            <figcaption>240 × 135 · проверка читаемости силуэта <a id="save-thumb" download="pilgrim-f3-240x135.png">Скачать PNG</a></figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="notes">
+        <p>Щит · две жилые массы · осевая связь · кормовые техслужбы<br />Цветовые метки и огни декоративные; обозначения секторов и адрес не заданы.</p>
+        <button id="motion" type="button">Анимация: включена</button>
+      </section>
+    </main>
+    <script type="module" src="/src/render/pilgrimPreview.ts"></script>
+  </body>
+</html>

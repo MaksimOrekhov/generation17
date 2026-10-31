@@ -3,7 +3,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import type { LogKind } from '../../domain/types'
 import { useGameStore } from '../../stores/game'
 import type { LogFilter } from '../../stores/game'
-import { logKindLabels } from '../../ui/format'
+import { logKindLabels, years } from '../../ui/format'
 import Panel from '../common/Panel.vue'
 
 const PAGE = 80
@@ -60,7 +60,7 @@ defineExpose({ focusMemory, focusFirstFilter })
     </nav>
     <div ref="memoryList" class="chron__list" tabindex="-1" aria-label="Записи летописи">
       <article v-for="e in shown" :key="e.id" class="entry" :class="kindClass(e.kind)">
-        <time class="entry__age">{{ e.age }}<small>л</small></time>
+        <time class="entry__age">{{ years(e.age) }}</time>
         <div class="entry__main">
           <h4 class="entry__title wrap">
             <span v-if="e.kind !== 'ambient' && e.kind !== 'life'" class="entry__kind">{{ logKindLabels[e.kind] }}</span>
@@ -80,7 +80,6 @@ defineExpose({ focusMemory, focusFirstFilter })
 .chron__list { max-height: 560px; overflow: auto; }
 .entry { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 14px; padding: 15px 16px; border-bottom: 1px solid var(--line); }
 .entry__age { font: 600 15px/1.3 var(--font-display); color: var(--amber); }
-.entry__age small { font: 400 10px var(--font-mono); color: var(--faint); margin-left: 2px; }
 .entry__title { font-size: 14px; font-weight: 600; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .entry__kind { font: 500 9.5px var(--font-mono); letter-spacing: 1px; text-transform: uppercase; padding: 1px 5px; background: var(--panel-2); color: var(--muted); }
 .entry__text { margin-top: 5px; font-size: 14px; line-height: 1.55; color: var(--text-soft); }

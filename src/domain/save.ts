@@ -7,6 +7,7 @@ import { getOffer } from './offers'
 import { repairPersonalTime } from './personalTime'
 import type { GameState } from './types'
 import { relationshipState } from './people'
+import { stripInvalidNpcMilestoneMarkers } from './validateNpcMarkers'
 
 export interface Repaired {
   game: GameState
@@ -25,6 +26,11 @@ export function repairSave(state: GameState): Repaired {
   const decisions = repairDecisions(state.decisions, state.age)
   if (JSON.stringify(decisions) !== JSON.stringify(state.decisions)) notes.push('Журнал решений: отсутствующие или повреждённые записи удалены; прошлые решения не восстанавливались.')
   let g = { ...state, decisions, economy: repairEconomy(state) }
+  const markerRepair = stripInvalidNpcMilestoneMarkers(g)
+  if (markerRepair.removed.length) {
+    notes.push('Маркеры автономии NPC без подтверждённого факта или допустимого возраста удалены; прошлые события не создавались.')
+    g = { ...g, flags: markerRepair.flags }
+  }
   if (g.relationships?.partnerId) {
     const id = g.relationships.partnerId
     const person = g.people.find(p => p.id === id)

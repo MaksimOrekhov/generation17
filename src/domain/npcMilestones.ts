@@ -2,13 +2,9 @@ import { sectorById } from './birth'
 import { friendRomancePending, relationshipState } from './people'
 import { hash32 } from './random'
 import type { GameState, Job, Person, SectorId } from './types'
-
-export const NPC_MILESTONE_FLAGS = [
-  'npcFriendFirstJobAt',
-  'npcSiblingFirstJobAt',
-  'npcFriendFirstMoveAt',
-  'npcSiblingFirstMoveAt'
-] as const
+import { NPC_MILESTONE_FLAGS } from './npcMilestoneFlags'
+import { npcMarkerFactAccessible } from './validateNpcMarkers'
+export { NPC_MILESTONE_FLAGS } from './npcMilestoneFlags'
 
 const NPC_IDS = ['friend', 'sibling'] as const
 const JOBS = ['Техник', 'Медик', 'Агроном', 'Координатор'] as const satisfies readonly Job[]
@@ -56,6 +52,27 @@ function markerAge(g: GameState, flag: string): { present: boolean; valid: boole
   return { present: true, valid: true, age: value }
 }
 
+/** A marker is trusted only when its timestamp is accessible and its recorded fact exists. */
+export function npcMilestoneMarkersValid(g: GameState): boolean {
+  for (const flag of NPC_MILESTONE_FLAGS) {
+    const marker = markerAge(g, flag)
+    if (!marker.valid) return false
+    if (!marker.present) continue
+    if (!npcMarkerFactAccessible(g, flag, marker.age!)) return false
+  }
+  return true
+}
+
+function personMarkersValid(g: GameState, id: typeof NPC_IDS[number]): boolean {
+  for (const flag of [jobFlag(id), moveFlag(id)]) {
+    const marker = markerAge(g, flag)
+    if (!marker.valid) return false
+    if (!marker.present) continue
+    if (!npcMarkerFactAccessible(g, flag, marker.age!)) return false
+  }
+  return true
+}
+
 function personMarkerAges(g: GameState, id: typeof NPC_IDS[number]): { valid: boolean; ages: number[] } {
   const markers = [markerAge(g, jobFlag(id)), markerAge(g, moveFlag(id))]
   return { valid: markers.every(marker => marker.valid), ages: markers.flatMap(marker => marker.age === undefined ? [] : [marker.age]) }
@@ -73,7 +90,9 @@ function friendRomanceContext(g: GameState): boolean {
 }
 
 function relationshipBlocksFriendMove(g: GameState): boolean {
-  return friendRomanceContext(g)
+  const stage = String(g.flags.loveStage ?? '')
+  const ambiguousLegacy = !g.relationships && g.flags.lovePath === undefined && ['open', 'parted', 'drifted'].includes(stage)
+  return friendRomanceContext(g) || ambiguousLegacy
 }
 
 export function friendAutonomyStoryAvailable(g: GameState): boolean {
@@ -87,7 +106,7 @@ function inspectJob(g: GameState, id: typeof NPC_IDS[number], person: Person | u
   if (npcAge !== plan.jobAge) return assessment
   if (person.since > g.age) return { ...assessment, reason: 'NOT_YET_KNOWN' }
   if (!person.alive) return { ...assessment, reason: 'DEAD' }
-  if (!personMarkerAges(g, id).valid) return { ...assessment, reason: 'INVALID_MARKER' }
+  if (!personMarkerAges(g, id).valid || !personMarkersValid(g, id)) return { ...assessment, reason: 'INVALID_MARKER' }
   if (markerAge(g, jobFlag(id)).present) return { ...assessment, reason: 'ALREADY_APPLIED' }
   if (person.state?.job !== undefined) return { ...assessment, reason: 'JOB_KNOWN' }
   return { ...assessment, eligible: true, reason: 'APPLIED' }
@@ -100,7 +119,7 @@ function inspectMove(g: GameState, id: typeof NPC_IDS[number], person: Person | 
   if (npcAge !== plan.moveAge) return assessment
   if (person.since > g.age) return { ...assessment, reason: 'NOT_YET_KNOWN' }
   if (!person.alive) return { ...assessment, reason: 'DEAD' }
-  if (!personMarkerAges(g, id).valid) return { ...assessment, reason: 'INVALID_MARKER' }
+  if (!personMarkerAges(g, id).valid || !personMarkersValid(g, id)) return { ...assessment, reason: 'INVALID_MARKER' }
   if (markerAge(g, moveFlag(id)).present) return { ...assessment, reason: 'ALREADY_APPLIED' }
   const oldSector = person.state?.sectorId
   if (oldSector === undefined) return { ...assessment, reason: 'UNKNOWN_SOURCE' }

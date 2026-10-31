@@ -8,6 +8,7 @@ import { getOffer } from '../domain/offers'
 import { TIME_REGIMES } from '../domain/personalTime'
 import { STORY_MONEY_LIMIT, validStoryMoney } from '../domain/storyMoney'
 import { STORY_PERSON_ROLES, STORY_PERSON_SLOTS } from '../domain/people'
+import { NPC_MILESTONE_FLAGS } from '../domain/npcMilestoneFlags'
 
 export interface Issue { level: 'error' | 'warn'; where: string; message: string }
 
@@ -29,8 +30,7 @@ export const GENDER_SUBJECTS = ['hero', ...PERSON_PLACEHOLDERS]
 /** Сюжетный выбор может по-настоящему купить только эти позиции каталога (T7). */
 export const STORY_PURCHASE_OFFERS = ['course-pro', 'family-trip']
 /** Флаги, которые ставит сам движок, а не эффекты сюжетов: семейная поездка отмечает возраст поездки с каждым участником. */
-const NPC_MILESTONE_FLAGS = ['npcFriendFirstJobAt', 'npcSiblingFirstJobAt', 'npcFriendFirstMoveAt', 'npcSiblingFirstMoveAt']
-const NPC_MILESTONE_FLAG_SET = new Set(NPC_MILESTONE_FLAGS)
+const NPC_MILESTONE_FLAG_SET = new Set<string>(NPC_MILESTONE_FLAGS)
 const ENGINE_FLAGS = ['familyHealthRisk', 'familyTrip', ...PEOPLE.map(id => `familyTrip${id.charAt(0).toUpperCase()}${id.slice(1)}`), ...NPC_MILESTONE_FLAGS]
 
 export const LIMITS = {
@@ -383,6 +383,14 @@ function createdPeople(effects: unknown): string[] {
   return []
 }
 
+function writesSibling(effects: unknown): boolean {
+  return isObj(effects) && isObj(effects.person) && Object.hasOwn(effects.person, 'sibling')
+}
+
+function requiresSiblingPresent(requires: unknown): boolean {
+  return isObj(requires) && Array.isArray(requires.present) && requires.present.includes('sibling')
+}
+
 function checkStorylet(c: Ctx, s: unknown, where: string, flags: Set<string>) {
   if (!isObj(s)) { c.err(where, 'сюжет должен быть объектом'); return }
   c.keys(s, ['id', 'category', 'title', 'body', 'min', 'max', 'weight', 'priority', 'arc', 'fork', 'weird', 'requires', 'choices', 'bodyVariants', 'tone', 'tags', 'group'], where)
@@ -436,6 +444,10 @@ function checkStorylet(c: Ctx, s: unknown, where: string, flags: Set<string>) {
     if (c.text(ch.hint, `${w}.hint`, LIMITS.hint)) c.personGuard(ch.hint, choiceGuard, `${w}.hint`)
     if (c.text(ch.result, `${w}.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(ch.result, [...choiceGuard, ...createdPeople(ch.effects)], `${w}.result`)
     c.effects(ch.effects, `${w}.effects`)
+    if ((writesSibling(ch.effects) || isObj(ch.check) && (writesSibling(ch.check.success) || writesSibling(ch.check.failure)))
+      && !requiresSiblingPresent(s.requires) && !requiresSiblingPresent(ch.requires)) {
+      c.err(`${w}.effects.person.sibling`, 'запись состояния sibling требует статического requires.present: ["sibling"] на сюжете или выборе')
+    }
     if (isObj(ch.effects) && isStr(ch.effects.memory)) c.personGuard(ch.effects.memory, [...choiceGuard, ...createdPeople(ch.effects)], `${w}.effects.memory`)
     if (ch.check === undefined) return
     const k = ch.check
@@ -502,12 +514,20 @@ function checkMoment(c: Ctx, m: unknown, where: string, flags: Set<string>) {
     if (c.text(accept.result, `${where}.accept.result`, LIMITS.result, LIMITS.resultWarn)) c.personGuard(accept.result, [...needs, ...createdPeople(accept.effects)], `${where}.accept.result`)
     c.variants(accept.resultVariants, `${where}.accept.resultVariants`, LIMITS.result, needs, flags)
     c.effects(accept.effects, `${where}.accept.effects`, false)
+    if (writesSibling(accept.effects) && !needs.includes('sibling') && !requiresSiblingPresent(m.requires)) {
+      c.err(`${where}.accept.effects.person.sibling`, 'запись состояния sibling требует needs: ["sibling"] или requires.present: ["sibling"]')
+    }
   }
   if (!isObj(skip)) c.err(`${where}.skip`, 'нужен объект')
   else {
     c.keys(skip, ['label', 'effects'], `${where}.skip`)
     c.text(skip.label, `${where}.skip.label`, LIMITS.label)
-    if (skip.effects !== undefined) c.effects(skip.effects, `${where}.skip.effects`, false)
+    if (skip.effects !== undefined) {
+      c.effects(skip.effects, `${where}.skip.effects`, false)
+      if (writesSibling(skip.effects) && !needs.includes('sibling') && !requiresSiblingPresent(m.requires)) {
+        c.err(`${where}.skip.effects.person.sibling`, 'запись состояния sibling требует needs: ["sibling"] или requires.present: ["sibling"]')
+      }
+    }
   }
 }
 

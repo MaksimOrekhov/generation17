@@ -10,9 +10,29 @@
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | Golden · passive | 8 | 13 | 13 | 13 | 13/13 (100.0%) | 0 | 0 | N/A | 13/13 | 13/13 | 13 | 5 | 0 | 5 | 8 | 0 |
 | Golden · responsive | 8 | 13 | 13 | 13 | 13/13 (100.0%) | 0 | 0 | N/A | 13/13 | 13/13 | 13 | 5 | 5 | 0 | 8 | 0 |
-| 1000..1023 · responsive | 24 | 42 | 42 | 42 | 42/42 (100.0%) | 0 | 0 | N/A | 42/42 | 42/42 | 42 | 10 | 10 | 0 | 32 | 0 |
+| 1000..1023 · responsive | 24 | 42 | 42 | 42 | 42/42 (100.0%) | 0 | 0 | N/A | 42/42 | 42/42 | 37 | 10 | 10 | 0 | 27 | 1 |
 
 `eligibleNPC` — уникальные реальные `friend`/`sibling` с хотя бы одним достигнутым безопасным окном. `E_job` и `E_move` — уникальные пары run/person/kind; при `E_move=0` процент — `N/A`. `O` — фактический pending storylet. `R` — реально сыгранный контакт; отказ считается отдельно и не приписывается как контакт. `NOT_EXPOSED` — доступное окно, в котором director не предложил сцену. `Public records` означает созданную factual запись; `State renderable` — текущая профессия/сектор присутствуют в модели и отображаются существующей FamilyPanel. Это proxy, не доказательство, что игрок прочёл запись; `actuallySeen=UNKNOWN`.
+
+Счётчики scene gates — проверки на post-tick snapshot перед оценкой результатов: JSON_CONDITION_OK — возраст и JSON `available`; ROMANCE_BLOCK — friend scene отсекается relationship guard; ALREADY_SEEN — решение уже есть; BLOCKED_PENDING — другой pending был бы активен при проверке; REAL_SELECTION_ELIGIBLE — валидные engine markers и хотя бы один допустимый choice. OFFERED — фактическая запись решения/director pending; NOT_EXPOSED = REAL_SELECTION_ELIGIBLE − OFFERED. Это диагностические окна, не изменение director.
+
+| Cohort | Gate | Checks |
+|---|---|---:|
+| Golden · passive | JSON_CONDITION_OK | 130 |
+| Golden · passive | ROMANCE_BLOCK | 0 |
+| Golden · passive | ALREADY_SEEN | 24 |
+| Golden · passive | BLOCKED_PENDING | 201 |
+| Golden · passive | REAL_SELECTION_ELIGIBLE | 106 |
+| Golden · responsive | JSON_CONDITION_OK | 130 |
+| Golden · responsive | ROMANCE_BLOCK | 0 |
+| Golden · responsive | ALREADY_SEEN | 24 |
+| Golden · responsive | BLOCKED_PENDING | 201 |
+| Golden · responsive | REAL_SELECTION_ELIGIBLE | 106 |
+| 1000..1023 · responsive | JSON_CONDITION_OK | 415 |
+| 1000..1023 · responsive | ROMANCE_BLOCK | 53 |
+| 1000..1023 · responsive | ALREADY_SEEN | 78 |
+| 1000..1023 · responsive | BLOCKED_PENDING | 620 |
+| 1000..1023 · responsive | REAL_SELECTION_ELIGIBLE | 284 |
 
 ## Фактически применённые переходы и доступные факты
 
@@ -143,15 +163,15 @@
 
 ## Цензурированные прогоны
 
-| Cohort | Seed |
-|---|---|
-| Golden · passive | — |
-| Golden · responsive | — |
-| 1000..1023 · responsive | — |
+| Cohort | Seed | Last hero age | Recorded cause | Reason |
+|---|---:|---:|---|---|
+| Golden · passive | — | — | — | — |
+| Golden · responsive | — | — | — | — |
+| 1000..1023 · responsive | 1013 | 2 | болезни раннего детства | STOPPED_BEFORE_HORIZON |
 
 ## Ограничения интерпретации
 
 - В fresh lives друг и sibling не имеют исходного `state.sectorId`. Для них переезд корректно пропускается с `UNKNOWN_SOURCE`; synthetic cohort не используется для создания адреса. Ноль переездов при `E_move=0` — `N/A`, не провал порога.
 - Сцена может быть eligible, но не предложена director; JSON eligibility не считается предложением. Личный разговор считается только после выбора контактного choice ID. `no-contact` не добавляет memory.
 - Public log and current FamilyPanel state are technical presentation proxies. Браузерный smoke, фактическое прочтение записи и человеческий playtest в этом диагностическом CLI не выполнялись.
-- Смерть героя или невозможность разрешить pending decision до hero age 40 помечается как censored; недостигнутые окна не добавляются в знаменатели.
+- Смерть до hero age 40, неразрешённый pending decision или остановка без продвижения помечаются как censored; недостигнутые окна не добавляются в знаменатели. Seed 1013 фактически завершился смертью героя в 2 года от болезней раннего детства.

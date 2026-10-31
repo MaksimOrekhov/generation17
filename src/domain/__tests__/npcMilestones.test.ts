@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { repairSave } from '../save'
 import { runClock } from '../clock'
-import { advanceYear, canChoose, createGame, decide, tick } from '../engine'
+import { advanceYear, canChoose, canTakeMoment, createGame, decide, resolveText, skipMoment, takeMoment, tick } from '../engine'
 import { friendAutonomyStoryAvailable, inspectNpcMilestones, npcMilestonePlan, npcMilestonesTick, NPC_MILESTONE_FLAGS } from '../npcMilestones'
 import { storylets } from '../storylets'
+import { moments } from '../moments'
 import { collectDeathNotices } from '../deathNotices'
 import type { Storylet } from '../types'
 
@@ -395,6 +396,37 @@ describe('автономные рубежи друга и сиблинга', () 
       expect(canChoose(sibling, 0).available).toBe(true)
     } finally { removeValid() }
 
+    const guardedEffects: Storylet['choices'][number]['effects'] = { person: { sibling: { job: 'Медик' } }, stats: { bonds: 8 }, money: 12 }
+    for (const status of ['distant', 'absent', 'dead', 'future'] as const) {
+      const probe = structuredClone(sibling)
+      const target = probe.people.find(candidate => candidate.id === 'sibling')!
+      if (status === 'distant') target.state = { availability: 'distant' }
+      if (status === 'absent') probe.people = probe.people.filter(candidate => candidate.id !== 'sibling')
+      if (status === 'dead') target.alive = false
+      if (status === 'future') target.since = probe.age + 1
+      const guarded = fixture(`test-sibling-${status}`, guardedEffects)
+      const remove = insertStoryletForRuntimeTest(guarded)
+      try {
+        probe.pending = guarded.id
+        const before = JSON.stringify(probe)
+        expect(canChoose(probe, 0).available).toBe(false)
+        expect(JSON.stringify(decide(probe, 0))).toBe(before)
+      } finally { remove() }
+    }
+
+    for (const invalidPerson of [
+      { job: 'Пилот' }, { sectorId: 'nowhere' }
+    ]) {
+      const invalid = fixture(`test-sibling-invalid-${Object.keys(invalidPerson)[0]}`, { person: { sibling: invalidPerson as never }, stats: { bonds: 8 }, money: 12 })
+      const remove = insertStoryletForRuntimeTest(invalid)
+      try {
+        sibling.pending = invalid.id
+        const before = JSON.stringify(sibling)
+        expect(canChoose(sibling, 0).available).toBe(false)
+        expect(JSON.stringify(decide(sibling, 0))).toBe(before)
+      } finally { remove() }
+    }
+
     const forbiddenNeighbor = fixture('test-neighbor-effect', { person: { neighbor: { job: 'Медик' } } })
     const removeNeighbor = insertStoryletForRuntimeTest(forbiddenNeighbor)
     try {
@@ -409,6 +441,142 @@ describe('автономные рубежи друга и сиблинга', () 
         sibling.pending = forbidden.id
         expect(canChoose(sibling, 0).available).toBe(false)
       } finally { remove() }
+
+      const checked = fixture(`test-check-${marker.toLowerCase()}`, {})
+      checked.choices[0]!.check = {
+        skill: 'social', difficulty: 10, successText: 'Успех.', failureText: 'Неудача.',
+        success: { flags: { [marker]: 18 } }, failure: {}
+      }
+      const removeCheck = insertStoryletForRuntimeTest(checked)
+      try {
+        sibling.pending = checked.id
+        expect(canChoose(sibling, 0).available).toBe(false)
+      } finally { removeCheck() }
+
+      const acceptMoment = { ...structuredClone(moments[0]!), id: `test-accept-${marker.toLowerCase()}`, accept: { ...structuredClone(moments[0]!.accept), effects: { flags: { [marker]: 18 } } } }
+      moments.push(acceptMoment)
+      try {
+        sibling.pending = null
+        sibling.moment = acceptMoment.id
+        expect(canTakeMoment(sibling)).toBe(false)
+        expect(takeMoment(sibling)).toBe(sibling)
+      } finally { moments.pop() }
+
+      const skipMomentDef = { ...structuredClone(moments[0]!), id: `test-skip-${marker.toLowerCase()}`, skip: { ...structuredClone(moments[0]!.skip), effects: { flags: { [marker]: 18 } } } }
+      moments.push(skipMomentDef)
+      try {
+        sibling.pending = null
+        sibling.moment = skipMomentDef.id
+        expect(skipMoment(sibling)).toBe(sibling)
+      } finally { moments.pop() }
     }
+  })
+
+  it.each([
+    ['дробный', 28.5], ['будущий', 31], ['отрицательный', -1], ['строковый', '28']
+  ])('repairSave удаляет %s маркер без биографии и закрывает сцену до decide/reload', (_label, invalid) => {
+    const g = createGame(17)
+    g.age = 30
+    const friend = g.people.find(person => person.id === 'friend')!
+    friend.age = 28
+    friend.since = 0
+    friend.state = { job: 'Медик' }
+    g.flags[FLAG_BY_ID.friend.firstJob] = invalid as number
+    g.pending = 'npc-friend-shift-ledger'
+
+    const repaired = repairSave(JSON.parse(JSON.stringify(g))).game
+    expect(repaired.flags[FLAG_BY_ID.friend.firstJob]).toBeUndefined()
+    expect(storylets.find(event => event.id === 'npc-friend-shift-ledger')!.available(repaired)).toBe(false)
+    expect(canChoose(repaired, 0).available).toBe(false)
+    const unchanged = decide(repaired, 0)
+    expect(unchanged.decisions.some(decision => decision.id === 'npc-friend-shift-ledger')).toBe(false)
+    expect(unchanged.history.some(entry => entry.title === 'Реестр занятий')).toBe(false)
+    const reload = repairSave(JSON.parse(JSON.stringify(unchanged))).game
+    expect(reload.flags[FLAG_BY_ID.friend.firstJob]).toBeUndefined()
+  })
+
+  it('validates direct-runtime markers and retains valid age-boundary facts through JSON reload', () => {
+    const g = createGame(29)
+    g.age = 30
+    const friend = g.people.find(person => person.id === 'friend')!
+    friend.age = 28
+    friend.since = 0
+    friend.state = { job: 'Медик' }
+    g.flags[FLAG_BY_ID.friend.firstJob] = Number.NaN
+    g.pending = 'npc-friend-shift-ledger'
+    expect(canChoose(g, 0).available).toBe(false)
+    expect(storylets.find(event => event.id === 'npc-friend-shift-ledger')!.available(g)).toBe(false)
+    const repaired = repairSave(g).game
+    expect(repaired.flags[FLAG_BY_ID.friend.firstJob]).toBeUndefined()
+
+    const valid = createGame(43)
+    valid.age = 30
+    const person = valid.people.find(candidate => candidate.id === 'friend')!
+    person.age = 28
+    person.since = 0
+    person.state = { job: 'Медик' }
+    valid.flags[FLAG_BY_ID.friend.firstJob] = 20
+    valid.pending = 'npc-friend-shift-ledger'
+    expect(storylets.find(event => event.id === valid.pending)!.available(valid)).toBe(true)
+    expect(canChoose(valid, 0).available).toBe(true)
+    expect(repairSave(JSON.parse(JSON.stringify(valid))).game.flags[FLAG_BY_ID.friend.firstJob]).toBe(20)
+
+    const atBoundary = createGame(73)
+    atBoundary.age = 20
+    const boundaryFriend = atBoundary.people.find(candidate => candidate.id === 'friend')!
+    boundaryFriend.since = 0
+    boundaryFriend.state = { job: 'Медик' }
+    atBoundary.flags[FLAG_BY_ID.friend.firstJob] = atBoundary.age
+    expect(repairSave(atBoundary).game.flags[FLAG_BY_ID.friend.firstJob]).toBe(20)
+  })
+
+  it.each(['open', 'parted', 'drifted'])('conservatively blocks only the friend move for ambiguous legacy loveStage=%s', stage => {
+    const g = createGame(101)
+    g.flags.loveStage = stage
+    const friend = g.people.find(person => person.id === 'friend')!
+    const sibling = g.people.find(person => person.id === 'sibling')!
+    friend.age = npcMilestonePlan(g.seed, 'friend').moveAge
+    sibling.age = npcMilestonePlan(g.seed, 'sibling').moveAge
+    g.age = Math.max(friend.age, sibling.age)
+    friend.since = sibling.since = 0
+    friend.state = { sectorId: 'atrium' }
+    sibling.state = { sectorId: 'bio' }
+    const assessments = inspectNpcMilestones(g)
+    expect(assessments.find(item => item.personId === 'friend' && item.kind === 'firstMove')?.reason).toBe('RELATIONSHIP')
+    expect(assessments.find(item => item.personId === 'sibling' && item.kind === 'firstMove')?.reason).not.toBe('RELATIONSHIP')
+  })
+
+  it('keeps engine-owned sibling milestones working while that living person is distant', () => {
+    const g = createGame(211)
+    const sibling = g.people.find(person => person.id === 'sibling')!
+    const plan = npcMilestonePlan(g.seed, 'sibling')
+    sibling.age = plan.jobAge
+    sibling.since = 0
+    sibling.state = { availability: 'distant' }
+    g.age = plan.jobAge
+    npcMilestonesTick(g)
+    expect(sibling.state?.job).toBe(plan.job)
+    expect(g.flags[FLAG_BY_ID.sibling.firstJob]).toBe(g.age)
+  })
+
+  it.each([
+    ['Техник', 'm', 'научился'], ['Техник', 'f', 'научилась'],
+    ['Агроном', 'm', 'научился ждать'], ['Агроном', 'f', 'научилась ждать']
+  ] as const)('renders approved friend job copy: %s / %s', (job, gender, expected) => {
+    const g = createGame(58)
+    g.age = 24
+    const friend = g.people.find(person => person.id === 'friend')!
+    friend.age = 22
+    friend.since = 0
+    friend.gender = gender
+    friend.state = { job }
+    g.flags[FLAG_BY_ID.friend.firstJob] = 22
+    g.pending = 'npc-friend-shift-ledger'
+    const event = storylets.find(candidate => candidate.id === g.pending)!
+    const resultTemplate = event.choices[0]!.resultVariants!.find(variant => variant.available(g))!.text
+    const rendered = resolveText(g, resultTemplate)
+    expect(rendered).toContain(expected)
+    expect(rendered).not.toContain('научилсяся')
+    expect(rendered).not.toContain('научилася')
   })
 })

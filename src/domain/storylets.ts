@@ -7,6 +7,7 @@ import { compileStorylet } from '../content/load'
 import bundle from '../content/bundle.json'
 import type { ContentBundle } from '../content/types'
 import { friendLoveCompatible } from './people'
+import { npcMilestoneMarkersValid } from './npcMilestones'
 
 const any = () => true
 import { gYearPlaceholder } from './constants'
@@ -245,5 +246,19 @@ export const codeStorylets: Storylet[] = [...baseStorylets, ...extraStorylets, .
 
 /** Сюжеты из `content/storylets/*.json`, собранные в `src/content/bundle.json` командой `npm run content`. */
 export const contentStorylets: Storylet[] = (bundle as unknown as ContentBundle).storylets.map(compileStorylet)
+
+const npcAutonomyJsonConditions = new WeakMap<Storylet, Storylet['available']>()
+for (const story of contentStorylets) {
+  if (story.id === 'npc-friend-shift-ledger' || story.id === 'npc-sibling-own-rhythm') {
+    const jsonCondition = story.available
+    npcAutonomyJsonConditions.set(story, jsonCondition)
+    story.available = g => npcMilestoneMarkersValid(g) && jsonCondition(g)
+  }
+}
+
+/** Raw JSON `requires` condition for diagnostics; the runtime `available` also validates engine markers. */
+export function npcAutonomyJsonAvailable(story: Storylet, g: import('./types').GameState): boolean {
+  return (npcAutonomyJsonConditions.get(story) ?? story.available)(g)
+}
 
 export const storylets: Storylet[] = [...codeStorylets, ...contentStorylets]

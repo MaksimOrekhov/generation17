@@ -1,4 +1,5 @@
 import { writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { createGame } from '../src/domain/engine'
 import { createStoryPerson } from '../src/domain/people'
 import type { GameState, Gender, Peer, Person } from '../src/domain/types'
@@ -31,6 +32,22 @@ function parseCount(args: string[], flag: string, fallback: number): number {
   const value = Number(args[index + 1])
   if (!Number.isSafeInteger(value) || value < 1) throw new Error(`${flag} requires a positive integer`)
   return value
+}
+
+function parseOutput(args: string[], samples: number) {
+  const index = args.indexOf('--output')
+  if (index < 0) {
+    if (samples !== DEFAULT_SAMPLES) {
+      throw new Error(`--samples ${samples} requires an explicit --output path; refusing to overwrite ${REPORT_PATH}`)
+    }
+    return REPORT_PATH
+  }
+  const path = args[index + 1]
+  if (!path || path.startsWith('--')) throw new Error('--output requires a file path')
+  if (samples !== DEFAULT_SAMPLES && resolve(path) === resolve(REPORT_PATH)) {
+    throw new Error(`--samples ${samples} cannot write the canonical report ${REPORT_PATH}; choose a separate --output path`)
+  }
+  return path
 }
 
 function actorsFor(seed: number, game: GameState): NameRecord[] {
@@ -126,7 +143,7 @@ function verifyStoryPerson(seedCount: number) {
   return seedCount
 }
 
-function report(samples: number, repeatabilitySamples: number) {
+function report(samples: number, repeatabilitySamples: number, outputPath: string) {
   const records: NameRecord[] = []
   const groups = new Map<number, NameRecord[]>()
   const roleRecords = new Map<string, NameRecord[]>()
@@ -176,6 +193,7 @@ function report(samples: number, repeatabilitySamples: number) {
   const nonFamilyCollisions = collisionSummary(groups, true)
   const peerRecords = records.filter(record => record.kind === 'Peer')
   const personRecords = records.filter(record => record.kind === 'Person')
+  const comparisonSamples = Math.min(samples, 1_000)
 
   const result = [
     `# Аудит имён на ${samples.toLocaleString('ru-RU')} seed`,
@@ -186,7 +204,7 @@ function report(samples: number, repeatabilitySamples: number) {
     '',
     `Для каждого seed вызван реальный \`createGame(seed)\`; анализируется только стартовое состояние игры. Выборка содержит ${samples} seed. Отдельная проверка повторно вызвала \`createGame(seed)\` для seed 1..${repeatabilitySamples} и сравнила полные сериализованные состояния.`,
     '',
-    'Снимок включает героя (`protagonist`), `Person` из `game.people` (родители, sibling при наличии, друг, сосед, наставник), пять отдельных `Peer` и сохраняет для каждого `id`, `role`, значение `name` и явно заданный `gender`. У друга, соседа, наставника и `Peer` значение `name` однословное; пол для `Peer` оставлен неизвестным, так как у типа `Peer` нет поля пола. Культурная принадлежность не выводится.',
+    'Снимок включает героя (`protagonist`), `Person` из `game.people` (родители, sibling при наличии, друг, сосед, наставник), пять отдельных `Peer` и сохраняет для каждого `id`, `role`, значение `name` и явно заданный `gender`. У друга, соседа и наставника значение `name` однословное; у `Peer`, как у героя и членов семьи, есть имя и фамилия. Пол для `Peer` оставлен неизвестным, так как у типа `Peer` нет поля пола. Культурная принадлежность не выводится.',
     '',
     `Дополнительно на seed 1..${Math.min(samples, STORY_PERSON_SAMPLES)} клонировано начальное состояние, затем вызван \`createStoryPerson(copy, 'acquaintance', 'friend')\`. Сюжетные записи исключены из метрик \`createGame()\`; проверено, что повторный вызов для слота идемпотентен и общий RNG не меняется.`,
     '',
@@ -222,14 +240,16 @@ function report(samples: number, repeatabilitySamples: number) {
     'Команда воспроизведения из корня репозитория:',
     '',
     '```sh',
-    'npm exec tsx -- scripts/names-baseline.ts',
+    `npx tsx scripts/names-baseline.ts --samples ${samples} --check-samples ${repeatabilitySamples}${outputPath === REPORT_PATH ? '' : ` --output ${JSON.stringify(outputPath)}`}`,
     '```',
     '',
-    `Опционально: \`npm exec tsx -- scripts/names-baseline.ts --samples ${samples} --check-samples ${repeatabilitySamples}\`. Количество seed задаёт непрерывный список от 1 до N; скрытого RNG или случайной выборки нет. Команда перезаписывает этот отчёт.`,
+    `Количество seed задаёт непрерывный список от 1 до N; скрытого RNG или случайной выборки нет. Для выборки меньше ${DEFAULT_SAMPLES} требуется отдельный путь через \`--output\`; канонический отчёт этим запуском не перезаписывается.`,
     '',
     '## Сопоставление с GEN-44',
     '',
-    `Для героя на seed 1..1000 реальный \`createGame()\` дал ${firstThousandHeroNames.size} различных значений \`name\` из 224 возможных (16 первых имён × 14 фамилий), то есть ${1_000 - firstThousandHeroNames.size} вхождений сверх первого экземпляра каждого имени. В GEN-44 зеркальная реализация дала 222 различных значения и 778 повторных вхождений; агрегат ${firstThousandHeroNames.size === 222 ? 'совпал' : 'отличается'} с ней на этом наборе. Прежняя цифра остаётся зеркальным расчётом, не контрольным эталоном полного состояния игры.`,
+    samples >= 1_000
+      ? `Для героя на seed 1..${comparisonSamples} реальный \`createGame()\` дал ${firstThousandHeroNames.size} различных значений \`name\` из 224 возможных (16 первых имён × 14 фамилий), то есть ${comparisonSamples - firstThousandHeroNames.size} вхождений сверх первого экземпляра каждого имени. В GEN-44 зеркальная реализация дала 222 различных значения и 778 повторных вхождений для seed 1..1000; сравнение относится только к первым 1000 seed и не является полным эталоном состояния игры. ${comparisonSamples === 1_000 ? `Агрегат ${firstThousandHeroNames.size === 222 ? 'совпал' : 'отличается'} с ней на этом наборе.` : ''}`
+      : `Сравнение с GEN-44 пропущено: для него нужны первые 1000 seed, а текущая выборка содержит только ${samples}.`,
     '',
     '## Ограничения',
     '',
@@ -240,13 +260,14 @@ function report(samples: number, repeatabilitySamples: number) {
     ''
   ].join('\n')
 
-  writeFileSync(REPORT_PATH, result)
-  process.stdout.write(`Wrote ${REPORT_PATH} (${samples} seeds; ${records.length} createGame actors; ${allCollisions.fullNamePairs} full-name collision pairs)\n`)
+  writeFileSync(outputPath, result)
+  process.stdout.write(`Wrote ${outputPath} (${samples} seeds; ${records.length} createGame actors; ${allCollisions.fullNamePairs} full-name collision pairs)\n`)
 }
 
 const args = process.argv.slice(2)
 const samples = parseCount(args, '--samples', DEFAULT_SAMPLES)
+const outputPath = parseOutput(args, samples)
 const repeatabilitySamples = Math.min(parseCount(args, '--check-samples', DEFAULT_REPEATABILITY_SAMPLES), samples)
 const repeatabilityChecks = verifyRepeatability(repeatabilitySamples)
 verifyStoryPerson(Math.min(samples, STORY_PERSON_SAMPLES))
-report(samples, repeatabilityChecks)
+report(samples, repeatabilityChecks, outputPath)

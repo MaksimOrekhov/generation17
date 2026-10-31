@@ -29,7 +29,9 @@ export const GENDER_SUBJECTS = ['hero', ...PERSON_PLACEHOLDERS]
 /** Сюжетный выбор может по-настоящему купить только эти позиции каталога (T7). */
 export const STORY_PURCHASE_OFFERS = ['course-pro', 'family-trip']
 /** Флаги, которые ставит сам движок, а не эффекты сюжетов: семейная поездка отмечает возраст поездки с каждым участником. */
-const ENGINE_FLAGS = ['familyHealthRisk', 'familyTrip', ...PEOPLE.map(id => `familyTrip${id.charAt(0).toUpperCase()}${id.slice(1)}`)]
+const NPC_MILESTONE_FLAGS = ['npcFriendFirstJobAt', 'npcSiblingFirstJobAt', 'npcFriendFirstMoveAt', 'npcSiblingFirstMoveAt']
+const NPC_MILESTONE_FLAG_SET = new Set(NPC_MILESTONE_FLAGS)
+const ENGINE_FLAGS = ['familyHealthRisk', 'familyTrip', ...PEOPLE.map(id => `familyTrip${id.charAt(0).toUpperCase()}${id.slice(1)}`), ...NPC_MILESTONE_FLAGS]
 
 export const LIMITS = {
   age: [0, 95], weight: [1, 8], choices: [2, 4],
@@ -134,7 +136,7 @@ class Ctx {
   personStates(value: unknown, where: string) {
     if (!isObj(value) || !Object.keys(value).length) { this.err(where, 'нужна карта людей и их состояний'); return }
     for (const [ref, state] of Object.entries(value)) {
-      if (!['friend', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) this.err(`${where}.${ref}`, 'неизвестная ссылка на человека')
+      if (!['friend', 'sibling', 'child', 'partner', 'formerPartner', ...STORY_PERSON_SLOTS].includes(ref)) this.err(`${where}.${ref}`, 'неизвестная ссылка на человека')
       if (!isObj(state) || !Object.keys(state).length) { this.err(`${where}.${ref}`, 'нужен непустой объект состояния'); continue }
       this.keys(state, ['sectorId', 'job', 'availability', 'familyStatus'], `${where}.${ref}`)
       if (state.sectorId !== undefined && !SECTORS.includes(state.sectorId as string)) this.err(`${where}.${ref}.sectorId`, 'неизвестный сектор')
@@ -173,6 +175,7 @@ class Ctx {
       else {
         for (const [k, v] of Object.entries(e.flags)) {
           if (!/^[a-z][A-Za-z0-9]*$/.test(k)) this.err(`${where}.flags.${k}`, 'имя флага — camelCase латиницей')
+          if (NPC_MILESTONE_FLAG_SET.has(k)) this.err(`${where}.flags.${k}`, 'engine-owned marker автономии NPC нельзя задавать из сюжетного эффекта')
           if (!(isStr(v) || isNum(v) || typeof v === 'boolean')) this.err(`${where}.flags.${k}`, 'значение — строка, число или true/false ("@age" = текущий возраст)')
         }
       }

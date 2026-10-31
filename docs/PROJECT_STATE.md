@@ -26,3 +26,13 @@
 - [Архитектура](ARCHITECTURE.md), [GDD](GAME_DESIGN.md), [экономический дизайн](ECONOMY_DESIGN.md).
 - [Контракт Content Language v2](CONTENT_LANGUAGE_V2.md), [People & Relationships v2](PEOPLE_RELATIONSHIPS_V2.md), [правила контента](../content/STYLE.md) и [формат контента](../content/README.md).
 - [Нарративная библия v1.0](NARRATIVE_BIBLE.md), [регламент студии](STUDIO_WORKFLOW.md) и [стратегическая дорожная карта](ROADMAP.md).
+
+## Визуальные спецификации пиксельных сцен и карты корабля
+
+Пять документов (GEN-59–63, консолидация GEN-65) сверены с кодом `main@2f14edd` на 31.10.2026; только ПК. Они фиксируют принятый дизайн и состояние кода, а **не** реализованные сцены: в `main` рисуется единственная каюта, а атлас корабля A0 (ShipPanel) условный. Физическая топология пяти секторов не утверждена.
+
+- [Style Guide](PIXEL_SCENE_STYLE_GUIDE.md) — единственная норма пиксельного стиля, цвета и движения.
+- [План покрытия](PIXEL_SCENE_COVERAGE_PLAN.md) — семейства сцен, правила выбора, этапы.
+- [Техническая архитектура](PIXEL_SCENE_TECH_SPEC.md) — resolver, registry, кеш, lifecycle.
+- [Нарративные сигналы](PIXEL_SCENE_NARRATIVE_SIGNALS.md) — 40 мотивов и guards правдивости.
+- [Концепция карты корабля](SHIP_MAP_CONCEPT.md) — L1/L2, «Дом» и неизвестное положение, открытые лорные вопросы.

@@ -4,6 +4,7 @@ import { useGameStore } from '../../stores/game'
 import { shipLabels } from '../../ui/format'
 import Panel from '../common/Panel.vue'
 import StatBar from '../common/StatBar.vue'
+import ShipAtlas from './ShipAtlas.vue'
 
 const store = useGameStore()
 const reports = computed(() => store.game.history.filter(h => h.kind === 'ship').slice(0, 3))
@@ -32,6 +33,7 @@ const route = computed(() => `${Math.min(100, store.game.shipYear / 340 * 100)}%
       </template>
       <p v-else class="news__empty">Бортовые службы не сообщают о значимых событиях. Обычная жизнь большого корабля продолжается.</p>
     </div>
+    <ShipAtlas />
   </Panel>
 </template>
 

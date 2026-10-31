@@ -8,7 +8,26 @@ const emit = defineEmits<{ openChronicle: []; hidden: [] }>()
 const store = useGameStore()
 const expanded = ref(false)
 const multiple = computed(() => store.pendingDeathNotices.length > 1)
-const liveAnnouncement = computed(() => `Непрочитанных известий о близких: ${store.pendingDeathNotices.length}.`)
+const firstNotice = computed(() => store.pendingDeathNotices[0])
+const firstNoticeText = computed(() => firstNotice.value
+  ? deathNoticeText(firstNotice.value, deathNoticeGender(store.game, firstNotice.value))
+  : '')
+const remainingCount = computed(() => store.pendingDeathNotices.length - 1)
+const remainingText = computed(() => `Ещё ${remainingCount.value} ${noticeWord(remainingCount.value)}.`)
+const liveAnnouncement = computed(() => {
+  const notice = firstNotice.value
+  if (!notice) return ''
+  const meta = `${notice.role} · год полёта ${notice.shipYear}.`
+  return `${firstNoticeText.value} ${meta}${multiple.value ? ` ${remainingText.value}` : ''}`
+})
+
+function noticeWord(count: number): string {
+  const last = count % 10
+  const lastTwo = count % 100
+  if (last === 1 && lastTwo !== 11) return 'известие'
+  if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return 'известия'
+  return 'известий'
+}
 
 function hideNotices() {
   if (store.acknowledgeDeathNotices()) emit('hidden')
@@ -20,7 +39,13 @@ function hideNotices() {
     <p role="status" aria-live="polite" aria-atomic="true" class="death-notices__announcement">{{ liveAnnouncement }}</p>
     <div class="death-notices__body">
       <div v-if="multiple" class="death-notices__summary">
-        <span>Непрочитанных известий: {{ store.pendingDeathNotices.length }}.</span>
+        <template v-if="!expanded">
+          <div class="death-notices__preview">
+            <p>{{ firstNoticeText }}</p>
+            <small>{{ firstNotice?.role }} · год полёта {{ firstNotice?.shipYear }}</small>
+          </div>
+          <span class="death-notices__remaining">{{ remainingText }}</span>
+        </template>
         <button class="btn btn--sm btn--ghost" :aria-expanded="expanded" aria-controls="death-notices-list" @click="expanded = !expanded">
           {{ expanded ? 'Свернуть' : 'Развернуть' }}
         </button>
@@ -44,6 +69,10 @@ function hideNotices() {
 .death-notices__announcement { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .death-notices__body { padding: 12px; }
 .death-notices__summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; color: var(--text); font-size: 13px; }
+.death-notices__preview { min-width: 0; }
+.death-notices__preview p { overflow-wrap: anywhere; color: var(--text); font-size: 14px; line-height: 1.5; }
+.death-notices__preview small { display: block; margin-top: 3px; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.death-notices__remaining { flex: none; color: var(--muted); font-size: 12px; }
 .death-notices__list { display: grid; gap: 12px; }
 .death-notices__list--many { max-height: 12rem; overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; }
 .death-notices__item { min-width: 0; padding-left: 12px; border-left: 2px solid var(--amber); }

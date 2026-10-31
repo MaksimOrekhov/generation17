@@ -2,7 +2,7 @@
 
 **Редакция:** v1.1 · docs-консолидация [GEN-65](https://linear.app/generation17/issue/GEN-65) · 31.10.2026
 **Источник:** независимая техконсультация [GEN-61](https://linear.app/generation17/issue/GEN-61), комментарий `10612d6b-f0e1-46e3-a9a6-e89db45c0134` (v0.1), принятое PROD-ревью `d750ade5-f51b-406c-a541-f148aae69cbe`.
-**Проверено против кода:** `main@2f14edd94aeec1a296a3d12059a4a44d1667b707`.
+**Проверено против кода:** актуальный `main@67efb716f93a02e18fa8449d44dcea705dc7cc99` (после влития [PR #13](https://github.com/MaksimOrekhov/generation17/pull/13): GEN-90 + GEN-95). Исторический снимок `main@2f14edd94aeec1a296a3d12059a4a44d1667b707` сохранён в разделе 1 и явно помечен как устаревший.
 **Платформа:** только ПК — мышь, клавиатура, изменение размера окна, масштаб браузера (решение владельца 31.10.2026). Бюджет p95 для мобильных, мобильный crop и 375px/touch-проверки исключены.
 
 > **Вердикт: `FEASIBLE WITH CONSTRAINTS`.** Расширять Canvas 2D renderer целесообразно через **чистый resolver места/ситуации + registry сцен + общие рисовальные примитивы и процедурные props + специализированные room generators + кеш статических слоёв + управляемый animation scheduler**. Никаких новых gameplay RNG draws, сохранённых «кадров», скрытой географии корабля, WebGL-движка и PNG/AI-конвейера. Это **архитектурный план** (`GO FOR ARCHITECTURAL REVIEW`), а **не** разрешение на код: тесты, замеры и новая графика — `NOT RUN`.
@@ -13,9 +13,33 @@
 
 Нормативный стиль — только [PIXEL_SCENE_STYLE_GUIDE.md](PIXEL_SCENE_STYLE_GUIDE.md); покрытие и приоритеты — [PIXEL_SCENE_COVERAGE_PLAN.md](PIXEL_SCENE_COVERAGE_PLAN.md); смысл сигналов — [PIXEL_SCENE_NARRATIVE_SIGNALS.md](PIXEL_SCENE_NARRATIVE_SIGNALS.md); карта — [SHIP_MAP_CONCEPT.md](SHIP_MAP_CONCEPT.md). Цвета, света и материалов здесь не определяется.
 
-## 1. Состояние реализации на commit `2f14edd`
+## 1. Состояние реализации на commit `67efb71` (и исторический снимок `2f14edd`)
 
-### 1.1. Игровая сцена (`AS-IS`)
+### Актуальное состояние: `main@67efb716f93a02e18fa8449d44dcea705dc7cc99`
+
+PR [#13](https://github.com/MaksimOrekhov/generation17/pull/13) (GEN-90) и GEN-95 влиты: в `main` пять игровых сцен-пилота (`home.cabin`, `event.neutral`, `edu.archive`, `bio.greenhouse`, `public.observation`), чистый `resolveScene` по трём курируемым ID, подпись места из `residenceOf`, `aspect-ratio: 16 / 9`, reduced-motion, пауза в скрытой вкладке. Полный перечень проверенных фактов — [STYLE_GUIDE §1](PIXEL_SCENE_STYLE_GUIDE.md#1-состояние-реализации-на-commit-67efb71-и-исторический-снимок-2f14edd); здесь — то, что относится к этому документу. Браузерные, визуальные и перфоманс-проверки `NOT RUN`.
+
+Сопоставление с этим планом (`main@67efb71`):
+
+| Элемент плана | Состояние |
+|---|---|
+| Чистый resolver по доказанным сигналам | Реализован для пилота: `resolveScene` по трём точным ID; без `locationHint` |
+| Registry `id → renderer` | Реализован: `sceneRegistry` из 5 ключей, `pickScene(model)`; без `version`/`allowedRoomIds`/`staticKey` |
+| Единая подпись места и aria | Реализовано из одного `SceneResolution` |
+| Показ полного кадра 16:9 | Реализовано (`aspect-ratio: 16 / 9`, без `cover`) |
+| Scheduler: reduced-motion, скрытая вкладка | Реализованы в `SceneCanvas.vue`; лимита FPS нет |
+| Ограниченный LRU-кеш | **Не** реализован: `staticCache` в `cabin.ts` без вытеснения |
+| SSR-безопасный импорт слоёв | `makeLayer` не изменён (`document.createElement`); `SceneCanvas` проверяет наличие `window/document` |
+| Опциональный `locationHint` в JSON | **Не** реализован и не утверждён |
+| Детерминизм / read-only | Покрыт `scene.test.ts` (результаты прогона здесь не заявляются) |
+
+Это пилот, а не завершение TECH-B0: он не закрывает пункты «LRU-кеш», «лимит FPS» и «версионирование registry».
+
+### Исторический снимок `2f14edd` (устарел)
+
+> **Исторический снимок `main@2f14edd` (до PR #13).** Подразделы ниже описывают код *до* влития GEN-90/GEN-95 и **не** описывают текущий `main`; они сохранены для воспроизводимости исследования. Актуальные факты — в подразделе «Актуальное состояние».
+
+### 1.1. Игровая сцена (`AS-IS`) — снимок 2f14edd
 
 1. [`src/render/scene.ts`](../src/render/scene.ts): `SCENE_W=480`, `SCENE_H=270` (16:9); `SceneModel = name, age, wealth, sectorId, progress, companion, spot`; `SceneRenderer.draw(ctx, t, model)`; `pickScene` безусловно возвращает `cabinScene`. Нет registry, scene/room ID, признака подтверждённого места события и generic fallback.
 2. [`src/render/cabin.ts`](../src/render/cabin.ts): геометрия и цвета прямым Canvas 2D; `WALLS` меняет оттенок стен по пяти `SectorId`; `buildStatic(sector, wealth)` рисует статическую подложку; `staticCache: Map<string, HTMLCanvasElement>` **без ограничения и вытеснения** (ключ `sector|wealth`); отдельный `glowSprite`; фиксированные `stars(90)`/`dust(22)` через `seeded`; терминал, растение, люди, `SPOTS`, виньетка. `hash32('cabin', sector, wealth)` — косметическая детерминированность, не gameplay RNG. `SceneModel.progress` каютой не используется. Подсветка окна выполняет порядка 180 `rect` за кадр (оценка исследования, не пересчитывалась).
@@ -26,7 +50,7 @@
 7. [`src/domain/types.ts`](../src/domain/types.ts) и [`src/content/types.ts`](../src/content/types.ts): `SpotId = window/door/terminal/parent/table/plant` — цель подсветки, **не** идентификатор помещения; `MomentDef.spot` обязателен; `Storylet`/JSON-сюжеты и моменты **не имеют** `locationHint`/`sceneId`. [`src/content/validate.ts`](../src/content/validate.ts) проверяет `spot` как enum и метаданные нового помещения не примет без явного изменения валидатора. Примеры в [`moments.ts`](../src/domain/moments.ts): `m-terminal-copy` — школьный терминал, `m-night-archive` — учебный архив, `m-friend-run` — технический коридор при `spot = terminal/door` — вывод «каюта» или «конкретная комната» из `spot` неправомерен.
 8. [`src/domain/birth.ts`](../src/domain/birth.ts): ровно пять `SectorId`; строки `A-6/E-2/B-4/D-1/C-3` — атрибуты секторов, **не** координаты и не граф проходов. [`LifeMapPanel.vue`](../src/components/panels/LifeMapPanel.vue) рисует прожитые годы, не карту корабля. Приложение — Vue/Vite Canvas 2D SPA; действующего SSR-пути для сцен нет.
 
-### 1.2. Появилось в `main` после исследования (`AS-IS`)
+### 1.2. Появилось в `main` после исследования (`AS-IS`) — снимок 2f14edd
 
 Исследование писалось на `dbc211c`. С тех пор влиты GEN-81 (внешний вид A+C Refined v2.0) и GEN-85 (атлас корабля A0):
 
@@ -34,7 +58,7 @@
 - [`src/render/shipAtlas.ts`](../src/render/shipAtlas.ts) — чистая функция `drawShipAtlasSector(ctx, sector, seconds, motion)`; `SceneRenderer`/registry не используются. Unit-тесты: [`shipAtlas.test.ts`](../src/render/shipAtlas.test.ts), [`ui/shipAtlas.test.ts`](../src/ui/shipAtlas.test.ts), [`pilgrimArkV2.test.ts`](../src/render/pilgrimArkV2.test.ts) (результаты прогона для коммита здесь не заявляются).
 - Canvas атласа имеет `width=480 height=270` и CSS `width:100%; height:auto` — естественное 16:9 без `cover`.
 
-Draft PR [#13](https://github.com/MaksimOrekhov/generation17/pull/13) (GEN-90, переключаемые сцены) в `main` **не влит** и здесь не описывается как реализованный; после слияния §1.1 нужно сверить заново.
+На момент `2f14edd` PR [#13](https://github.com/MaksimOrekhov/generation17/pull/13) (GEN-90) не был влит; теперь влит — см. актуальное состояние выше.
 
 ## 2. Инварианты (P0 — нарушать нельзя; `ACCEPTED DESIGN`)
 
@@ -133,7 +157,7 @@ SceneCanvas (one controlled scheduler; static fallback, aria, scale)
 
 ## 7. Схема модулей (только при согласованном implementation ticket)
 
-- [`src/render/scene.ts`](../src/render/scene.ts): уточнить `SceneRequest/Selection/Registry`, обратную совместимость `SceneModel`, убрать безусловный `cabin` из `pickScene`.
+- [`src/render/scene.ts`](../src/render/scene.ts): уточнить `SceneRequest/Selection/Registry`, обратную совместимость `SceneModel`, убрать безусловный `cabin` из `pickScene` (*выполнено в пилоте*: registry из 5 ключей; `SceneRequest/Selection` в форме §3 не введены).
 - Новые `src/render/sceneResolver.ts`, `sceneRegistry.ts`, `sceneCache.ts`: pure selection, ограниченный LRU, явный fallback; общие `palette/props/light` — по STYLE_GUIDE.
 - `cabin/draw/people`: адаптер прежней каюты, извлечение общих примитивов без визуального дрейфа; новые комнаты — отдельными family-модулями. Не переписывать всё сразу.
 - `SceneCanvas.vue`/`SceneView.vue`: scheduler/visibility/reduced, показ полного кадра, единый resolved place/aria/HUD, приоритет `pending → moment → idle`.
@@ -168,8 +192,8 @@ GAME-B0 (≈ 9–10 families) — *покрытие*, достигаемое п�
 | **P0** | Декоративный `random(g)`/изменение сохранения или авто-время влияют на смертность/выбор/детерминизм | Pure read-only модель, namespaced `hash32`, frozen-state/gameplay parity тесты; никаких timers и мутаций store |
 | **P1** | Неограниченный `staticCache` × families × возраст×сектор×достаток и дорогой полный redraw на rAF | Общий LRU, ограниченные варианты, кап FPS/redraw при простое, бюджет перф/памяти, замеры на устройстве |
 | **P1** | `document.hidden`/reduced-motion игнорируются: лишняя нагрузка и анимации для чувствительных пользователей | Visibility + IntersectionObserver + media-query lifecycle, статичный кадр, teardown; desktop a11y gate |
-| **P1** | Показ с `cover`/2.05:1 обрезает смысловые детали (AS-IS) | CSS по 480/270, `contain`/без crop, чек-лист безопасной зоны ART, desktop-проверка полного кадра |
-| **P1** | Жёсткие aria-label/место «Каюта», коллизия `sceneId`, несовместимый hotspot, пустой Canvas | Валидируемый registry, типизированный fallback, динамическое truthful-описание, aria/DOM fallback, content checks |
+| **P1** | Показ с `cover`/2.05:1 обрезает смысловые детали | *Закрыто для игровой сцены в `main@67efb71`* (`aspect-ratio: 16 / 9`); для новых сцен — сохранять; desktop-проверка полного кадра |
+| **P1** | Жёсткие aria-label/место «Каюта», коллизия `sceneId`, несовместимый hotspot, пустой Canvas | *Частично закрыто*: aria и подпись из `SceneResolution`, hotspot применяется только к совпадающему якорю; остаются валидируемый registry с версиями и content checks |
 | **P1** | Процедурные генераторы теряют единый стиль, дублируют `people`/материалы | STYLE_GUIDE + shared kit + сравнение снимков, ART-приёмка |
 
 ## 10. Связь с картой корабля
@@ -185,4 +209,4 @@ GAME-B0 (≈ 9–10 families) — *покрытие*, достигаемое п�
 3. продюсер/владелец отдельно разрешают опциональные метаданные места события и TECH-B0/B1;
 4. QA готовит desktop-браузерные/перфоманс-матрицы и seed-матрицы.
 
-До этого нельзя обещать «правильную комнату во всех сюжетах». Открытые вопросы (без автоматического утверждения): нужна ли схема `locationHint` (и её имя); окончательное значение FPS-капа и бюджета p95 (требуют замеров); как именно показывать иллюстрацию вне подтверждённого места (UX); переход каюты на `contain` (ART).
+До этого нельзя обещать «правильную комнату во всех сюжетах». Открытые вопросы (без автоматического утверждения): нужна ли схема `locationHint` (и её имя); окончательное значение FPS-капа и бюджета p95 (требуют замеров); как именно показывать иллюстрацию вне подтверждённого места (UX). (Переход на 16:9 закрыт: реализован в PR #13.)

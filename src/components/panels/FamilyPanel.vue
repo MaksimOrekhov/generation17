@@ -36,10 +36,10 @@ const circumstances = (id: string) => {
   <Panel title="Близкие люди" :aside="`${people.filter(p => p.alive).length} из ${people.length}`">
     <ul>
       <li v-for="p in people" :key="p.id" class="person" :class="{ 'person--gone': !p.alive }">
-        <PixelPortrait :name="p.name" :age="p.age" :width="32" />
+        <span class="person__portrait" :class="{ 'person__portrait--gone': !p.alive }"><PixelPortrait :name="p.name" :age="p.age" :width="32" /></span>
         <div class="person__info">
           <b class="wrap">{{ p.name }}</b>
-          <small>{{ p.role }} · {{ status(p.id, p.alive) }}<template v-if="!p.alive"> · возраст на момент смерти: {{ years(p.age) }}</template></small>
+          <small>{{ p.role }} · {{ status(p.id, p.alive) }} · {{ p.alive ? years(p.age) : `возраст на момент смерти: ${years(p.age)}` }}</small>
           <small v-if="p.id === 'child' && p.alive">{{ childStages[childLifeStage(p.age)] }}</small>
           <small v-if="circumstances(p.id)">{{ circumstances(p.id) }}</small>
         </div>
@@ -54,7 +54,8 @@ const circumstances = (id: string) => {
 
 <style scoped>
 .person { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); }
-.person--gone { opacity: .5; filter: grayscale(1); }
+.person__portrait { display: block; width: 32px; height: 32px; }
+.person__portrait--gone { opacity: .6; filter: grayscale(1); }
 .person__info { display: grid; min-width: 0; }
 .person__info b { font-weight: 600; font-size: 13px; }
 .person__info small { color: var(--muted); font-size: 11.5px; }

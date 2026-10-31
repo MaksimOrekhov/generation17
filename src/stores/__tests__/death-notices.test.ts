@@ -7,21 +7,24 @@ import { useGameStore } from '../game'
 
 function storage(throws = false) {
   const records = new Map<string, string>()
-  const writes: { key: string; value: string }[] = []
+  const writes: { key: string; value: string; persisted: boolean }[] = []
+  let shouldThrow = throws
   vi.stubGlobal('localStorage', {
     getItem: (key: string) => records.get(key) ?? null,
     setItem: (key: string, value: string) => {
-      if (throws && key === 'generation17-v2') throw new Error('blocked storage')
-      writes.push({ key, value })
+      const write = { key, value, persisted: false }
+      writes.push(write)
+      if (shouldThrow && key === 'generation17-v2') throw new Error('blocked storage')
       records.set(key, value)
+      write.persisted = true
     },
     removeItem: (key: string) => records.delete(key)
   })
-  return { records, writes }
+  return { records, writes, setThrows: (next: boolean) => { shouldThrow = next } }
 }
 
-function snapshotWrites(writes: { key: string; value: string }[]) {
-  return writes.filter(write => write.key === 'generation17-v2').map(write => JSON.parse(write.value) as {
+function snapshotWrites(writes: { key: string; value: string; persisted: boolean }[]) {
+  return writes.filter(write => write.key === 'generation17-v2' && write.persisted).map(write => JSON.parse(write.value) as {
     game: ReturnType<typeof createGame>
     pendingDeathNotices: { personId: string; shipYear: number }[]
   })
@@ -104,6 +107,58 @@ describe('persisted family death notices', () => {
     expect(store.game.people.find(person => person.id === 'parent')!.alive).toBe(false)
     expect(store.acknowledgeDeathNotices()).toBe(false)
     expect(store.pendingDeathNotices).toHaveLength(1)
+  })
+
+  it('intercepts every successful frame/runClock write and stores each death with its year in that snapshot', async () => {
+    const db = storage()
+    setActivePinia(createPinia())
+    const store = useGameStore()
+    const game = createGame(185)
+    game.age = 28
+    game.phase = 3
+    game.people.find(person => person.id === 'parent')!.age = 103
+    store.game = game
+    await nextTick()
+    store.begin()
+    store.changeSpeed(16)
+    store.progress = .9999
+    await nextTick()
+    db.writes.length = 0
+
+    store.frame(.1)
+
+    const attempts = db.writes.filter(write => write.key === 'generation17-v2')
+    expect(attempts.length).toBeGreaterThan(0)
+    expect(attempts.every(write => write.persisted)).toBe(true)
+    const snapshots = snapshotWrites(db.writes)
+    expect(snapshots).toHaveLength(attempts.length)
+    for (const snapshot of snapshots) {
+      for (const person of snapshot.game.people.filter(person => ['parent', 'parent2', 'sibling', 'child'].includes(person.id) && !person.alive)) {
+        expect(snapshot.pendingDeathNotices).toContainEqual(expect.objectContaining({ personId: person.id, shipYear: snapshot.game.shipYear }))
+      }
+    }
+    expect(store.pendingDeathNotices).toContainEqual(expect.objectContaining({ personId: 'parent', shipYear: store.game.shipYear }))
+  })
+
+  it('restores unread notices after a failed durable ack and reloads the last successful snapshot', async () => {
+    const db = storage()
+    setActivePinia(createPinia())
+    const store = useGameStore()
+    const game = createGame(184)
+    game.age = 28
+    game.people.find(person => person.id === 'parent')!.age = 103
+    store.game = game
+    await nextTick()
+    store.step()
+    expect(store.pendingDeathNotices).toHaveLength(1)
+    expect(JSON.parse(db.records.get('generation17-v2')!).pendingDeathNotices).toHaveLength(1)
+
+    db.setThrows(true)
+    expect(store.acknowledgeDeathNotices()).toBe(false)
+    expect(store.pendingDeathNotices).toHaveLength(1)
+    db.setThrows(false)
+    setActivePinia(createPinia())
+    expect(useGameStore().pendingDeathNotices).toHaveLength(1)
   })
 
   it('runToDecision persists each intermediate year and does not collapse death years', async () => {

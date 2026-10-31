@@ -51,13 +51,13 @@ export function repairDeathNotices(value: unknown, game: GameState): DeathNotice
       || typeof notice.personName !== 'string' || !notice.personName
       || typeof notice.role !== 'string' || !notice.role
       || !Number.isInteger(notice.personAge) || (notice.personAge ?? -1) < 0
-      || !Number.isInteger(notice.shipYear) || (notice.shipYear ?? -1) < 0
+      || !Number.isInteger(notice.shipYear) || (notice.shipYear ?? -1) < 190
       || typeof notice.wasCurrentPartner !== 'boolean' || seen.has(notice.personId)) continue
 
     const person = game.people.find(candidate => candidate.id === notice.personId)
     const meaningful = FAMILY_IDS.has(notice.personId) || notice.wasCurrentPartner
     if (!person || person.alive || !meaningful || person.name !== notice.personName
-      || person.role !== notice.role || person.age !== notice.personAge
+      || person.role !== notice.role || person.age !== notice.personAge || person.since > game.age
       || notice.shipYear! > game.shipYear) continue
 
     notices.push(notice as DeathNotice)

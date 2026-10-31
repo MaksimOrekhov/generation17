@@ -18,6 +18,7 @@ const causeLabels: Record<string, string> = {
   'естественных причин': 'Естественные причины'
 }
 const causeLabel = computed(() => causeLabels[g.value.causeOfDeath ?? ''] ?? 'Причина не указана')
+const hasKnownCause = computed(() => !!g.value.causeOfDeath && Object.hasOwn(causeLabels, g.value.causeOfDeath))
 const peers = computed(() => g.value.peers.map(p => ({
   ...p,
   place: `${sectorById(p.sectorId).deck}`,
@@ -31,7 +32,8 @@ const peers = computed(() => g.value.peers.map(p => ({
     <div class="end__body">
       <h2 class="end__title">Конец одной жизни.<br><em>Не конец путешествия.</em></h2>
       <p class="end__fact">Жизнь завершилась: {{ years(g.age) }}.</p>
-      <p class="end__fact">Категория причины смерти: {{ causeLabel }}.<small>Общая категория игровой модели, не медицинский диагноз.</small></p>
+      <p v-if="hasKnownCause" class="end__fact">Категория причины смерти: {{ causeLabel }}.<small>Общая категория игровой модели, не медицинский диагноз.</small></p>
+      <p v-else class="end__fact">Причина смерти не указана.<small>Общая категория игровой модели, не медицинский диагноз.</small></p>
       <p class="end__text">{{ store.finalText }}</p>
       <div class="end__numbers">
         <div><b>{{ g.age }}</b><span>прожитых лет</span></div>

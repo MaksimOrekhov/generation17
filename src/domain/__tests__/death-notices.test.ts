@@ -37,6 +37,31 @@ describe('известия о смерти близких', () => {
     expect(repairDeathNotices([notice], createGame(174))).toEqual([])
   })
 
+  it('принимает только годы смерти от 190 до текущего и людей, уже появившихся в жизни', () => {
+    const game = createGame(174)
+    game.age = 24
+    const parent = game.people.find(person => person.id === 'parent')!
+    parent.alive = false
+    const notice = {
+      personId: parent.id, personName: parent.name, role: parent.role,
+      personAge: parent.age, shipYear: 190, wasCurrentPartner: false
+    }
+
+    const cases = [
+      { label: 'year 0', input: { ...notice, shipYear: 0 }, expected: false },
+      { label: 'year 189', input: { ...notice, shipYear: 189 }, expected: false },
+      { label: 'year 190', input: { ...notice, shipYear: 190 }, expected: true },
+      { label: 'person since later than game age', input: notice, expected: false, since: game.age + 1 },
+      { label: 'person since equals game age', input: notice, expected: true, since: game.age }
+    ]
+
+    for (const testCase of cases) {
+      const person = game.people.find(candidate => candidate.id === parent.id)!
+      person.since = testCase.since ?? 0
+      expect(repairDeathNotices([testCase.input], game), testCase.label).toEqual(testCase.expected ? [notice] : [])
+    }
+  })
+
   it('использует утверждённые формулировки, русское склонение и младенческую эпитафию', () => {
     const game = createGame(175)
     const parent = game.people.find(person => person.id === 'parent')!

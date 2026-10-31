@@ -55,6 +55,11 @@ async function openNoticeChronicle() {
   await nextTick()
   if (moved) store.acknowledgeDeathNotices()
 }
+
+async function restoreNoticeFocus() {
+  await nextTick()
+  chroniclePanel.value?.focusFirstFilter()
+}
 </script>
 
 <template>
@@ -69,7 +74,7 @@ async function openNoticeChronicle() {
       </div>
       <div class="game__col game__col--center">
         <SceneView />
-        <DeathNotices v-if="showDeathNotices" @open-chronicle="openNoticeChronicle" />
+        <DeathNotices v-if="showDeathNotices" @open-chronicle="openNoticeChronicle" @hidden="restoreNoticeFocus" />
         <FocusPicker />
         <ChroniclePanel ref="chroniclePanel" />
       </div>

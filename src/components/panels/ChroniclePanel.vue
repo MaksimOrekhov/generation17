@@ -16,30 +16,46 @@ const filters: { id: LogFilter; name: string }[] = [
 ]
 const shown = computed(() => store.latest.slice(0, limit.value))
 const kindClass = (k: LogKind) => `entry--${k}`
+const filterNav = ref<HTMLElement | null>(null)
 
 watch(() => store.filter, () => { limit.value = PAGE })
 watch(() => store.game.seed, () => { limit.value = PAGE })
 
 async function focusMemory(): Promise<boolean> {
+  const previousFilter = store.filter
   store.filter = 'memory'
   await nextTick()
   const target = memoryList.value
-  if (!target || typeof target.scrollIntoView !== 'function') return false
+  if (!target || typeof target.scrollIntoView !== 'function') {
+    store.filter = previousFilter
+    await nextTick()
+    return false
+  }
   try {
     target.scrollIntoView({ block: 'center' })
     target.focus({ preventScroll: true })
-    return document.activeElement === target
+    if (document.activeElement === target) return true
   } catch {
-    return false
+    // Restore the user's current filter if navigation could not focus the list.
   }
+  store.filter = previousFilter
+  await nextTick()
+  return false
 }
 
-defineExpose({ focusMemory })
+function focusFirstFilter(): boolean {
+  const target = filterNav.value?.querySelector<HTMLButtonElement>('button:not(:disabled)')
+  if (!target) return false
+  target.focus({ preventScroll: true })
+  return document.activeElement === target
+}
+
+defineExpose({ focusMemory, focusFirstFilter })
 </script>
 
 <template>
   <Panel title="Летопись жизни" :aside="`записей: ${store.game.history.length}`">
-    <nav class="chron__filters" aria-label="Фильтр летописи">
+    <nav ref="filterNav" class="chron__filters" aria-label="Фильтр летописи">
       <button v-for="f in filters" :key="f.id" class="btn btn--sm btn--ghost" :aria-pressed="store.filter === f.id" @click="store.filter = f.id">{{ f.name }}</button>
     </nav>
     <div ref="memoryList" class="chron__list" tabindex="-1" aria-label="Записи летописи">

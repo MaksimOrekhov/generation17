@@ -406,7 +406,7 @@ function drawPeople(ctx: Ctx, t: number, m: SceneModel) {
 }
 
 export const cabinScene: SceneRenderer = {
-  id: 'cabin',
+  id: 'home.cabin',
   draw(ctx, t, m) {
     ctx.imageSmoothingEnabled = false
     ctx.drawImage(getStatic(m.sectorId, m.wealth), 0, 0)
@@ -425,7 +425,7 @@ export const cabinScene: SceneRenderer = {
       const y = p.y + Math.sin(t * p.v + p.p) * 6
       rect(ctx, x, y, 1, 1, '#ffe3b0', .35 + .35 * Math.sin(t * 2 + p.p))
     }
-    if (m.spot) drawHighlight(ctx, m.spot, t)
+    if (m.scene.spot) drawHighlight(ctx, m.scene.spot, t)
 
     // виньетка
     rect(ctx, 0, 0, W, 6, '#000000', .35)

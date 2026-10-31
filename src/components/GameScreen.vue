@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { nextTick } from 'vue'
 import { useGameLoop } from '../composables/useGameLoop'
 import { useHotkeys } from '../composables/useHotkeys'
 import { useGameStore } from '../stores/game'
@@ -13,6 +14,7 @@ import HintCoach from './play/HintCoach.vue'
 import NewLifeModal from './play/NewLifeModal.vue'
 import SpendModal from './play/SpendModal.vue'
 import ChroniclePanel from './panels/ChroniclePanel.vue'
+import DeathNotices from './panels/DeathNotices.vue'
 import FamilyPanel from './panels/FamilyPanel.vue'
 import ForksPanel from './panels/ForksPanel.vue'
 import LifeMapPanel from './panels/LifeMapPanel.vue'
@@ -28,9 +30,11 @@ const store = useGameStore()
 const showHelp = ref(false)
 const confirmNew = ref(false)
 const endingClosed = ref(false)
+const chroniclePanel = ref<InstanceType<typeof ChroniclePanel> | null>(null)
 
 const modalOpen = computed(() => showHelp.value || confirmNew.value || store.shopOpen)
 const showEnding = computed(() => store.game.stopped && !store.result && !endingClosed.value && !confirmNew.value)
+const showDeathNotices = computed(() => store.pendingDeathNotices.length > 0 && !store.hasDecision && !store.result && !showEnding.value && !store.shopOpen && !showHelp.value && !confirmNew.value)
 
 useGameLoop()
 useHotkeys(() => !modalOpen.value)
@@ -44,6 +48,17 @@ function repeat() {
   confirmNew.value = false
   endingClosed.value = false
   store.newLife(store.game.seed)
+}
+
+async function openNoticeChronicle() {
+  const moved = await chroniclePanel.value?.focusMemory()
+  await nextTick()
+  if (moved) store.acknowledgeDeathNotices()
+}
+
+async function restoreNoticeFocus() {
+  await nextTick()
+  chroniclePanel.value?.focusFirstFilter()
 }
 </script>
 
@@ -59,8 +74,9 @@ function repeat() {
       </div>
       <div class="game__col game__col--center">
         <SceneView />
+        <DeathNotices v-if="showDeathNotices" @open-chronicle="openNoticeChronicle" @hidden="restoreNoticeFocus" />
         <FocusPicker />
-        <ChroniclePanel />
+        <ChroniclePanel ref="chroniclePanel" />
       </div>
       <div class="game__col game__col--right">
         <FamilyPanel />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import type { LogKind } from '../../domain/types'
 import { useGameStore } from '../../stores/game'
 import type { LogFilter } from '../../stores/game'
@@ -9,23 +9,56 @@ import Panel from '../common/Panel.vue'
 const PAGE = 80
 const store = useGameStore()
 const limit = ref(PAGE)
+const memoryList = ref<HTMLDivElement | null>(null)
 const filters: { id: LogFilter; name: string }[] = [
   { id: 'all', name: 'Всё' }, { id: 'choice', name: 'Решения' }, { id: 'moment', name: 'Моменты' },
   { id: 'ship', name: 'Корабль' }, { id: 'memory', name: 'Память' }, { id: 'ambient', name: 'Фон' }
 ]
 const shown = computed(() => store.latest.slice(0, limit.value))
 const kindClass = (k: LogKind) => `entry--${k}`
+const filterNav = ref<HTMLElement | null>(null)
 
 watch(() => store.filter, () => { limit.value = PAGE })
 watch(() => store.game.seed, () => { limit.value = PAGE })
+
+async function focusMemory(): Promise<boolean> {
+  const previousFilter = store.filter
+  store.filter = 'memory'
+  await nextTick()
+  const target = memoryList.value
+  if (!target || typeof target.scrollIntoView !== 'function') {
+    store.filter = previousFilter
+    await nextTick()
+    return false
+  }
+  try {
+    target.scrollIntoView({ block: 'center' })
+    target.focus({ preventScroll: true })
+    if (document.activeElement === target) return true
+  } catch {
+    // Restore the user's current filter if navigation could not focus the list.
+  }
+  store.filter = previousFilter
+  await nextTick()
+  return false
+}
+
+function focusFirstFilter(): boolean {
+  const target = filterNav.value?.querySelector<HTMLButtonElement>('button:not(:disabled)')
+  if (!target) return false
+  target.focus({ preventScroll: true })
+  return document.activeElement === target
+}
+
+defineExpose({ focusMemory, focusFirstFilter })
 </script>
 
 <template>
   <Panel title="Летопись жизни" :aside="`записей: ${store.game.history.length}`">
-    <nav class="chron__filters" aria-label="Фильтр летописи">
+    <nav ref="filterNav" class="chron__filters" aria-label="Фильтр летописи">
       <button v-for="f in filters" :key="f.id" class="btn btn--sm btn--ghost" :aria-pressed="store.filter === f.id" @click="store.filter = f.id">{{ f.name }}</button>
     </nav>
-    <div class="chron__list">
+    <div ref="memoryList" class="chron__list" tabindex="-1" aria-label="Записи летописи">
       <article v-for="e in shown" :key="e.id" class="entry" :class="kindClass(e.kind)">
         <time class="entry__age">{{ e.age }}<small>л</small></time>
         <div class="entry__main">

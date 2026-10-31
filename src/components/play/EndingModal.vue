@@ -12,6 +12,13 @@ const store = useGameStore()
 const g = computed(() => store.game)
 const decisions = computed(() => g.value.history.filter(h => h.kind === 'choice').length)
 const moments = computed(() => g.value.history.filter(h => h.kind === 'moment').length)
+const causeLabels: Record<string, string> = {
+  'болезни раннего детства': 'Болезни раннего детства',
+  'осложнений хронического заболевания': 'Осложнения хронического заболевания',
+  'естественных причин': 'Естественные причины'
+}
+const causeLabel = computed(() => causeLabels[g.value.causeOfDeath ?? ''] ?? 'Причина не указана')
+const hasKnownCause = computed(() => !!g.value.causeOfDeath && Object.hasOwn(causeLabels, g.value.causeOfDeath))
 const peers = computed(() => g.value.peers.map(p => ({
   ...p,
   place: `${sectorById(p.sectorId).deck}`,
@@ -24,6 +31,9 @@ const peers = computed(() => g.value.peers.map(p => ({
     <div class="end__top"><span>Последняя запись</span><span>год полёта {{ g.shipYear }}</span></div>
     <div class="end__body">
       <h2 class="end__title">Конец одной жизни.<br><em>Не конец путешествия.</em></h2>
+      <p class="end__fact">Жизнь завершилась: {{ years(g.age) }}.</p>
+      <p v-if="hasKnownCause" class="end__fact">Категория причины смерти: {{ causeLabel }}.<small>Общая категория игровой модели, не медицинский диагноз.</small></p>
+      <p v-else class="end__fact">Причина смерти не указана.<small>Общая категория игровой модели, не медицинский диагноз.</small></p>
       <p class="end__text">{{ store.finalText }}</p>
       <div class="end__numbers">
         <div><b>{{ g.age }}</b><span>прожитых лет</span></div>
@@ -58,6 +68,8 @@ const peers = computed(() => g.value.peers.map(p => ({
 .end__title { font: 600 32px/1.15 var(--font-display); }
 .end__title em { color: var(--amber); font-style: normal; }
 .end__text { font-size: 15.5px; line-height: 1.65; color: var(--text-soft); max-width: 62ch; }
+.end__fact { font-size: 14px; line-height: 1.5; color: var(--text); }
+.end__fact small { display: block; color: var(--muted); font-size: 12px; }
 .end__numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .end__numbers div { padding: 10px 12px; background: var(--bg-2); border: 1px solid var(--line); display: grid; gap: 2px; }
 .end__numbers b { font: 600 28px/1 var(--font-display); color: var(--amber); }

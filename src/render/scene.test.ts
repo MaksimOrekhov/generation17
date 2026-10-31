@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SpotId } from '../domain/types'
+import { drawCabinOccupants } from './cabin'
 import { SCENE_H, SCENE_W, pickScene, resolveScene, sceneRegistry } from './scene'
 import type { SceneContext, SceneModel, SceneResolution } from './scene'
 
@@ -110,5 +111,38 @@ describe('procedural scene renderers', () => {
     pickScene(fixture).draw(stillA.ctx, 0, fixture)
     pickScene(fixture).draw(stillB.ctx, 0, fixture)
     expect(stillA.operations).toEqual(stillB.operations)
+  })
+
+  it('renders an age-zero protagonist resting in a supported cradle, never as a sitter', () => {
+    const infant = { ...model(resolveScene(context())), age: 0 }
+    const frame = recordingContext()
+    drawCabinOccupants(frame.ctx, 0, infant)
+    expect(frame.operations).toContainEqual([244, 233, 13, 10, expect.any(String), 1])
+    expect(frame.operations.some(([, , , , color]) => color === '#e8d9b8')).toBe(true)
+    expect(frame.operations.some(([, , , , color]) => color === '#c9a43a' || color === '#4a6fa5')).toBe(false)
+  })
+
+  it('keeps idle cabin render solitary even if a parent or cohabiting partner is passed in', () => {
+    for (const age of [8, 24]) {
+      const scene = resolveScene(context())
+      const solo = { ...model(scene), age, companion: null }
+      const relationOnly = { ...solo, companion: { name: 'Sam', age: 40, kind: age < 18 ? 'parent' as const : 'partner' as const } }
+      const soloFrame = recordingContext()
+      const relationFrame = recordingContext()
+      drawCabinOccupants(soloFrame.ctx, 0, solo)
+      drawCabinOccupants(relationFrame.ctx, 0, relationOnly)
+      expect(relationFrame.operations).toEqual(soloFrame.operations)
+    }
+  })
+
+  it('keeps the observation viewport to stars and room structure, without unsupported celestial markers', () => {
+    const scene = { ...resolveScene(context()), sceneId: 'public.observation' } as SceneResolution
+    const frame = recordingContext()
+    pickScene(model(scene)).draw(frame.ctx, 0, model(scene))
+    const renderedColors = new Set(frame.operations.map(([, , , , color]) => color))
+    expect(renderedColors).not.toContain('#91a3ae') // pale planet disk
+    expect(renderedColors).not.toContain('#9aaeb7') // satellite body
+    expect(renderedColors).not.toContain('#d5d0b7') // navigation beacon cluster
+    expect(frame.operations.length).toBeGreaterThan(100)
   })
 })

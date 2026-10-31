@@ -3,7 +3,6 @@ import { variantText } from '../../content/load'
 import { computed, onBeforeUnmount, watch } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
-import { currentPartner } from '../../domain/people'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
 import { resolveScene } from '../../render/scene'
 import type { SceneContext, SceneModel, SceneResolution } from '../../render/scene'
@@ -18,14 +17,18 @@ const g = computed(() => store.game)
 const fixtureId = import.meta.env.DEV && typeof window !== 'undefined'
   ? new URLSearchParams(window.location.search).get('sceneFixture')
   : null
-const fixtureScenes: Record<string, { momentId: string | null; momentSpot: SceneContext['momentSpot'] }> = {
+const fixtureScenes = {
   home: { momentId: null, momentSpot: null },
+  infant: { momentId: null, momentSpot: null },
   neutral: { momentId: 'm-terminal-copy', momentSpot: 'terminal' },
   archive: { momentId: 'm-night-archive', momentSpot: 'terminal' },
   greenhouse: { momentId: 'm-job-agro', momentSpot: 'plant' },
   observation: { momentId: 'm-night-deck', momentSpot: 'window' }
-}
-const validFixture = fixtureId && fixtureId in fixtureScenes ? fixtureId : null
+} satisfies Record<string, { momentId: string | null; momentSpot: SceneContext['momentSpot'] }>
+type SceneFixtureId = keyof typeof fixtureScenes
+const validFixture: SceneFixtureId | null = fixtureId && Object.hasOwn(fixtureScenes, fixtureId)
+  ? fixtureId as SceneFixtureId
+  : null
 
 const resolution = computed<SceneResolution>(() => {
   if (validFixture) {
@@ -51,29 +54,19 @@ const resolution = computed<SceneResolution>(() => {
 
 const model = computed<SceneModel>(() => {
   const sectorId = residenceOf(g.value)
-  const parent = g.value.people.find(p => p.id === 'parent')
-  const partner = g.value.flags.livingTogether === true ? currentPartner(g.value) ?? (!g.value.relationships ? g.value.people.find(p => p.id === 'friend') : undefined) : undefined
-  const parentPresent = !!parent?.alive && parent.since <= g.value.age && parent.state?.availability !== 'distant'
-    && (!parent.state?.sectorId || parent.state.sectorId === sectorId)
-  const partnerPresent = !!partner?.alive && partner.since <= g.value.age && partner.state?.availability !== 'distant'
-    && (!partner.state?.sectorId || partner.state.sectorId === sectorId)
-  const companion = g.value.age <= 18 && parentPresent
-    ? { name: parent.name, age: parent.age, kind: 'parent' as const }
-    : g.value.age >= 20 && partnerPresent
-      ? { name: partner.name, age: partner.age, kind: 'partner' as const }
-      : null
   return {
     name: g.value.protagonist.name,
-    age: g.value.age,
+    age: validFixture === 'infant' ? 0 : g.value.age,
     wealth: g.value.birth.wealth,
     sectorId,
-    companion,
+    // Relationships, shared residence and sector are not proof of physical co-presence in this cabin.
+    companion: null,
     scene: resolution.value
   }
 })
 
-const moment = computed(() => store.currentMoment)
-const visibleSkipFeedback = computed(() => store.started && store.skipFeedback && !moment.value && !store.blocked ? store.skipFeedback : null)
+const moment = computed(() => validFixture ? null : store.currentMoment)
+const visibleSkipFeedback = computed(() => !validFixture && store.started && store.skipFeedback && !moment.value && !store.blocked ? store.skipFeedback : null)
 const latest = computed(() => g.value.history[0])
 const place = computed(() => resolution.value.label)
 const time = computed(() => personalTimeOf(g.value))
@@ -102,7 +95,7 @@ onBeforeUnmount(() => {
     <SceneCanvas :model="model" />
     <div class="scene__hud">
       <span class="scene__tag">{{ place }}</span>
-      <span v-if="validFixture" class="scene__tag scene__fixture">FIXTURE · {{ validFixture }}</span>
+      <span v-if="validFixture" class="scene__tag scene__fixture">{{ validFixture === 'infant' ? 'FIXTURE · infant · age=0' : `FIXTURE · ${validFixture}` }}</span>
       <span class="scene__tag scene__attn" :title="timeTitle" :aria-label="timeTitle" data-test="time-hud">
         личное время
         <i v-for="n in time.limit" :key="n" :class="{ used: n > time.left }" />

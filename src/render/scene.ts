@@ -275,7 +275,7 @@ function drawGreenhouse(ctx: Ctx, t: number) {
 
 function drawObservation(ctx: Ctx, t: number, spot: SpotId | null) {
   px(ctx, 0, 0, 480, 270, '#111827')
-  // Panoramic reinforced glazing, with actual starfield and a pale distant planet.
+  // Panoramic reinforced glazing and an intentionally unclaimed field of distant stars.
   px(ctx, 20, 30, 440, 143, '#273445'); px(ctx, 25, 35, 430, 133, '#071320')
   px(ctx, 26, 132, 428, 35, '#0d2030'); px(ctx, 26, 145, 428, 22, '#13283a')
   for (let i = 0; i < 70; i++) {
@@ -284,12 +284,6 @@ function drawObservation(ctx: Ctx, t: number, spot: SpotId | null) {
     const twinkle = .45 + .4 * Math.sin(t * 1.5 + i * 1.7)
     px(ctx, x, y, i % 11 === 0 ? 2 : 1, i % 11 === 0 ? 2 : 1, i % 7 === 0 ? '#c6d6e2' : '#f3e7cb', twinkle)
   }
-  px(ctx, 345, 70, 21, 21, '#91a3ae', .65); px(ctx, 349, 68, 20, 20, '#c5d0cc', .75)
-  px(ctx, 351, 72, 13, 13, '#8998a0', .48); px(ctx, 357, 67, 3, 2, '#e3dfc8', .7)
-  // A quiet satellite and a short line of navigational beacons are scenery only.
-  px(ctx, 113, 83, 8, 2, '#9aaeb7', .48); px(ctx, 116, 80, 2, 8, '#9aaeb7', .48)
-  px(ctx, 111, 81, 2, 2, '#d1ddda', .72); px(ctx, 121, 85, 2, 2, '#d1ddda', .65)
-  for (const [x, y] of [[73, 112], [80, 107], [91, 109], [96, 101]] as const) px(ctx, x, y, 2, 2, '#d5d0b7', .65)
   // Thick mullions and pressure locks frame the view.
   for (const x of [20, 166, 313, 456]) {
     px(ctx, x, 27, 7, 151, '#46515c'); px(ctx, x + 2, 30, 2, 145, '#82909a')

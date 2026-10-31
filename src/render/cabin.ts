@@ -3,7 +3,7 @@ import { hash32, seeded } from '../domain/random'
 import { disc, line, makeLayer, mix, rect } from './draw'
 import type { Ctx } from './draw'
 import { drawBackPerson, look } from './people'
-import type { Look, PersonAnchors } from './people'
+import type { Look } from './people'
 import type { SceneModel, SceneRenderer } from './scene'
 
 const W = 480
@@ -330,18 +330,26 @@ function drawHighlight(ctx: Ctx, spot: SpotId, t: number) {
   }
 }
 
-/** Малыш до года на руках у родителя: голова выглядывает из-за плеча, одеяльце на сгибе руки. */
-function drawBundle(ctx: Ctx, a: PersonAnchors, skin: string, hair: string) {
-  const x = a.shoulderLeft - 9
-  const y = a.torsoTop + 1
-  rect(ctx, x, y + 6, 15, 17, '#e8d9b8')
-  rect(ctx, x, y + 6, 15, 2, '#ffffff', .35)
-  rect(ctx, x, y + 14, 15, 2, '#b0563f')
-  rect(ctx, x + 14, y + 6, 1, 17, '#ffb347', .3)
-  rect(ctx, x + 1, y - 5, 11, 11, skin)
-  rect(ctx, x + 1, y - 6, 11, 3, hair)
-  rect(ctx, x + 4, y - 8, 4, 2, hair)
-  rect(ctx, x + 11, y - 3, 1, 8, '#ffb347', .35)
+/** Спокойная общая композиция для младенца: поддержанная голова, одеяло и безопасная люлька. */
+function drawInfantCradle(ctx: Ctx, t: number, infant: Look) {
+  const sway = Math.round(Math.sin(t * .65))
+  // Тёплая тень и устойчивые полозья связывают люльку с домашним интерьером.
+  rect(ctx, 220, 250, 69, 6, '#090b12', .25)
+  rect(ctx, 228, 252, 54, 2, '#684d3c'); rect(ctx, 233, 254, 44, 2, '#927253')
+  rect(ctx, 231, 250, 4, 7, '#76563f'); rect(ctx, 275, 250, 4, 7, '#76563f')
+  // Широкая чаша, мягкий матрас и бортик полностью поддерживают младенца.
+  rect(ctx, 225, 230 + sway, 62, 4, '#b98957'); rect(ctx, 222, 233 + sway, 68, 3, '#d0a56f')
+  rect(ctx, 224, 236 + sway, 64, 14, '#76523d'); rect(ctx, 227, 238 + sway, 58, 9, '#ae815b')
+  rect(ctx, 230, 237 + sway, 52, 3, '#e6d8be'); rect(ctx, 232, 240 + sway, 48, 7, '#d5c7ad')
+  // Лицо лежит на подушке; свободное одеяло укрывает тело, руки и ноги не изображены опорой.
+  rect(ctx, 244, 233 + sway, 13, 10, infant.skin)
+  rect(ctx, 245, 231 + sway, 11, 3, infant.hair)
+  rect(ctx, 242, 235 + sway, 3, 5, infant.skin)
+  rect(ctx, 256, 234 + sway, 20, 9, '#e8d9b8')
+  rect(ctx, 256, 234 + sway, 20, 2, '#fff4de', .7)
+  rect(ctx, 273, 236 + sway, 4, 6, '#cfb48a')
+  rect(ctx, 226, 241 + sway, 3, 7, '#c29360'); rect(ctx, 285, 241 + sway, 3, 7, '#c29360')
+  rect(ctx, 229, 247 + sway, 56, 3, '#593f31'); rect(ctx, 229, 247 + sway, 56, 1, '#ddb27b')
 }
 
 /** Малыш 1–2 лет сидит на ковре рядом с кубиками: стоять он ещё не умеет. */
@@ -368,41 +376,24 @@ function drawSitter(ctx: Ctx, t: number, look: Look, x: number, y: number) {
   rect(ctx, x + 22, y - 14, 6, 1, '#ffffff', .3)
 }
 
-function drawPeople(ctx: Ctx, t: number, m: SceneModel) {
+export function drawCabinOccupants(ctx: Ctx, t: number, m: SceneModel) {
   const bob = Math.sin(t * 1.5) > .88 ? -1 : 0
   const feet = 232
   const me = look(m.name, m.age)
-  const c = m.companion
-  const cl = c ? look(c.name, c.age) : null
-  const parentH = 68
-
-  // младенец до года: родитель держит его на руках
-  if (m.age < 1 && c && cl) {
-    const a = drawBackPerson(ctx, { look: cl, height: parentH, x: 258, feet, bob })
-    drawBundle(ctx, a, me.skin, me.hair)
+  // Idle SceneView does not claim that any second person is physically in the cabin.
+  if (m.age < 1) {
+    drawInfantCradle(ctx, t, me)
     return
   }
   // 1–2 года: малыш сидит на ковре
   if (m.age < 3) {
-    drawSitter(ctx, t, me, c ? 232 : 250, 252)
-    if (c && cl) drawBackPerson(ctx, { look: cl, height: parentH, x: 280, feet, bob })
+    drawSitter(ctx, t, me, 250, 252)
     return
   }
 
   // с трёх лет стоит; рост зависит от возраста
   const kid = Math.round(Math.min(64, 30 + (m.age - 3) * 2.7))
-  if (!c || !cl) {
-    drawBackPerson(ctx, { look: me, height: kid, x: 250, feet, bob })
-    return
-  }
-  const arm = (h: number) => Math.max(3, Math.round(h * .055))
-  const half = (h: number) => Math.round(h * .3) / 2 + arm(h)
-  const cX = 270
-  // ребёнок стоит вплотную к родителю, чтобы дотянуться до руки
-  const meX = Math.round(cX - half(parentH) - 4 - half(kid))
-  const holds = m.age <= 12 || c.kind === 'partner'
-  const parent = drawBackPerson(ctx, { look: cl, height: parentH, x: cX, feet, bob })
-  drawBackPerson(ctx, { look: me, height: kid, x: meX, feet, bob: -bob, reach: holds ? parent.handL : undefined })
+  drawBackPerson(ctx, { look: me, height: kid, x: 250, feet, bob })
 }
 
 export const cabinScene: SceneRenderer = {
@@ -413,7 +404,7 @@ export const cabinScene: SceneRenderer = {
     drawStars(ctx, t)
     drawTerminal(ctx, t)
     drawPlant(ctx, t)
-    drawPeople(ctx, t, m)
+    drawCabinOccupants(ctx, t, m)
 
     const flick = .9 + Math.sin(t * 8) * .03 + Math.sin(t * 21) * .015
     ctx.globalAlpha = Math.min(1, flick)

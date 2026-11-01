@@ -17,6 +17,7 @@ import ChroniclePanel from './panels/ChroniclePanel.vue'
 import DeathNotices from './panels/DeathNotices.vue'
 import FamilyPanel from './panels/FamilyPanel.vue'
 import ForksPanel from './panels/ForksPanel.vue'
+import LifeNav from './panels/LifeNav.vue'
 import LifeMapPanel from './panels/LifeMapPanel.vue'
 import MemoryPanel from './panels/MemoryPanel.vue'
 import PeersPanel from './panels/PeersPanel.vue'
@@ -34,6 +35,8 @@ const chroniclePanel = ref<InstanceType<typeof ChroniclePanel> | null>(null)
 
 const modalOpen = computed(() => showHelp.value || confirmNew.value || store.shopOpen)
 const showEnding = computed(() => store.game.stopped && !store.result && !endingClosed.value && !confirmNew.value)
+// Настоящие блокирующие окна: навигация не должна обходить их focus trap (MomentPopup к ним не относится)
+const navBlocked = computed(() => modalOpen.value || store.hasDecision || !!store.result || showEnding.value)
 const showDeathNotices = computed(() => store.pendingDeathNotices.length > 0 && !store.hasDecision && !store.result && !showEnding.value && !store.shopOpen && !showHelp.value && !confirmNew.value)
 
 useGameLoop()
@@ -75,6 +78,7 @@ async function restoreNoticeFocus() {
       <div class="game__col game__col--center">
         <SceneView />
         <DeathNotices v-if="showDeathNotices" @open-chronicle="openNoticeChronicle" @hidden="restoreNoticeFocus" />
+        <LifeNav :has-forks="store.game.forks.length > 0" :blocked="navBlocked" />
         <FocusPicker />
         <ChroniclePanel ref="chroniclePanel" />
       </div>

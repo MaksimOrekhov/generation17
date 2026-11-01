@@ -8,7 +8,7 @@ const items = computed(() => store.game.memories.slice(-5).reverse())
 </script>
 
 <template>
-  <Panel title="Личная память" :aside="String(store.game.memories.length)">
+  <Panel id="life-memory" tabindex="-1" aria-label="Личная память" title="Личная память" :aside="String(store.game.memories.length)">
     <ul v-if="items.length" class="memory">
       <li v-for="(m, i) in items" :key="i" class="wrap">{{ m }}</li>
     </ul>

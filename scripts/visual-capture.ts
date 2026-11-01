@@ -58,7 +58,7 @@ function git(...args: string[]): string {
 
 async function main() {
   const startedAt = new Date()
-  const commit = process.env.GITHUB_SHA || git('rev-parse', 'HEAD') || 'unknown'
+  const commit = process.env.CAPTURE_SHA || git('rev-parse', 'HEAD') || 'unknown'
   const dirty = git('status', '--porcelain') !== ''
 
   rmSync(OUT_DIR, { recursive: true, force: true })

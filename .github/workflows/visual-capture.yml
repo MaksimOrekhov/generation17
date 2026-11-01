@@ -32,6 +32,9 @@ jobs:
       - name: Chromium
         run: npx playwright install --with-deps chromium
       - name: Capture
+        # На PR github.sha — merge-коммит; в manifest и имя artifact пишем SHA головы PR.
+        env:
+          CAPTURE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm run visual:capture
       - name: Ровно шесть PNG и manifest
         run: |
@@ -40,7 +43,7 @@ jobs:
           test -f artifacts/visual-capture/manifest.md
       - uses: actions/upload-artifact@v4
         with:
-          name: gamescreen-visual-capture-${{ github.sha }}
+          name: gamescreen-visual-capture-${{ github.event.pull_request.head.sha || github.sha }}
           path: artifacts/visual-capture/
           if-no-files-found: error
           retention-days: 14

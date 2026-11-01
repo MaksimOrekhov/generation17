@@ -33,7 +33,7 @@ const circumstances = (id: string) => {
 </script>
 
 <template>
-  <Panel title="Близкие люди" :aside="`${people.filter(p => p.alive).length} из ${people.length}`">
+  <Panel id="life-family" tabindex="-1" aria-label="Близкие люди" title="Близкие люди" :aside="`${people.filter(p => p.alive).length} из ${people.length}`">
     <ul>
       <li v-for="p in people" :key="p.id" class="person" :class="{ 'person--gone': !p.alive }">
         <span class="person__portrait" :class="{ 'person__portrait--gone': !p.alive }"><PixelPortrait :name="p.name" :age="p.age" :width="32" /></span>

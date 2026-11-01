@@ -12,7 +12,7 @@ const route = computed(() => `${Math.min(100, store.game.shipYear / 340 * 100)}%
 </script>
 
 <template>
-  <Panel title="Корабль" :aside="`год ${store.game.shipYear}`">
+  <Panel id="life-ship" tabindex="-1" aria-label="Корабль" title="Корабль" :aside="`год ${store.game.shipYear}`">
     <div class="ship">
       <div class="ship__route" :aria-label="`До цели ${store.remaining} лет`">
         <span>Земля</span>

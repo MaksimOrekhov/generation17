@@ -4,6 +4,7 @@ import { computed, onBeforeUnmount, watch } from 'vue'
 import { residenceOf } from '../../domain/birth'
 import { resolveText } from '../../domain/engine'
 import { PERSONAL_TIME, basisText, personalTimeOf } from '../../domain/personalTime'
+import { householdLook } from '../../render/household'
 import { resolveScene } from '../../render/scene'
 import type { SceneContext, SceneModel, SceneResolution } from '../../render/scene'
 import { useGameStore } from '../../stores/game'
@@ -61,6 +62,8 @@ const model = computed<SceneModel>(() => {
     sectorId,
     // Relationships, shared residence and sector are not proof of physical co-presence in this cabin.
     companion: null,
+    // DEV-fixture GEN-100 остаются прежними шестью кадрами.
+    householdLook: validFixture ? 'ordinary' : householdLook(g.value, resolution.value),
     scene: resolution.value
   }
 })

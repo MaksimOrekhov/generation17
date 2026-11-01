@@ -18,7 +18,8 @@
     "audit:variety": "tsx scripts/variety-audit.ts",
     "content": "tsx scripts/content.ts",
     "content:check": "tsx scripts/content.ts --check",
-    "visual:capture": "tsx scripts/visual-capture.ts"
+    "visual:capture": "tsx scripts/visual-capture.ts",
+    "visual:capture:household": "tsx scripts/visual-capture-household.ts"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

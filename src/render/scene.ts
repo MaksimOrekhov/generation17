@@ -2,6 +2,7 @@ import type { SectorId, SpotId } from '../domain/types'
 import { sectorById } from '../domain/birth'
 import type { Ctx } from './draw'
 import { cabinScene } from './cabin'
+import type { HouseholdLook } from './household'
 
 export const SCENE_W = 480
 export const SCENE_H = 270
@@ -37,6 +38,8 @@ export interface SceneModel {
   wealth: number
   sectorId: SectorId
   companion: { name: string; age: number; kind: 'parent' | 'partner' } | null
+  /** Отсутствует = `ordinary`. Декор общего быта, не присутствие второго человека. */
+  householdLook?: HouseholdLook
   scene: SceneResolution
 }
 

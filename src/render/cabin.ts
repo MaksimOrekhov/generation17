@@ -396,11 +396,21 @@ export function drawCabinOccupants(ctx: Ctx, t: number, m: SceneModel) {
   drawBackPerson(ctx, { look: me, height: kid, x: 250, feet, bob })
 }
 
+/** Вторая чистая безымянная кружка рядом с первой: знак общего быта, без напитка, подписи и движения. */
+function drawSharedMug(ctx: Ctx) {
+  rect(ctx, 398, 178, 12, 12, '#d9c8a4')
+  rect(ctx, 398, 178, 12, 2, '#fff5dc')
+  rect(ctx, 394, 181, 4, 6, '#d9c8a4')
+  rect(ctx, 400, 180, 8, 2, '#a89a78')
+}
+
 export const cabinScene: SceneRenderer = {
   id: 'home.cabin',
   draw(ctx, t, m) {
     ctx.imageSmoothingEnabled = false
     ctx.drawImage(getStatic(m.sectorId, m.wealth), 0, 0)
+    // Накладка поверх общего кэша сектора/достатка: вариант не хранится, поэтому не может залипнуть.
+    if (m.householdLook === 'shared') drawSharedMug(ctx)
     drawStars(ctx, t)
     drawTerminal(ctx, t)
     drawPlant(ctx, t)

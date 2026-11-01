@@ -20,7 +20,7 @@ export function jumpToLifeTarget(id: LifeTargetId, opts: { blocked: boolean; doc
   if (!target) return false
   target.scrollIntoView({ behavior: 'auto', block: 'start' })
   // липкая шапка может быть выше запаса scroll-margin (переносится при узком окне): доводим по факту
-  const bar = doc.querySelector?.('.top')
+  const bar = doc?.querySelector?.('.top')
   if (bar && typeof window !== 'undefined') {
     const hidden = bar.getBoundingClientRect().bottom + 8 - target.getBoundingClientRect().top
     if (hidden > 0) window.scrollBy(0, -hidden)

@@ -1,0 +1,46 @@
+name: Visual capture
+
+# Снимает шесть DEV-fixture кадров настоящего GameScreen и публикует их как artifact.
+# Без секретов, права только на чтение; в PR ничего не пишет.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/visual-capture.ts'
+      - 'src/render/**'
+      - 'src/components/scene/**'
+      - 'src/components/GameScreen.vue'
+      - 'src/assets/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/visual-capture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Capture
+        run: npm run visual:capture
+      - name: Ровно шесть PNG и manifest
+        run: |
+          test "$(ls artifacts/visual-capture/*.png | wc -l)" -eq 6
+          test -f artifacts/visual-capture/manifest.json
+          test -f artifacts/visual-capture/manifest.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gamescreen-visual-capture-${{ github.sha }}
+          path: artifacts/visual-capture/
+          if-no-files-found: error
+          retention-days: 14

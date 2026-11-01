@@ -2,7 +2,8 @@
  * Захват реальных скриншотов GameScreen для шести DEV-fixture режимов SceneView.
  *
  *   npm run visual:capture                  → artifacts/visual-capture/
- *   OUT_DIR=путь npm run visual:capture     другой каталог
+ *   OUT_DIR=путь npm run visual:capture     другой каталог внутри репозитория (не сам корень)
+ *   VISUAL_CAPTURE_FAULT=vite|close         тест очистки: имитирует сбой старта Vite / ошибку закрытия браузера
  *
  * Скрипт поднимает настоящий Vite dev-сервер (DEV-fixture существуют только при import.meta.env.DEV),
  * открывает приложение в чистом headless Chromium, проходит экран рождения кнопкой «Начать жизнь»
@@ -16,12 +17,14 @@
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { isAbsolute, join, relative, resolve } from 'node:path'
 import type { Browser, ConsoleMessage } from 'playwright'
 import { createServer } from 'vite'
+import type { ViteDevServer } from 'vite'
 import { DEFAULT_PRESET } from '../src/domain/clock'
 import { residenceOf } from '../src/domain/birth'
-import { createGame } from '../src/domain/engine'
+import { advanceYear, canChoose, createGame, decide } from '../src/domain/engine'
+import type { GameState } from '../src/domain/types'
 import { SCENE_H, SCENE_W, resolveScene } from '../src/render/scene'
 import type { SceneContext } from '../src/render/scene'
 
@@ -29,23 +32,55 @@ const SEED = 17017
 const VIEWPORT = { width: 1440, height: 900 }
 const STORAGE_KEY = 'generation17-v2'
 const TIMEOUT_MS = 30_000
-const OUT_DIR = resolve(process.env.OUT_DIR ?? 'artifacts/visual-capture')
+const ROOT = process.cwd()
+const OUT_DIR = resolve(ROOT, process.env.OUT_DIR ?? 'artifacts/visual-capture')
+const FAULT = process.env.VISUAL_CAPTURE_FAULT
+/** Файлы, которые создаёт скрипт помимо PNG. */
+const OWN_FILES = ['manifest.json', 'manifest.md']
 const REPRODUCE = 'npm ci && npx playwright install chromium && npm run visual:capture'
 
-/** Порядок и имена файлов стабильны. Ожидаемый контракт задан здесь независимо от SceneView. */
+/**
+ * Порядок и имена файлов стабильны. Ожидаемый контракт задан здесь независимо от SceneView.
+ * `lifeAge` — возраст героя в валидном сохранении: home показывает каюту со стоящим ребёнком,
+ * infant остаётся age=0 (SceneView сам рисует age=0 для infant).
+ */
 const FIXTURES = [
-  { id: 'home', momentId: null, momentSpot: null, badge: 'FIXTURE · home' },
-  { id: 'neutral', momentId: 'm-terminal-copy', momentSpot: 'terminal', badge: 'FIXTURE · neutral' },
-  { id: 'archive', momentId: 'm-night-archive', momentSpot: 'terminal', badge: 'FIXTURE · archive' },
-  { id: 'greenhouse', momentId: 'm-job-agro', momentSpot: 'plant', badge: 'FIXTURE · greenhouse' },
-  { id: 'observation', momentId: 'm-night-deck', momentSpot: 'window', badge: 'FIXTURE · observation' },
-  { id: 'infant', momentId: null, momentSpot: null, badge: 'FIXTURE · infant · age=0' }
-] as const satisfies readonly { id: string; momentId: string | null; momentSpot: SceneContext['momentSpot']; badge: string }[]
+  { id: 'home', sceneKey: 'home.cabin', lifeAge: 10, momentId: null, momentSpot: null, badge: 'FIXTURE · home' },
+  { id: 'neutral', sceneKey: 'event.neutral', lifeAge: 0, momentId: 'm-terminal-copy', momentSpot: 'terminal', badge: 'FIXTURE · neutral' },
+  { id: 'archive', sceneKey: 'edu.archive', lifeAge: 0, momentId: 'm-night-archive', momentSpot: 'terminal', badge: 'FIXTURE · archive' },
+  { id: 'greenhouse', sceneKey: 'bio.greenhouse', lifeAge: 0, momentId: 'm-job-agro', momentSpot: 'plant', badge: 'FIXTURE · greenhouse' },
+  { id: 'observation', sceneKey: 'public.observation', lifeAge: 0, momentId: 'm-night-deck', momentSpot: 'window', badge: 'FIXTURE · observation' },
+  { id: 'infant', sceneKey: 'home.cabin', lifeAge: 0, momentId: null, momentSpot: null, badge: 'FIXTURE · infant · age=0' }
+] as const satisfies readonly { id: string; sceneKey: string; lifeAge: number; momentId: string | null; momentSpot: SceneContext['momentSpot']; badge: string }[]
+
+const frameFile = (index: number, id: string) => `${String(index + 1).padStart(2, '0')}-${id}.png`
 
 class CaptureError extends Error {}
 
 function fail(message: string): never {
   throw new CaptureError(message)
+}
+
+/** Валидная жизнь через движок: годы идут штатным advanceYear, решения принимаются первым доступным вариантом. */
+function lifeAtAge(seed: number, age: number): GameState {
+  let game = createGame(seed)
+  for (let guard = 0; (game.age < age || game.pending) && !game.stopped; guard++) {
+    if (guard > 500) fail(`Не удалось довести seed ${seed} до возраста ${age}`)
+    if (game.pending) {
+      const index = [0, 1, 2, 3, 4, 5].find(i => canChoose(game, i).available)
+      if (index === undefined) fail(`seed ${seed}: нет доступного выбора в решении «${game.pending}»`)
+      game = decide(game, index)
+    } else {
+      game = advanceYear(game)
+    }
+  }
+  if (game.stopped || game.age !== age || game.pending) fail(`seed ${seed}: возраст ${age} не достигнут штатной жизнью (age=${game.age}, stopped=${game.stopped}, pending=${game.pending ?? 'нет'})`)
+  return game
+}
+
+function assertSafeOutDir() {
+  const rel = relative(ROOT, OUT_DIR)
+  if (!rel || rel.startsWith('..') || isAbsolute(rel)) fail(`OUT_DIR ${OUT_DIR} должен быть подкаталогом репозитория ${ROOT}, не самим корнем и не внешним путём`)
 }
 
 function git(...args: string[]): string {
@@ -58,42 +93,52 @@ function git(...args: string[]): string {
 
 async function main() {
   const startedAt = new Date()
-  const commit = process.env.CAPTURE_SHA || git('rev-parse', 'HEAD') || 'unknown'
+  assertSafeOutDir()
+  const expectedCommit = process.env.CAPTURE_SHA
+  const headCommit = git('rev-parse', 'HEAD')
+  if (expectedCommit && headCommit !== expectedCommit) fail(`checkout HEAD ${headCommit || 'неизвестен'} ≠ ожидаемый CAPTURE_SHA ${expectedCommit}`)
+  const commit = headCommit || 'unknown'
   const dirty = git('status', '--porcelain') !== ''
 
-  rmSync(OUT_DIR, { recursive: true, force: true })
+  // Удаляются только файлы, которые создаёт сам скрипт, но не каталог целиком.
   mkdirSync(OUT_DIR, { recursive: true })
+  for (const name of [...OWN_FILES, ...FIXTURES.map((f, i) => frameFile(i, f.id))]) rmSync(join(OUT_DIR, name), { force: true })
 
-  const seeded = createGame(SEED)
-  const residence = residenceOf(seeded)
-  const save = JSON.stringify({ game: seeded, started: false, preset: DEFAULT_PRESET })
-
-  const { chromium } = await import('playwright')
-  let browser: Browser
-  try {
-    browser = await chromium.launch({ headless: true })
-  } catch (error) {
-    fail(`Не удалось запустить Chromium (${(error as Error).message.split('\n')[0]}). Выполните: npx playwright install chromium`)
+  const saves = new Map<number, { save: string; residence: ReturnType<typeof residenceOf> }>()
+  for (const age of new Set(FIXTURES.map(f => f.lifeAge))) {
+    const life = lifeAtAge(SEED, age)
+    saves.set(age, { save: JSON.stringify({ game: life, started: false, preset: DEFAULT_PRESET }), residence: residenceOf(life) })
   }
 
-  const server = await createServer({
-    logLevel: 'error',
-    server: { host: '127.0.0.1', port: 0, strictPort: false }
-  })
-  await server.listen()
-  const address = server.httpServer?.address()
-  if (!address || typeof address === 'string') fail('Vite dev-сервер не вернул порт')
-  const origin = `http://127.0.0.1:${address.port}`
-
+  const { chromium } = await import('playwright')
+  let browser: Browser | null = null
+  let server: ViteDevServer | null = null
   const frames: Record<string, unknown>[] = []
   try {
+    try {
+      browser = await chromium.launch({ headless: true })
+    } catch (error) {
+      fail(`Не удалось запустить Chromium (${(error as Error).message.split('\n')[0]}). Выполните: npx playwright install chromium`)
+    }
+    if (FAULT === 'vite') throw new Error('VISUAL_CAPTURE_FAULT=vite: имитация сбоя старта Vite')
+    server = await createServer({
+      logLevel: 'error',
+      server: { host: '127.0.0.1', port: 0, strictPort: false }
+    })
+    await server.listen()
+    const address = server.httpServer?.address()
+    if (!address || typeof address === 'string') fail('Vite dev-сервер не вернул порт')
+    const origin = `http://127.0.0.1:${address.port}`
+
     for (const [index, fixture] of FIXTURES.entries()) {
+      const { save, residence } = saves.get(fixture.lifeAge)!
       const expected = resolveScene({
         started: true, momentId: fixture.momentId, momentSpot: fixture.momentSpot,
         pendingStorylet: false, hasDecision: false, resultVisible: false, stopped: false, shopOpen: false,
         residenceSectorId: residence
       })
-      const file = `${String(index + 1).padStart(2, '0')}-${fixture.id}.png`
+      if (expected.sceneId !== fixture.sceneKey) fail(`[${fixture.id}] resolveScene дал ${expected.sceneId}, контракт fixture — ${fixture.sceneKey}`)
+      const file = frameFile(index, fixture.id)
       const problems: string[] = []
       const where = `[${fixture.id}]`
 
@@ -118,7 +163,8 @@ async function main() {
           .catch(() => fail(`${where} GameScreen/SceneView не открылся после старта жизни`))
         // Время ставим на паузу, чтобы кадр не зависел от того, сколько миллисекунд идёт жизнь.
         const pause = page.getByRole('button', { name: /Пауза/ })
-        if (await pause.count()) await pause.first().click()
+        await pause.first().click().catch(() => fail(`${where} кнопка «Пауза» недоступна: кадр мог быть снят при идущем времени`))
+        await page.getByRole('button', { name: /Играть/ }).first().waitFor().catch(() => fail(`${where} время не встало на паузу`))
 
         // Обучающая подсказка перекрывает левую колонку; закрываем её штатной кнопкой интерфейса.
         const gotIt = page.getByRole('button', { name: 'Понятно' })
@@ -153,7 +199,7 @@ async function main() {
             placeTag: tags[0]?.textContent?.trim() ?? null,
             canvasPixels: canvas ? canvas.toDataURL('image/png') : null,
             birthStillVisible: !!document.querySelector('.birth__go'),
-            storedSeed: (() => { try { return JSON.parse(localStorage.getItem('generation17-v2') ?? '{}').game?.seed ?? null } catch { return null } })()
+            stored: (() => { try { const game = JSON.parse(localStorage.getItem('generation17-v2') ?? '{}').game; return { seed: game?.seed ?? null, age: game?.age ?? null } } catch { return { seed: null, age: null } } })()
           }
         })
 
@@ -166,7 +212,8 @@ async function main() {
         if (seen.badges.length !== 1 || seen.badges[0] !== fixture.badge) problems.push(`FIXTURE badge: ожидался «${fixture.badge}», найдено ${JSON.stringify(seen.badges)}`)
         if (seen.placeTag !== expected.label) problems.push(`подпись места: ожидалась «${expected.label}», найдена «${seen.placeTag}»`)
         if (seen.ariaLabel !== expected.ariaLabel) problems.push(`aria-label Canvas: ожидался «${expected.ariaLabel}», найден «${seen.ariaLabel}»`)
-        if (seen.storedSeed !== SEED) problems.push(`seed в сохранении ${seen.storedSeed} ≠ ${SEED}`)
+        if (seen.stored.seed !== SEED) problems.push(`seed в сохранении ${seen.stored.seed} ≠ ${SEED}`)
+        if (seen.stored.age !== fixture.lifeAge) problems.push(`возраст в сохранении ${seen.stored.age} ≠ ${fixture.lifeAge}`)
 
         const png = await page.screenshot({ type: 'png', animations: 'disabled' })
         if (problems.length) fail(`${where} ${problems.join('; ')}`)
@@ -178,6 +225,7 @@ async function main() {
           sha256: createHash('sha256').update(png).digest('hex'),
           canvasSha256: createHash('sha256').update(seen.canvasPixels ?? '').digest('hex'),
           sceneKey: expected.sceneId,
+          lifeAge: fixture.lifeAge,
           fixtureBadge: fixture.badge,
           placeLabel: expected.label,
           canvasAriaLabel: expected.ariaLabel,
@@ -191,17 +239,39 @@ async function main() {
       }
     }
   } finally {
-    await browser.close()
-    await server.close()
+    // Каждый ресурс закрывается независимо: ошибка первого close не оставляет второй открытым.
+    const failures: unknown[] = []
+    try {
+      await browser?.close()
+      if (browser) console.log('cleanup: Chromium закрыт')
+      if (browser && FAULT === 'close') throw new Error('VISUAL_CAPTURE_FAULT=close: имитация ошибки close()')
+    } catch (error) {
+      failures.push(error)
+    }
+    try {
+      await server?.close()
+      if (server) console.log('cleanup: Vite закрыт')
+    } catch (error) {
+      failures.push(error)
+    }
+    if (failures.length && !process.exitCode) {
+      console.error(`cleanup: ошибки закрытия: ${failures.map(e => (e as Error).message).join('; ')}`)
+      process.exitCode = 1
+    }
   }
+
+  const home = frames.find(f => f.fixture === 'home')
+  const infant = frames.find(f => f.fixture === 'infant')
+  if (!home || !infant || home.canvasSha256 === infant.canvasSha256) fail('Canvas home и infant совпадают: кадр home не показывает героя старше младенца')
 
   const manifest = {
     evidenceType: 'DEV FIXTURE • IN-GAME SCREENSHOT',
     commit,
+    commitVerifiedAgainst: expectedCommit ? 'CAPTURE_SHA совпал с git HEAD checkout' : 'git HEAD (CAPTURE_SHA не задан)',
     workingTreeDirty: dirty,
     generatedAt: startedAt.toISOString(),
     command: REPRODUCE,
-    seed: { value: SEED, mechanism: 'createGame(seed) записан в localStorage как обычное сохранение до загрузки приложения; Math.random не подменялся' },
+    seed: { value: SEED, mechanism: 'жизнь строится движком (createGame → advanceYear/decide до lifeAge кадра) и записывается в localStorage как обычное сохранение до загрузки приложения; Math.random не подменялся' },
     viewport: VIEWPORT,
     deviceScaleFactor: 1,
     reducedMotion: 'reduce',

@@ -6,11 +6,10 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.ts'
       - 'scripts/visual-capture.ts'
-      - 'src/render/**'
-      - 'src/components/scene/**'
-      - 'src/components/GameScreen.vue'
-      - 'src/assets/**'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/visual-capture.yml'
@@ -23,7 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # Снимаем ровно голову PR, а не синтетический merge-коммит; скрипт сверяет git HEAD с CAPTURE_SHA.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -32,7 +35,7 @@ jobs:
       - name: Chromium
         run: npx playwright install --with-deps chromium
       - name: Capture
-        # На PR github.sha — merge-коммит; в manifest и имя artifact пишем SHA головы PR.
+        # SHA головы PR попадает в manifest и имя artifact; несовпадение с checkout роняет capture.
         env:
           CAPTURE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm run visual:capture

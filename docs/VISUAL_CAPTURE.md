@@ -46,3 +46,11 @@ Workflow не использует секретов, имеет права `cont
 
 Скачайте zip artifact и откройте пиксели шести PNG. Доступ агентов к artifact или user-attachments не гарантирован:
 если он недоступен, владелец прикладывает те же шесть PNG прямо в чат ART. Ссылка сама по себе не является проверкой.
+
+## GEN-101 · «Живой дом» (сравнительные кадры)
+
+`npm run visual:capture:household` → `artifacts/visual-capture-household/`: пять 1440×900 PNG настоящего `GameScreen` взрослого героя (seed `17017`, 24 года, обычный home idle, без `?sceneFixture`):
+`01-adult-ordinary`, `02-adult-shared` (подтверждённый текущий партнёр + общий дом в секторе героя ⇒ вторая кружка), `03-after-loss` (разрыв), `04-after-apart` (раздельное проживание), `05-after-distant`.
+Состояние строится движком и доменными функциями (`beginRelationship`, `endRelationship`, `Person.state`) и записывается обычным сохранением; guard `householdLook` не подменяется.
+Скрипт сверяет, что Canvas shared отличается от ordinary только в области второй кружки, а кадры 03–05 побайтово равны ordinary. Шесть кадров GEN-100 и их контракт не затронуты; в CI это отдельный artifact `gamescreen-household-capture-<sha>`.
+Это не ART PASS: читаемость двух кружек и отсутствие впечатления «партнёр здесь» оценивает ART.

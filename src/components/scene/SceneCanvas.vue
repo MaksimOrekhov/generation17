@@ -68,7 +68,7 @@ onMounted(() => {
 watch(() => [
   props.model.name, props.model.age, props.model.wealth, props.model.sectorId,
   props.model.companion?.name, props.model.companion?.age, props.model.companion?.kind,
-  props.model.scene.sceneId, props.model.scene.spot, props.model.scene.ariaLabel
+  props.model.householdLook, props.model.scene.sceneId, props.model.scene.spot, props.model.scene.ariaLabel
 ], () => start())
 
 onBeforeUnmount(() => {

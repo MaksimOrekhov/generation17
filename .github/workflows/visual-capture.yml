@@ -1,6 +1,7 @@
 name: Visual capture
 
 # Снимает шесть DEV-fixture кадров настоящего GameScreen и публикует их как artifact.
+# Отдельным artifact — пять сравнительных кадров GEN-101 «Живой дом» (контракт шести кадров GEN-100 не меняется).
 # Без секретов, права только на чтение; в PR ничего не пишет.
 on:
   workflow_dispatch:
@@ -10,6 +11,7 @@ on:
       - 'index.html'
       - 'vite.config.ts'
       - 'scripts/visual-capture.ts'
+      - 'scripts/visual-capture-household.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/visual-capture.yml'
@@ -48,5 +50,20 @@ jobs:
         with:
           name: gamescreen-visual-capture-${{ github.event.pull_request.head.sha || github.sha }}
           path: artifacts/visual-capture/
+          if-no-files-found: error
+          retention-days: 14
+      - name: GEN-101 · сравнительные кадры «Живой дом»
+        env:
+          CAPTURE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: npm run visual:capture:household
+      - name: Ровно пять PNG и manifest
+        run: |
+          test "$(ls artifacts/visual-capture-household/*.png | wc -l)" -eq 5
+          test -f artifacts/visual-capture-household/manifest.json
+          test -f artifacts/visual-capture-household/manifest.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gamescreen-household-capture-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/visual-capture-household/
           if-no-files-found: error
           retention-days: 14

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import baseline from './fixtures/neighbor-v1-baseline.json'
 import samples from './fixtures/neighbor-v1-states.json'
 import { legacyNeighbor } from './fixtures/neighbor-v1'
+import { withHistoricalNeighborText } from './fixtures/neighbor-v1-text'
 import { friendshipV1Text } from './fixtures/friendship-v1-text'
 import { neighborReplay } from '../../../scripts/content-v2-neighbor'
 import { canChoose, createGame, decide, tick } from '../engine'
@@ -15,7 +16,9 @@ import * as npcMilestones from '../npcMilestones'
 
 const original = [...storylets]
 afterEach(() => storylets.splice(0, storylets.length, ...original))
-const migrated = new Map(contentStorylets.filter(s => s.arc === 'neighbor').map(s => [s.id, s]))
+const current = new Map(contentStorylets.filter(s => s.arc === 'neighbor').map(s => [s.id, s]))
+// Frozen v1 prose over current mechanics: the historical parity checks below stay strict.
+const migrated = new Map([...current].map(([id, s]) => [id, withHistoricalNeighborText(s)]))
 const normalize = (v: unknown) => JSON.parse(JSON.stringify(v))
 const withoutJournal = ({ decisions: _decisions, ...g }: GameState) => g
 function withHistoricalFriendText(storylet: Storylet): Storylet {
